@@ -4,11 +4,10 @@ import { debounce } from "../../utils/events";
 import Sortable from "sortablejs";
 
 interface TagInputOptions {
-    labels: {
-        addKeyCodes: string[];
-        accept: "options" | "any";
-        orderable: boolean;
-    };
+    labels: { [key: string]: string };
+    addKeyCodes: string[];
+    accept: "options" | "any";
+    orderable: boolean;
 }
 
 export class TagInput {

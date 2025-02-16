@@ -57,9 +57,12 @@
     border-radius: $border-radius;
     margin-bottom: 0.25rem;
     background-color: var(--color-base-700);
-    cursor: default;
     font-size: $font-size-sm;
     @include user-select-none;
+
+    &.sortable-chosen:not(.sortable-drag) {
+        background-color: var(--color-accent-900);
+    }
 }
 
 .form-input-tag .tag:first-child {
@@ -91,4 +94,9 @@
 .tag-remove::after {
     content: "\00d7";
     font-weight: 600;
+}
+
+.form-input-tag.is-dragging,
+.form-input-tag.is-dragging * {
+    cursor: grabbing !important;
 }

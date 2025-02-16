@@ -52,11 +52,13 @@ fields:
     date.dateFormat:
         type: select
         label: '{{panel.options.system.dateAndTime.dateFormat}}'
+        icon: calendar
         options@: dateFormats.date
 
     date.timeFormat:
         type: select
         label: '{{panel.options.system.dateAndTime.hourFormat}}'
+        icon: clock
         options@: dateFormats.hour
 
     date.timezone:
@@ -81,8 +83,8 @@ fields:
 
     languages.available:
         type: tags
-        icon: translate
         label: '{{panel.options.system.languages.availableLanguages}}'
+        icon: translate
         placeholder: '{{panel.options.system.languages.availableLanguages.noLanguages}}'
         pattern: '^[a-z]{2,3}$'
         translate: [label, placeholder]
@@ -97,8 +99,8 @@ fields:
 
     files.allowedExtensions:
         type: tags
-        icon: file-exclamation
         label: '{{panel.options.system.files.allowedExtensions}}'
+        icon: file-exclamation
         placeholder: '{{panel.options.system.files.allowedExtensions.noExtensions}}'
         pattern: '^\.[a-zA-Z0-9]+$'
         options@: mimeTypes.getExtensionTypes()
@@ -121,6 +123,7 @@ fields:
     panel.translation:
         type: select
         label: '{{panel.options.system.adminPanel.defaultLanguage}}'
+        icon: translate
         translate: [label]
         options@: formwork.panel.availableTranslations
 

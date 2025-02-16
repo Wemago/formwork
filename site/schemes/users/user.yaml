@@ -29,6 +29,7 @@ fields:
     language:
         type: select
         label: '{{user.language}}'
+        icon: translate
         required: true
         translate: [label]
         options@: formwork.panel.availableTranslations

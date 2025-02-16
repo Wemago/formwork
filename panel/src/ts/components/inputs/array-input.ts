@@ -11,6 +11,9 @@ export class ArrayInput {
         Sortable.create(input, {
             handle: ".sortable-handle",
             forceFallback: true,
+            invertSwap: true,
+            swapThreshold: 0.75,
+            animation: 150,
         });
 
         function addRow(row: HTMLElement) {

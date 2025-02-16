@@ -1,24 +1,27 @@
 import { $, $$ } from "../../utils/selectors";
 import { escapeRegExp, makeDiacriticsRegExp } from "../../utils/validation";
 import { debounce } from "../../utils/events";
+import Sortable from "sortablejs";
 
 interface TagInputOptions {
-    labels: {
-        addKeyCodes: string[];
-        accept: "options" | "any";
-    };
+    labels: { [key: string]: string };
+    addKeyCodes: string[];
+    limit: number;
+    accept: "options" | "any";
+    orderable: boolean;
 }
 
 export class TagInput {
     constructor(input: HTMLInputElement, userOptions: Partial<TagInputOptions>) {
-        const defaults = { addKeyCodes: ["Comma"], accept: "options" };
+        const defaults = { addKeyCodes: ["Comma"], limit: Infinity, accept: "options", orderable: true };
 
         const options = Object.assign({}, defaults, userOptions);
 
         let tags: string[] = [];
-        let placeholder: string, dropdown: HTMLElement;
+        let placeholder: string, dropdown: HTMLElement | undefined;
 
         const field = document.createElement("div");
+        const list = document.createElement("span");
         const innerInput = document.createElement("input");
         const hiddenInput = document.createElement("input");
 
@@ -30,6 +33,14 @@ export class TagInput {
         function createField() {
             const isRequired = input.hasAttribute("required");
             const isDisabled = input.hasAttribute("disabled");
+
+            if ("limit" in input.dataset) {
+                options.limit = parseInt(input.dataset.limit as string);
+            }
+
+            if (!("orderable" in input.dataset)) {
+                options.orderable = false;
+            }
 
             field.className = "form-input-tag";
 
@@ -56,6 +67,7 @@ export class TagInput {
             }
 
             (input.parentNode as ParentNode).replaceChild(field, input);
+            field.appendChild(list);
             field.appendChild(innerInput);
             field.appendChild(hiddenInput);
 
@@ -64,7 +76,7 @@ export class TagInput {
                 tags.forEach((value, index) => {
                     value = value.trim();
                     tags[index] = value;
-                    insertTag(value);
+                    insertTag(value, list);
                 });
             }
 
@@ -79,6 +91,41 @@ export class TagInput {
                 innerInput.focus();
                 event.preventDefault();
             });
+
+            if (options.orderable) {
+                Sortable.create(list, {
+                    forceFallback: true,
+                    animation: 150,
+                    filter: ".tag-remove",
+
+                    onStart() {
+                        field.classList.add("is-dragging");
+                        if (dropdown) {
+                            dropdown.style.display = "none";
+                        }
+                    },
+
+                    onFilter(event: Sortable.SortableEvent) {
+                        if (event.target.matches(".tag-remove")) {
+                            removeTag(event.item.innerText);
+                            list.removeChild(event.item);
+                        }
+                    },
+
+                    onEnd(event: Sortable.SortableEvent) {
+                        field.classList.remove("is-dragging");
+                        const newIndex = event.newIndex;
+                        const oldIndex = event.oldIndex;
+                        innerInput.blur();
+                        innerInput.focus();
+                        if (newIndex === oldIndex || newIndex === undefined || oldIndex === undefined) {
+                            return;
+                        }
+                        tags.splice(newIndex, 0, tags.splice(oldIndex, 1)[0]);
+                        updateTags();
+                    },
+                });
+            }
         }
 
         function createDropdown() {
@@ -87,11 +134,12 @@ export class TagInput {
                 const isAssociative = !Array.isArray(list);
 
                 if ("accept" in input.dataset) {
-                    options.accept = input.dataset.accept ?? "options";
+                    options.accept = (input.dataset.accept ?? "options") as "options" | "any";
                 }
 
                 dropdown = document.createElement("div");
                 dropdown.className = "dropdown-list";
+                dropdown.style.display = "none";
 
                 for (const key in list) {
                     const item = document.createElement("div");
@@ -109,14 +157,14 @@ export class TagInput {
                 field.appendChild(dropdown);
 
                 innerInput.addEventListener("focus", () => {
-                    if (getComputedStyle(dropdown).display === "none") {
+                    if (dropdown && getComputedStyle(dropdown).display === "none") {
                         updateDropdown();
                         dropdown.scrollTop = 0;
                     }
                 });
 
                 innerInput.addEventListener("blur", () => {
-                    if (getComputedStyle(dropdown).display !== "none") {
+                    if (dropdown && getComputedStyle(dropdown).display !== "none") {
                         updateDropdown();
                         dropdown.style.display = "none";
                     }
@@ -128,26 +176,26 @@ export class TagInput {
                             updateDropdown();
                             break;
                         case "Enter":
-                            if (getComputedStyle(dropdown).display !== "none") {
+                            if (dropdown && getComputedStyle(dropdown).display !== "none") {
                                 addTagFromSelectedDropdownItem();
                                 event.preventDefault();
                             }
                             break;
                         case "ArrowUp":
-                            if (getComputedStyle(dropdown).display !== "none") {
+                            if (dropdown && getComputedStyle(dropdown).display !== "none") {
                                 selectPrevDropdownItem();
                                 event.preventDefault();
                             }
                             break;
                         case "ArrowDown":
-                            if (getComputedStyle(dropdown).display !== "none") {
+                            if (dropdown && getComputedStyle(dropdown).display !== "none") {
                                 selectNextDropdownItem();
                                 event.preventDefault();
                             }
                             break;
                         default:
                             if (options.addKeyCodes.includes(event.code)) {
-                                if (getComputedStyle(dropdown).display !== "none") {
+                                if (dropdown && getComputedStyle(dropdown).display !== "none") {
                                     addTagFromSelectedDropdownItem();
                                     event.preventDefault();
                                 }
@@ -161,13 +209,17 @@ export class TagInput {
                         const value = innerInput.value.trim();
                         switch (event.key) {
                             case "Escape":
-                                dropdown.style.display = "none";
+                                if (dropdown) {
+                                    dropdown.style.display = "none";
+                                }
                                 break;
                             case "ArrowUp":
                             case "ArrowDown":
                                 return true;
                             default:
-                                dropdown.style.display = "block";
+                                if (tags.length >= options.limit) {
+                                    event.preventDefault();
+                                }
                                 filterDropdown(value);
                                 if (value.length > 0) {
                                     selectFirstDropdownItem();
@@ -190,13 +242,15 @@ export class TagInput {
             });
 
             innerInput.addEventListener("keydown", (event) => {
+                innerInput.classList.remove("form-input-invalid");
                 const value = innerInput.value.trim();
                 switch (event.key) {
                     case "Backspace":
                         if (value === "") {
                             removeTag(tags[tags.length - 1]);
-                            if (innerInput.previousSibling) {
-                                (innerInput.parentNode as ParentNode).removeChild(innerInput.previousSibling);
+                            const lastTag = list.childNodes[list.childNodes.length - 1];
+                            if (lastTag) {
+                                list.removeChild(lastTag);
                             }
                             event.preventDefault();
                         } else {
@@ -205,10 +259,14 @@ export class TagInput {
                         break;
                     case "Enter":
                     case "Comma":
-                        if (value !== "") {
-                            addTag(value);
-                        }
                         event.preventDefault();
+                        if (value !== "") {
+                            if (tags.length >= options.limit || tags.includes(value)) {
+                                innerInput.classList.add("form-input-invalid");
+                            } else {
+                                addTag(value);
+                            }
+                        }
                         break;
                     case "Escape":
                         clearInput();
@@ -216,9 +274,15 @@ export class TagInput {
                         event.preventDefault();
                         break;
                     default:
-                        if (value !== "" && options.addKeyCodes.includes(event.code)) {
-                            addTag(value);
+                        if (options.addKeyCodes.includes(event.key)) {
                             event.preventDefault();
+                            if (value !== "") {
+                                if (tags.length >= options.limit || tags.includes(value)) {
+                                    innerInput.classList.add("form-input-invalid");
+                                } else {
+                                    addTag(value);
+                                }
+                            }
                             break;
                         }
                         if (value.length > 0) {
@@ -249,6 +313,9 @@ export class TagInput {
         }
 
         function validateTag(value: string) {
+            if (tags.length >= options.limit) {
+                return false;
+            }
             if (!tags.includes(value)) {
                 if (dropdown && options.accept === "options") {
                     return $(`[data-value="${value}"]`, dropdown) !== null;
@@ -258,19 +325,19 @@ export class TagInput {
             return false;
         }
 
-        function insertTag(value: string) {
+        function insertTag(value: string, parent: HTMLElement) {
             const tag = document.createElement("span");
             const tagRemove = document.createElement("i");
             tag.className = "tag";
             tag.innerHTML = value;
             tag.style.marginRight = ".25rem";
-            (innerInput.parentNode as ParentNode).insertBefore(tag, innerInput);
+            parent.appendChild(tag);
 
             tagRemove.className = "tag-remove";
             tagRemove.setAttribute("role", "button");
             tagRemove.addEventListener("mousedown", (event) => {
                 removeTag(value);
-                (tag.parentNode as ParentNode).removeChild(tag);
+                parent.removeChild(tag);
                 event.preventDefault();
             });
             tag.appendChild(tagRemove);
@@ -279,15 +346,13 @@ export class TagInput {
         function addTag(value: string) {
             if (validateTag(value)) {
                 tags.push(value);
-                insertTag(value);
+                insertTag(value, list);
                 updateTags();
             } else {
                 updatePlaceholder();
             }
             innerInput.value = "";
-            if (dropdown) {
-                updateDropdown();
-            }
+            updateDropdown();
         }
 
         function removeTag(value: string) {
@@ -296,9 +361,7 @@ export class TagInput {
                 tags.splice(index, 1);
                 updateTags();
             }
-            if (dropdown) {
-                updateDropdown();
-            }
+            updateDropdown();
         }
 
         function clearInput() {
@@ -307,6 +370,13 @@ export class TagInput {
         }
 
         function updateDropdown() {
+            if (!dropdown) {
+                return;
+            }
+            dropdown.style.display = "none";
+            if (tags.length >= options.limit) {
+                return;
+            }
             let visibleItems = 0;
             $$(".dropdown-item", dropdown).forEach((element) => {
                 if (!tags.includes(element.dataset.value as string)) {
@@ -319,14 +389,15 @@ export class TagInput {
             });
             if (visibleItems > 0) {
                 dropdown.style.display = "block";
-            } else {
-                dropdown.style.display = "none";
             }
         }
 
         function filterDropdown(value: string) {
+            if (!dropdown) {
+                return;
+            }
             let visibleItems = 0;
-            dropdown.style.display = "block";
+            dropdown.style.display = "none";
             $$(".dropdown-item", dropdown).forEach((element) => {
                 if (value === "") {
                     return true;
@@ -342,12 +413,13 @@ export class TagInput {
             });
             if (visibleItems > 0) {
                 dropdown.style.display = "block";
-            } else {
-                dropdown.style.display = "none";
             }
         }
 
         function scrollToDropdownItem(item: HTMLElement) {
+            if (!dropdown) {
+                return;
+            }
             const dropdownScrollTop = dropdown.scrollTop;
             const dropdownHeight = dropdown.clientHeight;
             const dropdownScrollBottom = dropdownScrollTop + dropdownHeight;

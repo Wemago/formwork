@@ -6,13 +6,14 @@ import Sortable from "sortablejs";
 interface TagInputOptions {
     labels: { [key: string]: string };
     addKeyCodes: string[];
+    limit: number;
     accept: "options" | "any";
     orderable: boolean;
 }
 
 export class TagInput {
     constructor(input: HTMLInputElement, userOptions: Partial<TagInputOptions>) {
-        const defaults = { addKeyCodes: ["Comma"], accept: "options", orderable: true };
+        const defaults = { addKeyCodes: ["Comma"], limit: Infinity, accept: "options", orderable: true };
 
         const options = Object.assign({}, defaults, userOptions);
 
@@ -32,6 +33,10 @@ export class TagInput {
         function createField() {
             const isRequired = input.hasAttribute("required");
             const isDisabled = input.hasAttribute("disabled");
+
+            if ("limit" in input.dataset) {
+                options.limit = parseInt(input.dataset.limit as string);
+            }
 
             if (!("orderable" in input.dataset)) {
                 options.orderable = false;
@@ -129,11 +134,12 @@ export class TagInput {
                 const isAssociative = !Array.isArray(list);
 
                 if ("accept" in input.dataset) {
-                    options.accept = input.dataset.accept ?? "options";
+                    options.accept = (input.dataset.accept ?? "options") as "options" | "any";
                 }
 
                 dropdown = document.createElement("div");
                 dropdown.className = "dropdown-list";
+                dropdown.style.display = "none";
 
                 for (const key in list) {
                     const item = document.createElement("div");
@@ -211,8 +217,8 @@ export class TagInput {
                             case "ArrowDown":
                                 return true;
                             default:
-                                if (dropdown) {
-                                    dropdown.style.display = "block";
+                                if (tags.length >= options.limit) {
+                                    event.preventDefault();
                                 }
                                 filterDropdown(value);
                                 if (value.length > 0) {
@@ -236,6 +242,7 @@ export class TagInput {
             });
 
             innerInput.addEventListener("keydown", (event) => {
+                innerInput.classList.remove("form-input-invalid");
                 const value = innerInput.value.trim();
                 switch (event.key) {
                     case "Backspace":
@@ -252,10 +259,14 @@ export class TagInput {
                         break;
                     case "Enter":
                     case "Comma":
-                        if (value !== "") {
-                            addTag(value);
-                        }
                         event.preventDefault();
+                        if (value !== "") {
+                            if (tags.length >= options.limit || tags.includes(value)) {
+                                innerInput.classList.add("form-input-invalid");
+                            } else {
+                                addTag(value);
+                            }
+                        }
                         break;
                     case "Escape":
                         clearInput();
@@ -263,9 +274,15 @@ export class TagInput {
                         event.preventDefault();
                         break;
                     default:
-                        if (value !== "" && options.addKeyCodes.includes(event.code)) {
-                            addTag(value);
+                        if (options.addKeyCodes.includes(event.key)) {
                             event.preventDefault();
+                            if (value !== "") {
+                                if (tags.length >= options.limit || tags.includes(value)) {
+                                    innerInput.classList.add("form-input-invalid");
+                                } else {
+                                    addTag(value);
+                                }
+                            }
                             break;
                         }
                         if (value.length > 0) {
@@ -296,6 +313,9 @@ export class TagInput {
         }
 
         function validateTag(value: string) {
+            if (tags.length >= options.limit) {
+                return false;
+            }
             if (!tags.includes(value)) {
                 if (dropdown && options.accept === "options") {
                     return $(`[data-value="${value}"]`, dropdown) !== null;
@@ -353,6 +373,10 @@ export class TagInput {
             if (!dropdown) {
                 return;
             }
+            dropdown.style.display = "none";
+            if (tags.length >= options.limit) {
+                return;
+            }
             let visibleItems = 0;
             $$(".dropdown-item", dropdown).forEach((element) => {
                 if (!tags.includes(element.dataset.value as string)) {
@@ -365,8 +389,6 @@ export class TagInput {
             });
             if (visibleItems > 0) {
                 dropdown.style.display = "block";
-            } else {
-                dropdown.style.display = "none";
             }
         }
 
@@ -375,7 +397,7 @@ export class TagInput {
                 return;
             }
             let visibleItems = 0;
-            dropdown.style.display = "block";
+            dropdown.style.display = "none";
             $$(".dropdown-item", dropdown).forEach((element) => {
                 if (value === "") {
                     return true;
@@ -391,8 +413,6 @@ export class TagInput {
             });
             if (visibleItems > 0) {
                 dropdown.style.display = "block";
-            } else {
-                dropdown.style.display = "none";
             }
         }
 

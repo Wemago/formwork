@@ -50,3 +50,7 @@
 .form-input-duration-hidden {
     display: none;
 }
+
+.form-input-wrap .form-input-icon + .form-input-duration {
+    padding-left: 1.75rem;
+}

@@ -30,8 +30,14 @@ export class SelectInput {
         createField();
 
         function createField() {
-            const wrap = document.createElement("div");
-            wrap.className = "form-input-wrap";
+            const hasWrap = select.closest(".form-input-wrap");
+
+            const wrap = hasWrap || document.createElement("div");
+
+            if (!hasWrap) {
+                wrap.className = "form-input-wrap";
+                (select.parentNode as ParentNode).insertBefore(wrap, select.nextSibling);
+            }
 
             select.hidden = true;
 
@@ -76,13 +82,11 @@ export class SelectInput {
                 }
             });
 
-            (select.parentNode as ParentNode).insertBefore(wrap, select.nextSibling);
+            wrap.appendChild(labelInput);
 
             wrap.appendChild(select);
 
-            wrap.appendChild(labelInput);
-
-            createDropdown(list, wrap);
+            createDropdown(list, wrap as HTMLElement);
         }
 
         function createDropdown(list: SelectInputListItem[], wrap: HTMLElement) {

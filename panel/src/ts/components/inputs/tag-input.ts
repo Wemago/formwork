@@ -373,8 +373,8 @@ export class TagInput {
             if (!dropdown) {
                 return;
             }
-            dropdown.style.display = "none";
             if (tags.length >= options.limit) {
+                dropdown.style.display = "none";
                 return;
             }
             let visibleItems = 0;
@@ -389,6 +389,8 @@ export class TagInput {
             });
             if (visibleItems > 0) {
                 dropdown.style.display = "block";
+            } else {
+                dropdown.style.display = "none";
             }
         }
 
@@ -396,8 +398,11 @@ export class TagInput {
             if (!dropdown) {
                 return;
             }
+            if (value === "" && tags.length < options.limit) {
+                dropdown.style.display = "block";
+                return;
+            }
             let visibleItems = 0;
-            dropdown.style.display = "none";
             $$(".dropdown-item", dropdown).forEach((element) => {
                 if (value === "") {
                     return true;
@@ -413,6 +418,8 @@ export class TagInput {
             });
             if (visibleItems > 0) {
                 dropdown.style.display = "block";
+            } else {
+                dropdown.style.display = "none";
             }
         }
 

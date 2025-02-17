@@ -4,12 +4,19 @@ namespace Formwork\Images\Transform;
 
 use Formwork\Parsers\Php;
 use Formwork\Utils\Str;
+use ReflectionClass;
 
 abstract class AbstractTransform implements TransformInterface
 {
     public function toArray(): array
     {
-        return get_object_vars($this);
+        $data = [];
+
+        foreach ((new ReflectionClass($this))->getProperties() as $property) {
+            $data[$property->getName()] = $property->getValue($this);
+        }
+
+        return $data;
     }
 
     public function getSpecifier(): string

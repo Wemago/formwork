@@ -4,7 +4,6 @@ namespace Formwork\Updater;
 
 use DateTimeImmutable;
 use Formwork\Cms\App;
-use Formwork\Config\Config;
 use Formwork\Http\Client;
 use Formwork\Log\Registry;
 use Formwork\Parsers\Json;
@@ -24,13 +23,6 @@ final class Updater
      * GitHub API latest release URI
      */
     private const string API_RELEASE_URI = 'https://api.github.com/repos/' . self::REPOSITORY . '/releases/latest';
-
-    /**
-     * Updater options
-     *
-     * @var array<string, mixed>
-     */
-    private array $options = [];
 
     /**
      * Updates registry
@@ -69,12 +61,13 @@ final class Updater
      */
     private array $headers;
 
+    /**
+     * @param array<string, mixed> $options
+     */
     public function __construct(
+        private array $options,
         private App $app,
-        Config $config,
     ) {
-        $this->options = $config->get('system.updates');
-
         $this->registry = new Registry($this->options['registryFile']);
 
         if ($this->registry->toArray() === []) {

@@ -35,7 +35,8 @@ final class PanelServiceLoader implements ResolutionAwareServiceLoaderInterface
             ->parameter('limit', $this->config->get('system.panel.loginAttempts'))
             ->parameter('resetTime', $this->config->get('system.panel.loginResetTime'));
 
-        $container->define(Updater::class);
+        $container->define(Updater::class)
+            ->parameter('options', $this->config->get('system.updates'));
 
         $this->request->session()->setDuration($this->config->get('system.panel.sessionTimeout') * 60);
 

@@ -13,3 +13,20 @@ metadata: []
 path: '${%ROOT_PATH%}/site'
 
 routeAliases: []
+
+statistics:
+    enabled: true
+    trackLocalhost: true
+    visitsDelay: 15
+    path: '${site.path}/statistics'
+    registries:
+        sessions: 'sessions.json'
+        visits: 'visits.json'
+        uniqueVisits: 'uniqueVisits.json'
+        visitors: 'visitors.json'
+        pageViews: 'pageViews.json'
+        sources: 'sources.json'
+        devices: 'devices.json'
+    cleanup:
+        ttl: 86400
+        probability: 5

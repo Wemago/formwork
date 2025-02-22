@@ -31,7 +31,7 @@ final class PageController extends AbstractController
      */
     public function load(RouteParams $routeParams, Statistics $statistics): Response
     {
-        $trackable = $this->config->get('system.statistics.enabled');
+        $trackable = $this->config->get('site.statistics.enabled');
 
         if ($this->site->get('maintenance.enabled') && !$this->app->panel()->isLoggedIn()) {
             $trackable = false;

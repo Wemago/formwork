@@ -233,7 +233,7 @@ final class App
             ->alias('templates');
 
         $container->define(Statistics::class)
-            ->parameter('path', fn(Config $config) => $config->get('system.statistics.path'))
+            ->parameter('options', fn(Config $config) => $config->get('site.statistics'))
             ->parameter('translation', fn(Translations $translations) => $translations->getCurrent())
             ->alias('statistics');
 

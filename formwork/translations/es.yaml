@@ -70,6 +70,15 @@ site.maintenance.enabled.enabled: Activado
 site.maintenance.page: Página de mantenimiento
 site.pages: Páginas
 site.pages.defaultTemplate: Plantilla predeterminada
+site.statistics: Estadísticas
+site.statistics.enabled: Rastrear visitas a la página
+site.statistics.enabled.disabled: Desactivado
+site.statistics.enabled.enabled: Activado
+site.statistics.trackLocalhost: Rastrear visitas desde localhost
+site.statistics.trackLocalhost.disabled: Desactivado
+site.statistics.trackLocalhost.enabled: Activado
+site.statistics.visitsDelay: Retraso de visitas
+site.statistics.visitsDelay.description: Retraso entre visitas del mismo usuario a la misma página para que se cuenten como diferentes
 upload.error: No se puede cargar el archivo. %s.
 upload.error.alreadyExists: Ya existe un archivo con el mismo nombre
 upload.error.cannotMoveToDestination: Error al mover el archivo cargado al destino

@@ -70,6 +70,15 @@ site.maintenance.enabled.enabled: Aktiviert
 site.maintenance.page: Wartungsseite
 site.pages: Seiten
 site.pages.defaultTemplate: Standardvorlage
+site.statistics: Statistiken
+site.statistics.enabled: Seitenbesuche verfolgen
+site.statistics.enabled.disabled: Deaktiviert
+site.statistics.enabled.enabled: Aktiviert
+site.statistics.trackLocalhost: Besuche von localhost verfolgen
+site.statistics.trackLocalhost.disabled: Deaktiviert
+site.statistics.trackLocalhost.enabled: Aktiviert
+site.statistics.visitsDelay: Besuchsverzögerung
+site.statistics.visitsDelay.description: Verzögerung zwischen Besuchen desselben Benutzers auf derselben Seite, damit sie als unterschiedlich gezählt werden
 upload.error: Datei kann nicht hochgeladen werden. %s.
 upload.error.alreadyExists: Eine Datei mit demselben Namen existiert bereits
 upload.error.cannotMoveToDestination: Hochgeladene Datei kann nicht an das Ziel verschoben werden

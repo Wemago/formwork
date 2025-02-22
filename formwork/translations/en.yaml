@@ -70,6 +70,15 @@ site.maintenance.enabled.enabled: Enabled
 site.maintenance.page: Maintenance page
 site.pages: Pages
 site.pages.defaultTemplate: Default template
+site.statistics: Statistics
+site.statistics.enabled: Track page visits
+site.statistics.enabled.disabled: Disabled
+site.statistics.enabled.enabled: Enabled
+site.statistics.trackLocalhost: Track visits from localhost
+site.statistics.trackLocalhost.disabled: Disabled
+site.statistics.trackLocalhost.enabled: Enabled
+site.statistics.visitsDelay: Visits delay
+site.statistics.visitsDelay.description: Delay between visits from the same user to the same page to be counted as different
 upload.error: Cannot upload file. %s.
 upload.error.alreadyExists: A file with the same name already exists
 upload.error.cannotMoveToDestination: Failed to move uploaded file to destination

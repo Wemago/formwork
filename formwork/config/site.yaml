@@ -16,7 +16,7 @@ routeAliases: []
 
 statistics:
     enabled: true
-    trackLocalhost: true
+    trackLocalhost: false
     visitsDelay: 15
     path: '${site.path}/statistics'
     registries:

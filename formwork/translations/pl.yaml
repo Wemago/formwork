@@ -70,6 +70,15 @@ site.maintenance.enabled.enabled: Włączony
 site.maintenance.page: Strona konserwacyjna
 site.pages: Strony
 site.pages.defaultTemplate: Domyślny szablon
+site.statistics: Statystyki
+site.statistics.enabled: Śledzenie wizyt na stronie
+site.statistics.enabled.disabled: Wyłączone
+site.statistics.enabled.enabled: Włączone
+site.statistics.trackLocalhost: Śledzenie wizyt z localhosta
+site.statistics.trackLocalhost.disabled: Wyłączone
+site.statistics.trackLocalhost.enabled: Włączone
+site.statistics.visitsDelay: Opóźnienie wizyt
+site.statistics.visitsDelay.description: Opóźnienie między wizytami tego samego użytkownika na tej samej stronie, aby były liczone jako różne
 upload.error: Nie można przesłać pliku. %s.
 upload.error.alreadyExists: Plik o tej samej nazwie już istnieje
 upload.error.cannotMoveToDestination: Nie udało się przenieść pliku do miejsca docelowego

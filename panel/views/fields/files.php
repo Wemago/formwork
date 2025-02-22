@@ -14,6 +14,6 @@
                 'data-limit'     => $field->limit(),
                 'data-options'   => Formwork\Parsers\Json::encode($field->options()),
                 'data-accept'    => 'options',
-                'data-orderable' => $field->is('orderable', true),
+                'data-orderable' => $field->isOrderable(),
             ]) ?>>
 </div>

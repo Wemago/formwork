@@ -11,9 +11,9 @@
                 'required'       => $field->isRequired(),
                 'disabled'       => $field->isDisabled(),
                 'hidden'         => $field->isHidden(),
-                'data-limit'     => $field->get('limit'),
-                'data-options'   => $field->has('options') ? Formwork\Parsers\Json::encode($field->options()) : null,
-                'data-accept'    => $field->get('accept', 'options'),
-                'data-orderable' => $field->is('orderable', true),
+                'data-limit'     => $field->limit(),
+                'data-options'   => $field->options() ? Formwork\Parsers\Json::encode($field->options()) : null,
+                'data-accept'    => $field->accept(),
+                'data-orderable' => $field->isOrderable(),
             ]) ?>>
 </div>

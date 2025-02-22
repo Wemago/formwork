@@ -34,7 +34,7 @@ return function (App $app) {
                 $value = array_filter($value, static fn($item): bool => Constraint::matchesRegex($item, $field->get('pattern')));
             }
 
-            if ($field->has('limit') && count($value) > $field->get('limit')) {
+            if ($field->limit() !== null && count($value) > $field->limit()) {
                 throw new ValidationException(sprintf('Field "%s" of type "%s" has a limit of %d items', $field->name(), $field->type(), $field->get('limit')));
             }
 
@@ -47,8 +47,16 @@ return function (App $app) {
             return $options !== null ? Arr::from($options) : null;
         },
 
+        'accept' => function ($field): string {
+            return $field->get('accept', 'options');
+        },
+
         'limit' => function ($field): ?int {
             return $field->get('limit', null);
+        },
+
+        'isOrderable' => function ($field): bool {
+            return $field->is('orderable', true);
         },
     ];
 };

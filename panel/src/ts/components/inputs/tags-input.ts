@@ -4,7 +4,7 @@ import { debounce } from "../../utils/events";
 import { insertIcon } from "../icons";
 import Sortable from "sortablejs";
 
-interface TagInputOptions {
+interface TagsInputOptions {
     labels: { [key: string]: string };
     addKeyCodes: string[];
     limit: number;
@@ -12,14 +12,14 @@ interface TagInputOptions {
     orderable: boolean;
 }
 
-interface TagInputDropdownItem {
+interface TagsInputDropdownItem {
     value: string;
     icon?: string;
     thumb?: string;
 }
 
-export class TagInput {
-    constructor(input: HTMLInputElement, userOptions: Partial<TagInputOptions>) {
+export class TagsInput {
+    constructor(input: HTMLInputElement, userOptions: Partial<TagsInputOptions>) {
         const defaults = { addKeyCodes: ["Comma"], limit: Infinity, accept: "options", orderable: true };
 
         const options = Object.assign({}, defaults, userOptions);
@@ -49,15 +49,15 @@ export class TagInput {
                 options.orderable = false;
             }
 
-            field.className = "form-input-tag";
+            field.className = "form-input-tags-wrap";
 
-            innerInput.className = "form-input tag-inner-input";
+            innerInput.className = "form-input";
             innerInput.type = "text";
+            innerInput.id = input.id;
             innerInput.placeholder = input.placeholder;
 
-            hiddenInput.className = "form-input-tag-hidden";
+            hiddenInput.className = "form-input-hidden";
             hiddenInput.name = input.name;
-            hiddenInput.id = input.id;
             hiddenInput.type = "text";
             hiddenInput.value = input.value;
             hiddenInput.readOnly = true;
@@ -137,7 +137,7 @@ export class TagInput {
 
         function createDropdown() {
             if ("options" in input.dataset) {
-                const list: { [key: string | number]: string | TagInputDropdownItem } = JSON.parse(input.dataset.options ?? "{}");
+                const list: { [key: string | number]: string | TagsInputDropdownItem } = JSON.parse(input.dataset.options ?? "{}");
                 const isAssociative = !Array.isArray(list);
 
                 if ("accept" in input.dataset) {

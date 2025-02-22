@@ -2,7 +2,7 @@
 <div class="form-input-wrap">
     <span class="form-input-icon"><?= $this->icon($field->get('icon', 'file')) ?></span>
     <input <?= $this->attr([
-                'class'          => 'form-input',
+                'class'          => ['form-input', 'form-input-tags'],
                 'type'           => 'text',
                 'id'             => $field->name(),
                 'name'           => $field->formName(),
@@ -11,7 +11,6 @@
                 'required'       => $field->isRequired(),
                 'disabled'       => $field->isDisabled(),
                 'hidden'         => $field->isHidden(),
-                'data-field'     => 'tags',
                 'data-limit'     => $field->limit(),
                 'data-options'   => Formwork\Parsers\Json::encode($field->options()),
                 'data-accept'    => 'options',

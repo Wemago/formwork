@@ -9,7 +9,7 @@ import { ImagePicker } from "./inputs/image-picker";
 import { RangeInput } from "./inputs/range-input";
 import { SelectInput } from "./inputs/select-input";
 import { SlugInput } from "./inputs/slug-input";
-import { TagInput } from "./inputs/tag-input";
+import { TagsInput } from "./inputs/tags-input";
 
 export class Inputs {
     [name: string]: object;
@@ -23,7 +23,7 @@ export class Inputs {
 
         $$("input[type=file]", parent).forEach((element: HTMLInputElement) => (this[element.name] = new FileInput(element)));
 
-        $$("input[data-field=tags]", parent).forEach((element: HTMLInputElement) => (this[element.name] = new TagInput(element, app.config.TagInput)));
+        $$(".form-input-tags", parent).forEach((element: HTMLInputElement) => (this[element.name] = new TagsInput(element, app.config.TagInput)));
 
         $$("input[data-field=duration]", parent).forEach((element: HTMLInputElement) => (this[element.name] = new DurationInput(element, app.config.DurationInput)));
 

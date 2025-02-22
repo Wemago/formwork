@@ -26,6 +26,7 @@
                         'value' => $page->route(),
                         'selected' => $page->route() === $field->value(),
                         'data-allowed-templates' => $page->scheme()->options()->get('children.templates'),
+                        'data-icon' => $page->icon(),
                     ]) ?>><?= str_repeat('— ', $page->level() - 1) . $this->escape($page->title()) ?></option>
         <?php endforeach ?>
     </select>

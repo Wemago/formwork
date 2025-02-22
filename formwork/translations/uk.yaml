@@ -70,6 +70,15 @@ site.maintenance.enabled.enabled: Увімкнено
 site.maintenance.page: Сторінка обслуговування
 site.pages: Сторінки
 site.pages.defaultTemplate: Шаблон за замовчуванням
+site.statistics: Статистика
+site.statistics.enabled: Відстежувати відвідування сторінки
+site.statistics.enabled.disabled: Вимкнено
+site.statistics.enabled.enabled: Увімкнено
+site.statistics.trackLocalhost: Відстежувати відвідування з localhost
+site.statistics.trackLocalhost.disabled: Вимкнено
+site.statistics.trackLocalhost.enabled: Увімкнено
+site.statistics.visitsDelay: Затримка між візитами
+site.statistics.visitsDelay.description: Затримка між відвідуваннями тієї самої сторінки тим самим користувачем, щоб вони вважалися різними
 upload.error: Неможливо завантажити файл. %s.
 upload.error.alreadyExists: Файл з такою назвою вже існує
 upload.error.cannotMoveToDestination: Не вдалося перемістити завантажений файл до призначеного місця

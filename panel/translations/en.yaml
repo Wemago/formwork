@@ -254,13 +254,21 @@ panel.register.createUser: Formwork is installed but no users were found. Please
 panel.register.register: Register new user
 panel.request.error.postMaxSize: The HTTP POST request exceeds the maximum allowed size
 panel.sections.toggle: Toggle section
+panel.statistics.devices: Devices
+panel.statistics.devices.type: Type
+panel.statistics.devices.type.desktop: Desktop
+panel.statistics.devices.type.mobile: Mobile
+panel.statistics.devices.type.tablet: Tablet
 panel.statistics.monthlyUniqueVisitors: Monthly unique visitors
 panel.statistics.monthlyVisits: Monthly visits
+panel.statistics.sources: Sources
+panel.statistics.sources.direct: Direct
+panel.statistics.sources.site: Site
 panel.statistics.statistics: Statistics
 panel.statistics.totalVisits: Total visits
 panel.statistics.totalVisits.percentTotal: '% total'
 panel.statistics.totalVisits.uri: URI
-panel.statistics.totalVisits.visits: Visits
+panel.statistics.visits: Visits
 panel.statistics.weeklyUniqueVisitors: Weekly unique visitors
 panel.statistics.weeklyVisits: Weekly visits
 panel.tools.backup.actions: Actions

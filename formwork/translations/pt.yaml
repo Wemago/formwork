@@ -70,6 +70,15 @@ site.maintenance.enabled.enabled: Ativado
 site.maintenance.page: Página de manutenção
 site.pages: Páginas
 site.pages.defaultTemplate: Template padrão
+site.statistics: Estatísticas
+site.statistics.enabled: Rastrear visitas à página
+site.statistics.enabled.disabled: Desativado
+site.statistics.enabled.enabled: Ativado
+site.statistics.trackLocalhost: Rastrear visitas de localhost
+site.statistics.trackLocalhost.disabled: Desativado
+site.statistics.trackLocalhost.enabled: Ativado
+site.statistics.visitsDelay: Atraso das visitas
+site.statistics.visitsDelay.description: Atraso entre visitas do mesmo utilizador à mesma página para serem contadas como diferentes
 upload.error: Não é possível fazer upload do ficheiro. %s.
 upload.error.alreadyExists: Já existe um ficheiro com o mesmo nome
 upload.error.cannotMoveToDestination: Falha ao mover o ficheiro enviado para o destino

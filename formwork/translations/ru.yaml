@@ -70,6 +70,15 @@ site.maintenance.enabled.enabled: Включено
 site.maintenance.page: Страница обслуживания
 site.pages: Страницы
 site.pages.defaultTemplate: Шаблон по умолчанию
+site.statistics: Статистика
+site.statistics.enabled: Отслеживать посещения страницы
+site.statistics.enabled.disabled: Отключено
+site.statistics.enabled.enabled: Включено
+site.statistics.trackLocalhost: Отслеживать посещения с localhost
+site.statistics.trackLocalhost.disabled: Отключено
+site.statistics.trackLocalhost.enabled: Включено
+site.statistics.visitsDelay: Задержка визитов
+site.statistics.visitsDelay.description: Задержка между посещениями одной и той же страницы одним и тем же пользователем, чтобы они считались разными
 upload.error: Невозможно загрузить файл. %s.
 upload.error.alreadyExists: Файл с таким именем уже существует
 upload.error.cannotMoveToDestination: Не удалось переместить загруженный файл в папку назначения

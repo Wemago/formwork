@@ -254,13 +254,21 @@ panel.register.createUser: Formwork está instalado pero no se encontraron usuar
 panel.register.register: Registrar nuevo usuario
 panel.request.error.postMaxSize: La solicitud POST excede el tamaño máximo permitido
 panel.sections.toggle: Alternar sección
+panel.statistics.devices: Dispositivos
+panel.statistics.devices.type: Tipo
+panel.statistics.devices.type.desktop: Ordenador
+panel.statistics.devices.type.mobile: Móvil
+panel.statistics.devices.type.tablet: Tableta
 panel.statistics.monthlyUniqueVisitors: Visitantes únicos mensuales
 panel.statistics.monthlyVisits: Visitas mensuales
+panel.statistics.sources: Fuentes
+panel.statistics.sources.direct: Directo
+panel.statistics.sources.site: Sitio
 panel.statistics.statistics: Estadísticas
 panel.statistics.totalVisits: Total de visitas
 panel.statistics.totalVisits.percentTotal: '% del total'
 panel.statistics.totalVisits.uri: URI
-panel.statistics.totalVisits.visits: Visitas
+panel.statistics.visits: Visitas
 panel.statistics.weeklyUniqueVisitors: Visitantes únicos semanales
 panel.statistics.weeklyVisits: Visitas semanales
 panel.tools.backup.actions: Acciones

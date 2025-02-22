@@ -254,13 +254,21 @@ panel.register.createUser: Formwork встановлено, але корист�
 panel.register.register: Зареєструвати нового користувача
 panel.request.error.postMaxSize: HTTP POST запит перевищує максимальний дозволений розмір
 panel.sections.toggle: Перемкнути розділ
+panel.statistics.devices: Пристрої
+panel.statistics.devices.type: Тип
+panel.statistics.devices.type.desktop: Комп’ютер
+panel.statistics.devices.type.mobile: Мобільний
+panel.statistics.devices.type.tablet: Планшет
 panel.statistics.monthlyUniqueVisitors: Унікальні відвідувачі за місяць
 panel.statistics.monthlyVisits: Відвідування за місяць
+panel.statistics.sources: Джерела
+panel.statistics.sources.direct: Прямі
+panel.statistics.sources.site: Сайт
 panel.statistics.statistics: Статистика
 panel.statistics.totalVisits: Загальна кількість відвідувань
 panel.statistics.totalVisits.percentTotal: '% від загальної кількості'
 panel.statistics.totalVisits.uri: URI
-panel.statistics.totalVisits.visits: Відвідування
+panel.statistics.visits: Візити
 panel.statistics.weeklyUniqueVisitors: Унікальні відвідувачі за тиждень
 panel.statistics.weeklyVisits: Відвідування за тиждень
 panel.tools.backup.actions: Дії

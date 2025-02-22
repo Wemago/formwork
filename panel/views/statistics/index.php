@@ -48,19 +48,72 @@
     <table class="table table-bordered table-striped table-hoverable text-size-sm">
         <thead>
             <tr>
-                <th class="table-header" style="width: 100%"><?= $this->translate('panel.statistics.totalVisits.uri') ?></th>
-                <th class="table-header truncate" style="width: 20%"><?= $this->translate('panel.statistics.totalVisits.visits') ?></th>
-                <th class="table-header truncate" style="width: 20%"><?= $this->translate('panel.statistics.totalVisits.percentTotal') ?></th>
+                <th class="table-header"><?= $this->translate('panel.statistics.totalVisits.uri') ?></th>
+                <th class="table-header truncate text-align-right" style="width: 4rem"><?= $this->translate('panel.statistics.visits') ?></th>
             </tr>
         </thead>
         <tbody>
             <?php foreach ($pageViews as $page => $views) : ?>
                 <tr>
-                    <td class="table-cell truncate"><a href="<?= $site->uri($page, includeLanguage: false) ?>" target="_blank"><?= $page ?></a></td>
-                    <td class="table-cell"><?= $views ?></td>
-                    <td class="table-cell"><?= round($views / $totalViews * 100, 2) ?></td>
+                    <td class="table-cell statistics-histogram-cell" style="--percentage: <?= round($views / $totalViews * 100, 2) ?>%">
+                        <div class="truncate"><?= $this->icon($page === '/' ? 'page-home' : 'page') ?> <?= $page ?></div>
+                    </td>
+                    <td class="table-cell text-align-right"><?= $views ?></td>
                 </tr>
             <?php endforeach ?>
         </tbody>
     </table>
 </section>
+
+<div class="row">
+    <div class="col-lg-1-2">
+        <section class="section">
+            <div class="section-header">
+                <div class="caption"><?= $this->translate('panel.statistics.sources') ?></div>
+            </div>
+            <table class="table table-bordered table-striped table-hoverable text-size-sm">
+                <thead>
+                    <tr>
+                        <th class="table-header"><?= $this->translate('panel.statistics.sources.site') ?></th>
+                        <th class="table-header truncate text-align-right" style="width: 4rem"><?= $this->translate('panel.statistics.visits') ?></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php foreach ($sources as $source => $views) : ?>
+                        <tr>
+                            <td class="table-cell statistics-histogram-cell" style="--percentage: <?= round($views / $totalSources * 100, 2) ?>%">
+                                <div class="truncate"><?= $this->icon('globe') ?> <?= $source ?: $this->translate('panel.statistics.sources.direct') ?></div>
+                            </td>
+                            <td class="table-cell text-align-right"><?= $views ?></td>
+                        </tr>
+                    <?php endforeach ?>
+                </tbody>
+            </table>
+        </section>
+    </div>
+    <div class="col-lg-1-2">
+        <section class="section">
+            <div class="section-header">
+                <div class="caption"><?= $this->translate('panel.statistics.devices') ?></div>
+            </div>
+            <table class="table table-bordered table-striped table-hoverable text-size-sm">
+                <thead>
+                    <tr>
+                        <th class="table-header"><?= $this->translate('panel.statistics.devices.type') ?></th>
+                        <th class="table-header truncate text-align-right" style="width: 4rem"><?= $this->translate('panel.statistics.visits') ?></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php foreach ($devices as $device => $views) : ?>
+                        <tr>
+                            <td class="table-cell statistics-histogram-cell" style="--percentage: <?= round($views / $totalDevices * 100, 2) ?>%">
+                                <div class="truncate"><?= $this->icon($device) ?> <?= $this->translate('panel.statistics.devices.type.' . $device) ?></div>
+                            </td>
+                            <td class="table-cell text-align-right"><?= $views ?></td>
+                        </tr>
+                    <?php endforeach ?>
+                </tbody>
+            </table>
+        </section>
+    </div>
+</div>

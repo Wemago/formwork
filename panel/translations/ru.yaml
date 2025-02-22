@@ -254,13 +254,21 @@ panel.register.createUser: Formwork Администратор установл�
 panel.register.register: Регистрация нового пользователя
 panel.request.error.postMaxSize: Запрос HTTP POST превышает максимально допустимый размер
 panel.sections.toggle: Переключить раздел
+panel.statistics.devices: Устройства
+panel.statistics.devices.type: Тип
+panel.statistics.devices.type.desktop: Компьютер
+panel.statistics.devices.type.mobile: Мобильный
+panel.statistics.devices.type.tablet: Планшет
 panel.statistics.monthlyUniqueVisitors: Уникальные посетители в месяц
 panel.statistics.monthlyVisits: Посещения в месяц
+panel.statistics.sources: Источники
+panel.statistics.sources.direct: Прямые
+panel.statistics.sources.site: Сайт
 panel.statistics.statistics: Статистика
 panel.statistics.totalVisits: Всего посещений
 panel.statistics.totalVisits.percentTotal: "% от общего"
 panel.statistics.totalVisits.uri: URI
-panel.statistics.totalVisits.visits: Посещения
+panel.statistics.visits: Визиты
 panel.statistics.weeklyUniqueVisitors: Уникальные посетители в неделю
 panel.statistics.weeklyVisits: Посещения в неделю
 panel.tools.backup.actions: Действия

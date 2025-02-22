@@ -10,6 +10,8 @@ use Formwork\Translations\Translation;
 use Formwork\Utils\Arr;
 use Formwork\Utils\Date;
 use Formwork\Utils\FileSystem;
+use Formwork\Utils\Str;
+use Formwork\Utils\Uri;
 use Generator;
 
 final class Statistics
@@ -22,61 +24,28 @@ final class Statistics
     /**
      * Number of days displayed in the statistics chart
      */
-    private const int CHART_LIMIT = 7;
+    private const int DEFAULT_CHART_LIMIT = 7;
 
     /**
-     * Visits registry filename
+     * @var array<string, Registry>
      */
-    private const string VISITS_FILENAME = 'visits.json';
+    private array $registries;
 
     /**
-     * Unique visits registry filename
+     * @param array<string, mixed> $options
      */
-    private const string UNIQUE_VISITS_FILENAME = 'uniqueVisits.json';
-
-    /**
-     * Visitors registry filename
-     */
-    private const string VISITORS_FILENAME = 'visitors.json';
-
-    /**
-     * Page views registry filename
-     */
-    private const string PAGE_VIEWS_FILENAME = 'pageViews.json';
-
-    /**
-     * Visits registry
-     */
-    private Registry $visitsRegistry;
-
-    /**
-     * Unique visits registry
-     */
-    private Registry $uniqueVisitsRegistry;
-
-    /**
-     * Visitors registry
-     */
-    private Registry $visitorsRegistry;
-
-    /**
-     * Page views registry
-     */
-    private Registry $pageViewsRegistry;
-
     public function __construct(
-        string $path,
+        private array $options,
         private Request $request,
         private Translation $translation,
     ) {
+        $path = $this->options['path'];
+
         if (!FileSystem::exists($path)) {
             FileSystem::createDirectory($path);
         }
 
-        $this->visitsRegistry = new Registry(FileSystem::joinPaths($path, self::VISITS_FILENAME));
-        $this->uniqueVisitsRegistry = new Registry(FileSystem::joinPaths($path, self::UNIQUE_VISITS_FILENAME));
-        $this->visitorsRegistry = new Registry(FileSystem::joinPaths($path, self::VISITORS_FILENAME));
-        $this->pageViewsRegistry = new Registry(FileSystem::joinPaths($path, self::PAGE_VIEWS_FILENAME));
+        $this->loadRegistries($path, $this->options['registries']);
     }
 
     /**
@@ -84,30 +53,64 @@ final class Statistics
      */
     public function trackVisit(): void
     {
-        if (Visitor::isBot($this->request) || !Visitor::isTrackable($this->request) || !$this->request->ip()) {
+        if ($this->request->isLocalhost() && !$this->options['trackLocalhost']) {
             return;
         }
 
-        $date = date(self::DATE_FORMAT);
-        $ip = IpAnonymizer::anonymize($this->request->ip());
-
-        $todayVisits = $this->visitsRegistry->has($date) ? (int) $this->visitsRegistry->get($date) : 0;
-        $this->visitsRegistry->set($date, $todayVisits + 1);
-        $this->visitsRegistry->save();
-
-        $todayUniqueVisits = $this->uniqueVisitsRegistry->has($date) ? (int) $this->uniqueVisitsRegistry->get($date) : 0;
-        if (!$this->visitorsRegistry->has($ip) || $this->visitorsRegistry->get($ip) !== $date) {
-            $this->uniqueVisitsRegistry->set($date, $todayUniqueVisits + 1);
-            $this->uniqueVisitsRegistry->save();
+        if (Visitor::isBot($this->request) || !$this->request->ip()) {
+            return;
         }
 
-        $this->visitorsRegistry->set($ip, $date);
-        $this->visitorsRegistry->save();
+        $ip = IpAnonymizer::anonymize($this->request->ip());
+        $uri = Str::append(Uri::make(['query' => '', 'fragment' => ''], $this->request->uri()), '/');
 
-        $uri = $this->request->uri();
-        $pageViews = $this->pageViewsRegistry->has($uri) ? (int) $this->pageViewsRegistry->get($uri) : 0;
-        $this->pageViewsRegistry->set($uri, $pageViews + 1);
-        $this->pageViewsRegistry->save();
+        // Prefer speed over security for hashing, as it's not a security-critical operation
+        $hash = hash('xxh3', $ip . '@' . $uri);
+
+        $timestamp = time();
+
+        if (
+            $this->registries['sessions']->has($hash)
+            && $timestamp - $this->registries['sessions']->get($hash) < $this->options['visitsDelay']
+        ) {
+            $this->registries['sessions']->save();
+            return;
+        }
+
+        $this->registries['sessions']->set($hash, $timestamp);
+
+        $date = date(self::DATE_FORMAT, $timestamp);
+
+        $todayVisits = $this->registries['visits']->has($date) ? (int) $this->registries['visits']->get($date) : 0;
+        $this->registries['visits']->set($date, $todayVisits + 1);
+
+        $todayUniqueVisits = $this->registries['uniqueVisits']->has($date) ? (int) $this->registries['uniqueVisits']->get($date) : 0;
+        if (!$this->registries['visitors']->has($ip) || $this->registries['visitors']->get($ip) !== $date) {
+            $this->registries['uniqueVisits']->set($date, $todayUniqueVisits + 1);
+            $this->registries['uniqueVisits']->save();
+        }
+
+        $this->registries['visitors']->set($ip, $date);
+
+        $pageViews = $this->registries['pageViews']->has($uri) ? (int) $this->registries['pageViews']->get($uri) : 0;
+        $this->registries['pageViews']->set($uri, $pageViews + 1);
+
+        if (($referer = $this->request->referer()) === null || ($source = Uri::host($referer)) !== $this->request->host()) {
+            $source ??= '';
+            $sourceVisits = $this->registries['sources']->has($source) ? (int) $this->registries['sources']->get($source) : 0;
+            $this->registries['sources']->set($source, $sourceVisits + 1);
+        }
+
+        $device = Visitor::getDeviceType($this->request)->value;
+        $deviceVisits = $this->registries['devices']->has($device) ? (int) $this->registries['devices']->get($device) : 0;
+        $this->registries['devices']->set($device, $deviceVisits + 1);
+
+        if (random_int(1, 100) <= $this->options['cleanup']['probability']) {
+            $this->cleanupSessionsData();
+            $this->cleanupVisitorsData();
+        }
+
+        $this->saveRegistries();
     }
 
     /**
@@ -115,7 +118,7 @@ final class Statistics
      *
      * @return array{labels: array<string>, series: list<list<int>>}
      */
-    public function getChartData(int $limit = self::CHART_LIMIT): array
+    public function getChartData(int $limit = self::DEFAULT_CHART_LIMIT): array
     {
 
         $visits = $this->getVisits($limit);
@@ -142,7 +145,27 @@ final class Statistics
      */
     public function getPageViews(): array
     {
-        return Arr::sort($this->pageViewsRegistry->toArray(), SORT_DESC);
+        return Arr::sort($this->registries['pageViews']->toArray(), SORT_DESC);
+    }
+
+    /**
+     * Return visits by source
+     *
+     * @return array<string, int>
+     */
+    public function getSources(): array
+    {
+        return Arr::sort($this->registries['sources']->toArray(), SORT_DESC);
+    }
+
+    /**
+     * Return visits by devices
+     *
+     * @return array<string, int>
+     */
+    public function getDevices(): array
+    {
+        return Arr::sort($this->registries['devices']->toArray(), SORT_DESC);
     }
 
     /**
@@ -150,9 +173,9 @@ final class Statistics
      *
      * @return array<string, int>
      */
-    public function getVisits(int $limit = self::CHART_LIMIT): array
+    public function getVisits(int $limit = self::DEFAULT_CHART_LIMIT): array
     {
-        return $this->interpolateVisits($this->visitsRegistry->toArray(), $limit);
+        return $this->interpolateVisits($this->registries['visits']->toArray(), $limit);
     }
 
     /**
@@ -160,9 +183,31 @@ final class Statistics
      *
      * @return array<string, int>
      */
-    public function getUniqueVisits(int $limit = self::CHART_LIMIT): array
+    public function getUniqueVisits(int $limit = self::DEFAULT_CHART_LIMIT): array
     {
-        return $this->interpolateVisits($this->uniqueVisitsRegistry->toArray(), $limit);
+        return $this->interpolateVisits($this->registries['uniqueVisits']->toArray(), $limit);
+    }
+
+    /**
+     * Load statistics registries
+     *
+     * @param array<string, string> $registries
+     */
+    private function loadRegistries(string $path, array $registries): void
+    {
+        foreach ($registries as $name => $filename) {
+            $this->registries[$name] = new Registry(FileSystem::joinPaths($path, basename($filename)));
+        }
+    }
+
+    /**
+     * Save statistics registries
+     */
+    private function saveRegistries(): void
+    {
+        foreach ($this->registries as $registry) {
+            $registry->save();
+        }
     }
 
     /**
@@ -191,6 +236,32 @@ final class Statistics
         $low = time() - ($limit - 1) * 86400;
         for ($i = 0; $i < $limit; $i++) {
             yield date(self::DATE_FORMAT, $low + $i * 86400);
+        }
+    }
+
+    /**
+     * Cleanup visitors data
+     */
+    private function cleanupVisitorsData(): void
+    {
+        $today = date(self::DATE_FORMAT, time());
+        foreach ($this->registries['visitors']->toArray() as $key => $date) {
+            if ($date !== $today) {
+                $this->registries['visitors']->remove($key);
+            }
+        }
+    }
+
+    /**
+     * Cleanup sessions data prior to ttl
+     */
+    private function cleanupSessionsData(): void
+    {
+        $time = time();
+        foreach ($this->registries['sessions']->toArray() as $key => $timestamp) {
+            if ($time - $timestamp > $this->options['cleanup']['ttl']) {
+                $this->registries['sessions']->remove($key);
+            }
         }
     }
 }

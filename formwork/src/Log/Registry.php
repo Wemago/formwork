@@ -16,25 +16,25 @@ class Registry
     protected array $storage = [];
 
     /**
+     * Whether the registry is loaded
+     */
+    protected bool $loaded = false;
+
+    /**
      * Whether the registry is saved
      */
     protected bool $saved = false;
 
     public function __construct(
         protected string $filename,
-    ) {
-        if (FileSystem::exists($this->filename)) {
-            $this->storage = Json::parseFile($filename);
-            $this->saved = true;
-        }
-    }
+    ) {}
 
     /**
      * Save the registry on instance destruction
      */
     public function __destruct()
     {
-        if (!$this->saved) {
+        if ($this->loaded && !$this->saved) {
             $this->save();
         }
     }
@@ -44,6 +44,7 @@ class Registry
      */
     public function has(string $key): bool
     {
+        $this->load();
         return isset($this->storage[$key]);
     }
 
@@ -52,6 +53,7 @@ class Registry
      */
     public function get(string $key): mixed
     {
+        $this->load();
         if ($this->has($key)) {
             return $this->storage[$key];
         }
@@ -63,6 +65,7 @@ class Registry
      */
     public function set(string $key, mixed $value): void
     {
+        $this->load();
         $this->storage[$key] = $value;
         $this->saved = false;
     }
@@ -72,6 +75,7 @@ class Registry
      */
     public function remove(string $key): void
     {
+        $this->load();
         if ($this->has($key)) {
             unset($this->storage[$key]);
             $this->saved = false;
@@ -83,6 +87,7 @@ class Registry
      */
     public function save(): void
     {
+        $this->load();
         Json::encodeToFile($this->storage, $this->filename);
         $this->saved = true;
     }
@@ -94,6 +99,19 @@ class Registry
      */
     public function toArray(): array
     {
+        $this->load();
         return $this->storage;
+    }
+
+    /**
+     * Load the registry from file
+     */
+    private function load(): void
+    {
+        if (!$this->loaded && FileSystem::exists($this->filename)) {
+            $this->storage = Json::parseFile($this->filename);
+            $this->loaded = true;
+            $this->saved = true;
+        }
     }
 }

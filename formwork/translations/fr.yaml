@@ -70,6 +70,15 @@ site.maintenance.enabled.enabled: Activé
 site.maintenance.page: Page de maintenance
 site.pages: Pages
 site.pages.defaultTemplate: Modèle (template) par défaut
+site.statistics: Statistiques
+site.statistics.enabled: Suivre les visites de la page
+site.statistics.enabled.disabled: Désactivé
+site.statistics.enabled.enabled: Activé
+site.statistics.trackLocalhost: Suivre les visites depuis localhost
+site.statistics.trackLocalhost.disabled: Désactivé
+site.statistics.trackLocalhost.enabled: Activé
+site.statistics.visitsDelay: Délai des visites
+site.statistics.visitsDelay.description: Délai entre les visites du même utilisateur sur la même page pour qu'elles soient comptées comme distinctes
 upload.error: Impossible de télécharger le fichier. %s.
 upload.error.alreadyExists: Un fichier du même nom existe déjà
 upload.error.cannotMoveToDestination: Impossible de déplacer le fichier téléchargé vers la destination

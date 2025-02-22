@@ -1,0 +1,24 @@
+.statistics-histogram-cell {
+    position: relative;
+}
+
+.statistics-histogram-cell::before {
+    position: absolute;
+    right: 0;
+    bottom: -1px;
+    left: 0;
+    height: 0.125rem;
+    background-color: var(--color-base-500);
+    content: " ";
+}
+
+.statistics-histogram-cell::after {
+    position: absolute;
+    right: 0;
+    bottom: -1px;
+    left: 0;
+    width: var(--percentage);
+    height: 0.125rem;
+    background-color: var(--color-accent-600);
+    content: " ";
+}

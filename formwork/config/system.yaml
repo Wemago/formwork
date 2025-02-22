@@ -101,10 +101,6 @@ schemes:
         system: '${%SYSTEM_PATH%}/schemes'
         site: '${%ROOT_PATH%}/site/schemes'
 
-statistics:
-    enabled: true
-    path: '${%ROOT_PATH%}/site/statistics'
-
 templates:
     path: '${%ROOT_PATH%}/site/templates'
     extension: .php

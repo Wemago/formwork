@@ -25,7 +25,7 @@ final class Statistics
     /**
      * Delay between visits from the same visitor
      */
-    private const int VISITS_DELAY = 15;
+    private const int SESSIONS_DELAY = 15;
 
     /**
      * Probability of visitor data cleanup
@@ -35,12 +35,17 @@ final class Statistics
     /**
      * Time to live for visitor data
      */
-    private const int CLEANUP_TTL = 60 * 60 * 48;
+    private const int CLEANUP_TTL = 60 * 60 * 24;
 
     /**
      * Number of days displayed in the statistics chart
      */
     private const int CHART_LIMIT = 7;
+
+    /**
+     * Sessions registry filename
+     */
+    private const string SESSIONS_FILENAME = 'sessions.json';
 
     /**
      * Visits registry filename
@@ -71,6 +76,11 @@ final class Statistics
      * Devices registry filename
      */
     private const string DEVICES_FILENAME = 'devices.json';
+
+    /**
+     * Sessions registry
+     */
+    private Registry $sessionsRegistry;
 
     /**
      * Visits registry
@@ -112,6 +122,7 @@ final class Statistics
             FileSystem::createDirectory($path);
         }
 
+        $this->sessionsRegistry = new Registry(FileSystem::joinPaths($path, self::SESSIONS_FILENAME));
         $this->visitsRegistry = new Registry(FileSystem::joinPaths($path, self::VISITS_FILENAME));
         $this->uniqueVisitsRegistry = new Registry(FileSystem::joinPaths($path, self::UNIQUE_VISITS_FILENAME));
         $this->visitorsRegistry = new Registry(FileSystem::joinPaths($path, self::VISITORS_FILENAME));
@@ -141,16 +152,12 @@ final class Statistics
 
         $timestamp = time();
 
-        if ($this->visitorsRegistry->has($hash) && $timestamp - $this->visitorsRegistry->get($hash) < self::VISITS_DELAY) {
+        if ($this->sessionsRegistry->has($hash) && $timestamp - $this->sessionsRegistry->get($hash) < self::SESSIONS_DELAY) {
             return;
         }
 
-        if (random_int(1, 100) <= self::CLEANUP_PROBABILITY) {
-            $this->cleanupVisitorData();
-        }
-
-        $this->visitorsRegistry->set($hash, $timestamp);
-        $this->visitorsRegistry->save();
+        $this->sessionsRegistry->set($hash, $timestamp);
+        $this->sessionsRegistry->save();
 
         $date = date(self::DATE_FORMAT, $timestamp);
 
@@ -159,12 +166,13 @@ final class Statistics
         $this->visitsRegistry->save();
 
         $todayUniqueVisits = $this->uniqueVisitsRegistry->has($date) ? (int) $this->uniqueVisitsRegistry->get($date) : 0;
-        if (!$this->visitorsRegistry->has($ip) || date(self::DATE_FORMAT, $this->visitorsRegistry->get($ip)) !== $date) {
+        if (!$this->visitorsRegistry->has($ip) || $this->visitorsRegistry->get($ip) !== $date) {
             $this->uniqueVisitsRegistry->set($date, $todayUniqueVisits + 1);
             $this->uniqueVisitsRegistry->save();
         }
 
-        $this->visitorsRegistry->set($ip, $timestamp);
+        $this->visitorsRegistry->set($ip, $date);
+        $this->visitorsRegistry->save();
 
         $pageViews = $this->pageViewsRegistry->has($uri) ? (int) $this->pageViewsRegistry->get($uri) : 0;
         $this->pageViewsRegistry->set($uri, $pageViews + 1);
@@ -181,6 +189,11 @@ final class Statistics
         $deviceVisits = $this->devicesRegistry->has($device) ? (int) $this->devicesRegistry->get($device) : 0;
         $this->devicesRegistry->set($device, $deviceVisits + 1);
         $this->devicesRegistry->save();
+
+        if (random_int(1, 100) <= self::CLEANUP_PROBABILITY) {
+            $this->cleanupSessionsData();
+            $this->cleanupVisitorsData();
+        }
     }
 
     /**
@@ -288,14 +301,27 @@ final class Statistics
     }
 
     /**
-     * Cleanup visitor data prior to CLEANUP_TTL
+     * Cleanup visitors data prior to CLEANUP_TTL
      */
-    private function cleanupVisitorData(): void
+    private function cleanupVisitorsData(): void
+    {
+        $today = date(self::DATE_FORMAT, time());
+        foreach ($this->visitorsRegistry->toArray() as $key => $date) {
+            if ($date !== $today) {
+                $this->visitorsRegistry->remove($key);
+            }
+        }
+    }
+
+    /**
+     * Cleanup sessions data prior to CLEANUP_TTL
+     */
+    private function cleanupSessionsData(): void
     {
         $time = time();
-        foreach ($this->visitorsRegistry->toArray() as $key => $timestamp) {
+        foreach ($this->sessionsRegistry->toArray() as $key => $timestamp) {
             if ($time - $timestamp > self::CLEANUP_TTL) {
-                $this->visitorsRegistry->remove($key);
+                $this->sessionsRegistry->remove($key);
             }
         }
     }

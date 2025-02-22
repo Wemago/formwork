@@ -17,7 +17,9 @@ date.weekdays.long: ['Dimanche', 'Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendred
 date.weekdays.short: ['Dim', 'Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam']
 fields.array.add: Ajouter
 fields.array.remove: Supprimer
+fields.file.none: (Aucun)
 fields.file.uploadLabel: <strong>Glisser-déposer</strong> dans la zone ou <strong>cliquer-ici</strong> pour sélectionner un fichier à envoyer.
+fields.image.none: (Aucune)
 fields.select.empty: Aucune option correspondante
 file.metadata: Métadonnées
 file.metadata.alternativeText: Texte alternatif
@@ -28,6 +30,7 @@ page.files: Fichiers
 page.image: Image d’accroche
 page.listed: Répertoriée
 page.listed.description: Les pages répertoriées sont visibles dans le menu
+page.noFiles: Aucun fichier
 page.noImage: Aucune image
 page.none: (Aucun)
 page.noTags: Aucun tag

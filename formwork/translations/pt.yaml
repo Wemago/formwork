@@ -17,7 +17,9 @@ date.weekdays.long: ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta'
 date.weekdays.short: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb']
 fields.array.add: Adicionar
 fields.array.remove: Remover
+fields.file.none: (Nenhum)
 fields.file.uploadLabel: <strong>Clique</strong> aqui para escolher um ficheiro para enviar ou <strong>arrastar</strong> para aqui.
+fields.image.none: (Nenhuma)
 fields.select.empty: Sem opções correspondentes
 file.metadata: Metadados
 file.metadata.alternativeText: Texto alternativo
@@ -28,6 +30,7 @@ page.files: Ficheiros
 page.image: Imagem
 page.listed: Listada
 page.listed.description: As páginas listadas são visíveis no menu
+page.noFiles: Nenhum ficheiro
 page.noImage: Sem imagem
 page.none: (Nenhum)
 page.noTags: Sem tags

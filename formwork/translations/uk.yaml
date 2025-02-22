@@ -17,7 +17,9 @@ date.weekdays.long: ['Неділя', 'Понеділок', 'Вівторок', '
 date.weekdays.short: ['Нд', 'Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб']
 fields.array.add: Додати
 fields.array.remove: Видалити
+fields.file.none: (Немає)
 fields.file.uploadLabel: <strong>Натисніть</strong> щоб вибрати файл для завантаження або <strong>перетягніть</strong> його сюди
+fields.image.none: (Немає)
 fields.select.empty: Немає відповідних варіантів
 file.metadata: Метадані
 file.metadata.alternativeText: Альтернативний текст
@@ -28,6 +30,7 @@ page.files: Файли
 page.image: Зображення
 page.listed: Перераховані
 page.listed.description: Перераховані сторінки видимі в меню
+page.noFiles: Немає файлів
 page.noImage: Без зображення
 page.none: (Немає)
 page.noTags: Немає тегів

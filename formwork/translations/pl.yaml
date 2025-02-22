@@ -17,7 +17,9 @@ date.weekdays.long: ['Niedziela', 'Poniedziałek', 'Wtorek', 'Środa', 'Czwartek
 date.weekdays.short: ['Ndz', 'Pon', 'Wt', 'Śr', 'Czw', 'Pt', 'Sob']
 fields.array.add: Dodaj
 fields.array.remove: Usuń
+fields.file.none: (Brak)
 fields.file.uploadLabel: <strong>Kliknij</strong>, aby wybrać plik do przesłania, lub <strong>przeciągnij</strong> go tutaj
+fields.image.none: (Brak)
 fields.select.empty: Brak pasujących opcji
 file.metadata: Metadane
 file.metadata.alternativeText: Tekst alternatywny
@@ -28,6 +30,7 @@ page.files: Pliki
 page.image: Obraz
 page.listed: W menu
 page.listed.description: Strony widoczne w menu
+page.noFiles: Brak plików
 page.noImage: Brak obrazu
 page.none: (Brak)
 page.noTags: Brak tagów

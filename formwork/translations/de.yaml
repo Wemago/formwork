@@ -17,7 +17,9 @@ date.weekdays.long: ['Sonntag', 'Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 
 date.weekdays.short: ['So', 'Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa']
 fields.array.add: Hinzufügen
 fields.array.remove: Entfernen
+fields.file.none: (Keine)
 fields.file.uploadLabel: <strong>Klicken</strong>, um eine Datei auszuwählen oder <strong>ziehen</strong>, um sie hier abzulegen
+fields.image.none: (Keine)
 fields.select.empty: Keine passenden Optionen
 file.metadata: Metadaten
 file.metadata.alternativeText: Alternativtext
@@ -28,6 +30,7 @@ page.files: Dateien
 page.image: Bild
 page.listed: Aufgelistet
 page.listed.description: Aufgelistete Seiten sind im Menü sichtbar
+page.noFiles: Keine Dateien
 page.noImage: Kein Bild
 page.none: (Keine)
 page.noTags: Keine Tags

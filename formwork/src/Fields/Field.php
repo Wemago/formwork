@@ -176,7 +176,7 @@ class Field implements Arrayable, Stringable
      */
     public function isHidden(): bool
     {
-        return $this->is('visible', false);
+        return !$this->isVisible();
     }
 
     /**

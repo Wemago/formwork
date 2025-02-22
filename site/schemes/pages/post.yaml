@@ -10,7 +10,7 @@ options:
 layout:
     sections:
         content:
-            fields: [title, image, tags, summary, content]
+            fields: [title, coverImage, tags, summary, content]
 
 fields:
     summary:
@@ -18,11 +18,9 @@ fields:
         label: '{{page.summary}}'
         rows: 5
 
-    image:
+    coverImage:
         type: image
-        default: null
         label: '{{page.image}}'
-        placeholder: '{{page.noImage}}'
 
     tags:
         type: tags

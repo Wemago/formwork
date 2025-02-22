@@ -5,7 +5,6 @@ import { DateInput } from "./inputs/date-input";
 import { DurationInput } from "./inputs/duration-input";
 import { EditorInput } from "./inputs/editor-input";
 import { FileInput } from "./inputs/file-input";
-import { ImageInput } from "./inputs/image-input";
 import { ImagePicker } from "./inputs/image-picker";
 import { RangeInput } from "./inputs/range-input";
 import { SelectInput } from "./inputs/select-input";
@@ -17,8 +16,6 @@ export class Inputs {
 
     constructor(parent: HTMLElement) {
         $$(".form-input-date", parent).forEach((element: HTMLInputElement) => (this[element.name] = new DateInput(element, app.config.DateInput)));
-
-        $$(".form-input-image", parent).forEach((element: HTMLInputElement) => (this[element.name] = new ImageInput(element)));
 
         $$(".image-picker", parent).forEach((element: HTMLSelectElement) => (this[element.name] = new ImagePicker(element)));
 

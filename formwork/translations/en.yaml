@@ -18,6 +18,7 @@ date.weekdays.short: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
 fields.array.add: Add
 fields.array.remove: Remove
 fields.file.uploadLabel: <strong>Click</strong> to choose a file to upload or <strong>drag</strong> it here
+fields.image.none: (None)
 fields.select.empty: No matching options
 file.metadata: Metadata
 file.metadata.alternativeText: Alternative text

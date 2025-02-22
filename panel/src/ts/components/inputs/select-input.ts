@@ -1,5 +1,6 @@
 import { $, $$ } from "../../utils/selectors";
 import { escapeRegExp, makeDiacriticsRegExp } from "../../utils/validation";
+import { insertIcon } from "../icons";
 
 type SelectInputListItem = {
     label: string;
@@ -120,7 +121,19 @@ export class SelectInput {
                     item.classList.add("disabled");
                 }
 
+                if (option.dataset.thumb) {
+                    const img = document.createElement("img");
+                    img.src = option.dataset.thumb;
+                    img.className = "dropdown-thumb";
+                    item.insertAdjacentElement("afterbegin", img);
+                } else if (option.dataset.icon) {
+                    insertIcon(option.dataset.icon, item);
+                }
+
                 for (const key in option.dataset) {
+                    if (["icon", "thumb"].includes(key)) {
+                        continue;
+                    }
                     item.dataset[key] = option.dataset[key];
                 }
 
@@ -358,7 +371,7 @@ export class SelectInput {
 
         function setCurrent(item: HTMLElement) {
             select.value = item.dataset.value as string;
-            labelInput.value = item.innerText;
+            labelInput.value = item.innerText.trim();
             select.dispatchEvent(new Event("input", { bubbles: true }));
             select.dispatchEvent(new Event("change", { bubbles: true }));
         }
@@ -368,7 +381,7 @@ export class SelectInput {
         }
 
         function getCurrentLabel() {
-            return getCurrent().innerText;
+            return getCurrent().innerText.trim();
         }
 
         function selectCurrent() {

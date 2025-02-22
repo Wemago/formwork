@@ -17,7 +17,9 @@ date.weekdays.long: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Fr
 date.weekdays.short: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
 fields.array.add: Add
 fields.array.remove: Remove
+fields.file.none: (None)
 fields.file.uploadLabel: <strong>Click</strong> to choose a file to upload or <strong>drag</strong> it here
+fields.image.none: (None)
 fields.select.empty: No matching options
 file.metadata: Metadata
 file.metadata.alternativeText: Alternative text
@@ -28,6 +30,7 @@ page.files: Files
 page.image: Image
 page.listed: Listed
 page.listed.description: Listed pages are visible in the menu
+page.noFiles: No files
 page.noImage: No image
 page.none: (None)
 page.noTags: No tags

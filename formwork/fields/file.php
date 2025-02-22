@@ -11,13 +11,13 @@ use Formwork\Utils\Constraint;
 
 return function (App $app) {
     return [
-        'return' => function (Field $field): ?Image {
+        'return' => function (Field $field): ?File {
             return $field->value() !== null
-                ? $field->getImages()->get($field->value())
+                ? $field->getFiles()->get($field->value())
                 : null;
         },
 
-        'getImages' => function (Field $field): FileCollection {
+        'getFiles' => function (Field $field): FileCollection {
             if (!$field->has('options')) {
                 $model = $field->parent()?->model();
 
@@ -25,12 +25,10 @@ return function (App $app) {
                     throw new InvalidValueException(sprintf('Field "%s" of type "%s" must have a model with files', $field->name(), $field->type()));
                 }
 
-                $files = $model->files();
-            } else {
-                $files = $field->get('options');
+                return $model->files();
             }
 
-            return $files->filter(static fn(File $file) => $file instanceof Image);
+            return $field->get('options');
         },
 
         'validate' => function (Field $field, $value): ?string {
@@ -46,11 +44,17 @@ return function (App $app) {
         },
 
         'options' => function (Field $field): array {
-            return $field->getImages()
-                ->map(static fn(Image $image) => [
-                    'value' => $image->name(),
-                    'icon'  => 'image',
-                    'thumb' => $image->square(300, 'contain')->uri(),
+            $collection = $field->getFiles();
+
+            if ($field->has('fileType')) {
+                $collection = $collection->filter(static fn(File $file) => in_array($file->type(), (array) $field->get('fileType'), true));
+            }
+
+            return $collection
+                ->map(static fn(File $file) => [
+                    'value' => $file->name(),
+                    'icon'  => 'file-' . $file->type(),
+                    'thumb' => $file instanceof Image ? $file->square(300, 'contain')->uri() : null,
                 ])->toArray();
         },
     ];

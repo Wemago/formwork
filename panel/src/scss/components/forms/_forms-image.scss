@@ -1,10 +1,6 @@
 @use "../mixins" as *;
 @use "../variables" as *;
 
-.form-input-image {
-    cursor: default;
-}
-
 .image-picker-thumbnails {
     display: flex;
     overflow: auto;

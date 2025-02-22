@@ -5,12 +5,11 @@ import { DateInput } from "./inputs/date-input";
 import { DurationInput } from "./inputs/duration-input";
 import { EditorInput } from "./inputs/editor-input";
 import { FileInput } from "./inputs/file-input";
-import { ImageInput } from "./inputs/image-input";
 import { ImagePicker } from "./inputs/image-picker";
 import { RangeInput } from "./inputs/range-input";
 import { SelectInput } from "./inputs/select-input";
 import { SlugInput } from "./inputs/slug-input";
-import { TagInput } from "./inputs/tag-input";
+import { TagsInput } from "./inputs/tags-input";
 
 export class Inputs {
     [name: string]: object;
@@ -18,15 +17,13 @@ export class Inputs {
     constructor(parent: HTMLElement) {
         $$(".form-input-date", parent).forEach((element: HTMLInputElement) => (this[element.name] = new DateInput(element, app.config.DateInput)));
 
-        $$(".form-input-image", parent).forEach((element: HTMLInputElement) => (this[element.name] = new ImageInput(element)));
-
         $$(".image-picker", parent).forEach((element: HTMLSelectElement) => (this[element.name] = new ImagePicker(element)));
 
         $$(".editor-textarea", parent).forEach((element: HTMLTextAreaElement) => (this[element.name] = new EditorInput(element)));
 
         $$("input[type=file]", parent).forEach((element: HTMLInputElement) => (this[element.name] = new FileInput(element)));
 
-        $$("input[data-field=tags]", parent).forEach((element: HTMLInputElement) => (this[element.name] = new TagInput(element, app.config.TagInput)));
+        $$(".form-input-tags", parent).forEach((element: HTMLInputElement) => (this[element.name] = new TagsInput(element, app.config.TagInput)));
 
         $$("input[data-field=duration]", parent).forEach((element: HTMLInputElement) => (this[element.name] = new DurationInput(element, app.config.DurationInput)));
 

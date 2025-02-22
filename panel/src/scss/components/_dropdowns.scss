@@ -95,3 +95,19 @@
     border-top: 1px solid var(--color-base-500);
     margin: 0.25rem 0;
 }
+
+.dropdown-list .dropdown-item > .dropdown-thumb {
+    display: inline-block;
+    width: 1.5rem;
+    height: 1.5rem;
+    border-radius: $border-radius;
+    margin: -0.75rem 0.5rem -0.5rem 0;
+    background-color: var(--color-base-700);
+    object-fit: contain;
+    vertical-align: middle;
+}
+
+.dropdown-list .dropdown-item > .icon {
+    margin-right: 0.5rem;
+    margin-left: 0.25rem;
+}

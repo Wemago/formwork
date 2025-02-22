@@ -1,3 +1,3 @@
-<?php if ($page->has('image') && !$page->image()->isEmpty() && $page->images()->has($page->image())) : ?>
-    <div class="cover-image" style="background-image:url(<?= $page->uri($page->image()) ?>);"></div>
+<?php if ($page->has('coverImage') && ($image = $page->coverImage())) : ?>
+    <div class="cover-image" style="background-image:url(<?= $image->uri() ?>);"></div>
 <?php endif ?>

@@ -1,6 +1,7 @@
 import { $, $$ } from "../../utils/selectors";
 import { escapeRegExp, makeDiacriticsRegExp } from "../../utils/validation";
 import { debounce } from "../../utils/events";
+import { insertIcon } from "../icons";
 import Sortable from "sortablejs";
 
 interface TagInputOptions {
@@ -9,6 +10,12 @@ interface TagInputOptions {
     limit: number;
     accept: "options" | "any";
     orderable: boolean;
+}
+
+interface TagInputDropdownItem {
+    value: string;
+    icon?: string;
+    thumb?: string;
 }
 
 export class TagInput {
@@ -130,7 +137,7 @@ export class TagInput {
 
         function createDropdown() {
             if ("options" in input.dataset) {
-                const list: { [key: string | number]: string } = JSON.parse(input.dataset.options ?? "{}");
+                const list: { [key: string | number]: string | TagInputDropdownItem } = JSON.parse(input.dataset.options ?? "{}");
                 const isAssociative = !Array.isArray(list);
 
                 if ("accept" in input.dataset) {
@@ -143,9 +150,22 @@ export class TagInput {
 
                 for (const key in list) {
                     const item = document.createElement("div");
+
+                    const { value, icon, thumb } = typeof list[key] === "object" ? list[key] : { value: list[key], icon: undefined, thumb: undefined };
+
                     item.className = "dropdown-item";
-                    item.innerHTML = list[key];
-                    item.dataset.value = isAssociative ? key : list[key];
+                    item.innerHTML = value;
+                    item.dataset.value = isAssociative ? key : value;
+
+                    if (thumb) {
+                        const img = document.createElement("img");
+                        img.src = thumb;
+                        img.className = "dropdown-thumb";
+                        item.insertAdjacentElement("afterbegin", img);
+                    } else if (icon) {
+                        insertIcon(icon, item);
+                    }
+
                     item.addEventListener("click", function () {
                         if (this.dataset.value) {
                             addTag(this.dataset.value);

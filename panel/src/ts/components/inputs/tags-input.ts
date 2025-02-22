@@ -20,7 +20,7 @@ interface TagsInputDropdownItem {
 
 export class TagsInput {
     constructor(input: HTMLInputElement, userOptions: Partial<TagsInputOptions>) {
-        const defaults = { addKeyCodes: ["Comma"], limit: Infinity, accept: "options", orderable: true };
+        const defaults = { labels: { remove: "Remove" }, addKeyCodes: ["Comma"], limit: Infinity, accept: "options", orderable: true };
 
         const options = Object.assign({}, defaults, userOptions);
 
@@ -40,6 +40,7 @@ export class TagsInput {
         function createField() {
             const isRequired = input.hasAttribute("required");
             const isDisabled = input.hasAttribute("disabled");
+            const inputId = input.id;
 
             if ("limit" in input.dataset) {
                 options.limit = parseInt(input.dataset.limit as string);
@@ -53,7 +54,7 @@ export class TagsInput {
 
             innerInput.className = "form-input";
             innerInput.type = "text";
-            innerInput.id = input.id;
+            innerInput.id = inputId;
             innerInput.placeholder = input.placeholder;
 
             hiddenInput.className = "form-input-hidden";
@@ -62,13 +63,14 @@ export class TagsInput {
             hiddenInput.value = input.value;
             hiddenInput.readOnly = true;
             hiddenInput.hidden = true;
+            hiddenInput.tabIndex = -1;
+            hiddenInput.ariaHidden = "true";
 
             if (isRequired) {
                 hiddenInput.required = true;
             }
 
             if (isDisabled) {
-                field.setAttribute("disabled", "disabled");
                 innerInput.disabled = true;
                 hiddenInput.disabled = true;
             }
@@ -354,7 +356,9 @@ export class TagsInput {
             parent.appendChild(tag);
 
             tagRemove.className = "tag-remove";
-            tagRemove.setAttribute("role", "button");
+            tagRemove.title = options.labels.remove;
+            tagRemove.role = "button";
+
             tagRemove.addEventListener("mousedown", (event) => {
                 removeTag(value);
                 parent.removeChild(tag);

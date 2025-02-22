@@ -20,7 +20,7 @@ interface AppConfig {
     DurationInput?: any;
     EditorInput?: any;
     SelectInput?: any;
-    TagInput?: any;
+    TagsInput?: any;
     Backups?: any;
 }
 

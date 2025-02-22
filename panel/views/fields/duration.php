@@ -2,7 +2,7 @@
 <div class="form-input-wrap">
     <span class="form-input-icon"><?= $this->icon($field->get('icon', 'hourglass')) ?></span>
     <input <?= $this->attr([
-                'class'          => 'form-input',
+                'class'          => ['form-input', 'form-input-duration'],
                 'type'           => 'number',
                 'id'             => $field->name(),
                 'name'           => $field->formName(),
@@ -13,7 +13,6 @@
                 'required'       => $field->isRequired(),
                 'disabled'       => $field->isDisabled(),
                 'hidden'         => $field->isHidden(),
-                'data-field'     => 'duration',
                 'data-unit'      => $field->get('unit', 'seconds'),
                 'data-intervals' => $field->has('intervals') ? implode(', ', $field->get('intervals')) : null,
             ]) ?>>

@@ -10,30 +10,33 @@ import { RangeInput } from "./inputs/range-input";
 import { SelectInput } from "./inputs/select-input";
 import { SlugInput } from "./inputs/slug-input";
 import { TagsInput } from "./inputs/tags-input";
+import { TogglegroupInput } from "./inputs/togglegroup-input";
 
 export class Inputs {
     [name: string]: object;
 
     constructor(parent: HTMLElement) {
-        $$(".form-input-date", parent).forEach((element: HTMLInputElement) => (this[element.name] = new DateInput(element, app.config.DateInput)));
-
-        $$(".image-picker", parent).forEach((element: HTMLSelectElement) => (this[element.name] = new ImagePicker(element)));
-
         $$(".editor-textarea", parent).forEach((element: HTMLTextAreaElement) => (this[element.name] = new EditorInput(element)));
-
-        $$("input[type=file]", parent).forEach((element: HTMLInputElement) => (this[element.name] = new FileInput(element)));
-
-        $$(".form-input-tags", parent).forEach((element: HTMLInputElement) => (this[element.name] = new TagsInput(element, app.config.TagInput)));
-
-        $$("input[data-field=duration]", parent).forEach((element: HTMLInputElement) => (this[element.name] = new DurationInput(element, app.config.DurationInput)));
-
-        $$("input[type=range]", parent).forEach((element: HTMLInputElement) => (this[element.name] = new RangeInput(element)));
 
         $$(".form-input-array", parent).forEach((element: HTMLInputElement) => (this[element.name] = new ArrayInput(element)));
 
-        $$("select:not([hidden])", parent).forEach((element: HTMLSelectElement) => (this[element.name] = new SelectInput(element, app.config.SelectInput)));
+        $$(".form-input-date", parent).forEach((element: HTMLInputElement) => (this[element.name] = new DateInput(element, app.config.DateInput)));
+
+        $$(".form-input-duration", parent).forEach((element: HTMLInputElement) => (this[element.name] = new DurationInput(element, app.config.DurationInput)));
 
         $$(".form-input-slug", parent).forEach((element: HTMLInputElement) => (this[element.name] = new SlugInput(element)));
+
+        $$(".form-input-tags", parent).forEach((element: HTMLInputElement) => (this[element.name] = new TagsInput(element, app.config.TagsInput)));
+
+        $$(".form-togglegroup", parent).forEach((element: HTMLFieldSetElement) => (this[element.id] = new TogglegroupInput(element)));
+
+        $$(".image-picker", parent).forEach((element: HTMLSelectElement) => (this[element.name] = new ImagePicker(element)));
+
+        $$("input[type=file]", parent).forEach((element: HTMLInputElement) => (this[element.name] = new FileInput(element)));
+
+        $$("input[type=range]", parent).forEach((element: HTMLInputElement) => (this[element.name] = new RangeInput(element)));
+
+        $$("select:not([hidden])", parent).forEach((element: HTMLSelectElement) => (this[element.name] = new SelectInput(element, app.config.SelectInput)));
 
         $$(".form-input-action[data-reset]", parent).forEach((element) => {
             const targetId = element.dataset.reset;

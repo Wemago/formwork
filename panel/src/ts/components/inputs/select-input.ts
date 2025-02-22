@@ -35,6 +35,8 @@ export class SelectInput {
 
             const wrap = hasWrap || document.createElement("div");
 
+            const selectId = select.id;
+
             if (!hasWrap) {
                 wrap.className = "form-input-wrap";
                 (select.parentNode as ParentNode).insertBefore(wrap, select.nextSibling);
@@ -45,13 +47,13 @@ export class SelectInput {
             labelInput.type = "text";
 
             labelInput.classList.add("form-select");
-            labelInput.dataset.for = select.id;
+            labelInput.id = selectId;
 
-            const selectLabel = $(`label[for="${select.id}"]`);
+            select.removeAttribute("id");
 
-            if (selectLabel) {
-                labelInput.setAttribute("aria-label", selectLabel.innerText);
-            }
+            select.ariaHidden = "true";
+
+            select.tabIndex = -1;
 
             if (select.hasAttribute("disabled")) {
                 labelInput.disabled = true;

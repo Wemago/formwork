@@ -17,10 +17,17 @@ date.weekdays.long: ['Неділя', 'Понеділок', 'Вівторок', '
 date.weekdays.short: ['Нд', 'Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб']
 fields.array.add: Додати
 fields.array.remove: Видалити
+fields.date.nextHour: Наступна година
+fields.date.nextMinute: Наступна хвилина
+fields.date.nextMonth: Наступний місяць
+fields.date.previousHour: Попередня година
+fields.date.previousMinute: Попередня хвилина
+fields.date.previousMonth: Попередній місяць
 fields.file.none: (Немає)
 fields.file.uploadLabel: <strong>Натисніть</strong> щоб вибрати файл для завантаження або <strong>перетягніть</strong> його сюди
 fields.image.none: (Немає)
 fields.select.empty: Немає відповідних варіантів
+fields.tags.remove: Видалити
 file.metadata: Метадані
 file.metadata.alternativeText: Альтернативний текст
 page.attributes: Атрибути

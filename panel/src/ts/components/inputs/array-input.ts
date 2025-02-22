@@ -8,6 +8,8 @@ export class ArrayInput {
 
         $$(".form-input-array-row", input).forEach((element) => bindRowEvents(element));
 
+        $(`label[for="${input.id}"]`)?.addEventListener("click", () => $(".form-input", input)?.focus());
+
         Sortable.create(input, {
             handle: ".sortable-handle",
             forceFallback: true,

@@ -1,8 +1,8 @@
 <div class="files-list">
     <div>
         <fieldset class="form-togglegroup files-list-view-as" data-field-name="<?= $field->name() ?>">
-            <label class="form-label"><input class="form-input" type="radio" name="<?= $field->name() ?>-list-view-as" value="list" checked data-form-ignore="true" autocomplete="off"><span title="<?= $this->translate('panel.files.viewAsList') ?>"><?= $this->icon('file-list') ?></span></label>
-            <label class="form-label"><input class="form-input" type="radio" name="<?= $field->name() ?>-list-view-as" value="thumbnails" data-form-ignore="true" autocomplete="off"><span title="<?= $this->translate('panel.files.viewAsThumbnails') ?>"><?= $this->icon('file-icons') ?></span></label>
+            <label class="form-label"><input class="form-input" type="radio" name="<?= $field->name() ?>-list-view-as" value="list" checked aria-label="<?= $this->translate('panel.files.viewAsList') ?>" data-form-ignore="true" autocomplete="off"><span title="<?= $this->translate('panel.files.viewAsList') ?>"><?= $this->icon('file-list') ?></span></label>
+            <label class="form-label"><input class="form-input" type="radio" name="<?= $field->name() ?>-list-view-as" value="thumbnails" aria-label="<?= $this->translate('panel.files.viewAsThumbnails') ?>" data-form-ignore="true" autocomplete="off"><span title="<?= $this->translate('panel.files.viewAsThumbnails') ?>"><?= $this->icon('file-icons') ?></span></label>
         </fieldset>
     </div>
 
@@ -20,7 +20,7 @@
                 <div class="file-icon"><?= $this->icon(is_null($file->type()) ? 'file' : 'file-' . $file->type()) ?></div>
                 <div class="file-name truncate"><?= $file->name() ?> <span class="file-size">(<?= $file->size() ?>)</span></div>
                 <div class="dropdown">
-                    <button type="button" class="button button-link dropdown-button" title="<?= $this->translate('panel.files.actions') ?>" data-dropdown="dropdown-<?= $file->hash() ?>"><?= $this->icon('ellipsis-v') ?></button>
+                    <button type="button" class="button button-link dropdown-button" title="<?= $this->translate('panel.files.actions') ?>" aria-label="<?= $this->translate('panel.files.actions') ?>" data-dropdown="dropdown-<?= $file->hash() ?>"><?= $this->icon('ellipsis-v') ?></button>
                     <div class="dropdown-menu" id="dropdown-<?= $file->hash() ?>">
                         <?php if ($model?->getModelIdentifier() === 'page'): ?>
                             <a class="dropdown-item" href="<?= $panel->uri('/pages/' . trim($page->route(), '/') . '/file/' . $file->name() . '/') ?>"><?= $this->icon('info-circle') ?> <?= $this->translate('panel.pages.file.info') ?></a>

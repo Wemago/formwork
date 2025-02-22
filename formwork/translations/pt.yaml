@@ -17,10 +17,17 @@ date.weekdays.long: ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta'
 date.weekdays.short: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb']
 fields.array.add: Adicionar
 fields.array.remove: Remover
+fields.date.nextHour: Próxima hora
+fields.date.nextMinute: Próximo minuto
+fields.date.nextMonth: Próximo mês
+fields.date.previousHour: Hora anterior
+fields.date.previousMinute: Minuto anterior
+fields.date.previousMonth: Mês anterior
 fields.file.none: (Nenhum)
 fields.file.uploadLabel: <strong>Clique</strong> aqui para escolher um ficheiro para enviar ou <strong>arrastar</strong> para aqui.
 fields.image.none: (Nenhuma)
 fields.select.empty: Sem opções correspondentes
+fields.tags.remove: Remover
 file.metadata: Metadados
 file.metadata.alternativeText: Texto alternativo
 page.attributes: Atributos

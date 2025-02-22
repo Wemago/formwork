@@ -40,6 +40,12 @@ interface DateInputOptions {
             long: string[];
             short: string[];
         };
+        prevMonth: string;
+        nextMonth: string;
+        prevHour: string;
+        nextHour: string;
+        prevMinute: string;
+        nextMinute: string;
     };
     onChange: (date: Date) => void;
 }
@@ -60,6 +66,12 @@ export class DateInput {
                     long: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
                     short: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
                 },
+                prevMonth: "Previous month",
+                nextMonth: "Next month",
+                prevHour: "Previous hour",
+                nextHour: "Next hour",
+                prevMinute: "Previous minute",
+                nextMinute: "Next minute",
             },
             onChange(date: Date) {
                 const dateInput = getCurrentInput();
@@ -435,10 +447,10 @@ export class DateInput {
             function createElement() {
                 const element = document.createElement("div");
                 element.className = "calendar";
-                element.innerHTML = `<div class="calendar-buttons"><button type="button" class="prevMonth"></button><button class="currentMonth">${options.labels.today}</button><button type="button" class="nextMonth"></button></div><div class="calendar-separator"></div><table class="calendar-table"></table>`;
+                element.innerHTML = `<div class="calendar-buttons"><button type="button" class="prevMonth" aria-label="${options.labels.prevMonth}"></button><button class="currentMonth" aria-label="${options.labels.today}">${options.labels.today}</button><button type="button" class="nextMonth" aria-label="${options.labels.nextMonth}"></button></div><div class="calendar-separator"></div><table class="calendar-table"></table>`;
 
                 if (options.time) {
-                    element.innerHTML += '<div class="calendar-separator"></div><table class="calendar-time"><tr><td><button type="button" class="nextHour"></button></td><td></td><td><button type="button" class="nextMinute"></button></td></tr><tr><td class="calendar-hours"></td><td>:</td><td class="calendar-minutes"></td><td class="calendar-meridiem"></td></tr><tr><td><button type="button" class="prevHour"></button></td><td></td><td><button type="button" class="prevMinute"></button></td></tr></table></div>';
+                    element.innerHTML += `<div class="calendar-separator"></div><table class="calendar-time"><tr><td><button type="button" class="nextHour" aria-label="${options.labels.nextHour}"></button></td><td></td><td><button type="button" class="nextMinute" aria-label="${options.labels.nextMinute}"></button></td></tr><tr><td class="calendar-hours"></td><td>:</td><td class="calendar-minutes"></td><td class="calendar-meridiem"></td></tr><tr><td><button type="button" class="prevHour" aria-label="${options.labels.prevHour}"></button></td><td></td><td><button type="button" class="prevMinute" aria-label="${options.labels.prevMinute}"></button></td></tr></table></div>`;
 
                     insertIcon("chevron-down", $(".prevHour", element) as HTMLElement);
                     insertIcon("chevron-up", $(".nextHour", element) as HTMLElement);

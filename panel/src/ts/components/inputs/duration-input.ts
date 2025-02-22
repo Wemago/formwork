@@ -121,13 +121,15 @@ export class DurationInput {
 
         function createInnerInputs(intervals: Partial<Record<TimeInterval, number>>, steps: Partial<Record<TimeInterval, number>>) {
             field = document.createElement("div");
-            field.className = "form-input-duration";
+            field.className = "form-input-duration-wrap";
 
             let innerInput: HTMLInputElement;
 
             for (const name of options.intervals) {
                 innerInput = document.createElement("input");
+                innerInput.id = `${input.id}.${name}`;
                 innerInput.className = "form-input";
+
                 const wrap = document.createElement("span");
                 wrap.className = `duration-${name}`;
                 innerInput.type = "number";
@@ -169,10 +171,16 @@ export class DurationInput {
                         event.preventDefault();
                     }
                 });
+
                 const label = document.createElement("label");
+                const labelText = options.labels[name][parseInt(innerInput.value) === 1 ? 0 : 1];
+
                 label.className = "form-label";
-                label.innerHTML = options.labels[name][parseInt(innerInput.value) === 1 ? 0 : 1];
+                label.innerText = labelText;
+                label.htmlFor = innerInput.id;
+
                 labels[name] = label;
+
                 wrap.appendChild(innerInput);
                 wrap.appendChild(label);
                 field.appendChild(wrap);
@@ -190,7 +198,7 @@ export class DurationInput {
 
         function createField() {
             hiddenInput = document.createElement("input");
-            hiddenInput.className = "form-input-duration-hidden";
+            hiddenInput.className = "form-input-hidden";
             hiddenInput.name = input.name;
             hiddenInput.id = input.id;
             hiddenInput.type = "text";
@@ -223,6 +231,8 @@ export class DurationInput {
             const field = createInnerInputs(secondsToIntervals(valueSeconds || 0), secondsToIntervals(stepSeconds || 1));
             (input.parentNode as ParentNode).replaceChild(field, input);
             field.appendChild(hiddenInput);
+
+            $(`label[for="${input.id}"]`)?.addEventListener("click", () => $(".form-input", field)?.focus());
         }
     }
 }

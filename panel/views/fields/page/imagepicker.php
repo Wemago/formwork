@@ -3,7 +3,7 @@
     <span class="image-picker-empty-state-icon"><?= $this->icon('image') ?></span>
     <h4 class="h5"><?= $this->translate('panel.modal.images.noImages') ?></h4>
 </div>
-<select class="form-input image-picker">
+<select class="form-input image-picker" id="<?= $field->name() ?>">
     <?php foreach ($page->images() as $image) : ?>
         <option <?= $this->attr([
                     'value'          => $page->uri($image, includeLanguage: false),

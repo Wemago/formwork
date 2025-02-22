@@ -20,7 +20,7 @@
                 <?php if ($panel->user()->permissions()->has('cache.clear')) : ?>
                     <div class="dropdown mb-4">
                         <div class="button-group">
-                            <button type=" button" class="button button-secondary" data-command="clear-cache"><?= $this->icon('cache-clear') ?> <?= $this->translate('panel.cache.clear') ?></button>
+                            <button type="button" class="button button-secondary" data-command="clear-cache"><?= $this->icon('cache-clear') ?> <?= $this->translate('panel.cache.clear') ?></button>
                             <button type="button" class="button button-secondary dropdown-button caret" data-dropdown="dropdown-cache-options"></button>
                         </div>
                         <div class="dropdown-menu" id="dropdown-cache-options">
@@ -30,7 +30,7 @@
                     </div>
                 <?php endif ?>
                 <?php if ($panel->user()->permissions()->has('backup')) : ?>
-                    <button type=" button" class="button button-secondary mb-4" data-command="make-backup"><?= $this->icon('clock-rotate-left') ?> <?= $this->translate('panel.backup.backup') ?></button>
+                    <button type="button" class="button button-secondary mb-4" data-command="make-backup"><?= $this->icon('clock-rotate-left') ?> <?= $this->translate('panel.backup.backup') ?></button>
                 <?php endif ?>
                 <?php if ($panel->user()->permissions()->has('options.updates')) : ?>
                     <a class="button button-secondary mb-4" role="button" href="<?= $panel->uri('/tools/updates/') ?>"><?= $this->icon('arrows-rotate-clockwise') ?> <?= $this->translate('panel.updates.check') ?></a>

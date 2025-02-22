@@ -6,6 +6,8 @@ export class ImagePicker {
         const pickCommand = $("[data-command=pick-image]", (element.parentNode as ParentNode).parentNode ?? document);
 
         element.hidden = true;
+        element.ariaHidden = "true";
+        element.tabIndex = -1;
 
         if (options.length > 0) {
             const container = document.createElement("div");

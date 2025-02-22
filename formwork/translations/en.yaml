@@ -17,10 +17,17 @@ date.weekdays.long: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Fr
 date.weekdays.short: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
 fields.array.add: Add
 fields.array.remove: Remove
+fields.date.nextHour: Next hour
+fields.date.nextMinute: Next minute
+fields.date.nextMonth: Next month
+fields.date.previousHour: Previous hour
+fields.date.previousMinute: Previous minute
+fields.date.previousMonth: Previous month
 fields.file.none: (None)
 fields.file.uploadLabel: <strong>Click</strong> to choose a file to upload or <strong>drag</strong> it here
 fields.image.none: (None)
 fields.select.empty: No matching options
+fields.tags.remove: Remove
 file.metadata: Metadata
 file.metadata.alternativeText: Alternative text
 page.attributes: Attributes

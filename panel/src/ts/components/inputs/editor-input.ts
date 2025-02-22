@@ -35,6 +35,8 @@ export class EditorInput {
             let editor: MarkdownView | CodeView = new MarkdownView(editorWrap, addBaseUri(textarea.value, baseUri), inputEventHandler, attributes, baseUri);
             editor.view.dom.style.height = `${textareaHeight}px`;
 
+            $(`label[for="${textarea.id}"]`)?.addEventListener("click", () => editor.view.focus());
+
             const codeSwitch = $("[data-command=toggle-markdown]", editorWrap) as HTMLButtonElement;
             codeSwitch.addEventListener("click", () => {
                 codeSwitch.classList.toggle("is-active");
@@ -47,7 +49,7 @@ export class EditorInput {
                     editor = new MarkdownView(editorWrap, addBaseUri(editor.content, baseUri), inputEventHandler, attributes, baseUri);
                     editor.view.dom.style.height = `${textareaHeight}px`;
                 }
-                codeSwitch.blur();
+                editor.view.focus();
             });
         }
     }

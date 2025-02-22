@@ -50,8 +50,8 @@ export class Modal {
 
     show(action?: string, callback?: (modal: this) => void) {
         const modal = this.element;
-        modal.setAttribute("role", "dialog");
-        modal.setAttribute("aria-modal", "true");
+        modal.role = "dialog";
+        modal.ariaModal = "true";
         modal.classList.add("show");
         if (action) {
             ($("form", modal) as HTMLFormElement).action = action;
@@ -72,8 +72,8 @@ export class Modal {
     hide() {
         const modal = this.element;
         modal.classList.remove("show");
-        modal.removeAttribute("role");
-        modal.removeAttribute("aria-modal");
+        modal.role = null;
+        modal.ariaModal = null;
         this.removeBackdrop();
     }
 

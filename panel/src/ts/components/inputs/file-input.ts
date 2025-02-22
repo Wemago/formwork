@@ -43,6 +43,12 @@ export class FileInput {
             }
         });
 
+        label.addEventListener("keydown", (event) => {
+            if (event.key === "Enter") {
+                input.click();
+            }
+        });
+
         function formatFileSize(size: number) {
             const units = ["B", "KB", "MB", "GB", "TB"];
             const exp = Math.min(Math.floor(Math.log(size) / Math.log(1024)), units.length - 1);
@@ -74,5 +80,9 @@ export class FileInput {
             this.classList.remove("drag");
             event.preventDefault();
         }
+
+        $(`.form-label[data-for="${input.id}"]`)?.addEventListener("click", () => {
+            label.focus();
+        });
     }
 }

@@ -53,7 +53,7 @@ export class Tooltip {
         this.delayTimer = window.setTimeout(() => {
             const tooltip = document.createElement("div");
             tooltip.className = "tooltip";
-            tooltip.setAttribute("role", "tooltip");
+            tooltip.role = "tooltip";
             tooltip.style.display = "block";
             tooltip.innerHTML = this.text;
 

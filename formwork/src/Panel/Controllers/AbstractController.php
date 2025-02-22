@@ -148,9 +148,15 @@ abstract class AbstractController extends BaseAbstractController
                     'format'     => Date::formatToPattern($this->config->get('system.date.datetimeFormat')),
                     'time'       => true,
                     'labels'     => [
-                        'today'    => $this->translate('date.today'),
-                        'weekdays' => ['long' => $this->translations->getCurrent()->getStrings('date.weekdays.long'), 'short' => $this->translations->getCurrent()->getStrings('date.weekdays.short')],
-                        'months'   => ['long' => $this->translations->getCurrent()->getStrings('date.months.long'), 'short' => $this->translations->getCurrent()->getStrings('date.months.short')],
+                        'today'      => $this->translate('date.today'),
+                        'weekdays'   => ['long' => $this->translations->getCurrent()->getStrings('date.weekdays.long'), 'short' => $this->translations->getCurrent()->getStrings('date.weekdays.short')],
+                        'months'     => ['long' => $this->translations->getCurrent()->getStrings('date.months.long'), 'short' => $this->translations->getCurrent()->getStrings('date.months.short')],
+                        'prevMonth'  => $this->translate('fields.date.previousMonth'),
+                        'nextMonth'  => $this->translate('fields.date.nextMonth'),
+                        'prevHour'   => $this->translate('fields.date.previousHour'),
+                        'nextHour'   => $this->translate('fields.date.nextHour'),
+                        'prevMinute' => $this->translate('fields.date.previousMinute'),
+                        'nextMinute' => $this->translate('fields.date.nextMinute'),
                     ],
                 ],
                 'DurationInput' => [
@@ -190,6 +196,11 @@ abstract class AbstractController extends BaseAbstractController
                 'SelectInput' => [
                     'labels' => [
                         'empty' => $this->translate(('fields.select.empty')),
+                    ],
+                ],
+                'TagsInput' => [
+                    'labels' => [
+                        'remove' => $this->translate('fields.tags.remove'),
                     ],
                 ],
                 'Backups' => [

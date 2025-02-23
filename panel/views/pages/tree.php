@@ -1,3 +1,5 @@
+<?php $modals->add('deletePage') ?>
+
 <?php if ($headers) : ?>
     <div class="pages-tree-headers" aria-hidden="true">
         <div class="pages-tree-headers-cell page-details truncate"><?= $this->translate('page.title') ?></div>

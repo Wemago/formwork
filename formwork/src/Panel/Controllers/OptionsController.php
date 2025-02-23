@@ -66,8 +66,6 @@ final class OptionsController extends AbstractController
 
         $fields->setValues($this->config->get('system'));
 
-        $this->modal('changes');
-
         return new Response($this->view('options.system', [
             'title' => $this->translate('panel.options.options'),
             'tabs'  => $this->view('options.tabs', [
@@ -110,8 +108,6 @@ final class OptionsController extends AbstractController
         }
 
         $fields->setValues($this->site->data());
-
-        $this->modal('changes');
 
         return new Response($this->view('options.site', [
             'title' => $this->translate('panel.options.options'),

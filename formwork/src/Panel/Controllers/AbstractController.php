@@ -5,8 +5,7 @@ namespace Formwork\Panel\Controllers;
 use Formwork\Cms\Site;
 use Formwork\Controllers\AbstractController as BaseAbstractController;
 use Formwork\Panel\Modals\Modal;
-use Formwork\Panel\Modals\ModalCollection;
-use Formwork\Panel\Modals\ModalFactory;
+use Formwork\Panel\Modals\Modals;
 use Formwork\Panel\Panel;
 use Formwork\Parsers\Json;
 use Formwork\Router\Router;
@@ -18,20 +17,16 @@ use Stringable;
 
 abstract class AbstractController extends BaseAbstractController
 {
-    protected ModalCollection $modals;
-
     public function __construct(
         private Container $container,
         protected readonly Router $router,
         protected readonly CsrfToken $csrfToken,
         protected readonly Translations $translations,
-        protected readonly ModalFactory $modalFactory,
+        protected readonly Modals $modals,
         protected readonly Site $site,
         protected readonly Panel $panel,
     ) {
         $this->container->call(parent::__construct(...));
-
-        $this->modals = new ModalCollection();
     }
 
     /**
@@ -65,8 +60,8 @@ abstract class AbstractController extends BaseAbstractController
      */
     protected function modal(string $name): Modal
     {
-        $this->modals->add($modal = $this->modalFactory->make($name));
-        return $modal;
+        $this->modals->add($name);
+        return $this->modals->get($name);
     }
 
     /**

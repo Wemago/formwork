@@ -1,5 +1,7 @@
 <?php $this->layout('panel') ?>
 
+<?php $modals->add('changes') ?>
+
 <form method="post" class="options-form" data-form="system-options-form">
     <div class="header">
         <div class="header-title"><?= $this->translate('panel.options.options') ?></div>

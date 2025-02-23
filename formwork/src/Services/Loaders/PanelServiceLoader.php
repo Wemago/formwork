@@ -8,6 +8,7 @@ use Formwork\Http\Request;
 use Formwork\Log\Registry;
 use Formwork\Panel\Controllers\ErrorsController;
 use Formwork\Panel\Modals\ModalFactory;
+use Formwork\Panel\Modals\Modals;
 use Formwork\Panel\Panel;
 use Formwork\Panel\Security\AccessLimiter;
 use Formwork\Schemes\Schemes;
@@ -41,6 +42,7 @@ final class PanelServiceLoader implements ResolutionAwareServiceLoaderInterface
         $this->request->session()->setDuration($this->config->get('system.panel.sessionTimeout') * 60);
 
         $container->define(ModalFactory::class);
+        $container->define(Modals::class);
 
         return $container->build(Panel::class);
     }

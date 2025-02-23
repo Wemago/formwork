@@ -6,6 +6,7 @@ use Formwork\Data\Contracts\Arrayable;
 use Formwork\Data\Traits\DataArrayable;
 use Formwork\Fields\FieldCollection;
 use Formwork\Fields\FieldFactory;
+use Formwork\Model\Model;
 use Formwork\Translations\Translation;
 use Formwork\Utils\Arr;
 use Formwork\Utils\Str;
@@ -19,6 +20,11 @@ class Modal implements Arrayable
      * Modal identifier
      */
     protected string $id;
+
+    /**
+     * Fields model
+     */
+    protected Model $fieldsModel;
 
     /**
      * Modal buttons
@@ -96,7 +102,19 @@ class Modal implements Arrayable
         // @phpstan-ignore argument.templateType
         $fieldCollection->setMultiple(Arr::map($this->data['fields'] ?? [], fn($data, $name) => $this->fieldFactory->make($this->id . '.' . $name, $data, $fieldCollection)));
 
+        if (isset($this->fieldsModel)) {
+            $fieldCollection->setModel($this->fieldsModel);
+        }
+
         return $fieldCollection;
+    }
+
+    /**
+     * Set fields model
+     */
+    public function setFieldsModel(Model $model): void
+    {
+        $this->fieldsModel = $model;
     }
 
     /**

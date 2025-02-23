@@ -1,4 +1,7 @@
 <?php $this->layout('panel') ?>
+
+<?php $modals->addMultiple(['changes', 'renameFile', 'deleteFile']) ?>
+
 <form method="post" enctype="multipart/form-data" data-form="page-file-form">
     <div class="header">
         <div class="min-w-0 flex-grow-1">

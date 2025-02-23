@@ -39,10 +39,6 @@ final class PagesController extends AbstractController
             return $this->forward(ErrorsController::class, 'forbidden');
         }
 
-        $this->modal('newPage');
-
-        $this->modal('deletePage');
-
         $pages = $this->site->pages();
 
         $indexOffset = $pages->indexOf($this->site->indexPage());
@@ -194,17 +190,7 @@ final class PagesController extends AbstractController
                 return $this->redirect($this->generateRoute('panel.pages.edit', ['page' => $page->route()]));
         }
 
-        $this->modal('images');
-
-        $this->modal('link');
-
-        $this->modal('changes');
-
-        $this->modal('deletePage');
-
-        $this->modal('deleteFile');
-
-        $this->modal('renameFile');
+        $this->modal('images')->setFieldsModel($page);
 
         $contentHistory = $page->contentPath()
             ? new ContentHistory($page->contentPath())
@@ -551,10 +537,6 @@ final class PagesController extends AbstractController
 
                 return $this->redirect($this->generateRoute('panel.pages.file', ['page' => $page->route(), 'filename' => $filename]));
         }
-
-        $this->modal('renameFile');
-        $this->modal('deleteFile');
-        $this->modal('changes');
 
         return new Response($this->view('pages.file', [
             'title' => $file->name(),

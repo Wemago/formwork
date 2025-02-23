@@ -1,3 +1,5 @@
+<?php $modals->addMultiple(['deleteFile', 'renameFile']) ?>
+
 <div class="files-list">
     <div>
         <fieldset class="form-togglegroup files-list-view-as" data-field-name="<?= $field->name() ?>">

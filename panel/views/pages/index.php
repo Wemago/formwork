@@ -1,5 +1,7 @@
 <?php $this->layout('panel') ?>
 
+<?php $modals->add('newPage') ?>
+
 <div class="header">
     <div class="header-title"><?= $this->translate('panel.pages.pages') ?> <span class="badge"><?= $app->site()->descendants()->count() ?></span></div>
     <div>

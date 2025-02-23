@@ -118,6 +118,8 @@ function plugin(items: MenuItem[]) {
 }
 
 export function menuPlugin() {
+    initModals();
+
     return plugin([
         {
             name: app.config.EditorInput.labels.paragraph,
@@ -227,33 +229,26 @@ export function menuPlugin() {
                     return canInsert(state, schema.nodes.image);
                 }
                 if (view) {
-                    app.modals["imagesModal"].show(undefined, (modal) => {
-                        const commandPickImage = $("[data-command=pick-image]", modal.element) as HTMLElement;
+                    app.modals["imagesModal"].open();
 
+                    app.modals["imagesModal"].onCommand("pick-image", (modal) => {
                         const selected = $(".image-picker-thumbnail.selected", modal.element);
-                        if (selected) {
-                            selected.classList.remove("selected");
+
+                        if (selected && view) {
+                            const baseUri = $("textarea", view.dom.parentNode!)!.dataset.baseUri;
+                            const filename = selected.dataset.filename;
+                            view.dispatch(
+                                state.tr.replaceSelectionWith(
+                                    schema.nodes.image.createAndFill({
+                                        src: `${baseUri}${filename}`,
+                                        alt: "",
+                                    })!,
+                                ),
+                            );
+                            view.focus();
                         }
 
-                        const insertImage = () => {
-                            const selected = $(".image-picker-thumbnail.selected", modal.element);
-                            if (selected && view) {
-                                const baseUri = $("textarea", view.dom.parentNode!)!.dataset.baseUri;
-                                const filename = selected.dataset.filename;
-                                view.dispatch(
-                                    state.tr.replaceSelectionWith(
-                                        schema.nodes.image.createAndFill({
-                                            src: `${baseUri}${filename}`,
-                                            alt: "",
-                                        })!,
-                                    ),
-                                );
-                                view.focus();
-                            }
-                            modal.hide();
-                            commandPickImage.removeEventListener("click", insertImage);
-                        };
-                        commandPickImage.addEventListener("click", insertImage);
+                        modal.close();
                     });
                 }
                 return true;
@@ -271,31 +266,24 @@ export function menuPlugin() {
                     toggleMark(schema.marks.link)(state, dispatch);
                     return true;
                 }
-                app.modals["linkModal"].show(undefined, (modal) => {
-                    const insertLinkCommand = $("[data-command=insert-link]", modal.element) as HTMLElement;
-                    const uri = $('[id="linkModal.uri"]') as HTMLInputElement;
 
-                    uri.value = "https://";
-                    uri.setSelectionRange(8, 8);
-
-                    const insertLink = () => {
-                        if (view && uri.value) {
-                            toggleMark(schema.marks.link, { href: uri.value })(view.state, view.dispatch);
-                            view.focus();
-                        }
-                        modal.hide();
-                        insertLinkCommand.removeEventListener("click", insertLink);
-                    };
-
-                    uri.addEventListener("keydown", (event) => {
-                        if (event.key === "Enter") {
-                            insertLink();
-                            event.preventDefault();
-                        }
-                    });
-
-                    insertLinkCommand.addEventListener("click", insertLink);
+                app.modals["linkModal"].onOpen((modal) => {
+                    const uriInput = $('[id="linkModal.uri"]', modal.element) as HTMLInputElement;
+                    uriInput.value = "https://";
+                    uriInput.setSelectionRange(8, 8);
                 });
+
+                app.modals["linkModal"].open();
+
+                app.modals["linkModal"].onCommand("insert-link", (modal) => {
+                    const uriInput = $('[id="linkModal.uri"]', modal.element) as HTMLInputElement;
+                    if (view && uriInput.value) {
+                        toggleMark(schema.marks.link, { href: uriInput.value })(view.state, view.dispatch);
+                        view.focus();
+                    }
+                    modal.close();
+                });
+
                 return true;
             },
             dom: createButton("link", app.config.EditorInput.labels.link),
@@ -374,4 +362,14 @@ function isMarkActive(state: EditorState, type: MarkType) {
         return !!type.isInSet(state.storedMarks || $from.marks());
     }
     return state.doc.rangeHasMark(from, to, type);
+}
+
+function initModals() {
+    const linkModal = app.modals["linkModal"];
+    $('[id="linkModal.uri"]', linkModal.element)?.addEventListener("keydown", (event) => {
+        if (event.key === "Enter") {
+            linkModal.triggerCommand("insert-link");
+            event.preventDefault();
+        }
+    });
 }

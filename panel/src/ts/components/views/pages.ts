@@ -180,13 +180,17 @@ export class Pages {
             }
         }
 
-        $$("[data-modal=renameFileModal]").forEach((element) => {
-            element.addEventListener("click", () => {
-                const input = $('[id="renameFileModal.filename"]') as HTMLInputElement;
-                input.value = element.dataset.filename as string;
-                input.setSelectionRange(0, input.value.lastIndexOf("."));
+        const renameFileModal = app.modals["renameFileModal"];
+
+        if (renameFileModal) {
+            renameFileModal.onOpen((modal, trigger) => {
+                if (trigger) {
+                    const input = $('[id="renameFileModal.filename"]', modal.element) as HTMLInputElement;
+                    input.value = trigger.dataset.filename as string;
+                    input.setSelectionRange(0, input.value.lastIndexOf("."));
+                }
             });
-        });
+        }
 
         $$("[data-command=replaceFile]").forEach((element) => {
             element.addEventListener("click", () => {

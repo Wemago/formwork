@@ -39,12 +39,15 @@ export class Form {
             element.addEventListener("click", (event) => {
                 if (this.hasChanged()) {
                     event.preventDefault();
-                    app.modals["changesModal"].show(undefined, (modal) => {
+
+                    app.modals["changesModal"].onOpen((modal) => {
                         const continueCommand = $("[data-command=continue]", modal.element);
                         if (continueCommand) {
                             continueCommand.dataset.href = element.href;
                         }
                     });
+
+                    app.modals["changesModal"].open();
                 }
             });
         });
@@ -60,34 +63,29 @@ export class Form {
         registerModalExceptions();
 
         function registerModalExceptions() {
-            const changesModal = document.getElementById("changesModal");
-            const deletePageModal = document.getElementById("deletePageModal");
-            const deleteUserModal = document.getElementById("deleteUserModal");
+            const changesModal = app.modals["changesModal"];
+            const deletePageModal = app.modals["deletePageModal"];
+            const deleteUserModal = app.modals["deleteUserModal"];
 
             if (changesModal) {
-                const continueCommand = $("[data-command=continue]", changesModal);
-                if (continueCommand) {
-                    continueCommand.addEventListener("click", function () {
-                        removeBeforeUnload();
-                        if (this.dataset.href) {
-                            window.location.href = this.dataset.href;
-                        }
-                    });
-                }
+                changesModal.onCommand("continue", (_, button) => {
+                    removeBeforeUnload();
+                    if (button?.dataset.href) {
+                        window.location.href = button.dataset.href;
+                    }
+                });
             }
 
             if (deletePageModal) {
-                const deleteCommand = $("[data-command=delete]", deletePageModal);
-                if (deleteCommand) {
-                    deleteCommand.addEventListener("click", removeBeforeUnload);
-                }
+                deletePageModal.onCommand("delete", () => {
+                    removeBeforeUnload();
+                });
             }
 
             if (deleteUserModal) {
-                const deleteCommand = $("[data-command=delete]", deleteUserModal);
-                if (deleteCommand) {
-                    deleteCommand.addEventListener("click", removeBeforeUnload);
-                }
+                deleteUserModal.onCommand("delete", () => {
+                    removeBeforeUnload();
+                });
             }
         }
     }

@@ -18,7 +18,7 @@ final class ErrorsController extends AbstractController implements ErrorsControl
         return $this->makeErrorResponse($responseStatus, 'internalServerError', [
             'href'  => $this->makeGitHubIssueUri($throwable),
             'label' => $this->translate('panel.errors.action.reportToGithub'),
-        ], ['throwable' => $throwable]);
+        ], $throwable);
     }
 
     /**
@@ -40,7 +40,7 @@ final class ErrorsController extends AbstractController implements ErrorsControl
         return $this->makeErrorResponse(ResponseStatus::InternalServerError, 'internalServerError', [
             'href'  => $this->makeGitHubIssueUri($throwable),
             'label' => $this->translate('panel.errors.action.reportToGithub'),
-        ], ['throwable' => $throwable]);
+        ], $throwable);
     }
 
     /**
@@ -60,9 +60,13 @@ final class ErrorsController extends AbstractController implements ErrorsControl
      * @param array<mixed>         $action
      * @param array<string, mixed> $data
      */
-    private function makeErrorResponse(ResponseStatus $responseStatus, string $name, array $action, array $data = []): Response
+    private function makeErrorResponse(ResponseStatus $responseStatus, string $name, array $action, ?Throwable $throwable = null, array $data = []): Response
     {
         Response::cleanOutputBuffers();
+
+        if ($this->config->get('system.debug.enabled') || $this->request->isLocalhost()) {
+            $data['throwable'] = $throwable;
+        }
 
         if ($this->request->isXmlHttpRequest()) {
             $response = JsonResponse::error('Error', $responseStatus);
@@ -78,8 +82,8 @@ final class ErrorsController extends AbstractController implements ErrorsControl
             ]), $responseStatus);
         }
 
-        if ($data['throwable'] !== null) {
-            $this->logThrowable($data['throwable']);
+        if ($throwable !== null) {
+            $this->logThrowable($throwable);
         }
 
         return $response;

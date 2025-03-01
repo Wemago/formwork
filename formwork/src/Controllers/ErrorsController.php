@@ -23,7 +23,11 @@ final class ErrorsController extends AbstractController implements ErrorsControl
         }
 
         if ($this->request->isXmlHttpRequest()) {
-            $response = JsonResponse::error('Error', $responseStatus);
+            $message = $responseStatus->message();
+            if (isset($data['throwable'])) {
+                $message .= ': ' . $data['throwable']->getMessage();
+            }
+            $response = JsonResponse::error($message, $responseStatus);
         } else {
             $response = new Response($this->view(
                 'errors.error',

@@ -85,7 +85,7 @@ final class Panel
     /**
      * Send a notification
      */
-    public function notify(string $text, string | MessageType $type = MessageType::Info): void
+    public function notify(string $text, string|MessageType $type = MessageType::Info): void
     {
         $this->request->session()->messages()->set(is_string($type) ? MessageType::from($type) : $type, $text);
     }

@@ -50,5 +50,6 @@ return $config
         'phpdoc_var_without_name' => true,
         'single_quote' => true,
         'string_implicit_backslashes' => true,
+        'types_spaces' => true,
     ])
     ->setFinder($finder);

@@ -6,7 +6,7 @@ use Formwork\Fields\Field;
 
 return function (App $app) {
     return [
-        'validate' => function (Field $field, $value): int | float {
+        'validate' => function (Field $field, $value): int|float {
             if (!is_numeric($value)) {
                 throw new ValidationException(sprintf('Invalid value for field "%s" of type "%s"', $field->name(), $field->type()));
             }

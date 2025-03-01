@@ -96,7 +96,7 @@ export class SelectInput {
             dropdown = document.createElement("div");
             dropdown.className = "dropdown-list";
 
-            dropdown.dataset.for = select.id;
+            dropdown.dataset.for = labelInput.id;
 
             const container = document.createElement("div");
             container.className = "dropdown-list-items";

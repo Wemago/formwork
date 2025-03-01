@@ -120,7 +120,7 @@ export class Pages {
         }
 
         if (newPageModal) {
-            const parentSelect = $('[id="newPageModal.parent"]') as HTMLInputElement;
+            const parentSelect = $('[name="newPageModal[parent]"]') as HTMLInputElement;
 
             parentSelect.addEventListener("change", () => {
                 const option = $('.dropdown-list[data-for="newPageModal.parent"] .selected');
@@ -131,12 +131,12 @@ export class Pages {
 
                 const allowedTemplates = option.dataset.allowedTemplates ? option.dataset.allowedTemplates.split(" ") : [];
 
-                const pageTemplate = $('[id="newPageModal.template"]') as HTMLInputElement;
+                const pageTemplate = $('[name="newPageModal[template]"]') as HTMLInputElement;
 
                 if (allowedTemplates.length > 0) {
                     pageTemplate.dataset.previousValue = pageTemplate.value;
                     pageTemplate.value = allowedTemplates[0];
-                    ($('.form-select[data-for="newPageModal.template"]') as HTMLInputElement).value = ($(`.dropdown-list[data-for="newPageModal.template"] .dropdown-item[data-value="${pageTemplate.value}"]`) as HTMLElement).innerText;
+                    ($('.form-select[id="newPageModal.template"]') as HTMLInputElement).value = ($(`.dropdown-list[data-for="newPageModal.template"] .dropdown-item[data-value="${pageTemplate.value}"]`) as HTMLElement).innerText;
 
                     $$('.dropdown-list[data-for="newPageModal.template"] .dropdown-item').forEach((option) => {
                         if (!allowedTemplates.includes(option.dataset.value as string)) {
@@ -147,7 +147,7 @@ export class Pages {
                     if ("previousValue" in pageTemplate.dataset) {
                         pageTemplate.value = pageTemplate.dataset.previousValue as string;
                         delete pageTemplate.dataset.previousValue;
-                        ($('.form-select[data-for="newPageModal.template"]') as HTMLInputElement).value = ($(`.dropdown-list[data-for="newPageModal.template"] .dropdown-item[data-value="${pageTemplate.value}"]`) as HTMLElement).innerText;
+                        ($('.form-select[id="newPageModal.template"]') as HTMLInputElement).value = ($(`.dropdown-list[data-for="newPageModal.template"] .dropdown-item[data-value="${pageTemplate.value}"]`) as HTMLElement).innerText;
                     }
 
                     $$('.dropdown-list[data-for="newPageModal.template"] .dropdown-item').forEach((option) => {

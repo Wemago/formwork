@@ -1,4 +1,7 @@
 <?php $this->layout('fields.field') ?>
+
+<?php $modals->addMultiple(['images', 'link']) ?>
+
 <div class="editor-wrap">
     <div class="editor-toolbar">
         <button type="button" class="button toolbar-button editor-toggle-markdown" data-command="toggle-markdown" title="<?= $this->translate('panel.editor.toggleMarkdown') ?>" aria-label="<?= $this->translate('panel.editor.toggleMarkdown') ?>"><?= $this->icon('markdown') ?></button>

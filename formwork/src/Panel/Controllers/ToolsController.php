@@ -49,8 +49,6 @@ final class ToolsController extends AbstractController
             'size'        => FileSystem::formatSize(FileSystem::size($path)),
         ]);
 
-        $this->modal('deleteFile');
-
         return new Response($this->view('tools.backups', [
             'title' => $this->translate('panel.tools.backups'),
             'tabs'  => $this->view('tools.tabs', [

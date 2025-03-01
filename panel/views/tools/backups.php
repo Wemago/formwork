@@ -1,5 +1,7 @@
 <?php $this->layout('panel') ?>
 
+<?php $modals->add('deleteFile') ?>
+
 <div class="header">
     <div class="header-title"><?= $this->translate('panel.tools.tools') ?></div>
 </div>

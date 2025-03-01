@@ -1,5 +1,7 @@
 <?php $this->layout('panel') ?>
 
+<?php $modals->addMultiple(['newUser', 'deleteUser']) ?>
+
 <div class="header">
     <div class="header-title"><?= $this->translate('panel.users.users') ?></div>
     <div>

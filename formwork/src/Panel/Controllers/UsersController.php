@@ -30,10 +30,6 @@ final class UsersController extends AbstractController
             return $this->forward(ErrorsController::class, 'forbidden');
         }
 
-        $this->modal('newUser');
-
-        $this->modal('deleteUser');
-
         return new Response($this->view('users.index', [
             'title' => $this->translate('panel.users.users'),
             'users' => $this->site->users()->sortBy('username'),
@@ -197,12 +193,6 @@ final class UsersController extends AbstractController
         }
 
         $fields = $fields->setValues($user);
-
-        $this->modal('changes');
-
-        $this->modal('deleteUser');
-
-        $this->modal('deleteUserImage');
 
         return new Response($this->view('users.profile', [
             'title'  => $this->translate('panel.users.userProfile', $user->username()),

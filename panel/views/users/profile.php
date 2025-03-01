@@ -1,4 +1,7 @@
 <?php $this->layout('panel') ?>
+
+<?php $modals->addMultiple(['changes', 'deleteUser', 'deleteUserImage']) ?>
+
 <form method="post" enctype="multipart/form-data" data-form="user-profile-form">
     <div class="header">
         <div class="header-title"><?= $this->translate('user.user') ?></div>

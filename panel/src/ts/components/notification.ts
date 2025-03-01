@@ -10,6 +10,7 @@ type NotificationOptions = {
     fadeOutDelay: number;
     mouseleaveDelay: number;
     typeClass: Record<NotificationType, string>;
+    defaultIcons: Record<NotificationType, string>;
 };
 
 export class Notification {
@@ -19,7 +20,7 @@ export class Notification {
     containerElement: HTMLElement | null;
     notificationElement: HTMLElement;
 
-    constructor(text: string, type: NotificationType, options: Partial<NotificationOptions>) {
+    constructor(text: string, type: NotificationType, options: Partial<NotificationOptions> = {}) {
         const defaults: NotificationOptions = {
             interval: 5000,
             icon: undefined,
@@ -31,6 +32,12 @@ export class Notification {
                 success: "success",
                 warning: "warning",
                 error: "danger",
+            },
+            defaultIcons: {
+                info: "info-circle",
+                success: "check-circle",
+                warning: "exclamation-triangle",
+                error: "exclamation-octagon",
             },
         };
 
@@ -70,6 +77,10 @@ export class Notification {
 
             return notification;
         };
+
+        if (!this.options.icon) {
+            this.options.icon = this.options.defaultIcons[this.type];
+        }
 
         if (this.options.icon) {
             passIcon(this.options.icon, (icon) => {

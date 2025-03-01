@@ -93,7 +93,7 @@ final class Panel
     /**
      * Get notification from session data
      *
-     * @return list<array{text: string, type: string, interval: int, icon: string}>
+     * @return list<array{text: string, type: string, interval: int}>
      */
     public function notifications(): array
     {
@@ -103,21 +103,17 @@ final class Panel
             return [];
         }
 
-        $icons = [
-            'info'    => 'info-circle',
-            'success' => 'check-circle',
-            'warning' => 'exclamation-triangle',
-            'error'   => 'exclamation-octagon',
-        ];
-
         $interval = 5000;
 
         $notifications = [];
 
-        foreach ($messages as $type => $msg) {
-            foreach ($msg as $text) {
-                $icon = $icons[$type];
-                $notifications[] = compact('text', 'type', 'interval', 'icon');
+        foreach ($messages as $type => $message) {
+            foreach ($message as $text) {
+                $notifications[] = [
+                    'text'     => $text,
+                    'type'     => $type,
+                    'interval' => $interval,
+                ];
             }
         }
 

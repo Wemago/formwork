@@ -65,18 +65,39 @@ final class ErrorsController extends AbstractController implements ErrorsControl
         Response::cleanOutputBuffers();
 
         if ($this->request->isXmlHttpRequest()) {
-            return JsonResponse::error('Error', $responseStatus);
+            $response = JsonResponse::error('Error', $responseStatus);
+        } else {
+            $response = new Response($this->view('errors.error', [
+                'title'       => $this->translate('panel.errors.error.' . $name . '.status'),
+                'code'        => $responseStatus->code(),
+                'status'      => $this->translate('panel.errors.error.' . $name . '.status'),
+                'heading'     => $this->translate('panel.errors.error.' . $name . '.heading'),
+                'description' => $this->translate('panel.errors.error.' . $name . '.description'),
+                'action'      => $action,
+                ...$data,
+            ]), $responseStatus);
         }
 
-        return new Response($this->view('errors.error', [
-            'title'       => $this->translate('panel.errors.error.' . $name . '.status'),
-            'code'        => $responseStatus->code(),
-            'status'      => $this->translate('panel.errors.error.' . $name . '.status'),
-            'heading'     => $this->translate('panel.errors.error.' . $name . '.heading'),
-            'description' => $this->translate('panel.errors.error.' . $name . '.description'),
-            'action'      => $action,
-            ...$data,
-        ]), $responseStatus);
+        if ($data['throwable'] !== null) {
+            $this->logThrowable($data['throwable']);
+        }
+
+        return $response;
+    }
+
+    /**
+     * Log a throwable to the error log
+     */
+    private function logThrowable(Throwable $throwable): void
+    {
+        error_log(sprintf(
+            "Uncaught %s: %s in %s:%s\nStack trace:\n%s\n",
+            $throwable::class,
+            $throwable->getMessage(),
+            $throwable->getFile(),
+            $throwable->getLine(),
+            $throwable->getTraceAsString()
+        ));
     }
 
     /**

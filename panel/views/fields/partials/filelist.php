@@ -1,4 +1,4 @@
-<?php $this->modals()->addMultiple(['deleteFile', 'renameFile']) ?>
+<?php $this->modals()->addMultiple(['deleteFileItem', 'renameFileItem']) ?>
 
 <div class="files-list" data-for="<?= $field->name() ?>">
     <div>

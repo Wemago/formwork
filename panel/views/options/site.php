@@ -1,6 +1,6 @@
 <?php $this->layout('panel') ?>
 
-<?php $modals->add('changes') ?>
+<?php $this->modals()->add('changes') ?>
 
 <form method="post" class="options-form" data-form="site-options-form">
     <div class="header">

@@ -1,6 +1,6 @@
 <?php $this->layout('panel') ?>
 
-<?php $modals->add('newPage') ?>
+<?php $this->modals()->add('newPage') ?>
 
 <div data-view="dashboard">
     <div class="header">

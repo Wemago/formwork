@@ -1,6 +1,6 @@
 <?php $this->layout('panel') ?>
 
-<?php $modals->addMultiple(['changes', 'deleteUser', 'deleteUserImage']) ?>
+<?php $this->modals()->addMultiple(['changes', 'deleteUser', 'deleteUserImage']) ?>
 
 <form method="post" enctype="multipart/form-data" data-form="user-profile-form">
     <div class="header">

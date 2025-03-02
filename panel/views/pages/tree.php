@@ -1,4 +1,4 @@
-<?php $modals->add('deletePage') ?>
+<?php $this->modals()->add('deletePage') ?>
 
 <?php if ($headers) : ?>
     <div class="pages-tree-headers" aria-hidden="true">

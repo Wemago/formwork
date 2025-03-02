@@ -5,7 +5,6 @@ namespace Formwork\Panel\Controllers;
 use Formwork\Cms\Site;
 use Formwork\Controllers\AbstractController as BaseAbstractController;
 use Formwork\Panel\Modals\Modal;
-use Formwork\Panel\Modals\Modals;
 use Formwork\Panel\Panel;
 use Formwork\Parsers\Json;
 use Formwork\Router\Router;
@@ -22,7 +21,6 @@ abstract class AbstractController extends BaseAbstractController
         protected readonly Router $router,
         protected readonly CsrfToken $csrfToken,
         protected readonly Translations $translations,
-        protected readonly Modals $modals,
         protected readonly Site $site,
         protected readonly Panel $panel,
     ) {
@@ -60,8 +58,8 @@ abstract class AbstractController extends BaseAbstractController
      */
     protected function modal(string $name): Modal
     {
-        $this->modals->add($name);
-        return $this->modals->get($name);
+        $this->panel->modals()->add($name);
+        return $this->panel->modals()->get($name);
     }
 
     /**
@@ -91,7 +89,6 @@ abstract class AbstractController extends BaseAbstractController
             'site'       => $this->site,
             'panel'      => $this->panel,
             'csrfToken'  => $this->csrfToken->get($this->panel->getCsrfTokenName()),
-            'modals'     => $this->modals,
             'navigation' => [
                 'dashboard' => [
                     'label'       => $this->translate('panel.dashboard.dashboard'),

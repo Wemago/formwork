@@ -1,6 +1,6 @@
 <?php $this->layout('panel') ?>
 
-<?php $modals->addMultiple(['changes', 'deletePage']) ?>
+<?php $this->modals()->addMultiple(['changes', 'deletePage']) ?>
 
 <form method="post" data-form="page-editor-form" enctype="multipart/form-data">
     <input type="submit" <?= $this->attr(['hidden' => true, 'aria-hidden' => 'true', 'tabindex' => -1, 'data-command' => 'save', 'formaction' => $history?->isJustCreated() ? '?publish=false' : null]) ?>>

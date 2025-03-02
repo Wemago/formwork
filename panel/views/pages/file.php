@@ -1,6 +1,6 @@
 <?php $this->layout('panel') ?>
 
-<?php $modals->addMultiple(['changes', 'renameFile', 'deleteFile']) ?>
+<?php $this->modals()->addMultiple(['changes', 'renameFile', 'deleteFile']) ?>
 
 <form method="post" enctype="multipart/form-data" data-form="page-file-form">
     <div class="header">

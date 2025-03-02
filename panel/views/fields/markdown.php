@@ -1,6 +1,6 @@
 <?php $this->layout('fields.field') ?>
 
-<?php $modals->addMultiple(['images', 'link']) ?>
+<?php $this->modals()->addMultiple(['images', 'link']) ?>
 
 <div class="editor-wrap">
     <div class="editor-toolbar">

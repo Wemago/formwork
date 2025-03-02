@@ -7,6 +7,7 @@ use Formwork\Config\Config;
 use Formwork\Http\Request;
 use Formwork\Http\Session\MessageType;
 use Formwork\Languages\LanguageCodes;
+use Formwork\Panel\Modals\Modals;
 use Formwork\Users\ColorScheme;
 use Formwork\Users\Exceptions\UserNotLoggedException;
 use Formwork\Users\User;
@@ -28,6 +29,7 @@ final class Panel
         private Config $config,
         private Request $request,
         private Users $users,
+        private Modals $modals,
     ) {}
 
     /**
@@ -118,6 +120,11 @@ final class Panel
         }
 
         return $notifications;
+    }
+
+    public function modals(): Modals
+    {
+        return $this->modals;
     }
 
     /**

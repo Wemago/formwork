@@ -30,7 +30,7 @@
             <?= $this->content() ?>
         </div>
     </main>
-    <?php foreach ($modals as $modal) : ?>
+    <?php foreach ($this->modals() as $modal) : ?>
         <?php $this->insert('modals.modal', ['modal' => $modal]) ?>
     <?php endforeach ?>
     <?php $this->insert('partials.scripts') ?>

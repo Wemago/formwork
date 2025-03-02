@@ -45,15 +45,26 @@ export class Form {
     }
 
     private preventUnloadOnChanges() {
-        window.addEventListener("beforeunload", this.handleBeforeunload);
+        const handleBeforeunload = (event: Event) => {
+            if (this.hasChanged()) {
+                event.preventDefault();
+                event.returnValue = false;
+            }
+        };
 
-        this.element.addEventListener("submit", this.removeBeforeUnload);
+        const removeBeforeUnload = () => {
+            window.removeEventListener("beforeunload", handleBeforeunload);
+        };
+
+        window.addEventListener("beforeunload", handleBeforeunload);
+
+        this.element.addEventListener("submit", removeBeforeUnload);
 
         const changesModal = app.modals["changesModal"];
 
         if (changesModal) {
             changesModal.onCommand("continue", (_, button) => {
-                this.removeBeforeUnload();
+                removeBeforeUnload();
                 if (button?.dataset.href) {
                     window.location.href = button.dataset.href;
                 }
@@ -80,16 +91,5 @@ export class Form {
                 });
             });
         }
-    }
-
-    private handleBeforeunload(event: Event) {
-        if (this.hasChanged()) {
-            event.preventDefault();
-            event.returnValue = false;
-        }
-    }
-
-    private removeBeforeUnload() {
-        window.removeEventListener("beforeunload", this.handleBeforeunload);
     }
 }

@@ -25,6 +25,10 @@ return function (App $app) {
             return $field->get('collection', new FileCollection());
         },
 
+        'autoUpload' => function (Field $field): bool {
+            return $field->is('autoUpload');
+        },
+
         'validate' => function (Field $field, $value) use ($app) {
             if (Constraint::isEmpty($value)) {
                 return null;

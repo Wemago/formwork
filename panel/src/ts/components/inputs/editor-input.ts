@@ -26,11 +26,15 @@ export class EditorInput {
 
             textarea.style.display = "none";
 
-            const inputEventHandler = debounce((content: string) => {
-                textarea.value = removeBaseUri(content, baseUri);
-                textarea.dispatchEvent(new Event("input", { bubbles: true }));
-                textarea.dispatchEvent(new Event("change", { bubbles: true }));
-            }, 500);
+            const inputEventHandler = debounce(
+                (content: string) => {
+                    textarea.value = removeBaseUri(content, baseUri);
+                    textarea.dispatchEvent(new Event("input", { bubbles: true }));
+                    textarea.dispatchEvent(new Event("change", { bubbles: true }));
+                },
+                500,
+                true,
+            );
 
             let editor: MarkdownView | CodeView = new MarkdownView(editorWrap, addBaseUri(textarea.value, baseUri), inputEventHandler, attributes, baseUri);
             editor.view.dom.style.height = `${textareaHeight}px`;

@@ -190,7 +190,7 @@ final class App
             ->alias('config');
 
         $container->define(ViewFactory::class)
-            ->parameter('methods', fn(Container $container) => $container->call(require SYSTEM_PATH . '/helpers.php'));
+            ->parameter('methods', fn(Container $container) => $container->call(require SYSTEM_PATH . '/methods.php'));
 
         $container->define(Request::class, fn() => Request::fromGlobals())
             ->alias('request');

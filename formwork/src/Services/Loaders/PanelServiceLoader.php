@@ -52,7 +52,7 @@ final class PanelServiceLoader implements ResolutionAwareServiceLoaderInterface
      */
     public function onResolved(object $service, Container $container): void
     {
-        $this->viewFactory->setMethods($container->call(require FileSystem::joinPaths($this->config->get('system.panel.path'), 'helpers.php')));
+        $this->viewFactory->setMethods($container->call(require FileSystem::joinPaths($this->config->get('system.panel.path'), 'methods.php')));
 
         $this->schemes->loadFromPath($this->config->get('system.schemes.paths.panel'));
 

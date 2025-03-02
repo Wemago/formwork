@@ -139,10 +139,11 @@ abstract class AbstractController extends BaseAbstractController
             'appConfig' => Json::encode([
                 'baseUri'   => $this->panel->panelUri(),
                 'DateInput' => [
-                    'weekStarts' => $this->config->get('system.date.weekStarts'),
-                    'format'     => Date::formatToPattern($this->config->get('system.date.datetimeFormat')),
-                    'time'       => true,
-                    'labels'     => [
+                    'weekStarts'     => $this->config->get('system.date.weekStarts'),
+                    'dateFormat'     => Date::formatToPattern($this->config->get('system.date.dateFormat')),
+                    'dateTimeformat' => Date::formatToPattern($this->config->get('system.date.datetimeFormat')),
+                    'time'           => true,
+                    'labels'         => [
                         'today'      => $this->translate('date.today'),
                         'weekdays'   => ['long' => $this->translations->getCurrent()->getStrings('date.weekdays.long'), 'short' => $this->translations->getCurrent()->getStrings('date.weekdays.short')],
                         'months'     => ['long' => $this->translations->getCurrent()->getStrings('date.months.long'), 'short' => $this->translations->getCurrent()->getStrings('date.months.short')],

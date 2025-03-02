@@ -28,7 +28,8 @@ function handleLongClick(element: HTMLElement, callback: (event: MouseEvent) => 
 
 interface DateInputOptions {
     weekStarts: number;
-    format: string;
+    dateFormat: string;
+    dateTimeFormat: string;
     time: boolean;
     labels: {
         today: string;
@@ -52,9 +53,10 @@ interface DateInputOptions {
 
 export class DateInput {
     constructor(input: HTMLInputElement, userOptions: Partial<DateInputOptions> = {}) {
-        const defaults = {
+        const defaults: DateInputOptions = {
             weekStarts: 0,
-            format: "YYYY-MM-DD",
+            dateFormat: "YYYY-MM-DD",
+            dateTimeFormat: "YYYY-MM-DD HH:mm:ss",
             time: false,
             labels: {
                 today: "Today",
@@ -77,18 +79,22 @@ export class DateInput {
                 const dateInput = getCurrentInput();
                 if (dateInput !== null) {
                     inputValues[dateInput.id] = date;
-                    dateInput.value = formatDateTime(date);
+                    dateInput.value = formatDateTime(date, format);
                     dateInput.dispatchEvent(new Event("input", { bubbles: true }));
                     dateInput.dispatchEvent(new Event("change", { bubbles: true }));
                 }
             },
-        } satisfies DateInputOptions;
+        };
 
-        const options = Object.assign({}, defaults, userOptions);
+        const options = Object.assign({}, defaults, userOptions, {
+            time: input.dataset.time === "true",
+        });
+
+        const format = options.time ? options.dateTimeFormat : options.dateFormat;
 
         inputValues[input.id] = new Date();
 
-        const calendar = Calendar($(".calendar") as HTMLElement, inputValues[input.id]);
+        const calendar = Calendar(inputValues[input.id]);
 
         initInput();
 
@@ -96,11 +102,11 @@ export class DateInput {
             const value = input.value;
 
             input.readOnly = true;
-            input.size = options.format.length;
+            input.size = format.length;
 
             if (isValidDate(value)) {
                 inputValues[input.id] = new Date(value);
-                input.value = formatDateTime(inputValues[input.id]);
+                input.value = formatDateTime(inputValues[input.id], format);
             }
 
             input.addEventListener("focus", () => {
@@ -136,10 +142,10 @@ export class DateInput {
             return currentElement.matches(".form-input-date") ? currentElement : null;
         }
 
-        function Calendar(element: HTMLElement, date: Date) {
+        function Calendar(date: Date) {
             let year: number, month: number, day: number, hours: number, minutes: number, seconds: number;
 
-            element = element || createElement();
+            const element = createElement();
 
             setDate(date);
 
@@ -438,15 +444,16 @@ export class DateInput {
                 }
 
                 function updateTime() {
-                    ($(".calendar-hours", element) as HTMLElement).innerHTML = pad(has12HourFormat(options.format) ? mod(hours, 12) || 12 : hours, 2);
+                    ($(".calendar-hours", element) as HTMLElement).innerHTML = pad(has12HourFormat(format) ? mod(hours, 12) || 12 : hours, 2);
                     ($(".calendar-minutes", element) as HTMLElement).innerHTML = pad(minutes, 2);
-                    ($(".calendar-meridiem", element) as HTMLElement).innerHTML = has12HourFormat(options.format) ? (hours < 12 ? "AM" : "PM") : "";
+                    ($(".calendar-meridiem", element) as HTMLElement).innerHTML = has12HourFormat(format) ? (hours < 12 ? "AM" : "PM") : "";
                 }
             }
 
             function createElement() {
                 const element = document.createElement("div");
                 element.className = "calendar";
+                element.dataset.for = input.id;
                 element.innerHTML = `<div class="calendar-buttons"><button type="button" class="prevMonth" aria-label="${options.labels.prevMonth}"></button><button class="currentMonth" aria-label="${options.labels.today}">${options.labels.today}</button><button type="button" class="nextMonth" aria-label="${options.labels.nextMonth}"></button></div><div class="calendar-separator"></div><table class="calendar-table"></table>`;
 
                 if (options.time) {
@@ -728,7 +735,7 @@ export class DateInput {
             return match !== null && match[0][0] === "H";
         }
 
-        function formatDateTime(date: Date, format: string = options.format) {
+        function formatDateTime(date: Date, format: string) {
             const regex = /\[([^\]]*)\]|[YR]{4}|uuu|[YR]{2}|[MD]{1,4}|[WHhms]{1,2}|[AaZz]/g;
 
             function splitTimezoneOffset(offset: number) {

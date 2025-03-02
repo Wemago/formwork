@@ -11,6 +11,7 @@
                 'required'    => $field->isRequired(),
                 'disabled'    => $field->isDisabled(),
                 'hidden'      => $field->isHidden(),
+                'data-time'   => $field->hasTime() ? 'true' : 'false',
             ]) ?>>
     <span class="form-input-action" data-reset="<?= $field->name() ?>"><?= $this->icon('times-circle') ?></span>
 </div>

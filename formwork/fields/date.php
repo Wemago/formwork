@@ -43,18 +43,26 @@ return function (App $app): array {
             return $field;
         },
 
+        'hasTime' => function (Field $field): bool {
+            return $field->is('time', true);
+        },
+
         'validate' => function (Field $field, $value) use ($app): ?string {
             if (Constraint::isEmpty($value)) {
                 return null;
             }
 
-            $formats = [
+            $inputFormats = [
                 $app->config()->get('system.date.dateFormat'),
                 $app->config()->get('system.date.datetimeFormat'),
             ];
 
+            $format = $field->hasTime()
+                ? 'Y-m-d H:i:s'
+                : 'Y-m-d';
+
             try {
-                return date('Y-m-d H:i:s', Date::toTimestamp($value, $formats));
+                return date($format, Date::toTimestamp($value, $inputFormats));
             } catch (InvalidArgumentException $e) {
                 throw new ValidationException(sprintf('Invalid value for field "%s" of type "%s":%s', $field->name(), $field->type(), Str::after($e->getMessage(), ':')));
             }

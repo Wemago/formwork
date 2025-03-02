@@ -9,17 +9,19 @@ use Formwork\Utils\Str;
 
 return function (App $app): array {
     return [
-        'format' => function (Field $field, ?string $format = null, string $type = 'pattern') use ($app): string {
-            $format ??= $app->config()->get('system.date.dateFormat');
+        /**
+         * By default the date is formatted using the YYYY-MM-DD format.
+         * This is at the same time human-readable and comparable when sorting.
+         */
+        'format' => function (Field $field, string $format = 'YYYY-MM-DD', string $type = 'pattern') use ($app): string {
             $translation = $app->translations()->getCurrent();
 
-            if ($format !== null) {
-                $format = match (strtolower($type)) {
-                    'pattern' => Date::patternToFormat($format),
-                    'date'    => $format,
-                    default   => throw new InvalidArgumentException('Invalid date format type'),
-                };
-            }
+            $format = match (strtolower($type)) {
+                'pattern' => Date::patternToFormat($format),
+                'date'    => $format,
+                default   => throw new InvalidArgumentException('Invalid date format type'),
+            };
+
             return $field->isEmpty() ? '' : Date::formatTimestamp($field->toTimestamp(), $format, $translation);
         },
 

@@ -218,7 +218,8 @@ final class Date
             throw new InvalidArgumentException(sprintf('At least 1 format must be given to %s()', __METHOD__));
         }
         foreach ($formats as $format) {
-            $dateTime = DateTime::createFromFormat($format, $date);
+            // Always prepend "!" to the format to avoid parsing the date as local time
+            $dateTime = DateTime::createFromFormat(Str::prepend($format, '!'), $date);
             if ($dateTime !== false) {
                 return $dateTime;
             }

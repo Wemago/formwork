@@ -138,7 +138,7 @@ abstract class AbstractController extends BaseAbstractController
                 'DateInput' => [
                     'weekStarts'     => $this->config->get('system.date.weekStarts'),
                     'dateFormat'     => Date::formatToPattern($this->config->get('system.date.dateFormat')),
-                    'dateTimeformat' => Date::formatToPattern($this->config->get('system.date.datetimeFormat')),
+                    'dateTimeFormat' => Date::formatToPattern($this->config->get('system.date.datetimeFormat')),
                     'time'           => true,
                     'labels'         => [
                         'today'      => $this->translate('date.today'),

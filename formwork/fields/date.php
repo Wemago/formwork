@@ -37,6 +37,10 @@ return function (App $app): array {
             return $field->isEmpty() ? '' : Date::formatTimestampAsDistance($field->toTimestamp(), $app->translations()->getCurrent());
         },
 
+        'toDateTimeString' => function (Field $field): string {
+            return $field->isEmpty() ? '' : Str::removeEnd($field->format('YYYY-MM-DD[T]hh:mm:ss'), ':00');
+        },
+
         'toString' => function (Field $field): string {
             return $field->isEmpty() ? '' : $field->format();
         },

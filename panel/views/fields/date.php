@@ -6,7 +6,7 @@
                 'class'       => ['form-input', 'form-input-date'],
                 'id'          => $field->name(),
                 'name'        => $field->formName(),
-                'value'       => $field->value(),
+                'value'       => $field->toDateTimeString(),
                 'placeholder' => $field->placeholder(),
                 'required'    => $field->isRequired(),
                 'disabled'    => $field->isDisabled(),

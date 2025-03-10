@@ -502,7 +502,10 @@ class Calendar {
             );
         }
 
-        window.addEventListener("resize", throttle(this.setCalendarPosition, 100));
+        window.addEventListener(
+            "resize",
+            throttle(() => this.setCalendarPosition(), 100),
+        );
 
         window.addEventListener("mousedown", (event) => {
             if (element.style.display !== "none") {

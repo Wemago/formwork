@@ -1,7 +1,5 @@
 title: '{{panel.modal.images.title}}'
 
-form: false
-
 size: large
 
 fields:

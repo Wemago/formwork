@@ -1,11 +1,33 @@
 import { $, $$ } from "../../utils/selectors";
 export class ImagePicker {
-    constructor(element: HTMLSelectElement) {
-        const options = $$("option", element);
+    readonly element: HTMLSelectElement;
+    readonly name: string;
 
-        element.hidden = true;
-        element.ariaHidden = "true";
-        element.tabIndex = -1;
+    constructor(element: HTMLSelectElement) {
+        this.element = element;
+        this.name = this.element.name;
+
+        this.initInput();
+    }
+
+    get value() {
+        return this.element.value;
+    }
+
+    private initInput() {
+        this.element.hidden = true;
+        this.element.ariaHidden = "true";
+        this.element.tabIndex = -1;
+
+        const pickImage = (thumbnail: HTMLElement) => {
+            $$(".image-picker-thumbnail").forEach((element) => {
+                element.classList.remove("selected");
+            });
+            thumbnail.classList.add("selected");
+            this.element.value = thumbnail.dataset.uri ?? "";
+        };
+
+        const options = $$("option", this.element);
 
         if (options.length > 0) {
             const container = document.createElement("div");
@@ -22,15 +44,8 @@ export class ImagePicker {
                 container.appendChild(thumbnail);
             }
 
-            (element.parentNode as ParentNode).insertBefore(container, element);
+            (this.element.parentNode as ParentNode).insertBefore(container, this.element);
             ($(".image-picker-empty-state") as HTMLElement).style.display = "none";
-        }
-
-        function pickImage(thumbnail: HTMLElement) {
-            $$(".image-picker-thumbnail").forEach((element) => {
-                element.classList.remove("selected");
-            });
-            thumbnail.classList.add("selected");
         }
     }
 }

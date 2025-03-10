@@ -2,8 +2,10 @@ import { $, $$ } from "../../utils/selectors";
 import { escapeRegExp, makeDiacriticsRegExp } from "../../utils/validation";
 import { app } from "../../app";
 import { debounce } from "../../utils/events";
+import { Form } from "../form";
 import { Notification } from "../notification";
 import { Request } from "../../utils/request";
+import { SelectInput } from "../inputs/select-input";
 import Sortable from "sortablejs";
 
 export class Pages {
@@ -120,10 +122,12 @@ export class Pages {
         }
 
         if (newPageModal) {
-            const parentSelect = $('[name="newPageModal[parent]"]') as HTMLInputElement;
+            const form = newPageModal.form as Form;
 
-            parentSelect.addEventListener("change", () => {
-                const option = $('.dropdown-list[data-for="newPageModal.parent"] .selected');
+            const parentSelect = form.inputs["newPageModal[parent]"] as SelectInput;
+
+            parentSelect.element.addEventListener("change", () => {
+                const option = parentSelect.selectedDropdownItem;
 
                 if (!option) {
                     return;
@@ -131,27 +135,26 @@ export class Pages {
 
                 const allowedTemplates = option.dataset.allowedTemplates ? option.dataset.allowedTemplates.split(" ") : [];
 
-                const pageTemplate = $('[name="newPageModal[template]"]') as HTMLInputElement;
+                const templateSelect = form.inputs["newPageModal[template]"] as SelectInput;
 
                 if (allowedTemplates.length > 0) {
-                    pageTemplate.dataset.previousValue = pageTemplate.value;
-                    pageTemplate.value = allowedTemplates[0];
-                    ($('.form-select[id="newPageModal.template"]') as HTMLInputElement).value = ($(`.dropdown-list[data-for="newPageModal.template"] .dropdown-item[data-value="${pageTemplate.value}"]`) as HTMLElement).innerText;
+                    templateSelect.element.dataset.previousValue = templateSelect.value;
 
-                    $$('.dropdown-list[data-for="newPageModal.template"] .dropdown-item').forEach((option) => {
-                        if (!allowedTemplates.includes(option.dataset.value as string)) {
-                            option.classList.add("disabled");
+                    templateSelect.value = allowedTemplates[0];
+
+                    templateSelect.dropdownItems.forEach((item) => {
+                        if (!allowedTemplates.includes(item.dataset.value as string)) {
+                            item.classList.add("disabled");
                         }
                     });
                 } else {
-                    if ("previousValue" in pageTemplate.dataset) {
-                        pageTemplate.value = pageTemplate.dataset.previousValue as string;
-                        delete pageTemplate.dataset.previousValue;
-                        ($('.form-select[id="newPageModal.template"]') as HTMLInputElement).value = ($(`.dropdown-list[data-for="newPageModal.template"] .dropdown-item[data-value="${pageTemplate.value}"]`) as HTMLElement).innerText;
+                    if ("previousValue" in templateSelect.element.dataset) {
+                        templateSelect.value = templateSelect.element.dataset.previousValue as string;
+                        delete templateSelect.element.dataset.previousValue;
                     }
 
-                    $$('.dropdown-list[data-for="newPageModal.template"] .dropdown-item').forEach((option) => {
-                        option.classList.remove("disabled");
+                    templateSelect.dropdownItems.forEach((item) => {
+                        item.classList.remove("disabled");
                     });
                 }
             });

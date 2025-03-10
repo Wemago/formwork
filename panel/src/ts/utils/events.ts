@@ -55,3 +55,22 @@ export function throttle(callback: (...args: any[]) => any, delay: number) {
 
     return wrapper;
 }
+
+export function longClick(element: HTMLElement, callback: (event: MouseEvent) => void, timeout: number, interval: number) {
+    let timer: number;
+    function clear() {
+        clearTimeout(timer);
+    }
+    element.addEventListener("mousedown", function (event: MouseEvent) {
+        // eslint-disable-next-line @typescript-eslint/no-this-alias
+        const context = this;
+        if (event.button !== 0) {
+            clear();
+        } else {
+            callback.call(context, event);
+            timer = window.setTimeout(() => (timer = window.setInterval(callback.bind(context, event), interval)), timeout);
+        }
+    });
+    element.addEventListener("mouseout", clear);
+    window.addEventListener("mouseup", clear);
+}

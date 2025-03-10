@@ -13,15 +13,20 @@ import { SlugInput } from "./inputs/slug-input";
 import { TagsInput } from "./inputs/tags-input";
 import { TogglegroupInput } from "./inputs/togglegroup-input";
 
+interface Input {
+    name: string;
+    value: string;
+}
+
 export class Inputs {
-    [name: string]: object;
+    [name: string]: Input;
 
     constructor(form: Form) {
         const parent = form.element;
 
         $$(".editor-textarea", parent).forEach((element: HTMLTextAreaElement) => (this[element.name] = new EditorInput(element)));
 
-        $$(".form-input-array", parent).forEach((element: HTMLInputElement) => (this[element.name] = new ArrayInput(element)));
+        $$(".form-input-array", parent).forEach((element: HTMLInputElement) => (this[element.dataset.name as string] = new ArrayInput(element)));
 
         $$(".form-input-date", parent).forEach((element: HTMLInputElement) => (this[element.name] = new DateInput(element, app.config.DateInput)));
 
@@ -31,7 +36,7 @@ export class Inputs {
 
         $$(".form-input-tags", parent).forEach((element: HTMLInputElement) => (this[element.name] = new TagsInput(element, app.config.TagsInput)));
 
-        $$(".form-togglegroup", parent).forEach((element: HTMLFieldSetElement) => (this[element.id] = new TogglegroupInput(element)));
+        $$(".form-togglegroup[id]", parent).forEach((element: HTMLFieldSetElement) => (this[element.id] = new TogglegroupInput(element)));
 
         $$(".image-picker", parent).forEach((element: HTMLSelectElement) => (this[element.name] = new ImagePicker(element)));
 

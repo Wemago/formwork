@@ -1,30 +1,9 @@
 import { $, $$ } from "../../utils/selectors";
 import { getOuterHeight, getOuterWidth } from "../../utils/dimensions";
 import { insertIcon } from "../icons";
+import { longClick } from "../../utils/events";
+import { mod } from "../../utils/math";
 import { throttle } from "../../utils/events";
-
-const inputValues: {
-    [id: string]: Date;
-} = {};
-
-function handleLongClick(element: HTMLElement, callback: (event: MouseEvent) => void, timeout: number, interval: number) {
-    let timer: number;
-    function clear() {
-        clearTimeout(timer);
-    }
-    element.addEventListener("mousedown", function (event: MouseEvent) {
-        // eslint-disable-next-line @typescript-eslint/no-this-alias
-        const context = this;
-        if (event.button !== 0) {
-            clear();
-        } else {
-            callback.call(context, event);
-            timer = window.setTimeout(() => (timer = window.setInterval(callback.bind(context, event), interval)), timeout);
-        }
-    });
-    element.addEventListener("mouseout", clear);
-    window.addEventListener("mouseup", clear);
-}
 
 interface DateInputOptions {
     weekStarts: number;
@@ -48,11 +27,21 @@ interface DateInputOptions {
         prevMinute: string;
         nextMinute: string;
     };
-    onChange: (date: Date) => void;
+    onChange: (date: Date, input: DateInput) => void;
 }
 
 export class DateInput {
-    constructor(input: HTMLInputElement, userOptions: Partial<DateInputOptions> = {}) {
+    readonly element: HTMLInputElement;
+
+    readonly name: string;
+
+    readonly options: DateInputOptions;
+
+    readonly format: string;
+
+    private calendar: Calendar;
+
+    constructor(element: HTMLInputElement, options: Partial<DateInputOptions> = {}) {
         const defaults: DateInputOptions = {
             weekStarts: 0,
             dateFormat: "YYYY-MM-DD",
@@ -75,643 +64,87 @@ export class DateInput {
                 prevMinute: "Previous minute",
                 nextMinute: "Next minute",
             },
-            onChange(date: Date) {
-                const dateInput = getCurrentInput();
-                if (dateInput !== null) {
-                    inputValues[dateInput.id] = date;
-                    dateInput.value = formatDateTime(date, format);
-                    dateInput.dispatchEvent(new Event("input", { bubbles: true }));
-                    dateInput.dispatchEvent(new Event("change", { bubbles: true }));
-                }
+            onChange(date: Date, input: DateInput) {
+                input.element.value = input.formatDateTime(date, input.format);
+                input.element.dispatchEvent(new Event("input", { bubbles: true }));
+                input.element.dispatchEvent(new Event("change", { bubbles: true }));
             },
         };
 
-        const options = Object.assign({}, defaults, userOptions, {
-            time: input.dataset.time === "true",
+        this.element = element;
+
+        this.name = element.name;
+
+        this.options = { ...defaults, ...options, time: this.element.dataset.time === "true" };
+
+        this.format = this.options.time ? this.options.dateTimeFormat : this.options.dateFormat;
+
+        this.calendar = new Calendar(this);
+
+        this.initInput();
+    }
+
+    get value() {
+        return this.formatDateTime(this.calendar.date, "YYYY-MM-DD[T]HH:mm:ss").replace(":00$", "");
+    }
+
+    set value(value: string) {
+        if (this.isValidDate(value)) {
+            this.calendar.date = new Date(value);
+            this.element.value = this.formatDateTime(this.calendar.date, this.format);
+        } else {
+            this.calendar.now();
+            this.element.value = "";
+        }
+    }
+
+    private initInput() {
+        this.element.readOnly = true;
+        this.element.size = this.format.length;
+
+        this.value = this.element.value;
+
+        this.element.addEventListener("focus", () => {
+            this.calendar.show();
         });
 
-        const format = options.time ? options.dateTimeFormat : options.dateFormat;
+        this.element.addEventListener("blur", () => {
+            this.calendar.hide();
+        });
 
-        inputValues[input.id] = new Date();
-
-        const calendar = Calendar(inputValues[input.id]);
-
-        initInput();
-
-        function initInput() {
-            const value = input.value;
-
-            input.readOnly = true;
-            input.size = format.length;
-
-            if (isValidDate(value)) {
-                inputValues[input.id] = new Date(value);
-                input.value = formatDateTime(inputValues[input.id], format);
+        this.element.addEventListener("keydown", (event: KeyboardEvent) => {
+            switch (event.key) {
+                case "Backspace":
+                    this.element.value = "";
+                    this.element.blur();
+                    this.element.dispatchEvent(new Event("input", { bubbles: true }));
+                    this.element.dispatchEvent(new Event("change", { bubbles: true }));
+                    break;
+                case "Escape":
+                    this.element.blur();
+                    break;
+                case "Tab":
+                    this.element.blur();
+                    return;
             }
+            event.preventDefault();
+        });
+    }
 
-            input.addEventListener("focus", () => {
-                calendar.gotoDate(inputValues[input.id]);
-                calendar.show();
-            });
+    private isValidDate(date: string) {
+        return date && !isNaN(Date.parse(date));
+    }
 
-            input.addEventListener("blur", () => {
-                calendar.hide();
-            });
+    private formatDateTime(date: Date, format: string) {
+        const regex = /\[([^\]]*)\]|[YR]{4}|uuu|[YR]{2}|[MD]{1,4}|[WHhms]{1,2}|[AaZz]/g;
 
-            input.addEventListener("keydown", (event: KeyboardEvent) => {
-                switch (event.key) {
-                    case "Backspace":
-                        input.value = "";
-                        input.blur();
-                        input.dispatchEvent(new Event("input", { bubbles: true }));
-                        input.dispatchEvent(new Event("change", { bubbles: true }));
-                        break;
-                    case "Escape":
-                        input.blur();
-                        break;
-                    case "Tab":
-                        input.blur();
-                        return;
-                }
-                event.preventDefault();
-            });
-        }
-
-        function getCurrentInput() {
-            const currentElement = document.activeElement as HTMLInputElement;
-            return currentElement.matches(".form-input-date") ? currentElement : null;
-        }
-
-        function Calendar(date: Date) {
-            let year: number, month: number, day: number, hours: number, minutes: number, seconds: number;
-
-            const element = createElement();
-
-            setDate(date);
-
-            function setDate(date: Date) {
-                year = date.getFullYear();
-                month = date.getMonth();
-                day = date.getDate();
-                hours = date.getHours();
-                minutes = date.getMinutes();
-                seconds = date.getSeconds();
-            }
-
-            function gotoDate(date: Date) {
-                setDate(date);
-                update();
-            }
-
-            function getDate() {
-                return new Date(year, month, day, hours, minutes, seconds);
-            }
-
-            function getElement() {
-                return element;
-            }
-
-            function setNow() {
-                setDate(new Date());
-            }
-
-            function now() {
-                setNow();
-                update();
-            }
-
-            function setPrevYear() {
-                year--;
-            }
-
-            function prevYear() {
-                setPrevYear();
-                update();
-            }
-
-            function setNextYear() {
-                year++;
-            }
-
-            function nextYear() {
-                setNextYear();
-                update();
-            }
-
-            function setLastDayOfMonth() {
-                day = daysInMonth(month, year);
-            }
-
-            function lastDayOfMonth() {
-                setLastDayOfMonth();
-                update();
-            }
-
-            function setPrevMonth() {
-                month = mod(month - 1, 12);
-                if (month === 11) {
-                    setPrevYear();
-                }
-                if (day > daysInMonth(month, year)) {
-                    setLastDayOfMonth();
-                }
-            }
-
-            function prevMonth() {
-                setPrevMonth();
-                update();
-            }
-
-            function setNextMonth() {
-                month = mod(month + 1, 12);
-                if (month === 0) {
-                    setNextYear();
-                }
-                if (day > daysInMonth(month, year)) {
-                    setLastDayOfMonth();
-                }
-            }
-
-            function nextMonth() {
-                setNextMonth();
-                update();
-            }
-
-            function setPrevWeek() {
-                day -= 7;
-                if (day < 1) {
-                    setPrevMonth();
-                    day += daysInMonth(month, year);
-                }
-            }
-
-            function prevWeek() {
-                setPrevWeek();
-                update();
-            }
-
-            function setNextWeek() {
-                day += 7;
-                if (day > daysInMonth(month, year)) {
-                    day -= daysInMonth(month, year);
-                    setNextMonth();
-                }
-            }
-
-            function nextWeek() {
-                setNextWeek();
-                update();
-            }
-
-            function setPrevDay() {
-                day--;
-                if (day < 1) {
-                    setPrevMonth();
-                    setLastDayOfMonth();
-                }
-            }
-
-            function prevDay() {
-                setPrevDay();
-                update();
-            }
-
-            function setNextDay() {
-                day++;
-                if (day > daysInMonth(month, year)) {
-                    setNextMonth();
-                    day = 1;
-                }
-            }
-
-            function nextDay() {
-                setNextDay();
-                update();
-            }
-
-            function setNextHour() {
-                hours = mod(hours + 1, 24);
-                if (hours === 0) {
-                    setNextDay();
-                }
-            }
-
-            function nextHour() {
-                setNextHour();
-                update();
-            }
-
-            function setPrevHour() {
-                hours = mod(hours - 1, 24);
-                if (hours === 23) {
-                    setPrevDay();
-                }
-            }
-
-            function prevHour() {
-                setPrevHour();
-                update();
-            }
-
-            function setNextMinute() {
-                minutes = mod(minutes + 1, 60);
-                if (minutes === 0) {
-                    setNextHour();
-                }
-            }
-
-            function nextMinute() {
-                setNextMinute();
-                update();
-            }
-
-            function setPrevMinute() {
-                minutes = mod(minutes - 1, 60);
-                if (minutes === 59) {
-                    setPrevHour();
-                }
-            }
-
-            function prevMinute() {
-                setPrevMinute();
-                update();
-            }
-
-            function setNextSecond() {
-                seconds = mod(seconds + 1, 60);
-                if (seconds === 0) {
-                    setNextMinute();
-                }
-            }
-
-            function nextSecond() {
-                setNextSecond();
-                update();
-            }
-
-            function setPrevSecond() {
-                seconds = mod(seconds - 1, 60);
-                if (seconds === 59) {
-                    setPrevMinute();
-                }
-            }
-
-            function prevSecond() {
-                setPrevSecond();
-                update();
-            }
-
-            function show() {
-                element.style.display = "block";
-                setCalendarPosition();
-            }
-
-            function hide() {
-                element.style.display = "none";
-            }
-
-            function isVisible() {
-                return getComputedStyle(element).display !== "none";
-            }
-
-            function update() {
-                ($(".calendar-table", element) as HTMLElement).innerHTML = getInnerHTML();
-
-                setEvents();
-
-                if (options.time) {
-                    updateTime();
-                }
-
-                function getInnerHTML() {
-                    const firstDay = new Date(year, month, 1).getDay();
-                    const start = mod(firstDay - options.weekStarts, 7);
-                    const monthLength = daysInMonth(month, year);
-
-                    let num = 1;
-                    let html = "";
-
-                    html += '<tr><th class="calendar-header" colspan="7">';
-                    html += `${options.labels.months.long[month]}&nbsp;${year}`;
-                    html += "</th></tr>";
-                    html += "<tr>";
-
-                    for (let i = 0; i < 7; i++) {
-                        html += '<td class="calendar-header-day">';
-                        html += options.labels.weekdays.short[mod(i + options.weekStarts, 7)];
-                        html += "</td>";
-                    }
-
-                    html += "</tr><tr>";
-
-                    for (let i = 0; i < 6; i++) {
-                        for (let j = 0; j < 7; j++) {
-                            if (num <= monthLength && (i > 0 || j >= start)) {
-                                if (num === day) {
-                                    html += '<td class="calendar-day selected">';
-                                } else {
-                                    html += '<td class="calendar-day">';
-                                }
-                                html += num++;
-                            } else if (num === 1) {
-                                html += '<td class="calendar-prev-month-day">';
-                                html += daysInMonth(mod(month - 1, 12), year) - start + j + 1;
-                            } else {
-                                html += '<td class="calendar-next-month-day">';
-                                html += num++ - monthLength;
-                            }
-                            html += "</td>";
-                        }
-                        html += "</tr><tr>";
-                    }
-                    html += "</tr>";
-
-                    return html;
-                }
-
-                function setEvents() {
-                    $$(".calendar-day", element).forEach((element) => {
-                        element.addEventListener("mousedown", (event) => {
-                            event.stopPropagation();
-                            event.preventDefault();
-                        });
-                        element.addEventListener("click", () => {
-                            day = parseInt(`${element.textContent}`);
-                            update();
-                            options.onChange(getDate());
-                        });
-                    });
-                }
-
-                function updateTime() {
-                    ($(".calendar-hours", element) as HTMLElement).innerHTML = pad(has12HourFormat(format) ? mod(hours, 12) || 12 : hours, 2);
-                    ($(".calendar-minutes", element) as HTMLElement).innerHTML = pad(minutes, 2);
-                    ($(".calendar-meridiem", element) as HTMLElement).innerHTML = has12HourFormat(format) ? (hours < 12 ? "AM" : "PM") : "";
-                }
-            }
-
-            function createElement() {
-                const element = document.createElement("div");
-                element.className = "calendar";
-                element.dataset.for = input.id;
-                element.innerHTML = `<div class="calendar-buttons"><button type="button" class="prevMonth" aria-label="${options.labels.prevMonth}"></button><button class="currentMonth" aria-label="${options.labels.today}">${options.labels.today}</button><button type="button" class="nextMonth" aria-label="${options.labels.nextMonth}"></button></div><div class="calendar-separator"></div><table class="calendar-table"></table>`;
-
-                if (options.time) {
-                    element.innerHTML += `<div class="calendar-separator"></div><table class="calendar-time"><tr><td><button type="button" class="nextHour" aria-label="${options.labels.nextHour}"></button></td><td></td><td><button type="button" class="nextMinute" aria-label="${options.labels.nextMinute}"></button></td></tr><tr><td class="calendar-hours"></td><td>:</td><td class="calendar-minutes"></td><td class="calendar-meridiem"></td></tr><tr><td><button type="button" class="prevHour" aria-label="${options.labels.prevHour}"></button></td><td></td><td><button type="button" class="prevMinute" aria-label="${options.labels.prevMinute}"></button></td></tr></table></div>`;
-
-                    insertIcon("chevron-down", $(".prevHour", element) as HTMLElement);
-                    insertIcon("chevron-up", $(".nextHour", element) as HTMLElement);
-
-                    insertIcon("chevron-down", $(".prevMinute", element) as HTMLElement);
-                    insertIcon("chevron-up", $(".nextMinute", element) as HTMLElement);
-                }
-
-                insertIcon("calendar-clock", $(".currentMonth", element) as HTMLElement);
-
-                insertIcon("chevron-left", $(".prevMonth", element) as HTMLElement);
-                insertIcon("chevron-right", $(".nextMonth", element) as HTMLElement);
-
-                ($(".currentMonth", element) as HTMLElement).addEventListener("mousedown", (event) => {
-                    now();
-                    options.onChange(getDate());
-                    event.preventDefault();
-                });
-
-                handleLongClick(
-                    $(".prevMonth", element) as HTMLElement,
-                    (event) => {
-                        prevMonth();
-                        options.onChange(getDate());
-                        event.preventDefault();
-                    },
-                    750,
-                    500,
-                );
-
-                handleLongClick(
-                    $(".nextMonth", element) as HTMLElement,
-                    (event) => {
-                        nextMonth();
-                        options.onChange(getDate());
-                        event.preventDefault();
-                    },
-                    750,
-                    500,
-                );
-
-                if (options.time) {
-                    handleLongClick(
-                        $(".nextHour", element) as HTMLElement,
-                        (event) => {
-                            nextHour();
-                            options.onChange(getDate());
-                            event.preventDefault();
-                        },
-                        750,
-                        250,
-                    );
-
-                    handleLongClick(
-                        $(".prevHour", element) as HTMLElement,
-                        (event) => {
-                            prevHour();
-                            options.onChange(getDate());
-                            event.preventDefault();
-                        },
-                        750,
-                        250,
-                    );
-
-                    handleLongClick(
-                        $(".nextMinute", element) as HTMLElement,
-                        (event) => {
-                            nextMinute();
-                            options.onChange(getDate());
-                            event.preventDefault();
-                        },
-                        750,
-                        250,
-                    );
-
-                    handleLongClick(
-                        $(".prevMinute", element) as HTMLElement,
-                        (event) => {
-                            prevMinute();
-                            options.onChange(getDate());
-                            event.preventDefault();
-                        },
-                        750,
-                        250,
-                    );
-                }
-
-                window.addEventListener("resize", throttle(setCalendarPosition, 100));
-
-                window.addEventListener("mousedown", (event) => {
-                    if (element.style.display !== "none") {
-                        if ((event.target as HTMLElement).closest(".calendar")) {
-                            event.preventDefault();
-                        }
-                    }
-                });
-
-                window.addEventListener("keydown", (event) => {
-                    if (!isVisible()) {
-                        return;
-                    }
-                    switch (event.key) {
-                        case "Enter":
-                            ($(".calendar-day.selected", element) as HTMLElement).click();
-                            hide();
-                            break;
-                        case "Backspace":
-                        case "Escape":
-                        case "Tab":
-                            hide();
-                            break;
-                        case "ArrowLeft":
-                            if (event.ctrlKey || event.metaKey) {
-                                if (event.shiftKey) {
-                                    prevYear();
-                                } else {
-                                    prevMonth();
-                                }
-                            } else {
-                                prevDay();
-                            }
-                            options.onChange(getDate());
-                            break;
-                        case "ArrowUp":
-                            prevWeek();
-                            options.onChange(getDate());
-                            break;
-                        case "ArrowRight":
-                            if (event.ctrlKey || event.metaKey) {
-                                if (event.shiftKey) {
-                                    nextYear();
-                                } else {
-                                    nextMonth();
-                                }
-                            } else {
-                                nextDay();
-                            }
-                            options.onChange(getDate());
-                            break;
-                        case "ArrowDown":
-                            nextWeek();
-                            options.onChange(getDate());
-                            break;
-                        case "0":
-                            if (event.ctrlKey || event.metaKey) {
-                                now();
-                            }
-                            options.onChange(getDate());
-                            break;
-                        default:
-                            return;
-                    }
-
-                    event.preventDefault();
-                });
-
-                document.body.appendChild(element);
-
-                return element;
-            }
-
-            return {
-                setDate,
-                gotoDate,
-                getDate,
-                getElement,
-                now,
-                prevYear,
-                nextYear,
-                lastDayOfMonth,
-                prevMonth,
-                nextMonth,
-                prevWeek,
-                nextWeek,
-                prevDay,
-                nextDay,
-                nextHour,
-                prevHour,
-                nextMinute,
-                prevMinute,
-                nextSecond,
-                prevSecond,
-                show,
-                hide,
-                isVisible,
-            };
-        }
-
-        function setCalendarPosition() {
-            const input = getCurrentInput();
-
-            if (!input || !calendar.isVisible()) {
-                return;
-            }
-
-            const inputRect = input.getBoundingClientRect();
-            const inputTop = inputRect.top + window.scrollY;
-            const inputLeft = inputRect.left + window.scrollX;
-
-            const calendarElement = calendar.getElement();
-            calendarElement.style.top = `${inputTop + input.offsetHeight}px`;
-            calendarElement.style.left = `${inputLeft + input.offsetLeft}px`;
-
-            const calendarRect = calendarElement.getBoundingClientRect();
-            const calendarTop = calendarRect.top + window.scrollY;
-            const calendarLeft = calendarRect.left + window.scrollX;
-            const calendarWidth = getOuterWidth(calendarElement);
-            const calendarHeight = getOuterHeight(calendarElement);
-
-            const windowWidth = document.documentElement.clientWidth;
-            const windowHeight = document.documentElement.clientHeight;
-
-            if (calendarLeft + calendarWidth > windowWidth) {
-                calendarElement.style.left = `${windowWidth - calendarWidth}px`;
-            }
-
-            if (calendarTop < window.scrollY || window.scrollY < calendarTop + calendarHeight - windowHeight) {
-                window.scrollTo(window.scrollX, calendarTop + calendarHeight - windowHeight);
-            }
-        }
-
-        function mod(x: number, y: number) {
-            // Return x mod y (always rounded downwards, differs from x % y which is the remainder)
-            return x - y * Math.floor(x / y);
-        }
-
-        function pad(num: number, length: number) {
-            let result = num.toString();
-            while (result.length < length) {
-                result = `0${result}`;
-            }
-            return result;
-        }
-
-        function isValidDate(date: string) {
-            return date && !isNaN(Date.parse(date));
-        }
-
-        function isLeapYear(year: number) {
-            return (year % 4 === 0 && year % 100 !== 0) || year % 400 === 0;
-        }
-
-        function daysInMonth(month: number, year: number) {
-            const daysInMonth = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
-            return month === 1 && isLeapYear(year) ? 29 : daysInMonth[month];
-        }
-
-        function weekStart(date: Date, firstDay: number = options.weekStarts) {
+        const weekStart = (date: Date, firstDay: number = this.options.weekStarts) => {
             let day = date.getDate();
             day -= mod(date.getDay() - firstDay, 7);
             return new Date(date.getFullYear(), date.getMonth(), day);
-        }
+        };
 
-        function weekNumberingYear(date: Date) {
+        const weekNumberingYear = (date: Date) => {
             const year = date.getFullYear();
             const thisYearFirstWeekStart = weekStart(new Date(year, 0, 4), 1);
             const nextYearFirstWeekStart = weekStart(new Date(year + 1, 0, 4), 1);
@@ -721,92 +154,541 @@ export class DateInput {
                 return year;
             }
             return year - 1;
-        }
+        };
 
-        function weekOfYear(date: Date) {
+        const weekOfYear = (date: Date) => {
             const dateWeekNumberingYear = weekNumberingYear(date);
             const dateFirstWeekStart = weekStart(new Date(dateWeekNumberingYear, 0, 4), 1);
             const dateWeekStart = weekStart(date, 1);
             return Math.round((dateWeekStart.getTime() - dateFirstWeekStart.getTime()) / 604800000) + 1;
+        };
+
+        const splitTimezoneOffset = (offset: number) => {
+            // Note that the offset returned by Date.getTimezoneOffset()
+            // is positive if behind UTC and negative if ahead UTC
+            const sign = offset > 0 ? "-" : "+";
+            const hours = Math.floor(Math.abs(offset) / 60);
+            const minutes = Math.abs(offset) % 60;
+            return [sign + `${hours}`.padStart(2, "0"), `${minutes}`.padStart(2, "0")];
+        };
+
+        return format.replace(regex, (match: string, $1) => {
+            switch (match) {
+                case "YY":
+                    return `${date.getFullYear()}`.substr(-2);
+                case "YYYY":
+                    return date.getFullYear();
+                case "M":
+                    return date.getMonth() + 1;
+                case "MM":
+                    return `${date.getMonth() + 1}`.padStart(2, "0");
+                case "MMM":
+                    return this.options.labels.months.short[date.getMonth()];
+                case "MMMM":
+                    return this.options.labels.months.long[date.getMonth()];
+                case "D":
+                    return date.getDate();
+                case "DD":
+                    return `${date.getDate()}`.padStart(2, "0");
+                case "DDD":
+                    return this.options.labels.weekdays.short[mod(date.getDay() + this.options.weekStarts, 7)];
+                case "DDDD":
+                    return this.options.labels.weekdays.long[mod(date.getDay() + this.options.weekStarts, 7)];
+                case "W":
+                    return weekOfYear(date);
+                case "WW":
+                    return `${weekOfYear(date)}`.padStart(2, "0");
+                case "RR":
+                    return weekNumberingYear(date).toString().substr(-2);
+                case "RRRR":
+                    return weekNumberingYear(date);
+                case "H":
+                    return mod(date.getHours(), 12) || 12;
+                case "HH":
+                    return `${mod(date.getHours(), 12) || 12}`.padStart(2, "0");
+                case "h":
+                    return date.getHours();
+                case "hh":
+                    return `${date.getHours()}`.padStart(2, "0");
+                case "m":
+                    return date.getMinutes();
+                case "mm":
+                    return `${date.getMinutes()}`.padStart(2, "0");
+                case "s":
+                    return date.getSeconds();
+                case "ss":
+                    return `${date.getSeconds()}`.padStart(2, "0");
+                case "uuu":
+                    return `${date.getMilliseconds()}`.padStart(3, "0");
+                case "A":
+                    return date.getHours() < 12 ? "AM" : "PM";
+                case "a":
+                    return date.getHours() < 12 ? "am" : "pm";
+                case "Z":
+                    return splitTimezoneOffset(date.getTimezoneOffset()).join(":");
+                case "z":
+                    return splitTimezoneOffset(date.getTimezoneOffset()).join("");
+                default:
+                    return $1 || match;
+            }
+        });
+    }
+}
+
+class Calendar {
+    private readonly input: DateInput;
+
+    readonly element: HTMLElement;
+
+    private year: number;
+    private month: number;
+    private day: number;
+    private hours: number;
+    private minutes: number;
+    private seconds: number;
+
+    constructor(input: DateInput) {
+        this.input = input;
+        this.element = this.createElement();
+        this.date = new Date();
+    }
+
+    get date() {
+        return new Date(this.year, this.month, this.day, this.hours, this.minutes, this.seconds);
+    }
+
+    set date(date: Date) {
+        this.year = date.getFullYear();
+        this.month = date.getMonth();
+        this.day = date.getDate();
+        this.hours = date.getHours();
+        this.minutes = date.getMinutes();
+        this.seconds = date.getSeconds();
+        this.update();
+    }
+
+    get visible() {
+        return getComputedStyle(this.element).display !== "none";
+    }
+
+    now() {
+        this.date = new Date();
+        this.update();
+    }
+
+    prevYear() {
+        this.year--;
+        this.update();
+    }
+
+    nextYear() {
+        this.year++;
+        this.update();
+    }
+
+    lastDayOfMonth() {
+        this.day = this.daysInMonth(this.month, this.year);
+        this.update();
+    }
+
+    prevMonth() {
+        this.month = mod(this.month - 1, 12);
+        if (this.month === 11) {
+            this.prevYear();
+        }
+        if (this.day > this.daysInMonth(this.month, this.year)) {
+            this.lastDayOfMonth();
+        }
+        this.update();
+    }
+
+    nextMonth() {
+        this.month = mod(this.month + 1, 12);
+        if (this.month === 0) {
+            this.nextYear();
+        }
+        if (this.day > this.daysInMonth(this.month, this.year)) {
+            this.lastDayOfMonth();
+        }
+        this.update();
+    }
+
+    prevWeek() {
+        this.day -= 7;
+        if (this.day < 1) {
+            this.prevMonth();
+            this.day += this.daysInMonth(this.month, this.year);
+        }
+        this.update();
+    }
+
+    nextWeek() {
+        this.day += 7;
+        if (this.day > this.daysInMonth(this.month, this.year)) {
+            this.day -= this.daysInMonth(this.month, this.year);
+            this.nextMonth();
+        }
+        this.update();
+    }
+
+    prevDay() {
+        this.day--;
+        if (this.day < 1) {
+            this.prevMonth();
+            this.lastDayOfMonth();
+        }
+        this.update();
+    }
+
+    nextDay() {
+        this.day++;
+        if (this.day > this.daysInMonth(this.month, this.year)) {
+            this.nextMonth();
+            this.day = 1;
+        }
+        this.update();
+    }
+
+    nextHour() {
+        this.hours = mod(this.hours + 1, 24);
+        if (this.hours === 0) {
+            this.nextDay();
+        }
+        this.update();
+    }
+
+    prevHour() {
+        this.hours = mod(this.hours - 1, 24);
+        if (this.hours === 23) {
+            this.prevDay();
+        }
+        this.update();
+    }
+
+    nextMinute() {
+        this.minutes = mod(this.minutes + 1, 60);
+        if (this.minutes === 0) {
+            this.nextHour();
+        }
+        this.update();
+    }
+
+    prevMinute() {
+        this.minutes = mod(this.minutes - 1, 60);
+        if (this.minutes === 59) {
+            this.prevHour();
+        }
+        this.update();
+    }
+
+    nextSecond() {
+        this.seconds = mod(this.seconds + 1, 60);
+        if (this.seconds === 0) {
+            this.nextMinute();
+        }
+        this.update();
+    }
+
+    prevSecond() {
+        this.seconds = mod(this.seconds - 1, 60);
+        if (this.seconds === 59) {
+            this.prevMinute();
+        }
+        this.update();
+    }
+
+    show() {
+        this.update();
+        this.element.style.display = "block";
+        this.setCalendarPosition();
+    }
+
+    hide() {
+        this.element.style.display = "none";
+    }
+
+    private createElement() {
+        const element = document.createElement("div");
+        element.className = "calendar";
+        element.dataset.for = this.input.element.id;
+        element.innerHTML = `<div class="calendar-buttons"><button type="button" class="prevMonth" aria-label="${this.input.options.labels.prevMonth}"></button><button class="currentMonth" aria-label="${this.input.options.labels.today}">${this.input.options.labels.today}</button><button type="button" class="nextMonth" aria-label="${this.input.options.labels.nextMonth}"></button></div><div class="calendar-separator"></div><table class="calendar-table"></table>`;
+
+        if (this.input.options.time) {
+            element.innerHTML += `<div class="calendar-separator"></div><table class="calendar-time"><tr><td><button type="button" class="nextHour" aria-label="${this.input.options.labels.nextHour}"></button></td><td></td><td><button type="button" class="nextMinute" aria-label="${this.input.options.labels.nextMinute}"></button></td></tr><tr><td class="calendar-hours"></td><td>:</td><td class="calendar-minutes"></td><td class="calendar-meridiem"></td></tr><tr><td><button type="button" class="prevHour" aria-label="${this.input.options.labels.prevHour}"></button></td><td></td><td><button type="button" class="prevMinute" aria-label="${this.input.options.labels.prevMinute}"></button></td></tr></table></div>`;
+
+            insertIcon("chevron-down", $(".prevHour", element) as HTMLElement);
+            insertIcon("chevron-up", $(".nextHour", element) as HTMLElement);
+
+            insertIcon("chevron-down", $(".prevMinute", element) as HTMLElement);
+            insertIcon("chevron-up", $(".nextMinute", element) as HTMLElement);
         }
 
-        function has12HourFormat(format: string) {
-            const match = format.match(/\[([^\]]*)\]|H{1,2}/);
-            return match !== null && match[0][0] === "H";
+        insertIcon("calendar-clock", $(".currentMonth", element) as HTMLElement);
+
+        insertIcon("chevron-left", $(".prevMonth", element) as HTMLElement);
+        insertIcon("chevron-right", $(".nextMonth", element) as HTMLElement);
+
+        ($(".currentMonth", element) as HTMLElement).addEventListener("mousedown", (event) => {
+            this.now();
+            this.dispatchChange();
+            event.preventDefault();
+        });
+
+        longClick(
+            $(".prevMonth", element) as HTMLElement,
+            (event) => {
+                this.prevMonth();
+                this.dispatchChange();
+                event.preventDefault();
+            },
+            750,
+            500,
+        );
+
+        longClick(
+            $(".nextMonth", element) as HTMLElement,
+            (event) => {
+                this.nextMonth();
+                this.dispatchChange();
+                event.preventDefault();
+            },
+            750,
+            500,
+        );
+
+        if (this.input.options.time) {
+            longClick(
+                $(".nextHour", element) as HTMLElement,
+                (event) => {
+                    this.nextHour();
+                    this.dispatchChange();
+                    event.preventDefault();
+                },
+                750,
+                250,
+            );
+
+            longClick(
+                $(".prevHour", element) as HTMLElement,
+                (event) => {
+                    this.prevHour();
+                    this.dispatchChange();
+                    event.preventDefault();
+                },
+                750,
+                250,
+            );
+
+            longClick(
+                $(".nextMinute", element) as HTMLElement,
+                (event) => {
+                    this.nextMinute();
+                    this.dispatchChange();
+                    event.preventDefault();
+                },
+                750,
+                250,
+            );
+
+            longClick(
+                $(".prevMinute", element) as HTMLElement,
+                (event) => {
+                    this.prevMinute();
+                    this.dispatchChange();
+                    event.preventDefault();
+                },
+                750,
+                250,
+            );
         }
 
-        function formatDateTime(date: Date, format: string) {
-            const regex = /\[([^\]]*)\]|[YR]{4}|uuu|[YR]{2}|[MD]{1,4}|[WHhms]{1,2}|[AaZz]/g;
+        window.addEventListener("resize", throttle(this.setCalendarPosition, 100));
 
-            function splitTimezoneOffset(offset: number) {
-                // Note that the offset returned by Date.getTimezoneOffset()
-                // is positive if behind UTC and negative if ahead UTC
-                const sign = offset > 0 ? "-" : "+";
-                const hours = Math.floor(Math.abs(offset) / 60);
-                const minutes = Math.abs(offset) % 60;
-                return [sign + pad(hours, 2), pad(minutes, 2)];
+        window.addEventListener("mousedown", (event) => {
+            if (element.style.display !== "none") {
+                if ((event.target as HTMLElement).closest(".calendar")) {
+                    event.preventDefault();
+                }
+            }
+        });
+
+        window.addEventListener("keydown", (event) => {
+            if (!this.visible) {
+                return;
+            }
+            switch (event.key) {
+                case "Enter":
+                    ($(".calendar-day.selected", element) as HTMLElement).click();
+                    this.hide();
+                    break;
+                case "Backspace":
+                case "Escape":
+                case "Tab":
+                    this.hide();
+                    break;
+                case "ArrowLeft":
+                    if (event.ctrlKey || event.metaKey) {
+                        if (event.shiftKey) {
+                            this.prevYear();
+                        } else {
+                            this.prevMonth();
+                        }
+                    } else {
+                        this.prevDay();
+                    }
+                    this.dispatchChange();
+                    break;
+                case "ArrowUp":
+                    this.prevWeek();
+                    this.dispatchChange();
+                    break;
+                case "ArrowRight":
+                    if (event.ctrlKey || event.metaKey) {
+                        if (event.shiftKey) {
+                            this.nextYear();
+                        } else {
+                            this.nextMonth();
+                        }
+                    } else {
+                        this.nextDay();
+                    }
+                    this.dispatchChange();
+                    break;
+                case "ArrowDown":
+                    this.nextWeek();
+                    this.dispatchChange();
+                    break;
+                case "0":
+                    if (event.ctrlKey || event.metaKey) {
+                        this.now();
+                    }
+                    this.dispatchChange();
+                    break;
+                default:
+                    return;
             }
 
-            return format.replace(regex, (match: string, $1) => {
-                switch (match) {
-                    case "YY":
-                        return date.getFullYear().toString().substr(-2);
-                    case "YYYY":
-                        return date.getFullYear();
-                    case "M":
-                        return date.getMonth() + 1;
-                    case "MM":
-                        return pad(date.getMonth() + 1, 2);
-                    case "MMM":
-                        return options.labels.months.short[date.getMonth()];
-                    case "MMMM":
-                        return options.labels.months.long[date.getMonth()];
-                    case "D":
-                        return date.getDate();
-                    case "DD":
-                        return pad(date.getDate(), 2);
-                    case "DDD":
-                        return options.labels.weekdays.short[mod(date.getDay() + options.weekStarts, 7)];
-                    case "DDDD":
-                        return options.labels.weekdays.long[mod(date.getDay() + options.weekStarts, 7)];
-                    case "W":
-                        return weekOfYear(date);
-                    case "WW":
-                        return pad(weekOfYear(date), 2);
-                    case "RR":
-                        return weekNumberingYear(date).toString().substr(-2);
-                    case "RRRR":
-                        return weekNumberingYear(date);
-                    case "H":
-                        return mod(date.getHours(), 12) || 12;
-                    case "HH":
-                        return pad(mod(date.getHours(), 12) || 12, 2);
-                    case "h":
-                        return date.getHours();
-                    case "hh":
-                        return pad(date.getHours(), 2);
-                    case "m":
-                        return date.getMinutes();
-                    case "mm":
-                        return pad(date.getMinutes(), 2);
-                    case "s":
-                        return date.getSeconds();
-                    case "ss":
-                        return pad(date.getSeconds(), 2);
-                    case "uuu":
-                        return pad(date.getMilliseconds(), 3);
-                    case "A":
-                        return date.getHours() < 12 ? "AM" : "PM";
-                    case "a":
-                        return date.getHours() < 12 ? "am" : "pm";
-                    case "Z":
-                        return splitTimezoneOffset(date.getTimezoneOffset()).join(":");
-                    case "z":
-                        return splitTimezoneOffset(date.getTimezoneOffset()).join("");
-                    default:
-                        return $1 || match;
-                }
-            });
+            event.preventDefault();
+        });
+
+        document.body.appendChild(element);
+
+        return element;
+    }
+
+    private dispatchChange() {
+        this.input.options.onChange(this.date, this.input);
+    }
+
+    private update() {
+        ($(".calendar-table", this.element) as HTMLElement).innerHTML = this.getInnerHTML();
+
+        if (this.input.options.time) {
+            ($(".calendar-hours", this.element) as HTMLElement).innerHTML = `${this.has12HourFormat(this.input.format) ? mod(this.hours, 12) || 12 : this.hours}`.padStart(2, "0");
+            ($(".calendar-minutes", this.element) as HTMLElement).innerHTML = `${this.minutes}`.padStart(2, "0");
+            ($(".calendar-meridiem", this.element) as HTMLElement).innerHTML = this.has12HourFormat(this.input.format) ? (this.hours < 12 ? "AM" : "PM") : "";
         }
+
+        $$(".calendar-day", this.element).forEach((element) => {
+            element.addEventListener("mousedown", (event) => {
+                event.stopPropagation();
+                event.preventDefault();
+            });
+            element.addEventListener("click", () => {
+                this.day = parseInt(`${element.textContent}`);
+                this.update();
+                this.dispatchChange();
+            });
+        });
+    }
+
+    private setCalendarPosition() {
+        if (!this.input?.element || !this.visible) {
+            return;
+        }
+
+        const inputRect = this.input.element.getBoundingClientRect();
+        const inputTop = inputRect.top + window.scrollY;
+        const inputLeft = inputRect.left + window.scrollX;
+
+        this.element.style.top = `${inputTop + this.input.element.offsetHeight}px`;
+        this.element.style.left = `${inputLeft + this.input.element.offsetLeft}px`;
+
+        const calendarRect = this.element.getBoundingClientRect();
+        const calendarTop = calendarRect.top + window.scrollY;
+        const calendarLeft = calendarRect.left + window.scrollX;
+        const calendarWidth = getOuterWidth(this.element);
+        const calendarHeight = getOuterHeight(this.element);
+
+        const windowWidth = document.documentElement.clientWidth;
+        const windowHeight = document.documentElement.clientHeight;
+
+        if (calendarLeft + calendarWidth > windowWidth) {
+            this.element.style.left = `${windowWidth - calendarWidth}px`;
+        }
+
+        if (calendarTop < window.scrollY || window.scrollY < calendarTop + calendarHeight - windowHeight) {
+            window.scrollTo(window.scrollX, calendarTop + calendarHeight - windowHeight);
+        }
+    }
+
+    private getInnerHTML() {
+        const firstDay = new Date(this.year, this.month, 1).getDay();
+        const start = mod(firstDay - this.input.options.weekStarts, 7);
+        const monthLength = this.daysInMonth(this.month, this.year);
+
+        let num = 1;
+        let html = "";
+
+        html += '<tr><th class="calendar-header" colspan="7">';
+        html += `${this.input.options.labels.months.long[this.month]}&nbsp;${this.year}`;
+        html += "</th></tr>";
+        html += "<tr>";
+
+        for (let i = 0; i < 7; i++) {
+            html += '<td class="calendar-header-day">';
+            html += this.input.options.labels.weekdays.short[mod(i + this.input.options.weekStarts, 7)];
+            html += "</td>";
+        }
+
+        html += "</tr><tr>";
+
+        for (let i = 0; i < 6; i++) {
+            for (let j = 0; j < 7; j++) {
+                if (num <= monthLength && (i > 0 || j >= start)) {
+                    if (num === this.day) {
+                        html += '<td class="calendar-day selected">';
+                    } else {
+                        html += '<td class="calendar-day">';
+                    }
+                    html += num++;
+                } else if (num === 1) {
+                    html += '<td class="calendar-prev-month-day">';
+                    html += this.daysInMonth(mod(this.month - 1, 12), this.year) - start + j + 1;
+                } else {
+                    html += '<td class="calendar-next-month-day">';
+                    html += num++ - monthLength;
+                }
+                html += "</td>";
+            }
+            html += "</tr><tr>";
+        }
+        html += "</tr>";
+
+        return html;
+    }
+
+    private has12HourFormat(format: string) {
+        const match = format.match(/\[([^\]]*)\]|H{1,2}/);
+        return match !== null && match[0][0] === "H";
+    }
+
+    private isLeapYear(year: number) {
+        return (year % 4 === 0 && year % 100 !== 0) || year % 400 === 0;
+    }
+
+    private daysInMonth(month: number, year: number) {
+        const daysInMonth = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+        return month === 1 && this.isLeapYear(year) ? 29 : daysInMonth[month];
     }
 }

@@ -13,7 +13,16 @@ function removeBaseUri(markdown: string, baseUri: string) {
 }
 
 export class EditorInput {
+    readonly element: HTMLTextAreaElement;
+
+    readonly name: string;
+
+    private editor: MarkdownView | CodeView;
+
     constructor(textarea: HTMLTextAreaElement) {
+        this.element = textarea;
+        this.name = textarea.name;
+
         const editorWrap = (textarea.parentNode as HTMLElement).classList.contains("editor-wrap") ? (textarea.parentNode as HTMLElement) : null;
 
         if (editorWrap) {
@@ -36,25 +45,29 @@ export class EditorInput {
                 true,
             );
 
-            let editor: MarkdownView | CodeView = new MarkdownView(editorWrap, addBaseUri(textarea.value, baseUri), inputEventHandler, attributes, baseUri);
-            editor.view.dom.style.height = `${textareaHeight}px`;
+            this.editor = new MarkdownView(editorWrap, addBaseUri(textarea.value, baseUri), inputEventHandler, attributes, baseUri);
+            this.editor.view.dom.style.height = `${textareaHeight}px`;
 
-            $(`label[for="${textarea.id}"]`)?.addEventListener("click", () => editor.view.focus());
+            $(`label[for="${textarea.id}"]`)?.addEventListener("click", () => this.editor.view.focus());
 
             const codeSwitch = $("[data-command=toggle-markdown]", editorWrap) as HTMLButtonElement;
             codeSwitch.addEventListener("click", () => {
                 codeSwitch.classList.toggle("is-active");
                 if (codeSwitch.classList.contains("is-active")) {
-                    editor.destroy();
-                    editor = new CodeView(editorWrap, removeBaseUri(editor.content, baseUri), inputEventHandler);
-                    editor.view.dom.style.height = `${textareaHeight}px`;
+                    this.editor.destroy();
+                    this.editor = new CodeView(editorWrap, removeBaseUri(this.editor.content, baseUri), inputEventHandler);
+                    this.editor.view.dom.style.height = `${textareaHeight}px`;
                 } else {
-                    editor.destroy();
-                    editor = new MarkdownView(editorWrap, addBaseUri(editor.content, baseUri), inputEventHandler, attributes, baseUri);
-                    editor.view.dom.style.height = `${textareaHeight}px`;
+                    this.editor.destroy();
+                    this.editor = new MarkdownView(editorWrap, addBaseUri(this.editor.content, baseUri), inputEventHandler, attributes, baseUri);
+                    this.editor.view.dom.style.height = `${textareaHeight}px`;
                 }
-                editor.view.focus();
+                this.editor.view.focus();
             });
         }
+    }
+
+    get value(): string {
+        return this.editor.content;
     }
 }

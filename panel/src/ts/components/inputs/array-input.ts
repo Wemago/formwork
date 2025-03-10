@@ -2,74 +2,105 @@ import { $, $$ } from "../../utils/selectors";
 import Sortable from "sortablejs";
 
 export class ArrayInput {
-    constructor(input: HTMLInputElement) {
-        const isAssociative = input.classList.contains("form-input-array-associative");
-        const inputName = input.dataset.name;
+    readonly element: HTMLInputElement;
 
-        $$(".form-input-array-row", input).forEach((element) => bindRowEvents(element));
+    readonly name: string;
 
-        $(`label[for="${input.id}"]`)?.addEventListener("click", () => $(".form-input", input)?.focus());
+    readonly isAssociative: boolean;
 
-        Sortable.create(input, {
+    constructor(element: HTMLInputElement) {
+        this.element = element;
+
+        this.name = element.dataset.name as string;
+
+        this.isAssociative = element.classList.contains("form-input-array-associative");
+
+        $$(".form-input-array-row", element).forEach((element) => this.bindRowEvents(element));
+
+        $(`label[for="${element.id}"]`)?.addEventListener("click", () => $(".form-input", element)?.focus());
+
+        Sortable.create(element, {
             handle: ".sortable-handle",
             forceFallback: true,
             invertSwap: true,
             swapThreshold: 0.75,
             animation: 150,
         });
+    }
 
-        function addRow(row: HTMLElement) {
-            const clone = row.cloneNode(true) as HTMLElement;
-            const parent = row.parentNode as ParentNode;
-            clearRow(clone);
-            bindRowEvents(clone);
-            if (row.nextSibling) {
-                parent.insertBefore(clone, row.nextSibling);
-            } else {
-                parent.appendChild(clone);
-            }
-        }
+    get value(): string {
+        const values: { [key: string]: string } = {};
 
-        function removeRow(row: HTMLElement) {
-            const parent = row.parentNode as ParentNode;
-            if ($$(".form-input-array-row", parent).length > 1) {
-                parent.removeChild(row);
-            } else {
-                clearRow(row);
-            }
-        }
+        let i = 0;
 
-        function clearRow(row: HTMLElement) {
-            if (isAssociative) {
-                const inputKey = $(".form-input-array-key", row) as HTMLInputElement;
-                inputKey.value = "";
-                inputKey.removeAttribute("value");
-            }
-            const inputValue = $(".form-input-array-value", row) as HTMLInputElement;
-            inputValue.value = "";
-            inputValue.removeAttribute("value");
-            inputValue.name = `${inputName}[]`;
-        }
-
-        function updateAssociativeRow(row: HTMLElement) {
+        $$(".form-input-array-row", $(`[data-name="${this.name}"]`) as HTMLElement).forEach((row) => {
             const inputKey = $(".form-input-array-key", row) as HTMLInputElement;
             const inputValue = $(".form-input-array-value", row) as HTMLInputElement;
-            inputValue.name = `${inputName}[${inputKey.value.trim()}]`;
-        }
 
-        function bindRowEvents(row: HTMLElement) {
-            const inputAdd = $(".form-input-array-add", row) as HTMLButtonElement;
-            const inputRemove = $(".form-input-array-remove", row) as HTMLButtonElement;
+            const key = inputKey.value.trim();
+            const value = inputValue.value.trim();
 
-            inputAdd.addEventListener("click", addRow.bind(inputAdd, row));
-            inputRemove.addEventListener("click", removeRow.bind(inputRemove, row));
-
-            if (isAssociative) {
-                const inputKey = $(".form-input-array-key", row) as HTMLInputElement;
-                const inputValue = $(".form-input-array-value", row) as HTMLInputElement;
-                inputKey.addEventListener("keyup", updateAssociativeRow.bind(inputKey, row));
-                inputValue.addEventListener("keyup", updateAssociativeRow.bind(inputValue, row));
+            if (this.isAssociative && key) {
+                values[key] = value;
+            } else if (value) {
+                values[i++] = value;
             }
+        });
+
+        return JSON.stringify(values);
+    }
+
+    private addRow(row: HTMLElement) {
+        const clone = row.cloneNode(true) as HTMLElement;
+        const parent = row.parentNode as ParentNode;
+        this.clearRow(clone);
+        this.bindRowEvents(clone);
+        if (row.nextSibling) {
+            parent.insertBefore(clone, row.nextSibling);
+        } else {
+            parent.appendChild(clone);
+        }
+    }
+
+    private removeRow(row: HTMLElement) {
+        const parent = row.parentNode as ParentNode;
+        if ($$(".form-input-array-row", parent).length > 1) {
+            parent.removeChild(row);
+        } else {
+            this.clearRow(row);
+        }
+    }
+
+    private clearRow(row: HTMLElement) {
+        if (this.isAssociative) {
+            const inputKey = $(".form-input-array-key", row) as HTMLInputElement;
+            inputKey.value = "";
+            inputKey.removeAttribute("value");
+        }
+        const inputValue = $(".form-input-array-value", row) as HTMLInputElement;
+        inputValue.value = "";
+        inputValue.removeAttribute("value");
+        inputValue.name = `${this.name}[]`;
+    }
+
+    private updateAssociativeRow(row: HTMLElement) {
+        const inputKey = $(".form-input-array-key", row) as HTMLInputElement;
+        const inputValue = $(".form-input-array-value", row) as HTMLInputElement;
+        inputValue.name = `${this.name}[${inputKey.value.trim()}]`;
+    }
+
+    private bindRowEvents(row: HTMLElement) {
+        const inputAdd = $(".form-input-array-add", row) as HTMLButtonElement;
+        const inputRemove = $(".form-input-array-remove", row) as HTMLButtonElement;
+
+        inputAdd.addEventListener("click", () => this.addRow(row));
+        inputRemove.addEventListener("click", () => this.removeRow(row));
+
+        if (this.isAssociative) {
+            const inputKey = $(".form-input-array-key", row) as HTMLInputElement;
+            const inputValue = $(".form-input-array-value", row) as HTMLInputElement;
+            inputKey.addEventListener("keyup", () => this.updateAssociativeRow(row));
+            inputValue.addEventListener("keyup", () => this.updateAssociativeRow(row));
         }
     }
 }

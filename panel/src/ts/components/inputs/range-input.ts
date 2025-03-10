@@ -1,14 +1,52 @@
 import { $ } from "../../utils/selectors";
 
 export class RangeInput {
-    constructor(input: HTMLInputElement) {
-        input.addEventListener("change", updateValueLabel);
-        input.addEventListener("input", updateValueLabel);
+    readonly element: HTMLInputElement;
+    readonly name: string;
 
-        updateValueLabel.call(input);
+    constructor(element: HTMLInputElement) {
+        this.element = element;
 
-        if ("ticks" in input.dataset) {
-            const count = input.dataset.ticks as string;
+        this.initInput();
+    }
+
+    get value() {
+        return this.element.value;
+    }
+
+    set value(value: string) {
+        this.element.value = value;
+    }
+
+    private initInput() {
+        const updateValueLabel = (element: HTMLInputElement) => {
+            element.style.setProperty("--progress", `${Math.round((parseInt(element.value) / (parseInt(element.max) - parseInt(element.min))) * 100)}%`);
+            const outputElement = $(`output[for="${element.id}"]`);
+            if (outputElement) {
+                outputElement.innerHTML = element.value;
+            }
+        };
+
+        const addTicks = (count: number) => {
+            const ticks = document.createElement("div");
+            ticks.className = "form-input-range-ticks";
+            ticks.dataset.for = this.element.id;
+            (this.element.parentElement as ParentNode).insertBefore(ticks, this.element.nextSibling);
+
+            for (let i = 0; i < count; i++) {
+                const tick = document.createElement("div");
+                tick.className = "tick";
+                ticks.appendChild(tick);
+            }
+        };
+
+        this.element.addEventListener("change", () => updateValueLabel(this.element));
+        this.element.addEventListener("input", () => updateValueLabel(this.element));
+
+        updateValueLabel(this.element);
+
+        if ("ticks" in this.element.dataset) {
+            const count = this.element.dataset.ticks as string;
 
             switch (count) {
                 case "0":
@@ -16,33 +54,12 @@ export class RangeInput {
 
                 case "true":
                 case "":
-                    addTicks((parseInt(input.max) - parseInt(input.min)) / (parseInt(input.step) || 1) + 1);
+                    addTicks((parseInt(this.element.max) - parseInt(this.element.min)) / (parseInt(this.element.step) || 1) + 1);
                     break;
 
                 default:
                     addTicks(parseInt(count) + 1);
                     break;
-            }
-        }
-
-        function updateValueLabel(this: HTMLInputElement) {
-            this.style.setProperty("--progress", `${Math.round((parseInt(this.value) / (parseInt(this.max) - parseInt(this.min))) * 100)}%`);
-            const outputElement = $(`output[for="${this.id}"]`);
-            if (outputElement) {
-                outputElement.innerHTML = this.value;
-            }
-        }
-
-        function addTicks(count: number) {
-            const ticks = document.createElement("div");
-            ticks.className = "form-input-range-ticks";
-            ticks.dataset.for = input.id;
-            (input.parentElement as ParentNode).insertBefore(ticks, input.nextSibling);
-
-            for (let i = 0; i < count; i++) {
-                const tick = document.createElement("div");
-                tick.className = "tick";
-                ticks.appendChild(tick);
             }
         }
     }

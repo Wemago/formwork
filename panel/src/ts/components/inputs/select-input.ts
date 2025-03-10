@@ -17,393 +17,428 @@ interface SelectInputOptions {
 }
 
 export class SelectInput {
-    constructor(select: HTMLSelectElement, userOptions: Partial<SelectInputOptions>) {
+    readonly options: SelectInputOptions;
+
+    readonly element: HTMLSelectElement;
+
+    readonly name: string;
+
+    private dropdown: HTMLElement;
+
+    private labelInput: HTMLInputElement;
+
+    private emptyState: HTMLDivElement;
+
+    constructor(element: HTMLSelectElement, options: Partial<SelectInputOptions>) {
         const defaults: SelectInputOptions = { labels: { empty: "No matching options" } };
 
-        const options = Object.assign({}, defaults, userOptions);
+        this.element = element;
 
-        let dropdown: HTMLElement;
+        this.name = element.name;
 
-        const labelInput = document.createElement("input");
+        this.options = { ...defaults, ...options };
 
-        const emptyState = document.createElement("div");
+        this.labelInput = document.createElement("input");
 
-        createField();
+        this.emptyState = document.createElement("div");
 
-        function createField() {
-            const hasWrap = select.closest(".form-input-wrap");
+        this.createField();
+    }
 
-            const wrap = hasWrap || document.createElement("div");
+    get dropdownElement() {
+        return this.dropdown;
+    }
 
-            const selectId = select.id;
+    get value() {
+        return this.element.value;
+    }
 
-            if (!hasWrap) {
-                wrap.className = "form-input-wrap";
-                (select.parentNode as ParentNode).insertBefore(wrap, select.nextSibling);
-            }
+    set value(value: string) {
+        this.element.value = value;
+        this.setCurrent();
+    }
 
-            select.hidden = true;
+    get selectedDropdownItem() {
+        return $(".dropdown-item.selected", this.dropdown);
+    }
 
-            labelInput.type = "text";
+    get dropdownItems() {
+        return $$(".dropdown-item", this.dropdown);
+    }
 
-            labelInput.classList.add("form-select");
-            labelInput.id = selectId;
+    private createField() {
+        const hasWrap = this.element.closest(".form-input-wrap");
 
-            select.removeAttribute("id");
+        const wrap = hasWrap || document.createElement("div");
 
-            select.ariaHidden = "true";
+        const selectId = this.element.id;
 
-            select.tabIndex = -1;
-
-            if (select.hasAttribute("disabled")) {
-                labelInput.disabled = true;
-            }
-
-            for (const key in select.dataset) {
-                labelInput.dataset[key] = select.dataset[key];
-            }
-
-            const list: SelectInputListItem[] = [];
-
-            $$("option", select).forEach((option: HTMLOptionElement) => {
-                const dataset: Record<string, string> = {};
-
-                for (const key in option.dataset) {
-                    dataset[key] = option.dataset[key] as string;
-                }
-
-                list.push({
-                    label: option.innerText,
-                    value: option.value,
-                    selected: option.selected,
-                    disabled: option.disabled,
-                    dataset,
-                });
-
-                if (option.selected) {
-                    labelInput.value = option.innerText;
-                }
-            });
-
-            wrap.appendChild(labelInput);
-
-            wrap.appendChild(select);
-
-            createDropdown(list, wrap as HTMLElement);
+        if (!hasWrap) {
+            wrap.className = "form-input-wrap";
+            (this.element.parentNode as ParentNode).insertBefore(wrap, this.element.nextSibling);
         }
 
-        function createDropdown(list: SelectInputListItem[], wrap: HTMLElement) {
-            dropdown = document.createElement("div");
-            dropdown.className = "dropdown-list";
+        this.element.hidden = true;
 
-            dropdown.dataset.for = labelInput.id;
+        this.labelInput.type = "text";
 
-            const container = document.createElement("div");
-            container.className = "dropdown-list-items";
-            dropdown.appendChild(container);
+        this.labelInput.classList.add("form-select");
+        this.labelInput.id = selectId;
 
-            emptyState.className = "dropdown-empty";
-            emptyState.style.display = "none";
-            emptyState.innerText = options.labels.empty;
+        this.element.removeAttribute("id");
 
-            container.appendChild(emptyState);
+        this.element.ariaHidden = "true";
 
-            for (const option of list) {
-                const item = document.createElement("div");
-                item.className = "dropdown-item";
+        this.element.tabIndex = -1;
 
-                item.innerText = option.label;
-                item.dataset.value = option.value;
-
-                if (option.selected) {
-                    item.classList.add("selected");
-                }
-
-                if (option.disabled) {
-                    item.classList.add("disabled");
-                }
-
-                if (option.dataset.thumb) {
-                    const img = document.createElement("img");
-                    img.src = option.dataset.thumb;
-                    img.className = "dropdown-thumb";
-                    item.insertAdjacentElement("afterbegin", img);
-                } else if (option.dataset.icon) {
-                    insertIcon(option.dataset.icon, item);
-                }
-
-                for (const key in option.dataset) {
-                    if (["icon", "thumb"].includes(key)) {
-                        continue;
-                    }
-                    item.dataset[key] = option.dataset[key];
-                }
-
-                item.addEventListener("mousedown", (event) => {
-                    if (!item.classList.contains("disabled")) {
-                        selectDropdownItem(item);
-                        setCurrent(item);
-                    } else {
-                        event.preventDefault();
-                    }
-                    event.stopPropagation();
-                });
-
-                container.appendChild(item);
-            }
-
-            wrap.appendChild(dropdown);
-
-            let hasKeyboardInput = false;
-
-            labelInput.addEventListener("focus", () => {
-                selectCurrent();
-                labelInput.setSelectionRange(0, 0);
-                hasKeyboardInput = false;
-            });
-
-            labelInput.addEventListener("mousedown", (event) => {
-                labelInput.focus();
-                event.preventDefault();
-            });
-
-            labelInput.addEventListener("blur", () => {
-                if (!validateDropdownItem(labelInput.value)) {
-                    labelInput.value = getCurrentLabel();
-                }
-                dropdown.style.display = "none";
-            });
-
-            labelInput.addEventListener("keydown", (event) => {
-                const selectedItem = $(".dropdown-item.selected", dropdown);
-
-                switch (event.key) {
-                    case "Backspace": // backspace
-                        updateDropdown();
-                        break;
-
-                    case "ArrowUp": // up arrow
-                        if (getComputedStyle(dropdown).display !== "none") {
-                            selectPrevDropdownItem();
-                        } else {
-                            selectCurrent();
-                        }
-                        event.preventDefault();
-                        break;
-
-                    case "ArrowDown": // down arrow
-                        if (getComputedStyle(dropdown).display !== "none") {
-                            selectNextDropdownItem();
-                        } else {
-                            selectCurrent();
-                        }
-                        event.preventDefault();
-                        break;
-
-                    case "Enter":
-                        if (selectedItem && getComputedStyle(selectedItem).display !== "none") {
-                            setCurrent(selectedItem);
-                        }
-
-                        // dropdown.style.display = 'none';
-                        labelInput.blur();
-                        event.preventDefault();
-                        break;
-
-                    case "Escape":
-                    case "ArrowLeft":
-                    case "ArrowRight":
-                        break;
-
-                    default:
-                        if (!hasKeyboardInput) {
-                            labelInput.value = "";
-                            hasKeyboardInput = true;
-                        }
-                        break;
-                }
-            });
-
-            labelInput.addEventListener("keyup", (event) => {
-                const value = labelInput.value.trim();
-                switch (event.key) {
-                    case "Escape":
-                        labelInput.blur();
-                        event.stopPropagation();
-                        break;
-                    case "ArrowUp":
-                    case "ArrowDown":
-                    case "ArrowLeft":
-                    case "ArrowRight":
-                    case "Tab":
-                    case "Enter":
-                        return true;
-                    default:
-                        dropdown.style.display = "block";
-                        filterDropdown(value);
-                        if (value.length > 0) {
-                            selectFirstDropdownItem();
-                        }
-                }
-            });
+        if (this.element.hasAttribute("disabled")) {
+            this.labelInput.disabled = true;
         }
 
-        function updateDropdown() {
-            let visibleItems = 0;
-            $$(".dropdown-item", dropdown).forEach((element) => {
-                if (getComputedStyle(element).display !== "none") {
-                    visibleItems++;
-                }
-                element.classList.remove("selected");
-            });
-
-            if (visibleItems > 0) {
-                emptyState.style.display = "none";
-            } else {
-                emptyState.style.display = "block";
-            }
+        for (const key in this.element.dataset) {
+            this.labelInput.dataset[key] = this.element.dataset[key];
         }
 
-        function filterDropdown(value: string) {
-            const filter = (element: HTMLElement) => {
-                if (value === "") {
-                    return true;
-                }
-                const text = `${element.textContent}`;
-                const regexp = new RegExp(`(^|\\b)${makeDiacriticsRegExp(escapeRegExp(value))}`, "i");
-                return regexp.test(text);
-            };
+        const list: SelectInputListItem[] = [];
 
-            let visibleItems = 0;
-            $$(".dropdown-item", dropdown).forEach((element) => {
-                if (value === null || filter(element)) {
-                    element.style.display = "block";
-                    visibleItems++;
+        $$("option", this.element).forEach((option: HTMLOptionElement) => {
+            const dataset: Record<string, string> = {};
+
+            for (const key in option.dataset) {
+                dataset[key] = option.dataset[key] as string;
+            }
+
+            list.push({
+                label: option.innerText,
+                value: option.value,
+                selected: option.selected,
+                disabled: option.disabled,
+                dataset,
+            });
+
+            if (option.selected) {
+                this.labelInput.value = option.innerText;
+            }
+        });
+
+        wrap.appendChild(this.labelInput);
+
+        wrap.appendChild(this.element);
+
+        this.createDropdown(list, wrap as HTMLElement);
+    }
+
+    private createDropdown(list: SelectInputListItem[], wrap: HTMLElement) {
+        this.dropdown = document.createElement("div");
+        this.dropdown.className = "dropdown-list";
+
+        this.dropdown.dataset.for = this.labelInput.id;
+
+        const container = document.createElement("div");
+        container.className = "dropdown-list-items";
+        this.dropdown.appendChild(container);
+
+        this.emptyState.className = "dropdown-empty";
+        this.emptyState.style.display = "none";
+        this.emptyState.innerText = this.options.labels.empty;
+
+        container.appendChild(this.emptyState);
+
+        for (const option of list) {
+            const item = document.createElement("div");
+            item.className = "dropdown-item";
+
+            item.innerText = option.label;
+            item.dataset.value = option.value;
+
+            if (option.selected) {
+                item.classList.add("selected");
+            }
+
+            if (option.disabled) {
+                item.classList.add("disabled");
+            }
+
+            if (option.dataset.thumb) {
+                const img = document.createElement("img");
+                img.src = option.dataset.thumb;
+                img.className = "dropdown-thumb";
+                item.insertAdjacentElement("afterbegin", img);
+            } else if (option.dataset.icon) {
+                insertIcon(option.dataset.icon, item);
+            }
+
+            for (const key in option.dataset) {
+                if (["icon", "thumb"].includes(key)) {
+                    continue;
+                }
+                item.dataset[key] = option.dataset[key];
+            }
+
+            item.addEventListener("mousedown", (event) => {
+                if (!item.classList.contains("disabled")) {
+                    this.selectDropdownItem(item);
+                    this.setCurrent(item);
                 } else {
-                    element.style.display = "none";
+                    event.preventDefault();
                 }
+                event.stopPropagation();
             });
 
-            if (visibleItems > 0) {
-                emptyState.style.display = "none";
-            } else {
-                emptyState.style.display = "block";
+            container.appendChild(item);
+        }
+
+        wrap.appendChild(this.dropdown);
+
+        let hasKeyboardInput = false;
+
+        this.labelInput.addEventListener("focus", () => {
+            this.selectCurrent();
+            this.labelInput.setSelectionRange(0, 0);
+            hasKeyboardInput = false;
+        });
+
+        this.labelInput.addEventListener("mousedown", (event) => {
+            this.labelInput.focus();
+            event.preventDefault();
+        });
+
+        this.labelInput.addEventListener("blur", () => {
+            if (!this.validateDropdownItem(this.labelInput.value)) {
+                this.labelInput.value = this.getCurrentLabel();
             }
-        }
+            this.dropdown.style.display = "none";
+        });
 
-        function scrollToDropdownItem(item: HTMLElement) {
-            const dropdownScrollTop = dropdown.scrollTop;
-            const dropdownHeight = dropdown.clientHeight;
-            const dropdownScrollBottom = dropdownScrollTop + dropdownHeight;
-            const dropdownStyle = getComputedStyle(dropdown);
-            const dropdownPaddingTop = parseInt(dropdownStyle.paddingTop);
-            const dropdownPaddingBottom = parseInt(dropdownStyle.paddingBottom);
-            const itemTop = item.offsetTop;
-            const itemHeight = item.clientHeight;
-            const itemBottom = itemTop + itemHeight;
-            if (itemTop < dropdownScrollTop) {
-                dropdown.scrollTop = itemTop - dropdownPaddingTop;
-            } else if (itemBottom > dropdownScrollBottom) {
-                dropdown.scrollTop = itemBottom - dropdownHeight + dropdownPaddingBottom;
+        this.labelInput.addEventListener("keydown", (event) => {
+            const selectedItem = $(".dropdown-item.selected", this.dropdown);
+
+            switch (event.key) {
+                case "Backspace": // backspace
+                    this.updateDropdown();
+                    break;
+
+                case "ArrowUp": // up arrow
+                    if (getComputedStyle(this.dropdown).display !== "none") {
+                        this.selectPrevDropdownItem();
+                    } else {
+                        this.selectCurrent();
+                    }
+                    event.preventDefault();
+                    break;
+
+                case "ArrowDown": // down arrow
+                    if (getComputedStyle(this.dropdown).display !== "none") {
+                        this.selectNextDropdownItem();
+                    } else {
+                        this.selectCurrent();
+                    }
+                    event.preventDefault();
+                    break;
+
+                case "Enter":
+                    if (selectedItem && getComputedStyle(selectedItem).display !== "none") {
+                        this.setCurrent(selectedItem);
+                    }
+
+                    // dropdown.style.display = 'none';
+                    this.labelInput.blur();
+                    event.preventDefault();
+                    break;
+
+                case "Escape":
+                case "ArrowLeft":
+                case "ArrowRight":
+                    break;
+
+                default:
+                    if (!hasKeyboardInput) {
+                        this.labelInput.value = "";
+                        hasKeyboardInput = true;
+                    }
+                    break;
             }
-        }
+        });
 
-        function selectDropdownItem(item: HTMLElement) {
-            const selectedItem = $(".dropdown-item.selected", dropdown);
-            if (selectedItem) {
-                selectedItem.classList.remove("selected");
-            }
-            if (item) {
-                const isDisabled = item.classList.contains("disabled");
-                if (!isDisabled) {
-                    item.classList.add("selected");
-                    scrollToDropdownItem(item);
-                }
-            }
-        }
-
-        function selectFirstDropdownItem() {
-            const items = $$(".dropdown-item", dropdown);
-            for (let i = 0; i < items.length; i++) {
-                if (getComputedStyle(items[i]).display !== "none") {
-                    selectDropdownItem(items[i]);
-                    return;
-                }
-            }
-        }
-
-        function selectLastDropdownItem() {
-            const items = $$(".dropdown-item", dropdown);
-            for (let i = items.length - 1; i >= 0; i--) {
-                if (getComputedStyle(items[i]).display !== "none") {
-                    selectDropdownItem(items[i]);
-                    return;
-                }
-            }
-        }
-
-        function selectPrevDropdownItem() {
-            const selectedItem = $(".dropdown-item.selected", dropdown) as HTMLElement;
-            if (selectedItem) {
-                let previousItem = selectedItem.previousSibling as HTMLElement;
-                while (previousItem && (previousItem.style.display === "none" || previousItem.classList.contains("disabled"))) {
-                    previousItem = previousItem.previousSibling as HTMLElement;
-                }
-                if (previousItem) {
-                    return selectDropdownItem(previousItem);
-                }
-                selectDropdownItem(selectedItem.previousSibling as HTMLElement);
-            }
-            selectLastDropdownItem();
-        }
-
-        function selectNextDropdownItem() {
-            const selectedItem = $(".dropdown-item.selected", dropdown) as HTMLElement;
-            if (selectedItem) {
-                let nextItem = selectedItem.nextSibling as HTMLElement;
-                while (nextItem && (nextItem.style.display === "none" || nextItem.classList.contains("disabled"))) {
-                    nextItem = nextItem.nextSibling as HTMLElement;
-                }
-                if (nextItem) {
-                    return selectDropdownItem(nextItem);
-                }
-            }
-            selectFirstDropdownItem();
-        }
-
-        function setCurrent(item: HTMLElement) {
-            select.value = item.dataset.value as string;
-            labelInput.value = item.innerText.trim();
-            select.dispatchEvent(new Event("input", { bubbles: true }));
-            select.dispatchEvent(new Event("change", { bubbles: true }));
-        }
-
-        function getCurrent() {
-            return $(`[data-value="${select.value}"]`, dropdown) as HTMLElement;
-        }
-
-        function getCurrentLabel() {
-            return getCurrent().innerText.trim();
-        }
-
-        function selectCurrent() {
-            if (getComputedStyle(dropdown).display === "none") {
-                filterDropdown("");
-                updateDropdown();
-                selectDropdownItem(getCurrent());
-                dropdown.style.display = "block";
-                scrollToDropdownItem(getCurrent());
-            }
-        }
-
-        function validateDropdownItem(value: string) {
-            const items = $$(".dropdown-item", dropdown);
-            for (let i = 0; i < items.length; i++) {
-                if (items[i].innerText === value) {
+        this.labelInput.addEventListener("keyup", (event) => {
+            const value = this.labelInput.value.trim();
+            switch (event.key) {
+                case "Escape":
+                    this.labelInput.blur();
+                    event.stopPropagation();
+                    break;
+                case "ArrowUp":
+                case "ArrowDown":
+                case "ArrowLeft":
+                case "ArrowRight":
+                case "Tab":
+                case "Enter":
                     return true;
-                }
+                default:
+                    this.dropdown.style.display = "block";
+                    this.filterDropdown(value);
+                    if (value.length > 0) {
+                        this.selectFirstDropdownItem();
+                    }
             }
-            return false;
+        });
+    }
+
+    private updateDropdown() {
+        let visibleItems = 0;
+        $$(".dropdown-item", this.dropdown).forEach((element) => {
+            if (getComputedStyle(element).display !== "none") {
+                visibleItems++;
+            }
+            element.classList.remove("selected");
+        });
+
+        if (visibleItems > 0) {
+            this.emptyState.style.display = "none";
+        } else {
+            this.emptyState.style.display = "block";
         }
+    }
+
+    private filterDropdown(value: string) {
+        const filter = (element: HTMLElement) => {
+            if (value === "") {
+                return true;
+            }
+            const text = `${element.textContent}`;
+            const regexp = new RegExp(`(^|\\b)${makeDiacriticsRegExp(escapeRegExp(value))}`, "i");
+            return regexp.test(text);
+        };
+
+        let visibleItems = 0;
+        $$(".dropdown-item", this.dropdown).forEach((element) => {
+            if (value === null || filter(element)) {
+                element.style.display = "block";
+                visibleItems++;
+            } else {
+                element.style.display = "none";
+            }
+        });
+
+        if (visibleItems > 0) {
+            this.emptyState.style.display = "none";
+        } else {
+            this.emptyState.style.display = "block";
+        }
+    }
+
+    private scrollToDropdownItem(item: HTMLElement) {
+        const dropdownScrollTop = this.dropdown.scrollTop;
+        const dropdownHeight = this.dropdown.clientHeight;
+        const dropdownScrollBottom = dropdownScrollTop + dropdownHeight;
+        const dropdownStyle = getComputedStyle(this.dropdown);
+        const dropdownPaddingTop = parseInt(dropdownStyle.paddingTop);
+        const dropdownPaddingBottom = parseInt(dropdownStyle.paddingBottom);
+        const itemTop = item.offsetTop;
+        const itemHeight = item.clientHeight;
+        const itemBottom = itemTop + itemHeight;
+        if (itemTop < dropdownScrollTop) {
+            this.dropdown.scrollTop = itemTop - dropdownPaddingTop;
+        } else if (itemBottom > dropdownScrollBottom) {
+            this.dropdown.scrollTop = itemBottom - dropdownHeight + dropdownPaddingBottom;
+        }
+    }
+
+    private selectDropdownItem(item: HTMLElement) {
+        const selectedItem = $(".dropdown-item.selected", this.dropdown);
+        if (selectedItem) {
+            selectedItem.classList.remove("selected");
+        }
+        if (item) {
+            const isDisabled = item.classList.contains("disabled");
+            if (!isDisabled) {
+                item.classList.add("selected");
+                this.scrollToDropdownItem(item);
+            }
+        }
+    }
+
+    private selectFirstDropdownItem() {
+        const items = $$(".dropdown-item", this.dropdown);
+        for (let i = 0; i < items.length; i++) {
+            if (getComputedStyle(items[i]).display !== "none") {
+                this.selectDropdownItem(items[i]);
+                return;
+            }
+        }
+    }
+
+    private selectLastDropdownItem() {
+        const items = $$(".dropdown-item", this.dropdown);
+        for (let i = items.length - 1; i >= 0; i--) {
+            if (getComputedStyle(items[i]).display !== "none") {
+                this.selectDropdownItem(items[i]);
+                return;
+            }
+        }
+    }
+
+    private selectPrevDropdownItem() {
+        const selectedItem = $(".dropdown-item.selected", this.dropdown) as HTMLElement;
+        if (selectedItem) {
+            let previousItem = selectedItem.previousSibling as HTMLElement;
+            while (previousItem && (previousItem.style.display === "none" || previousItem.classList.contains("disabled"))) {
+                previousItem = previousItem.previousSibling as HTMLElement;
+            }
+            if (previousItem) {
+                return this.selectDropdownItem(previousItem);
+            }
+            this.selectDropdownItem(selectedItem.previousSibling as HTMLElement);
+        }
+        this.selectLastDropdownItem();
+    }
+
+    private selectNextDropdownItem() {
+        const selectedItem = $(".dropdown-item.selected", this.dropdown) as HTMLElement;
+        if (selectedItem) {
+            let nextItem = selectedItem.nextSibling as HTMLElement;
+            while (nextItem && (nextItem.style.display === "none" || nextItem.classList.contains("disabled"))) {
+                nextItem = nextItem.nextSibling as HTMLElement;
+            }
+            if (nextItem) {
+                return this.selectDropdownItem(nextItem);
+            }
+        }
+        this.selectFirstDropdownItem();
+    }
+
+    private setCurrent(item: HTMLElement = this.getCurrent()) {
+        this.element.value = item.dataset.value as string;
+        this.labelInput.value = item.innerText.trim();
+        this.element.dispatchEvent(new Event("input", { bubbles: true }));
+        this.element.dispatchEvent(new Event("change", { bubbles: true }));
+    }
+
+    private getCurrent() {
+        return $(`[data-value="${this.element.value}"]`, this.dropdown) as HTMLElement;
+    }
+
+    private getCurrentLabel() {
+        return this.getCurrent().innerText.trim();
+    }
+
+    private selectCurrent() {
+        if (getComputedStyle(this.dropdown).display === "none") {
+            this.filterDropdown("");
+            this.updateDropdown();
+            this.selectDropdownItem(this.getCurrent());
+            this.dropdown.style.display = "block";
+            this.scrollToDropdownItem(this.getCurrent());
+        }
+    }
+
+    private validateDropdownItem(value: string) {
+        const items = $$(".dropdown-item", this.dropdown);
+        for (let i = 0; i < items.length; i++) {
+            if (items[i].innerText === value) {
+                return true;
+            }
+        }
+        return false;
     }
 }

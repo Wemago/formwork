@@ -918,7 +918,7 @@ class Page extends Model implements Stringable
         $routePath = preg_replace('~[/\\\](\d+-)~', '/', $this->relativePath)
             ?? throw new RuntimeException(sprintf('Replacement failed with error: %s', preg_last_error_msg()));
 
-        $this->route ??= Uri::normalize($routePath);
+        $this->route ??= Uri::normalize(Str::append($routePath, '/'));
 
         $this->slug ??= basename($this->route);
     }

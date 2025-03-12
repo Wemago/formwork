@@ -3,6 +3,7 @@
 namespace Formwork\Assets;
 
 use Formwork\Utils\FileSystem;
+use Formwork\Utils\Str;
 use Formwork\Utils\Uri;
 
 class Assets
@@ -20,7 +21,7 @@ class Assets
     public function __construct(string $basePath, string $baseUri)
     {
         $this->basePath = FileSystem::normalizePath($basePath);
-        $this->baseUri = Uri::normalize($baseUri);
+        $this->baseUri = Uri::normalize(Str::append($baseUri, '/'));
     }
 
     /**

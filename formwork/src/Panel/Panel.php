@@ -65,7 +65,7 @@ final class Panel
      */
     public function panelRoot(): string
     {
-        return Uri::normalize($this->config->get('system.panel.root'));
+        return Uri::normalize(Str::append($this->config->get('system.panel.root'), '/'));
     }
 
     /**

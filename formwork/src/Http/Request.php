@@ -239,9 +239,9 @@ class Request
     /**
      * Validate the request referer, optionally checking a specific path
      */
-    public function validateReferer(?string $path = null): bool
+    public function validateReferer(string $path = '/'): bool
     {
-        $base = Uri::normalize(Uri::base($this->absoluteUri()) . '/' . $path);
+        $base = Uri::normalize(Uri::base($this->absoluteUri()) . Str::wrap($path, '/'));
         return Str::startsWith((string) $this->referer(), $base);
     }
 

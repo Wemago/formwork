@@ -13,6 +13,7 @@ interface TagsInputOptions {
 }
 
 interface TagsInputDropdownItem {
+    label: string;
     value: string;
     icon?: string;
     thumb?: string;
@@ -69,7 +70,7 @@ export class TagsInput {
         this.innerInput.id = this.element.id;
         this.innerInput.placeholder = this.element.placeholder;
 
-        this.element.removeAttribute("class");
+        this.element.classList.remove("form-input");
         this.element.removeAttribute("id");
         this.element.removeAttribute("placeholder");
         this.element.readOnly = true;
@@ -146,6 +147,56 @@ export class TagsInput {
         }
     }
 
+    addDropdownItem(option: TagsInputDropdownItem) {
+        if (!this.dropdown) {
+            this.createDropdown();
+        }
+
+        const item = document.createElement("div");
+
+        item.className = "dropdown-item";
+        item.innerHTML = option.label;
+        item.dataset.value = option.value;
+
+        if (option.thumb) {
+            const img = document.createElement("img");
+            img.src = option.thumb;
+            img.className = "dropdown-thumb";
+            item.insertAdjacentElement("afterbegin", img);
+        } else if (option.icon) {
+            insertIcon(option.icon, item);
+        }
+
+        item.addEventListener("click", () => {
+            if (item.dataset.value) {
+                this.addTag(item.dataset.value);
+            }
+        });
+        this.dropdown?.appendChild(item);
+    }
+
+    removeDropdownItem(value: string) {
+        const item = $(`.dropdown-item[data-value="${value}"]`, this.dropdown);
+        if (item) {
+            this.dropdown?.removeChild(item);
+        }
+        this.updateDropdown();
+        this.removeTag(value);
+        $$(".tag", this.list).forEach((tag) => {
+            if (tag.textContent === value) {
+                this.list.removeChild(tag);
+            }
+        });
+    }
+
+    sortDropdownItems() {
+        const items = $$(".dropdown-item", this.dropdown);
+        const sorted = Array.from(items).sort((a, b) => (a.dataset.value as string).localeCompare(b.dataset.value as string));
+        for (const item of sorted) {
+            this.dropdown?.appendChild(item);
+        }
+    }
+
     private createDropdown() {
         if ("options" in this.element.dataset) {
             const list: { [key: string | number]: string | TagsInputDropdownItem } = JSON.parse(this.element.dataset.options ?? "{}");
@@ -160,29 +211,14 @@ export class TagsInput {
             this.dropdown.style.display = "none";
 
             for (const key in list) {
-                const item = document.createElement("div");
-
                 const { value, icon, thumb } = typeof list[key] === "object" ? list[key] : { value: list[key], icon: undefined, thumb: undefined };
 
-                item.className = "dropdown-item";
-                item.innerHTML = value;
-                item.dataset.value = isAssociative ? key : value;
-
-                if (thumb) {
-                    const img = document.createElement("img");
-                    img.src = thumb;
-                    img.className = "dropdown-thumb";
-                    item.insertAdjacentElement("afterbegin", img);
-                } else if (icon) {
-                    insertIcon(icon, item);
-                }
-
-                item.addEventListener("click", () => {
-                    if (item.dataset.value) {
-                        this.addTag(item.dataset.value);
-                    }
+                this.addDropdownItem({
+                    label: value as string,
+                    value: isAssociative ? key : (value as string),
+                    icon,
+                    thumb,
                 });
-                this.dropdown.appendChild(item);
             }
 
             this.field.appendChild(this.dropdown);

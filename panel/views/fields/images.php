@@ -2,7 +2,7 @@
 <div class="form-input-wrap">
     <span class="form-input-icon"><?= $this->icon($field->get('icon', 'image')) ?></span>
     <input <?= $this->attr([
-                'class'          => ['form-input', 'form-input-tags'],
+                'class'          => ['form-input', 'form-input-tags', 'form-images'],
                 'type'           => 'text',
                 'id'             => $field->name(),
                 'name'           => $field->formName(),

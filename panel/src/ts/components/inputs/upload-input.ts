@@ -7,7 +7,7 @@ import { Request } from "../../utils/request";
 import { SelectInput } from "./select-input";
 import { TagsInput } from "./tags-input";
 
-export class FileInput {
+export class UploadInput {
     readonly element: HTMLInputElement;
     readonly name: string;
 
@@ -28,7 +28,7 @@ export class FileInput {
         this.form = form;
 
         this.label = $(`label[for="${this.element.id}"]`) as HTMLElement;
-        this.dropTarget = this.element.closest(".form-file-drop-target") as HTMLElement;
+        this.dropTarget = this.element.closest(".form-upload-drop-target") as HTMLElement;
         this.dropTargetLabel = $("span", this.dropTarget) as HTMLElement;
         this.defaultDropLabel = this.dropTargetLabel.innerHTML ?? "";
 

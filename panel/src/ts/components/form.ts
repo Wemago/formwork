@@ -5,7 +5,6 @@ import { ArrayInput } from "./inputs/array-input";
 import { DateInput } from "./inputs/date-input";
 import { DurationInput } from "./inputs/duration-input";
 import { EditorInput } from "./inputs/editor-input";
-import { FileInput } from "./inputs/file-input";
 import { ImagePicker } from "./inputs/image-picker";
 import { RangeInput } from "./inputs/range-input";
 import { SelectInput } from "./inputs/select-input";
@@ -13,6 +12,7 @@ import { serializeForm } from "../utils/forms";
 import { SlugInput } from "./inputs/slug-input";
 import { TagsInput } from "./inputs/tags-input";
 import { TogglegroupInput } from "./inputs/togglegroup-input";
+import { UploadInput } from "./inputs/upload-input";
 
 interface FormOptions {
     preventUnloadOnChanges?: boolean;
@@ -65,7 +65,7 @@ export class Form {
 
         $$(".image-picker", parent).forEach((element: HTMLSelectElement) => (this.inputs[element.name] = new ImagePicker(element)));
 
-        $$("input[type=file]", parent).forEach((element: HTMLInputElement) => (this.inputs[element.name] = new FileInput(element, this)));
+        $$("input[type=file]", parent).forEach((element: HTMLInputElement) => (this.inputs[element.name] = new UploadInput(element, this)));
 
         $$("input[type=range]", parent).forEach((element: HTMLInputElement) => (this.inputs[element.name] = new RangeInput(element)));
 

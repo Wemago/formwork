@@ -16,6 +16,8 @@ import { Updates } from "./components/views/updates";
 
 interface AppConfig {
     baseUri: string;
+    csrfToken?: string;
+    colorScheme?: string;
     DateInput?: any;
     DurationInput?: any;
     EditorInput?: any;

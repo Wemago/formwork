@@ -43,7 +43,7 @@ export class Files {
 
                     const csrfInput = document.createElement("input");
                     csrfInput.name = "csrf-token";
-                    csrfInput.value = ($("meta[name=csrf-token]") as HTMLMetaElement).content;
+                    csrfInput.value = app.config.csrfToken as string;
                     form.appendChild(csrfInput);
 
                     fileInput.click();

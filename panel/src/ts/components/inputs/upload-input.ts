@@ -143,7 +143,7 @@ export class UploadInput {
                 if (this.element.files?.length) {
                     for (const file of Array.from(this.element.files)) {
                         const formData = new FormData();
-                        formData.append("csrf-token", ($("meta[name=csrf-token]") as HTMLMetaElement).content);
+                        formData.append("csrf-token", app.config.csrfToken as string);
                         formData.append("file", file);
 
                         this.dropTargetLabel.innerHTML += ' <span class="spinner"></span>';
@@ -209,7 +209,7 @@ export class UploadInput {
                     if (fileInput.files?.length) {
                         const formData = new FormData();
                         formData.append("filename", (element.closest("[data-filename]") as HTMLElement).dataset.filename as string);
-                        formData.append("csrf-token", ($("meta[name=csrf-token]") as HTMLMetaElement).content);
+                        formData.append("csrf-token", app.config.csrfToken as string);
                         formData.append("file", fileInput.files[0]);
 
                         new Request(
@@ -285,7 +285,7 @@ export class UploadInput {
                         data: {
                             filename,
                             "renameFileItemModal[filename]": (input as HTMLInputElement).value,
-                            "csrf-token": ($("meta[name=csrf-token]") as HTMLMetaElement).content,
+                            "csrf-token": app.config.csrfToken as string,
                         },
                     },
                     (response) => {
@@ -334,7 +334,7 @@ export class UploadInput {
                         url: action as string,
                         data: {
                             filename,
-                            "csrf-token": ($("meta[name=csrf-token]") as HTMLMetaElement).content,
+                            "csrf-token": app.config.csrfToken as string,
                         },
                     },
                     (response) => {

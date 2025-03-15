@@ -1,5 +1,4 @@
 import { getCookies, setCookie } from "../utils/cookies";
-import { $ } from "../utils/selectors";
 import { app } from "../app";
 
 type ColorSchemeName = "light" | "dark";
@@ -8,11 +7,7 @@ type ColorSchemePreference = ColorSchemeName | "light dark";
 export class ColorScheme {
     constructor() {
         const getSupportedColorSchemes = (): ColorSchemePreference => {
-            const meta = $("meta[name=color-scheme]") as HTMLMetaElement;
-            if (!meta) {
-                return "light dark";
-            }
-            switch (meta.content) {
+            switch (app.config.colorScheme) {
                 case "light":
                     return "light";
                 case "dark":

@@ -35,7 +35,7 @@ export class Backups {
                     {
                         method: "POST",
                         url: `${app.config.baseUri}backup/make/`,
-                        data: { "csrf-token": ($("meta[name=csrf-token]") as HTMLMetaElement).content },
+                        data: { "csrf-token": app.config.csrfToken as string },
                     },
                     (response) => {
                         if (response.status === "success") {
@@ -84,7 +84,7 @@ export class Backups {
 
                         if (response.status === "success") {
                             window.setTimeout(() => {
-                                triggerDownload(response.data.uri, ($("meta[name=csrf-token]") as HTMLMetaElement).content);
+                                triggerDownload(response.data.uri, app.config.csrfToken as string);
                             }, 1000);
                         }
                     },

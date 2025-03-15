@@ -3,6 +3,7 @@
 namespace Formwork\Assets;
 
 use Formwork\Utils\FileSystem;
+use Formwork\Utils\Path;
 use Formwork\Utils\Str;
 use Formwork\Utils\Uri;
 
@@ -18,50 +19,64 @@ class Assets
      */
     protected string $baseUri;
 
+    /**
+     * Asset collection
+     */
+    private AssetCollection $collection;
+
     public function __construct(string $basePath, string $baseUri)
     {
         $this->basePath = FileSystem::normalizePath($basePath);
         $this->baseUri = Uri::normalize(Str::append($baseUri, '/'));
+        $this->collection = new AssetCollection();
     }
 
     /**
-     * Get asset version, if possible, based on its last modified time
-     *
-     * @param string $path Requested asset path
+     * Add an asset to the collection
      */
-    public function version(string $path): ?string
+    public function add(string $key): void
     {
-        $file = FileSystem::joinPaths($this->basePath, $path);
-        if (FileSystem::exists($file)) {
-            return dechex(FileSystem::lastModifiedTime($file));
+        if (!$this->collection->has($key)) {
+            $path = FileSystem::joinPaths($this->basePath, Path::resolve($key, '/', DIRECTORY_SEPARATOR));
+            $uri = Path::join([$this->baseUri, Path::resolve($key, '/')]);
+            $this->collection->set($key, new Asset($path, $uri));
         }
-        return null;
     }
 
     /**
-     * Get a SHA-256 integrity hash for an asset if possible
+     * Get an asset from the collection
      */
-    public function integrityHash(string $path): ?string
+    public function get(string $key): Asset
     {
-        $file = FileSystem::joinPaths($this->basePath, $path);
-        if (FileSystem::exists($file)) {
-            return 'sha256-' . base64_encode(hash('sha256', FileSystem::read($file), true));
+        if (!$this->collection->has($key)) {
+            $path = FileSystem::joinPaths($this->basePath, Path::resolve($key, '/', DIRECTORY_SEPARATOR));
+            $uri = Path::join([$this->baseUri, Path::resolve($key, '/')]);
+            $this->collection->set($key, new Asset($path, $uri));
         }
-        return null;
+        return $this->collection->get($key);
     }
 
     /**
-     * Get asset URI optionally followed by a version query parameter
-     *
-     * @param string $path           Requested asset path
-     * @param bool   $includeVersion Whether to include asset version
+     * Get stylesheets from the assets collection
      */
-    public function uri(string $path, bool $includeVersion = false): string
+    public function stylesheets(): AssetCollection
     {
-        $uri = $this->baseUri . trim($path, '/');
-        if ($includeVersion && ($version = $this->version($path)) !== null) {
-            $uri .= '?v=' . $version;
-        }
-        return $uri;
+        return $this->collection->stylesheets();
+    }
+
+    /**
+     * Get scripts from the assets collection
+     */
+    public function scripts(): AssetCollection
+    {
+        return $this->collection->scripts();
+    }
+
+    /**
+     * Get images from the assets collection
+     */
+    public function images(): AssetCollection
+    {
+        return $this->collection->images();
     }
 }

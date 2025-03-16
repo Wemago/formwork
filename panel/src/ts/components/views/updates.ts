@@ -38,7 +38,7 @@ export class Updates {
             };
 
             window.setTimeout(() => {
-                const data = { "csrf-token": ($("meta[name=csrf-token]") as HTMLMetaElement).content };
+                const data = { "csrf-token": app.config.csrfToken as string };
 
                 new Request(
                     {
@@ -72,7 +72,7 @@ export class Updates {
                     {
                         method: "POST",
                         url: `${app.config.baseUri}updates/update/`,
-                        data: { "csrf-token": ($("meta[name=csrf-token]") as HTMLMetaElement).content },
+                        data: { "csrf-token": app.config.csrfToken as string },
                     },
                     (response) => {
                         const notification = new Notification(response.message, response.status, { icon: "check-circle" });

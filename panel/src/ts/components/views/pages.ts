@@ -245,7 +245,7 @@ export class Pages {
                     sortable.option("disabled", true);
 
                     const data = {
-                        "csrf-token": ($("meta[name=csrf-token]") as HTMLMetaElement).content,
+                        "csrf-token": app.config.csrfToken as string,
                         page: event.item.dataset.route,
                         before: (event.item.nextElementSibling! as HTMLElement).dataset.route,
                         parent: element.dataset.parent,

@@ -5,10 +5,10 @@
     <label class="<?= $this->classes(['form-label', 'form-label-required' => $field->isRequired()]) ?>" for="<?= $field->name() ?>"><?= $this->escape($this->append($field->label(), ':')) ?></label>
     <?php if ($field->has('suggestion')) : ?><span class="form-label-suggestion">(<?= $this->escape($field->get('suggestion')) ?>)</span><?php endif ?>
 <?php endif ?>
-<label class="form-file-drop-target" tabindex="0">
+<label class="form-upload-drop-target" tabindex="0">
     <input <?= $this->attr([
                 'type'             => 'file',
-                'class'            => ['form-input', 'form-input-file'],
+                'class'            => ['form-input', 'form-input-upload'],
                 'id'               => $field->name(),
                 'name'             => $field->formName() . ($field->get('multiple') ? '[]' : ''),
                 'accept'           => $field->get('accept', implode(', ', $app->config()->get('system.files.allowedExtensions'))),

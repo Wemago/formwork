@@ -1,7 +1,5 @@
 import { $, $$ } from "../utils/selectors";
 import { Form } from "./form";
-import { Inputs } from "./inputs";
-
 interface ModalShowOptions {
     action?: string;
     triggerElement?: HTMLElement;
@@ -19,8 +17,6 @@ export class Modal {
     readonly element: HTMLElement;
 
     readonly form: Form | null;
-
-    readonly inputs: Inputs;
 
     readonly data: { [key: string]: unknown } = {};
 

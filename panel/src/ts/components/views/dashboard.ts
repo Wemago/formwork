@@ -18,7 +18,7 @@ export class Dashboard {
                 {
                     method: "POST",
                     url: `${app.config.baseUri}cache/clear/${type ?? ""}/`.replace(/\/+$/, "/"),
-                    data: { "csrf-token": ($("meta[name=csrf-token]") as HTMLMetaElement).content },
+                    data: { "csrf-token": app.config.csrfToken as string },
                 },
                 (response) => {
                     const icon = response.status === "error" ? "exclamation-octagon" : "check-circle";
@@ -49,7 +49,7 @@ export class Dashboard {
                     {
                         method: "POST",
                         url: `${app.config.baseUri}backup/make/`,
-                        data: { "csrf-token": ($("meta[name=csrf-token]") as HTMLMetaElement).content },
+                        data: { "csrf-token": app.config.csrfToken as string },
                     },
                     (response) => {
                         const notification = new Notification(response.message, response.status, { icon: "check-circle" });
@@ -58,7 +58,7 @@ export class Dashboard {
                         if (response.status === "success") {
                             window.setTimeout(() => {
                                 button.disabled = false;
-                                triggerDownload(response.data.uri, ($("meta[name=csrf-token]") as HTMLMetaElement).content);
+                                triggerDownload(response.data.uri, app.config.csrfToken as string);
                             }, 1000);
                         }
 

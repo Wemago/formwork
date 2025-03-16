@@ -4,8 +4,10 @@ import { Form } from "../form";
 import { insertIcon } from "../icons";
 import { Notification } from "../notification";
 import { Request } from "../../utils/request";
+import { SelectInput } from "./select-input";
+import { TagsInput } from "./tags-input";
 
-export class FileInput {
+export class UploadInput {
     readonly element: HTMLInputElement;
     readonly name: string;
 
@@ -26,7 +28,7 @@ export class FileInput {
         this.form = form;
 
         this.label = $(`label[for="${this.element.id}"]`) as HTMLElement;
-        this.dropTarget = this.element.closest(".form-file-drop-target") as HTMLElement;
+        this.dropTarget = this.element.closest(".form-upload-drop-target") as HTMLElement;
         this.dropTargetLabel = $("span", this.dropTarget) as HTMLElement;
         this.defaultDropLabel = this.dropTargetLabel.innerHTML ?? "";
 
@@ -56,8 +58,8 @@ export class FileInput {
             event.preventDefault();
         });
 
-        this.element.addEventListener("change", this.updateDropTargetLabel);
-        this.element.addEventListener("input", this.updateDropTargetLabel);
+        this.element.addEventListener("change", () => this.updateDropTargetLabel());
+        this.element.addEventListener("input", () => this.updateDropTargetLabel());
 
         this.element.form?.addEventListener("submit", () => {
             this.isSubmitted = true;
@@ -141,7 +143,7 @@ export class FileInput {
                 if (this.element.files?.length) {
                     for (const file of Array.from(this.element.files)) {
                         const formData = new FormData();
-                        formData.append("csrf-token", ($("meta[name=csrf-token]") as HTMLMetaElement).content);
+                        formData.append("csrf-token", app.config.csrfToken as string);
                         formData.append("file", file);
 
                         this.dropTargetLabel.innerHTML += ' <span class="spinner"></span>';
@@ -155,13 +157,36 @@ export class FileInput {
                                 const notification = new Notification(response.message, response.status);
 
                                 if (response.status === "success") {
+                                    const data = response.data[0];
                                     const template = $("template[id=files-item]") as HTMLTemplateElement;
-
-                                    this.addFilesItem(response.data[0], template);
+                                    this.addFilesItem(data, template);
                                     this.sortFilesList(this.filesList, ".file-name");
 
                                     this.element.value = "";
                                     this.updateDropTargetLabel();
+
+                                    for (const name in this.form.inputs) {
+                                        const input = this.form.inputs[name];
+                                        if (input instanceof SelectInput && (input.element.classList.contains("form-file") || (input.element.classList.contains("form-image") && data.type === "image"))) {
+                                            input.addOption({
+                                                label: data.name,
+                                                value: data.name,
+                                                thumb: data.thumbnail,
+                                                icon: `file-${data.type}`,
+                                            });
+                                            input.sortDropdownItems();
+                                        }
+
+                                        if (input instanceof TagsInput && (input.element.classList.contains("form-files") || (input.element.classList.contains("form-images") && data.type === "image"))) {
+                                            input.addDropdownItem({
+                                                label: data.name,
+                                                value: data.name,
+                                                thumb: data.thumbnail,
+                                                icon: `file-${data.type}`,
+                                            });
+                                            input.sortDropdownItems();
+                                        }
+                                    }
                                 }
 
                                 notification.show();
@@ -184,7 +209,7 @@ export class FileInput {
                     if (fileInput.files?.length) {
                         const formData = new FormData();
                         formData.append("filename", (element.closest("[data-filename]") as HTMLElement).dataset.filename as string);
-                        formData.append("csrf-token", ($("meta[name=csrf-token]") as HTMLMetaElement).content);
+                        formData.append("csrf-token", app.config.csrfToken as string);
                         formData.append("file", fileInput.files[0]);
 
                         new Request(
@@ -260,7 +285,7 @@ export class FileInput {
                         data: {
                             filename,
                             "renameFileItemModal[filename]": (input as HTMLInputElement).value,
-                            "csrf-token": ($("meta[name=csrf-token]") as HTMLMetaElement).content,
+                            "csrf-token": app.config.csrfToken as string,
                         },
                     },
                     (response) => {
@@ -309,12 +334,23 @@ export class FileInput {
                         url: action as string,
                         data: {
                             filename,
-                            "csrf-token": ($("meta[name=csrf-token]") as HTMLMetaElement).content,
+                            "csrf-token": app.config.csrfToken as string,
                         },
                     },
                     (response) => {
                         if (response.status === "success") {
                             (item as HTMLElement).remove();
+
+                            for (const name in this.form.inputs) {
+                                const input = this.form.inputs[name];
+                                if (input instanceof SelectInput && !input.element.classList.contains("form-file") && !input.element.classList.contains("form-image")) {
+                                    input.removeOption(filename as string);
+                                }
+
+                                if (input instanceof TagsInput && (input.element.classList.contains("form-files") || input.element.classList.contains("form-images"))) {
+                                    input.removeDropdownItem(filename as string);
+                                }
+                            }
                         }
 
                         const notification = new Notification(response.message, response.status);

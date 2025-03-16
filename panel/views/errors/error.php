@@ -18,7 +18,7 @@
                     <span class="error-code"><?= $code ?></span>
                     <span class="error-status"><?= $status ?></span>
                 </h1>
-                <div class="logo" style="background-image: url(<?= $this->assets()->get('images/icon.svg')->uri() ?>);"></div>
+                <img class="logo" src="<?= $this->assets()->get('images/icon.svg')->uri() ?>">
                 <h2><?= $heading ?></h2>
                 <p><?= $description ?></p>
                 <?php if (isset($action)) : ?><a class="action" href="<?= $action['href'] ?>"><?= $action['label'] ?></a><?php endif ?>

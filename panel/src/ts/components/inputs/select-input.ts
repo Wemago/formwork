@@ -128,64 +128,114 @@ export class SelectInput {
         this.createDropdown(list, wrap as HTMLElement);
     }
 
+    addOption({ label, value, disabled, thumb, icon }: { label: string; value: string; disabled?: boolean; thumb?: string; icon?: string }) {
+        const option = document.createElement("option");
+        option.value = value;
+        option.innerText = label;
+        option.disabled = disabled ?? false;
+        if (thumb) {
+            option.dataset.thumb = thumb;
+        }
+        if (icon) {
+            option.dataset.icon = icon;
+        }
+        this.element.appendChild(option);
+
+        this.addDropdownItem({
+            label,
+            value,
+            selected: false,
+            disabled: disabled ?? false,
+            dataset: {
+                thumb: thumb ?? "",
+                icon: icon ?? "",
+            },
+        });
+    }
+
+    removeOption(value: string) {
+        const option = $(`option[value="${value}"]`, this.element) as HTMLOptionElement;
+        if (option) {
+            option.remove();
+        }
+
+        const item = $(`.dropdown-item[data-value="${value}"]`, this.dropdown);
+        if (item) {
+            item.remove();
+        }
+
+        if (option?.selected) {
+            this.selectFirstDropdownItem();
+            this.setCurrent(this.getSelected());
+        }
+    }
+
+    sortDropdownItems() {
+        const items = $$(".dropdown-item", this.dropdown);
+        const sorted = Array.from(items).sort((a, b) => (a.dataset.value as string).localeCompare(b.dataset.value as string));
+        for (const item of sorted) {
+            this.dropdown.appendChild(item);
+        }
+    }
+
+    private addDropdownItem(option: SelectInputListItem) {
+        const item = document.createElement("div");
+        item.className = "dropdown-item";
+
+        item.innerText = option.label;
+        item.dataset.value = option.value;
+
+        if (option.selected) {
+            item.classList.add("selected");
+        }
+
+        if (option.disabled) {
+            item.classList.add("disabled");
+        }
+
+        if (option.dataset.thumb) {
+            const img = document.createElement("img");
+            img.src = option.dataset.thumb;
+            img.className = "dropdown-thumb";
+            item.insertAdjacentElement("afterbegin", img);
+        } else if (option.dataset.icon) {
+            insertIcon(option.dataset.icon, item);
+        }
+
+        for (const key in option.dataset) {
+            if (["icon", "thumb"].includes(key)) {
+                continue;
+            }
+            item.dataset[key] = option.dataset[key];
+        }
+
+        item.addEventListener("mousedown", (event) => {
+            if (!item.classList.contains("disabled")) {
+                this.selectDropdownItem(item);
+                this.setCurrent(item);
+            } else {
+                event.preventDefault();
+            }
+            event.stopPropagation();
+        });
+
+        this.dropdown.appendChild(item);
+    }
+
     private createDropdown(list: SelectInputListItem[], wrap: HTMLElement) {
         this.dropdown = document.createElement("div");
         this.dropdown.className = "dropdown-list";
 
         this.dropdown.dataset.for = this.labelInput.id;
 
-        const container = document.createElement("div");
-        container.className = "dropdown-list-items";
-        this.dropdown.appendChild(container);
-
         this.emptyState.className = "dropdown-empty";
         this.emptyState.style.display = "none";
         this.emptyState.innerText = this.options.labels.empty;
 
-        container.appendChild(this.emptyState);
+        this.dropdown.appendChild(this.emptyState);
 
         for (const option of list) {
-            const item = document.createElement("div");
-            item.className = "dropdown-item";
-
-            item.innerText = option.label;
-            item.dataset.value = option.value;
-
-            if (option.selected) {
-                item.classList.add("selected");
-            }
-
-            if (option.disabled) {
-                item.classList.add("disabled");
-            }
-
-            if (option.dataset.thumb) {
-                const img = document.createElement("img");
-                img.src = option.dataset.thumb;
-                img.className = "dropdown-thumb";
-                item.insertAdjacentElement("afterbegin", img);
-            } else if (option.dataset.icon) {
-                insertIcon(option.dataset.icon, item);
-            }
-
-            for (const key in option.dataset) {
-                if (["icon", "thumb"].includes(key)) {
-                    continue;
-                }
-                item.dataset[key] = option.dataset[key];
-            }
-
-            item.addEventListener("mousedown", (event) => {
-                if (!item.classList.contains("disabled")) {
-                    this.selectDropdownItem(item);
-                    this.setCurrent(item);
-                } else {
-                    event.preventDefault();
-                }
-                event.stopPropagation();
-            });
-
-            container.appendChild(item);
+            this.addDropdownItem(option);
         }
 
         wrap.appendChild(this.dropdown);
@@ -420,6 +470,10 @@ export class SelectInput {
 
     private getCurrentLabel() {
         return this.getCurrent().innerText.trim();
+    }
+
+    private getSelected() {
+        return $(".dropdown-item.selected", this.dropdown) as HTMLElement;
     }
 
     private selectCurrent() {

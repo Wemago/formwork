@@ -1,5 +1,41 @@
 # Changelog
 
+## [2.0.0-beta.4](https://github.com/getformwork/formwork/releases/tag/2.0.0-beta.4)
+
+**Breaking Changes**
+
+- **Changed Assets handling**
+
+**Enhancements**
+
+- **Use XHR to perform file actions (upload, delete, rename, replace) without updating the page**
+- **Improved file(s) and image(s) fields**
+- **Improved Modals handling**
+- Add `Visitor::getDeviceType()`
+- Track sources and devices in statistics
+- Limit consecutive tracked visits to one every 15 seconds
+- Add support for site translations
+- Add icon support to duration, select, date, image, page, template, email, number, password, slug and text fields
+- Make tags fields reorderable
+- Add limit option to tags fields
+- Add throwable message to JSON error responses
+- Add the possibility to have date-only fields with `time: false`
+- Default to YYY-MM-DD format when converting date input value to string to be comparable when sorting and filtering
+- Add method `toDateTimeString()` to date fields to have a consistent behavior with JavaScript `Date`
+- Trigger editor changes immediately and debounce after
+- Avoid forced trailing slash with Uri::normalize()
+- Avoid meta tags if possible
+- Rename `FileInput` to `UploadInput` for consistency
+- Rename helpers to methods to avoid confusion in naming
+
+**Bug fixes**
+- Fix panel errors not being sent to the error log
+- Fix new page template filtering
+
+**Security**
+- Properly validate select fields
+- Escape site title
+
 ## [2.0.0-beta.3](https://github.com/getformwork/formwork/releases/tag/2.0.0-beta.3)
 
 **Enhancements**

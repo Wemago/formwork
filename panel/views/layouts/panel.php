@@ -8,9 +8,12 @@
     <?php foreach ($panel->notifications() as $notification) : ?>
         <meta name="notification" content='<?= $this->escapeAttr(Formwork\Parsers\Json::encode($notification)) ?>'>
     <?php endforeach ?>
-    <link rel="icon" type="image/svg+xml" href="<?= $this->assets()->uri('images/icon.svg') ?>">
-    <link rel="alternate icon" href="<?= $this->assets()->uri('images/icon.png') ?>">
-    <link rel="stylesheet" href="<?= $this->assets()->uri('css/panel.min.css', true) ?>">
+    <link rel="icon" type="image/svg+xml" href="<?= $this->assets()->get('images/icon.svg')->uri() ?>">
+    <link rel="alternate icon" href="<?= $this->assets()->get('images/icon.png')->uri() ?>">
+    <?php $this->assets()->add('css/panel.min.css') ?>
+    <?php foreach ($this->assets()->stylesheets() as $stylesheet): ?>
+        <link rel="stylesheet" href="<?= $stylesheet->uri(includeVersion: true) ?>">
+    <?php endforeach ?>
 </head>
 
 <body>
@@ -29,6 +32,7 @@
     <?php foreach ($this->modals() as $modal) : ?>
         <?php $this->insert('modals.modal', ['modal' => $modal]) ?>
     <?php endforeach ?>
+    <?php $this->assets()->add('js/app.min.js') ?>
     <?php $this->insert('partials.scripts') ?>
 </body>
 

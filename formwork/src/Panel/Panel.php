@@ -132,7 +132,7 @@ final class Panel
      */
     public function assets(): Assets
     {
-        return $this->assets ?? ($this->assets = new Assets($this->config->get('system.panel.paths.assets'), $this->uri('/assets/')));
+        return $this->assets ??= new Assets($this->config->get('system.panel.paths.assets'), $this->uri('/assets/'));
     }
 
     public function colorScheme(): ColorScheme

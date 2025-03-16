@@ -1,4 +1,7 @@
-<script src="<?= $this->assets()->uri('js/app.min.js', true) ?>" integrity="<?= $this->assets()->integrityHash('js/app.min.js') ?>"></script>
+<?php foreach ($this->assets()->scripts() as $script): ?>
+    <script src="<?= $script->uri(includeVersion: true) ?>" integrity="<?= $script->integrityHash() ?>"></script>
+<?php endforeach ?>
+
 <script>
     Formwork.app.load(<?= $appConfig ?>);
 </script>

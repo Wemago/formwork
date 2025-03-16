@@ -5,9 +5,9 @@
     <title><?php if (!empty($title)) : ?><?= $title ?> | <?php endif ?>Formwork</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="robots" content="noindex, nofollow">
-    <link rel="icon" type="image/svg+xml" href="<?= $this->assets()->uri('images/icon.svg') ?>">
-    <link rel="alternate icon" href="<?= $this->assets()->uri('images/icon.png') ?>">
-    <link rel="stylesheet" href="<?= $this->assets()->uri('css/panel.min.css', true) ?>">
+    <link rel="icon" type="image/svg+xml" href="<?= $this->assets()->get('images/icon.svg')->uri() ?>">
+    <link rel="alternate icon" href="<?= $this->assets()->get('images/icon.png')->uri() ?>">
+    <link rel="stylesheet" href="<?= $this->assets()->get('css/panel.min.css')->uri(includeVersion: true) ?>">
 </head>
 
 <body>
@@ -18,7 +18,7 @@
                     <span class="error-code"><?= $code ?></span>
                     <span class="error-status"><?= $status ?></span>
                 </h1>
-                <img class="logo" src="<?= $this->assets()->uri('images/icon.svg') ?>">
+                <img class="logo" src="<?= $this->assets()->get('images/icon.svg')->uri() ?>">
                 <h2><?= $heading ?></h2>
                 <p><?= $description ?></p>
                 <?php if (isset($action)) : ?><a class="action" href="<?= $action['href'] ?>"><?= $action['label'] ?></a><?php endif ?>

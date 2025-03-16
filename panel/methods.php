@@ -1,15 +1,13 @@
 <?php
 
-use Formwork\Config\Config;
 use Formwork\Panel\Panel;
-use Formwork\Utils\FileSystem;
 
-return function (Config $config, Panel $panel) {
+return function (Panel $panel) {
     return [
         'assets' => $panel->assets(...),
 
         'modals' => $panel->modals(...),
 
-        'icon' => fn(string $icon) => FileSystem::read(FileSystem::joinPaths($config->get('system.panel.paths.assets'), '/icons/svg/', $icon . '.svg')),
+        'icon' => fn(string $icon) => $panel->assets()->get('/icons/svg/' . $icon . '.svg')->content(),
     ];
 };

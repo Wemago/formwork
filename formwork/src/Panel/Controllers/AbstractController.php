@@ -136,7 +136,7 @@ abstract class AbstractController extends BaseAbstractController
             'appConfig' => Json::encode([
                 'baseUri'     => $this->panel->panelUri(),
                 'csrfToken'   => $this->csrfToken->get($this->panel->getCsrfTokenName()),
-                'colorScheme' => $this->panel->user()->colorScheme()->getCompatibleSchemes(),
+                'colorScheme' => $this->panel->isLoggedIn() ? $this->panel->user()->colorScheme()->getCompatibleSchemes() : null,
                 'DateInput'   => [
                     'weekStarts'     => $this->config->get('system.date.weekStarts'),
                     'dateFormat'     => Date::formatToPattern($this->config->get('system.date.dateFormat')),

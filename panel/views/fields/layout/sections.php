@@ -9,13 +9,13 @@
             </div>
             <div class="section-content">
                 <div class="row">
-                <?php foreach ($fields->getMultiple($section->get('fields', [])) as $field) : ?>
-                    <?php if ($field->isVisible()) : ?>
-                        <div <?= $this->attr(['class' => ['col-md-'.$field->get('width', '12-12')]]) ?>>
-                            <?php $this->insert('fields.' . $field->type(), ['field' => $field]) ?>
-                        </div>
-                    <?php endif ?>
-                <?php endforeach ?>
+                    <?php foreach ($fields->getMultiple($section->get('fields', [])) as $field) : ?>
+                        <?php if ($field->isVisible()) : ?>
+                            <div <?= $this->attr(['class' => ['col-md-' . $field->get('width', '12-12')]]) ?>>
+                                <?php $this->insert('fields.' . $field->type(), ['field' => $field]) ?>
+                            </div>
+                        <?php endif ?>
+                    <?php endforeach ?>
                 </div>
             </div>
         </section>

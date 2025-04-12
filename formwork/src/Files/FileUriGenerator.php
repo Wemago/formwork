@@ -8,6 +8,7 @@ use Formwork\Files\Exceptions\FileUriGenerationException;
 use Formwork\Http\Request;
 use Formwork\Router\Router;
 use Formwork\Utils\FileSystem;
+use Formwork\Utils\Path;
 use Formwork\Utils\Str;
 use Formwork\Utils\Uri;
 use RuntimeException;
@@ -36,9 +37,9 @@ class FileUriGenerator
         }
 
         if (Str::startsWith($path, $contentPath = FileSystem::normalizePath($this->config->get('system.pages.path')))) {
-            $uriPath = preg_replace('~[/\\\](\d+-)~', '/', Str::after($path, $contentPath))
+            $uriPath = preg_replace('~[/\\\](\d+-)~', '/', Str::after(dirname($path), $contentPath))
                 ?? throw new RuntimeException(sprintf('Replacement failed with error: %s', preg_last_error_msg()));
-            return $this->site->uri($uriPath, includeLanguage: false);
+            return $this->site->uri(Path::join([$uriPath, basename($path)]), includeLanguage: false);
         }
 
         if (Str::startsWith($path, FileSystem::normalizePath($this->config->get('system.users.paths.images')))) {
@@ -49,7 +50,7 @@ class FileUriGenerator
 
         if (Str::startsWith($path, $panelAssetsPath = FileSystem::normalizePath($this->config->get('system.panel.paths.assets')))) {
             $uriPath = Str::after($path, $panelAssetsPath);
-            return $this->site->uri('panel/assets/' . $uriPath, includeLanguage: false);
+            return $this->site->uri(Path::join(['panel/assets/', $uriPath]), includeLanguage: false);
         }
 
         throw new FileUriGenerationException(sprintf('Cannot generate uri for "%s": missing file generator', $file->name()));

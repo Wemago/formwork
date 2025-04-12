@@ -299,9 +299,6 @@ class Router
         $params = [];
 
         $regex = preg_replace_callback(self::PARAMS_REGEX, function (array $matches) use (&$params): string {
-            /**
-             * @var array<string|null> $matches
-             * */
             [, $separator, $param, $pattern, $optional] = $matches;
 
             $param = $this->validateParamName($param, $params);
@@ -334,9 +331,6 @@ class Router
         $path = Str::wrap(Path::join([$route->getPrefix(), $route->getPath()]), '/');
 
         $result = preg_replace_callback(self::PARAMS_REGEX, function (array $matches) use ($params): string {
-            /**
-             * @var array<string|null> $matches
-             */
             [, $separator, $param, $pattern, $optional] = $matches;
 
             $param = $this->validateParamName($param, []);

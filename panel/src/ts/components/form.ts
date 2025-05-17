@@ -2,6 +2,7 @@ import "../polyfills/request-submit";
 import { $, $$ } from "../utils/selectors";
 import { app } from "../app";
 import { ArrayInput } from "./inputs/array-input";
+import { ColorInput } from "./inputs/color-input";
 import { DateInput } from "./inputs/date-input";
 import { DurationInput } from "./inputs/duration-input";
 import { EditorInput } from "./inputs/editor-input";
@@ -50,6 +51,8 @@ export class Form {
         const parent = this.element;
 
         $$(".editor-textarea", parent).forEach((element: HTMLTextAreaElement) => (this.inputs[element.name] = new EditorInput(element)));
+
+        $$(".form-input-color", parent).forEach((element: HTMLInputElement) => (this.inputs[element.name] = new ColorInput(element)));
 
         $$(".form-input-array", parent).forEach((element: HTMLInputElement) => (this.inputs[element.dataset.name as string] = new ArrayInput(element)));
 

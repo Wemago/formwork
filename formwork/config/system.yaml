@@ -41,6 +41,13 @@ fields:
 files:
     allowedExtensions: []
     metadataExtension: .meta.yaml
+    uploads:
+        path: '${%ROOT_PATH%}/site/files'
+        baseDestinations:
+            - '${%ROOT_PATH%}/site/pages'
+            - '${%ROOT_PATH%}/site/users/images'
+            - '${%ROOT_PATH%}/site/templates/assets'
+            - '${%ROOT_PATH%}/site/files'
 
 images:
     jpegQuality: 85

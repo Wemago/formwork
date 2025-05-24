@@ -6,8 +6,6 @@ use Formwork\Exceptions\TranslatedException;
 use Formwork\Fields\FieldCollection;
 use Formwork\Files\File;
 use Formwork\Files\FileCollection;
-use Formwork\Files\Services\FileUploader;
-use Formwork\Http\Files\UploadedFile;
 use Formwork\Http\RequestMethod;
 use Formwork\Http\Response;
 use Formwork\Pages\Page;
@@ -16,7 +14,6 @@ use Formwork\Router\RouteParams;
 use Formwork\Utils\Arr;
 use Formwork\Utils\FileSystem;
 use Formwork\Utils\Str;
-use UnexpectedValueException;
 
 final class FilesController extends AbstractController
 {
@@ -172,7 +169,7 @@ final class FilesController extends AbstractController
             return $this->redirectToReferer(default: $this->generateRoute('panel.pages'), base: $this->panel->panelRoot());
         }
 
-        if (!$page->files()->has($filename)) {
+        if ($page->contentPath() === null || !$page->files()->has($filename)) {
             $this->panel->notify($this->translate('panel.pages.page.cannotReplaceFile.fileNotFound'), 'error');
             return $this->redirectToReferer(default: $this->generateRoute('panel.pages'), base: $this->panel->panelRoot());
         }
@@ -186,7 +183,13 @@ final class FilesController extends AbstractController
             }
 
             try {
-                $this->processFileUpload($this->request->files()->getAll(), $page, [$page->files()->get($filename)->mimeType()], FileSystem::name($filename), true);
+                $this->fileUploader->upload(
+                    $files[0],
+                    $page->contentPath(),
+                    FileSystem::name($filename),
+                    [$page->files()->get($filename)->mimeType()],
+                    overwrite: true,
+                );
             } catch (TranslatedException $e) {
                 $this->panel->notify($this->translate('upload.error', $this->translate($e->getLanguageString())), 'error');
                 return $this->redirect($this->generateRoute('panel.files.index', ['page' => $routeParams->get('page'), 'filename' => $filename]));
@@ -227,25 +230,6 @@ final class FilesController extends AbstractController
         }
 
         FileSystem::write($metaFile, Yaml::encode($data));
-    }
-
-    /**
-     * Process page uploads
-     *
-     * @param array<UploadedFile> $files
-     * @param list<string>        $mimeTypes
-     */
-    private function processFileUpload(array $files, Page $page, ?array $mimeTypes = null, ?string $name = null, bool $overwrite = false): void
-    {
-        $fileUploader = $this->app->getService(FileUploader::class);
-
-        if ($page->contentPath() === null) {
-            throw new UnexpectedValueException('Unexpected missing page path');
-        }
-
-        foreach ($files as $file) {
-            $fileUploader->upload($file, $page->contentPath(), $name, overwrite: $overwrite, allowedMimeTypes: $mimeTypes);
-        }
     }
 
     /**

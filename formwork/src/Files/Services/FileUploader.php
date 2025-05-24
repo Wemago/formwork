@@ -50,7 +50,7 @@ class FileUploader
      *
      * @param ?array<string> $allowedMimeTypes
      */
-    public function upload(UploadedFile $uploadedFile, string $destinationPath, ?string $name = null, bool $overwrite = false, ?array $allowedMimeTypes = null): File
+    public function upload(UploadedFile $uploadedFile, string $destinationPath, ?string $name = null, ?array $allowedMimeTypes = null, bool $overwrite = false): File
     {
         $mimeType = MimeType::fromFile($uploadedFile->tempPath());
 

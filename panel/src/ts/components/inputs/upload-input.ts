@@ -162,9 +162,6 @@ export class UploadInput {
                                     this.addFilesItem(data, template);
                                     this.sortFilesList(this.filesList, ".file-name");
 
-                                    this.element.value = "";
-                                    this.updateDropTargetLabel();
-
                                     for (const name in this.form.inputs) {
                                         const input = this.form.inputs[name];
                                         if (input instanceof SelectInput && (input.element.classList.contains("form-file") || (input.element.classList.contains("form-image") && data.type === "image"))) {
@@ -188,6 +185,9 @@ export class UploadInput {
                                         }
                                     }
                                 }
+
+                                this.element.value = "";
+                                this.updateDropTargetLabel();
 
                                 notification.show();
                             },

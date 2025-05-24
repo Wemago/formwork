@@ -48,7 +48,7 @@ final class OptionsController extends AbstractController
             $data = $this->request->input();
             $options = $this->config->get('system');
             $defaults = $this->app->defaults();
-            $fields->setValues($data, null)->validate();
+            $fields->setValuesFromRequest($this->request, null)->validate();
 
             $differ = $this->updateOptions('system', $fields, $options, $defaults);
 
@@ -89,10 +89,9 @@ final class OptionsController extends AbstractController
         $fields = $scheme->fields();
 
         if ($this->request->method() === RequestMethod::POST) {
-            $data = $this->request->input();
             $options = $this->site->data();
             $defaults = $this->site->defaults();
-            $fields->setValues($data, null)->validate();
+            $fields->setValuesFromRequest($this->request, null)->validate();
             $differ = $this->updateOptions('site', $fields, $options, $defaults);
 
             // Touch content folder to invalidate cache
@@ -137,9 +136,25 @@ final class OptionsController extends AbstractController
             if ($field->isEmpty()) {
                 continue;
             }
+
+            if ($field->type() === 'upload') {
+                $files = $field->isMultiple() ? $field->value() : [$field->value()];
+                foreach ($files as $file) {
+                    $this->fileUploader->upload(
+                        $file,
+                        $field->destination(),
+                        $field->filename(),
+                        $field->acceptMimeTypes(),
+                        $field->overwrite(),
+                    );
+                }
+                continue;
+            }
+
             if (Arr::has($defaults, $field->name()) && Arr::get($defaults, $field->name()) === $field->value()) {
                 continue;
             }
+
             Arr::set($options, $field->name(), $field->value());
         }
 

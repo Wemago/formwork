@@ -36,6 +36,20 @@ final class Path
     }
 
     /**
+     * Return whether an absolute path is relative to a given absolute base
+     */
+    public static function isRelativeTo(string $path, string $base): bool
+    {
+        if (!self::isAbsolute($path)) {
+            throw new InvalidArgumentException('$path must be an absolute path');
+        }
+        if (!self::isAbsolute($base)) {
+            throw new InvalidArgumentException('$base must be an absolute path');
+        }
+        return Str::startsWith(self::normalize($path), self::normalize($base));
+    }
+
+    /**
      * Normalize path separators and remove '.' and '..' segments
      */
     public static function normalize(string $path, string $separator = self::DEFAULT_SEPARATOR): string

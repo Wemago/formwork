@@ -144,7 +144,7 @@ export class UploadInput {
                     for (const file of Array.from(this.element.files)) {
                         const formData = new FormData();
                         formData.append("csrf-token", app.config.csrfToken as string);
-                        formData.append("file", file);
+                        formData.append(this.element.name, file);
 
                         this.dropTargetLabel.innerHTML += ' <span class="spinner"></span>';
 

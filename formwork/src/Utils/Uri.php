@@ -205,6 +205,16 @@ final class Uri
     }
 
     /**
+     * Encode all characters except those that are allowed by the URI syntax.
+     * Compared to `rawurlencode()`, this method encodes less characters
+     */
+    public static function encode(string $uri): string
+    {
+        return preg_replace_callback('~[^A-Za-z0-9-_.!\~*\'()=;/?:@&=+$,#]+~u', fn($m) => rawurlencode($m[0]), $uri)
+            ?? throw new InvalidArgumentException(sprintf('Malformed data in URI "%s"', $uri));
+    }
+
+    /**
      * Parse URI component, throwing an exception when the URI is invalid
      */
     private static function parseComponent(string $uri, int $component): mixed

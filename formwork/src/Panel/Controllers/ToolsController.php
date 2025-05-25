@@ -44,7 +44,7 @@ final class ToolsController extends AbstractController
 
         $backups = Arr::map($backupper->getBackups(), fn(string $path, int $timestamp): array => [
             'name'        => basename($path),
-            'encodedName' => urlencode(base64_encode(basename($path))),
+            'encodedName' => rawurlencode(base64_encode(basename($path))),
             'timestamp'   => $timestamp,
             'size'        => FileSystem::formatSize(FileSystem::size($path)),
         ]);

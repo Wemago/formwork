@@ -31,7 +31,7 @@ final class BackupController extends AbstractController
             return JsonResponse::error($this->translate('panel.backup.error.cannotMake', $this->translate($e->getLanguageString())), ResponseStatus::InternalServerError);
         }
         $filename = basename($file);
-        $uriName = urlencode(base64_encode($filename));
+        $uriName = rawurlencode(base64_encode($filename));
         return JsonResponse::success($this->translate('panel.backup.ready'), data: [
             'filename'  => $filename,
             'uri'       => $this->panel->uri('/backup/download/' . $uriName . '/'),

@@ -160,7 +160,7 @@ class Request
      */
     public function uri(): string
     {
-        $uri = urldecode((string) $this->server->get('REQUEST_URI'));
+        $uri = rawurldecode((string) $this->server->get('REQUEST_URI'));
         $root = $this->root();
         if (Str::startsWith($uri, $root)) {
             return Path::join(['/', Str::removeStart($uri, $root)]);

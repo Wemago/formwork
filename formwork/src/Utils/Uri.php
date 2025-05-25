@@ -219,10 +219,11 @@ final class Uri
      */
     private static function parseComponent(string $uri, int $component): mixed
     {
-        $result = parse_url($uri, $component);
+        // Avoid altered UTF-8 characters from `parse_url()` output by encoding the URI first
+        $result = parse_url(self::encode($uri), $component);
         if ($result === false) {
             throw new InvalidArgumentException(sprintf('Invalid URI "%s"', $uri));
         }
-        return $result;
+        return is_string($result) ? rawurldecode($result) : $result;
     }
 }

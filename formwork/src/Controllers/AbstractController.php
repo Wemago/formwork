@@ -49,7 +49,7 @@ abstract class AbstractController
      */
     protected function redirect(string $route, ResponseStatus $responseStatus = ResponseStatus::Found, array $headers = []): RedirectResponse
     {
-        $uri = Uri::make([], Path::join([$this->app->request()->root(), $route]));
+        $uri = Uri::make([], Path::join([$this->request->root(), $route]));
         return new RedirectResponse($uri, $responseStatus, $headers);
     }
 
@@ -66,7 +66,7 @@ abstract class AbstractController
     ): RedirectResponse {
         if (
             !in_array($this->request->referer(), [null, $this->request->absoluteUri()], true)
-            && $this->request->validateReferer(Path::join([$this->app->request()->root(), $base]))
+            && $this->request->validateReferer(Path::join([$this->request->root(), $base]))
         ) {
             return new RedirectResponse($this->request->referer(), $responseStatus, $headers);
         }

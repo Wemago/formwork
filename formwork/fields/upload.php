@@ -29,6 +29,22 @@ return function (App $app) {
             return $field->is('autoUpload');
         },
 
+        'isMultiple' => function (Field $field): bool {
+            return $field->is('multiple');
+        },
+
+        'destination' => function (Field $field): ?string {
+            return $field->get('destination');
+        },
+
+        'overwrite' => function (Field $field): bool {
+            return $field->is('overwrite');
+        },
+
+        'filename' => function (Field $field): ?string {
+            return $field->get('filename');
+        },
+
         'validate' => function (Field $field, $value) use ($app) {
             if (Constraint::isEmpty($value)) {
                 return null;
@@ -42,7 +58,7 @@ return function (App $app) {
                 throw new ValidationException(sprintf('Invalid accept attribute for field "%s" of type "%s". Found unallowed MIME types: %s', $field->name(), $field->type(), implode(', ', $unallowedMimeTypes)));
             }
 
-            if (!$field->is('multiple')) {
+            if (!$field->isMultiple()) {
                 if (!($value instanceof UploadedFile)) {
                     throw new ValidationException(sprintf('Invalid value for field "%s" of type "%s". Expected an instance of %s', $field->name(), $field->type(), UploadedFile::class));
                 }
@@ -59,6 +75,10 @@ return function (App $app) {
 
             if (!is_array($value)) {
                 throw new ValidationException(sprintf('Invalid value for field "%s" of type "%s". Expected an array of %s', $field->name(), $field->type(), UploadedFile::class));
+            }
+
+            if ($field->filename() !== null) {
+                throw new ValidationException(sprintf('Field "%s" of type "%s" cannot have a filename set when multiple files are allowed', $field->name(), $field->type()));
             }
 
             $value = Arr::filter($value, function ($file) use ($field) {

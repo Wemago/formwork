@@ -4,10 +4,9 @@ namespace Formwork\Panel\Controllers;
 
 use Formwork\Exceptions\TranslatedException;
 use Formwork\Fields\Exceptions\ValidationException;
+use Formwork\Fields\Field;
 use Formwork\Fields\FieldCollection;
-use Formwork\Files\Services\FileUploader;
 use Formwork\Http\FileResponse;
-use Formwork\Http\Files\UploadedFile;
 use Formwork\Http\RequestMethod;
 use Formwork\Http\Response;
 use Formwork\Images\Image;
@@ -248,9 +247,8 @@ final class UsersController extends AbstractController
             }
 
             if ($field->name() === 'image') {
-                $file = $field->value();
                 // Handle incoming files
-                if ($file && ($image = $this->uploadUserImage($user, $file, $field->acceptMimeTypes())) !== null) {
+                if ($field->value() !== null && ($image = $this->uploadUserImage($user, $field)) !== null) {
                     Arr::set($userData, 'image', $image);
                 }
                 continue;
@@ -264,16 +262,23 @@ final class UsersController extends AbstractController
 
     /**
      * Upload a new image for a user
-     *
-     * @param array<string> $mimeTypes
      */
-    private function uploadUserImage(User $user, UploadedFile $uploadedFile, array $mimeTypes): ?string
+    private function uploadUserImage(User $user, Field $field): ?string
     {
         $imagesPath = FileSystem::joinPaths($this->config->get('system.users.paths.images'));
 
-        $fileUploader = $this->app->getService(FileUploader::class);
+        $files = $field->isMultiple() ? $field->value() : [$field->value()];
 
-        $file = $fileUploader->upload($uploadedFile, $imagesPath, FileSystem::randomName(), allowedMimeTypes: $mimeTypes);
+        if ($files === []) {
+            return null;
+        }
+
+        $file = $this->fileUploader->upload(
+            $files[0],
+            $imagesPath,
+            FileSystem::randomName(),
+            $field->acceptMimeTypes(),
+        );
 
         if (!($file instanceof Image)) {
             return null;

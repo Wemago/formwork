@@ -7,8 +7,6 @@ use Formwork\Data\Exceptions\InvalidValueException;
 use Formwork\Exceptions\TranslatedException;
 use Formwork\Fields\FieldCollection;
 use Formwork\Files\File;
-use Formwork\Files\Services\FileUploader;
-use Formwork\Http\Files\UploadedFile;
 use Formwork\Http\JsonResponse;
 use Formwork\Http\RequestData;
 use Formwork\Http\RequestMethod;
@@ -139,7 +137,7 @@ final class PagesController extends AbstractController
         }
 
         // Load page fields
-        $fields = $page->scheme()->fields();
+        $fieldCollection = $page->fields()->deepClone();
 
         switch ($this->request->method()) {
             case RequestMethod::GET:
@@ -147,7 +145,7 @@ final class PagesController extends AbstractController
                 $data = $page->data();
 
                 // Validate fields against data
-                $fields->setValues($data);
+                $fieldCollection->setValues($data);
 
                 break;
 
@@ -157,17 +155,17 @@ final class PagesController extends AbstractController
 
                 try {
                     // Validate fields against data
-                    $fields->setValuesFromRequest($this->request, null)->validate();
+                    $fieldCollection->setValuesFromRequest($this->request, null)->validate();
 
                     $forceUpdate = false;
 
                     if ($this->request->query()->has('publish')) {
-                        $fields->setValues(['published' => Constraint::isTruthy($this->request->query()->get('publish'))]);
+                        $fieldCollection->setValues(['published' => Constraint::isTruthy($this->request->query()->get('publish'))]);
                         $forceUpdate = true;
                     }
 
                     // Update the page
-                    $page = $this->updatePage($page, $data, $fields, force: $forceUpdate);
+                    $page = $this->updatePage($page, $data, $fieldCollection, force: $forceUpdate);
 
                     $this->panel->notify($this->translate('panel.pages.page.edited'), 'success');
                 } catch (TranslatedException $e) {
@@ -339,15 +337,27 @@ final class PagesController extends AbstractController
 
         $page = $this->site->findPage($routeParams->get('page'));
 
-        if ($page === null) {
+        if ($page === null || $page->contentPath() === null) {
             return JsonResponse::error($this->translate('panel.files.cannotUpload.pageNotFound'), ResponseStatus::InternalServerError);
         }
 
+        $fieldCollection = $page->fields()->filterBy('type', 'upload');
+        $fieldCollection->setValuesFromRequest($this->request, null)->validate();
+
         $uploadedFiles = [];
 
-        if (!$this->request->files()->isEmpty()) {
+        foreach ($fieldCollection as $field) {
             try {
-                $uploadedFiles = $this->processPageUploads($this->request->files()->getAll(), $page);
+                $files = $field->isMultiple() ? $field->value() : [$field->value()];
+                foreach ($files as $file) {
+                    $uploadedFiles[] = $this->fileUploader->upload(
+                        $file,
+                        $page->contentPath(),
+                        $field->filename(),
+                        $field->acceptMimeTypes(),
+                        $field->overwrite(),
+                    );
+                }
             } catch (TranslatedException $e) {
                 return JsonResponse::error($this->translate('upload.error', $this->translate($e->getLanguageString())), ResponseStatus::InternalServerError);
             }
@@ -447,7 +457,7 @@ final class PagesController extends AbstractController
 
         $filename = $this->request->input()->get('filename');
 
-        if ($page === null || !$page->files()->has($filename)) {
+        if ($page === null || $page->contentPath() === null || !$page->files()->has($filename)) {
             return JsonResponse::error($this->translate('panel.files.cannotReplace.fileNotFound'), ResponseStatus::InternalServerError);
         }
 
@@ -459,7 +469,13 @@ final class PagesController extends AbstractController
             }
 
             try {
-                $this->processPageUploads($this->request->files()->getAll(), $page, [$page->files()->get($filename)->mimeType()], FileSystem::name($filename), true);
+                $this->fileUploader->upload(
+                    $files[0],
+                    $page->contentPath(),
+                    FileSystem::name($filename),
+                    [$page->files()->get($filename)->mimeType()],
+                    overwrite: true,
+                );
             } catch (TranslatedException $e) {
                 return JsonResponse::error($this->translate('upload.error', $this->translate($e->getLanguageString())), ResponseStatus::InternalServerError);
             }
@@ -512,9 +528,18 @@ final class PagesController extends AbstractController
         foreach ($fieldCollection as $field) {
             if ($field->type() === 'upload') {
                 if (!$field->isEmpty()) {
-                    $uploadedFiles = $field->is('multiple') ? $field->value() : [$field->value()];
-                    $this->processPageUploads($uploadedFiles, $page, $field->acceptMimeTypes());
+                    $files = $field->isMultiple() ? $field->value() : [$field->value()];
+                    foreach ($files as $file) {
+                        $this->fileUploader->upload(
+                            $file,
+                            $field->destination(),
+                            $field->filename(),
+                            $field->acceptMimeTypes(),
+                            $field->overwrite(),
+                        );
+                    }
                     $this->updateLastModifiedTime($page);
+                    $page->reload();
                 }
                 $fieldCollection->remove($field->name());
             }
@@ -539,33 +564,6 @@ final class PagesController extends AbstractController
         }
 
         return $page;
-    }
-
-    /**
-     * Process page uploads
-     *
-     * @param array<UploadedFile> $files
-     * @param list<string>        $mimeTypes
-     *
-     * @return array<File>
-     */
-    private function processPageUploads(array $files, Page $page, ?array $mimeTypes = null, ?string $name = null, bool $overwrite = false): array
-    {
-        $fileUploader = $this->app->getService(FileUploader::class);
-
-        if ($page->contentPath() === null) {
-            throw new UnexpectedValueException('Unexpected missing page path');
-        }
-
-        $uploadedFiles = [];
-
-        foreach ($files as $file) {
-            $uploadedFiles[] = $fileUploader->upload($file, $page->contentPath(), $name, overwrite: $overwrite, allowedMimeTypes: $mimeTypes);
-        }
-
-        $page->reload();
-
-        return $uploadedFiles;
     }
 
     /**

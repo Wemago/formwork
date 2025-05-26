@@ -4,6 +4,7 @@ namespace Formwork\Panel\Controllers;
 
 use Formwork\Cms\Site;
 use Formwork\Controllers\AbstractController as BaseAbstractController;
+use Formwork\Files\Services\FileUploader;
 use Formwork\Panel\Modals\Modal;
 use Formwork\Panel\Panel;
 use Formwork\Parsers\Json;
@@ -21,6 +22,7 @@ abstract class AbstractController extends BaseAbstractController
         protected readonly Router $router,
         protected readonly CsrfToken $csrfToken,
         protected readonly Translations $translations,
+        protected readonly FileUploader $fileUploader,
         protected readonly Site $site,
         protected readonly Panel $panel,
     ) {

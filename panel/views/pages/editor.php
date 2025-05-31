@@ -15,7 +15,7 @@
                 </div>
             </div>
             <div class="flex">
-                <div><?= $this->insert('_pages/status', ['page' => $page]) ?></div>
+                <div class="mr-2"><?= $this->insert('_pages/status', ['page' => $page]) ?></div>
                 <div class="page-route"><?= $page->route() ?></div>
             </div>
         </div>

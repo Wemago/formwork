@@ -3,6 +3,8 @@
 namespace Formwork\Cms;
 
 use Formwork\Config\Config;
+use Formwork\Files\FileCollection;
+use Formwork\Files\FileFactory;
 use Formwork\Languages\Languages;
 use Formwork\Metadata\MetadataCollection;
 use Formwork\Model\Model;
@@ -20,6 +22,7 @@ use Formwork\Templates\Templates;
 use Formwork\Users\Users;
 use Formwork\Utils\Arr;
 use Formwork\Utils\FileSystem;
+use Formwork\Utils\Str;
 use Stringable;
 
 class Site extends Model implements Stringable
@@ -103,6 +106,11 @@ class Site extends Model implements Stringable
      * @var array<string, string>
      */
     protected array $routeAliases;
+
+    /**
+     * Site files
+     */
+    protected FileCollection $files;
 
     /**
      * @param array<string, mixed> $data
@@ -466,6 +474,29 @@ class Site extends Model implements Stringable
         $this->fields->setValues($this->data);
 
         $this->loadRouteAliases();
+    }
+
+    public function files(): FileCollection
+    {
+        if (isset($this->files)) {
+            return $this->files;
+        }
+
+        $files = [];
+
+        $path = $this->config->get('system.files.paths.site');
+
+        foreach (FileSystem::listFiles($path) as $file) {
+            $extension = '.' . FileSystem::extension($file);
+            if (Str::endsWith($file, $this->config->get('system.files.metadataExtension'))) {
+                continue;
+            }
+            if (in_array($extension, $this->config->get('system.files.allowedExtensions'), true)) {
+                $files[] = $this->app->getService(FileFactory::class)->make(FileSystem::joinPaths($path, $file));
+            }
+        }
+
+        return $this->files = new FileCollection($files);
     }
 
     /**

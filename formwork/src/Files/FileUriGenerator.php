@@ -29,6 +29,12 @@ class FileUriGenerator
     {
         $path = $file->path();
 
+        if (Str::startsWith($path, FileSystem::normalizePath($this->config->get('system.files.paths.site')))) {
+            $name = basename($path);
+            $uriPath = $this->router->generate('files', compact('name'));
+            return $this->site->uri($uriPath, includeLanguage: false);
+        }
+
         if (Str::startsWith($path, FileSystem::normalizePath($this->config->get('system.images.processPath')))) {
             $id = basename(dirname($path));
             $name = basename($path);

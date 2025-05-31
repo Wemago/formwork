@@ -30,6 +30,10 @@ return [
             'path'   => '/site/templates/assets/{file:all}/',
             'action' => 'Formwork\Controllers\AssetsController@template',
         ],
+        'files' => [
+            'path'   => '/files/{name}/',
+            'action' => 'Formwork\Controllers\FilesController@file',
+        ],
         'tag.pagination' => [
             'path'   => '/{page:all}/tag/{tagName:slug}/page/{paginationPage:number}/',
             'action' => 'Formwork\Controllers\PageController@load',

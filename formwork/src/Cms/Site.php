@@ -476,6 +476,9 @@ class Site extends Model implements Stringable
         $this->loadRouteAliases();
     }
 
+    /**
+     * Get site files
+     */
     public function files(): FileCollection
     {
         if (isset($this->files)) {

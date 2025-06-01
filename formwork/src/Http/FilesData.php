@@ -25,16 +25,6 @@ class FilesData extends RequestData
      */
     public function getAll(): array
     {
-        $result = [];
-        foreach ($this->data as $value) {
-            if (is_array($value)) {
-                foreach ($value as $v) {
-                    $result[] = $v;
-                }
-            } else {
-                $result[] = $value;
-            }
-        }
-        return $result;
+        return Arr::flatten($this->data);
     }
 }

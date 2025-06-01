@@ -180,7 +180,7 @@ export class UploadInput {
         if (this.element.files && this.element.files.length > 0) {
             const filenames: string[] = [];
             for (const file of Array.from(this.element.files)) {
-                filenames.push(`${file.name} <span class="file-size">(${this.formatFileSize(file.size)})</span>`);
+                filenames.push(`${file.name} <span class="file-size-inline">(${this.formatFileSize(file.size)})</span>`);
             }
             this.dropTargetLabel.innerHTML = filenames.join(", ");
 

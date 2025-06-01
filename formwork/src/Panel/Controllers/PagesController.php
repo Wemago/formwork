@@ -19,7 +19,9 @@ use Formwork\Panel\ContentHistory\ContentHistoryEvent;
 use Formwork\Router\RouteParams;
 use Formwork\Utils\Arr;
 use Formwork\Utils\Constraint;
+use Formwork\Utils\Date;
 use Formwork\Utils\FileSystem;
+use Formwork\Utils\Path;
 use Formwork\Utils\Str;
 use Formwork\Utils\Uri;
 use UnexpectedValueException;
@@ -331,7 +333,7 @@ final class PagesController extends AbstractController
      */
     public function upload(RouteParams $routeParams): Response|JsonResponse
     {
-        if (!$this->hasPermission('pages.uploadFiles')) {
+        if (!$this->hasPermission('files.upload')) {
             return $this->forward(ErrorsController::class, 'forbidden');
         }
 
@@ -366,8 +368,13 @@ final class PagesController extends AbstractController
         $this->updateLastModifiedTime($page);
 
         return JsonResponse::success($this->translate('panel.uploader.uploaded'), data: Arr::map($uploadedFiles, fn(File $file) => [
-            'name'      => $file->name(),
-            'size'      => $file->size(),
+            'name'             => $file->name(),
+            'size'             => $file->size(),
+            'lastModifiedTime' => Date::formatTimestamp(
+                $file->lastModifiedTime(),
+                $this->config->get('system.date.datetimeFormat'),
+                $this->translations->getCurrent()
+            ),
             'type'      => $file->type(),
             'mimeType'  => $file->mimeType(),
             'hash'      => $file->hash(),
@@ -377,125 +384,13 @@ final class PagesController extends AbstractController
                 'video' => $file->uri(),
                 default => null,
             },
+            'actions' => Arr::map([
+                'info'    => $this->router->generate('panel.files.edit', ['model' => $page->getModelIdentifier(), 'id' => $page->route(), 'filename' => $file->name()]),
+                'rename'  => $this->router->generate('panel.files.rename', ['model' => $page->getModelIdentifier(), 'id' => $page->route(), 'filename' => $file->name()]),
+                'replace' => $this->router->generate('panel.files.replace', ['model' => $page->getModelIdentifier(), 'id' => $page->route(), 'filename' => $file->name()]),
+                'delete'  => $this->router->generate('panel.files.delete', ['model' => $page->getModelIdentifier(), 'id' => $page->route(), 'filename' => $file->name()]),
+            ], fn(string $route): string => Uri::make([], Path::join([$this->request->root(), $route]))),
         ]), );
-    }
-
-    /**
-     * Pages@deleteFile action
-     */
-    public function deleteFile(RouteParams $routeParams): JsonResponse|Response
-    {
-        if (!$this->hasPermission('pages.deleteFiles')) {
-            return $this->forward(ErrorsController::class, 'forbidden');
-        }
-
-        $page = $this->site->findPage($routeParams->get('page'));
-
-        $filename = $this->request->input()->get('filename');
-
-        if ($page === null || !$page->files()->has($filename)) {
-            return JsonResponse::error($this->translate('panel.files.cannotDelete.fileNotFound'), ResponseStatus::InternalServerError);
-        }
-
-        FileSystem::delete($page->contentPath() . $this->request->input()->get('filename'));
-
-        $this->updateLastModifiedTime($page);
-
-        return JsonResponse::success($this->translate('panel.files.deleted'));
-    }
-
-    /**
-     * Pages@renameFile action
-     */
-    public function renameFile(RouteParams $routeParams): JsonResponse|Response
-    {
-        if (!$this->hasPermission('pages.renameFiles')) {
-            return $this->forward(ErrorsController::class, 'forbidden');
-        }
-
-        $previousName = $this->request->input()->get('filename');
-
-        $page = $this->site->findPage($routeParams->get('page'));
-
-        $fields = $this->modal('renameFileItem')->fields();
-
-        $fields->setValues($this->request->input())->validate();
-
-        $data = $fields->everyItem()->value();
-
-        if ($page === null || !$page->files()->has($previousName)) {
-            return JsonResponse::error($this->translate('panel.files.cannotRename.fileNotFound'), ResponseStatus::InternalServerError);
-        }
-
-        $name = Str::slug(FileSystem::name($data->get('filename')));
-        $extension = FileSystem::extension($previousName);
-
-        $newName = $name . '.' . $extension;
-
-        if ($newName !== $previousName) {
-            if ($page->files()->has($newName)) {
-                $message = $this->translate('panel.files.cannotRename.fileAlreadyExists');
-            } else {
-                FileSystem::move($page->contentPath() . $previousName, $page->contentPath() . $newName);
-                $this->updateLastModifiedTime($page);
-            }
-        }
-
-        return JsonResponse::success($message ?? $this->translate('panel.files.renamed'), data: ['filename' => $newName]);
-    }
-
-    /**
-     * Pages@replaceFile action
-     */
-    public function replaceFile(RouteParams $routeParams): Response|JsonResponse
-    {
-        if (!$this->hasPermission('pages.replaceFiles')) {
-            return $this->forward(ErrorsController::class, 'forbidden');
-        }
-
-        $page = $this->site->findPage($routeParams->get('page'));
-
-        $filename = $this->request->input()->get('filename');
-
-        if ($page === null || $page->contentPath() === null || !$page->files()->has($filename)) {
-            return JsonResponse::error($this->translate('panel.files.cannotReplace.fileNotFound'), ResponseStatus::InternalServerError);
-        }
-
-        if (!$this->request->files()->isEmpty()) {
-            $files = $this->request->files()->getAll();
-
-            if (count($files) > 1) {
-                return JsonResponse::error($this->translate('panel.files.cannotReplace.multipleFiles'), ResponseStatus::InternalServerError);
-            }
-
-            try {
-                $this->fileUploader->upload(
-                    $files[0],
-                    $page->contentPath(),
-                    FileSystem::name($filename),
-                    [$page->files()->get($filename)->mimeType()],
-                    overwrite: true,
-                );
-            } catch (TranslatedException $e) {
-                return JsonResponse::error($this->translate('upload.error', $this->translate($e->getLanguageString())), ResponseStatus::InternalServerError);
-            }
-        }
-
-        $this->updateLastModifiedTime($page);
-
-        $file = $page->files()->get($filename);
-
-        $thumbnail = match ($file->type()) {
-            'image' => $file->square(300, 'contain')->uri(),
-            'video' => $file->uri(),
-            default => null,
-        };
-
-        return JsonResponse::success($this->translate('panel.uploader.uploaded'), data: [
-            'size'      => $file->size(),
-            'type'      => $file->type(),
-            'thumbnail' => $thumbnail,
-        ]);
     }
 
     /**
@@ -532,7 +427,7 @@ final class PagesController extends AbstractController
                     foreach ($files as $file) {
                         $this->fileUploader->upload(
                             $file,
-                            $field->destination(),
+                            $field->destination() ?? $page->contentPath(),
                             $field->filename(),
                             $field->acceptMimeTypes(),
                             $field->overwrite(),

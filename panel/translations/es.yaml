@@ -54,6 +54,7 @@ panel.errors.error.notFound.description: La página no existe o la solicitud no 
 panel.errors.error.notFound.heading: ¡Ups, página no encontrada!
 panel.errors.error.notFound.status: No encontrado
 panel.files.actions: Acciones
+panel.files.backToPage: Volver a la página
 panel.files.cannotDelete.fileNotFound: No se puede borrar el archivo, archivo no encontrado
 panel.files.cannotDelete.pageNotFound: No se puede borrar el archivo, página no encontrada
 panel.files.cannotRename.fileAlreadyExists: No se puede renombrar el archivo, ya existe un archivo con el mismo nombre
@@ -64,10 +65,47 @@ panel.files.cannotReplace.multipleFiles: No se puede reemplazar el archivo, se p
 panel.files.cannotReplace.pageNotFound: No se puede reemplazar el archivo, página no encontrada
 panel.files.cannotUpload.pageNotFound: No se puede subir el archivo, página no encontrada
 panel.files.deleted: Archivo eliminado
+panel.files.exif: EXIF
 panel.files.fileNotFound: No se pueden obtener las información del archivo, archivo no encontrado
+panel.files.files: Archivos
+panel.files.info: Información
+panel.files.info.image.colorDepth: Profundidad de color
+panel.files.info.image.colorNumber: Número de colores
+panel.files.info.image.colorProfile: Perfil de color
+panel.files.info.image.colorSpace: Espacio de color
+panel.files.info.image.dimensions: Dimensiones
+panel.files.info.image.dimensions.widthByHeightPixels: '%d × %d píxeles'
+panel.files.info.image.exif.aperture: Apertura
+panel.files.info.image.exif.camera: Cámara
+panel.files.info.image.exif.creationDateAndTime: Fecha y hora de creación
+panel.files.info.image.exif.exposureCompensation: Compensación de exposición
+panel.files.info.image.exif.exposureProgram: Programa de exposición
+panel.files.info.image.exif.exposureTime: Tiempo de exposición
+panel.files.info.image.exif.flash: Flash
+panel.files.info.image.exif.focalLength: Longitud focal
+panel.files.info.image.exif.lensModel: Modelo de lente
+panel.files.info.image.exif.meteringMode: Modo de medición
+panel.files.info.image.exif.sensitivity: Sensibilidad
+panel.files.info.image.exif.whiteBalance: Balance de blancos
+panel.files.info.image.frames: '%d frames'
+panel.files.info.image.framesCount: Cantidad de frames
+panel.files.info.image.repeats: '%d repeticiones'
+panel.files.info.image.repeatsCount: Cantidad de repeticiones
+panel.files.info.image.resolution: Resolución
+panel.files.info.lastModifiedTime: Última modificación
+panel.files.info.mimeType: Tipo MIME
+panel.files.info.name: Nombre
+panel.files.info.size: Tamaño
+panel.files.info.uri: URI
 panel.files.metadata.updated: Metadatos del archivo actualizados
 panel.files.pageNotFound: No se pueden obtener las información del archivo, página no encontrada
+panel.files.parent: Elemento superior
+panel.files.position: Posición
+panel.files.preview: Vista previa
 panel.files.renamed: Archivo renombrado
+panel.files.search: Buscar archivos...
+panel.files.upload: Subir archivos
+panel.files.uploaded: Archivos subidos
 panel.files.viewAsList: Ver como lista
 panel.files.viewAsThumbnails: Ver como miniaturas
 panel.login.attempt.failed: ¡Intento de inicio de sesión fallido! Intenta de nuevo.
@@ -84,6 +122,7 @@ panel.modal.action.continue: Continuar
 panel.modal.action.delete: Borrar
 panel.modal.action.rename: Renombrar
 panel.modal.action.save: Guardar
+panel.modal.action.upload: Subir
 panel.modal.action.uploadFile: Subir un archivo
 panel.modal.images.noImages: No hay imágenes aquí
 panel.modal.images.noImages.upload: Por favor, sube algunas imágenes
@@ -161,38 +200,6 @@ panel.pages.deleteFile.prompt: ¿Estás seguro de que quieres borrar este archiv
 panel.pages.deletePage: Borrar página
 panel.pages.deletePage.prompt: ¿Estás seguro de que quieres borrar esta página? Esta acción no se puede deshacer.
 panel.pages.editPage: Editar página %s
-panel.pages.file.backToPage: Volver a la página
-panel.pages.file.exif: EXIF
-panel.pages.file.info: Información
-panel.pages.file.info.image.colorDepth: Profundidad de color
-panel.pages.file.info.image.colorNumber: Número de colores
-panel.pages.file.info.image.colorProfile: Perfil de color
-panel.pages.file.info.image.colorSpace: Espacio de color
-panel.pages.file.info.image.dimensions: Dimensiones
-panel.pages.file.info.image.dimensions.widthByHeightPixels: '%d × %d píxeles'
-panel.pages.file.info.image.exif.aperture: Apertura
-panel.pages.file.info.image.exif.camera: Cámara
-panel.pages.file.info.image.exif.creationDateAndTime: Fecha y hora de creación
-panel.pages.file.info.image.exif.exposureCompensation: Compensación de exposición
-panel.pages.file.info.image.exif.exposureProgram: Programa de exposición
-panel.pages.file.info.image.exif.exposureTime: Tiempo de exposición
-panel.pages.file.info.image.exif.flash: Flash
-panel.pages.file.info.image.exif.focalLength: Longitud focal
-panel.pages.file.info.image.exif.lensModel: Modelo de lente
-panel.pages.file.info.image.exif.meteringMode: Modo de medición
-panel.pages.file.info.image.exif.sensitivity: Sensibilidad
-panel.pages.file.info.image.exif.whiteBalance: Balance de blancos
-panel.pages.file.info.image.frames: '%d frames'
-panel.pages.file.info.image.framesCount: Cantidad de frames
-panel.pages.file.info.image.repeats: '%d repeticiones'
-panel.pages.file.info.image.repeatsCount: Cantidad de repeticiones
-panel.pages.file.info.image.resolution: Resolución
-panel.pages.file.info.lastModifiedTime: Última modificación
-panel.pages.file.info.mimeType: Tipo MIME
-panel.pages.file.info.size: Tamaño
-panel.pages.file.info.uri: URI
-panel.pages.file.position: Posición
-panel.pages.file.preview: Vista previa
 panel.pages.history.event.created: Página creada por %s %s.
 panel.pages.history.event.edited: Página editada por %s %s.
 panel.pages.languages: Idiomas

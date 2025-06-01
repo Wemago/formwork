@@ -3,3 +3,4 @@ title: '{{user.role.user}}'
 permissions:
     dashboard: true
     pages: true
+    files: true

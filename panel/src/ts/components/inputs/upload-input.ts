@@ -1,5 +1,6 @@
-import { $, $$ } from "../../utils/selectors";
+import { $ } from "../../utils/selectors";
 import { app } from "../../app";
+import { FilesList } from "../fileslist";
 import { Form } from "../form";
 import { insertIcon } from "../icons";
 import { Notification } from "../notification";
@@ -19,7 +20,7 @@ export class UploadInput {
     private readonly dropTargetLabel: HTMLElement;
     private readonly defaultDropLabel: string;
 
-    private readonly filesList: HTMLElement;
+    private readonly filesList: FilesList;
 
     constructor(element: HTMLInputElement, form: Form) {
         this.element = element;
@@ -34,11 +35,11 @@ export class UploadInput {
 
         this.initInput();
 
-        this.filesList = $(`.files-list[data-for="${this.element.id}"]`) as HTMLElement;
+        const filesList = $(`.files-list[data-for="${this.element.id}"]`) as HTMLElement;
 
-        if (this.filesList) {
-            this.initFileList();
-            this.initModals();
+        if (filesList) {
+            this.filesList = new FilesList(filesList, this.form);
+            this.initFilesList();
         } else if (this.element.dataset.autoUpload === "true") {
             this.element.addEventListener("change", () => {
                 if (!this.form.hasChanged(false)) {
@@ -107,37 +108,7 @@ export class UploadInput {
         });
     }
 
-    private initFileList() {
-        const toggle = $(".form-togglegroup.files-list-view-as", this.filesList);
-
-        if (toggle) {
-            const fieldName = toggle.dataset.for;
-            const viewAs = window.localStorage.getItem(`formwork.filesListViewAs[${fieldName}]`);
-
-            if (viewAs) {
-                $$("input", toggle).forEach((input: HTMLInputElement) => (input.checked = false));
-                ($(`input[value=${viewAs}]`, this.filesList) as HTMLInputElement).checked = true;
-                this.filesList.classList.toggle("is-thumbnails", viewAs === "thumbnails");
-            }
-
-            $$("input", toggle).forEach((input: HTMLInputElement) => {
-                input.addEventListener("input", () => {
-                    this.filesList.classList.toggle("is-thumbnails", input.value === "thumbnails");
-                    window.localStorage.setItem(`formwork.filesListViewAs[${fieldName}]`, input.value);
-                });
-            });
-        }
-
-        document.addEventListener("click", (event) => {
-            const target = event.target as HTMLElement;
-            if (!target.closest(".dropdown") && target.closest(".files-item")) {
-                const item = target.closest(".files-item") as HTMLElement;
-                if (typeof item.dataset.href === "string") {
-                    location.href = item.dataset.href;
-                }
-            }
-        });
-
+    private initFilesList() {
         if (this.element.dataset.autoUpload === "true") {
             this.element.addEventListener("change", () => {
                 if (this.element.files?.length) {
@@ -160,7 +131,8 @@ export class UploadInput {
                                     const data = response.data[0];
                                     const template = $("template[id=files-item]") as HTMLTemplateElement;
                                     this.addFilesItem(data, template);
-                                    this.sortFilesList(this.filesList, ".file-name");
+                                    this.filesList.sort(".file-name");
+                                    this.filesList.element.hidden = false;
 
                                     for (const name in this.form.inputs) {
                                         const input = this.form.inputs[name];
@@ -196,173 +168,6 @@ export class UploadInput {
                 }
             });
         }
-
-        this.filesList.addEventListener("click", (event) => {
-            const element = (event.target as HTMLElement).closest("[data-command=replaceFile]") as HTMLElement;
-            if (element) {
-                const fileInput = document.createElement("input");
-                fileInput.type = "file";
-                fileInput.accept = element.dataset.mimetype as string;
-                fileInput.click();
-
-                fileInput.addEventListener("change", () => {
-                    if (fileInput.files?.length) {
-                        const formData = new FormData();
-                        formData.append("filename", (element.closest("[data-filename]") as HTMLElement).dataset.filename as string);
-                        formData.append("csrf-token", app.config.csrfToken as string);
-                        formData.append("file", fileInput.files[0]);
-
-                        new Request(
-                            {
-                                method: "POST",
-                                url: element.dataset.action as string,
-                                data: formData,
-                            },
-                            (response) => {
-                                const notification = new Notification(response.message, response.status);
-
-                                if (response.status === "success") {
-                                    if (element.closest("[data-form=page-file-form]")) {
-                                        window.location.reload();
-                                    } else if (response.data.thumbnail) {
-                                        const thumbnail = $(".file-thumbnail", element.closest(".files-item") as HTMLElement) as HTMLImageElement;
-                                        const fileSize = $(".file-size", element.closest(".files-item") as HTMLElement) as HTMLImageElement;
-
-                                        if (response.data.type === "image") {
-                                            thumbnail.style.backgroundImage = `url(${response.data.thumbnail})`;
-                                        } else if (response.data.type === "video") {
-                                            thumbnail.src = response.data.thumbnail;
-                                        }
-
-                                        fileSize.textContent = `(${response.data.size})`;
-                                    }
-                                }
-
-                                notification.show();
-                            },
-                        );
-                    }
-
-                    fileInput.remove();
-                });
-            }
-        });
-    }
-
-    private initModals() {
-        const renameFileItemModal = app.modals["renameFileItemModal"];
-
-        if (renameFileItemModal) {
-            $('[id="renameFileItemModal.filename"]', renameFileItemModal.element)?.addEventListener("keydown", (event) => {
-                if (event.key === "Enter") {
-                    renameFileItemModal.triggerCommand("rename-file");
-                    event.preventDefault();
-                }
-            });
-
-            renameFileItemModal.onOpen((modal, trigger) => {
-                if (trigger) {
-                    const input = $('[id="renameFileItemModal.filename"]', modal.element) as HTMLInputElement;
-                    input.value = (trigger.closest("[data-filename]") as HTMLElement)?.dataset.filename as string;
-                    input.setSelectionRange(0, input.value.lastIndexOf("."));
-
-                    Object.assign(modal.data, {
-                        action: trigger.dataset.action,
-                        item: trigger.closest(".files-item"),
-                        filename: (trigger.closest("[data-filename]") as HTMLElement)?.dataset.filename,
-                        input,
-                    });
-                }
-            });
-
-            renameFileItemModal.onCommand("rename-file", (modal) => {
-                const { action, item, filename, input } = modal.data;
-
-                new Request(
-                    {
-                        method: "POST",
-                        url: action as string,
-                        data: {
-                            filename,
-                            "renameFileItemModal[filename]": (input as HTMLInputElement).value,
-                            "csrf-token": app.config.csrfToken as string,
-                        },
-                    },
-                    (response) => {
-                        if (response.status === "success") {
-                            (item as HTMLElement).dataset.filename = response.data.filename;
-
-                            ($(".file-name", item as HTMLElement) as HTMLElement).innerHTML = response.data.filename;
-
-                            const template = $("template[id=files-item]") as HTMLTemplateElement;
-                            const uri = ($(".files-item", template.content) as HTMLElement).dataset.href as string;
-                            (item as HTMLElement).dataset.href = `${uri}${response.data.filename}`;
-
-                            this.sortFilesList(this.filesList, ".file-name");
-                        }
-
-                        const notification = new Notification(response.message, response.status);
-                        notification.show();
-
-                        modal.close();
-                    },
-                );
-
-                modal.close();
-            });
-        }
-
-        const deleteFileItemModal = app.modals["deleteFileItemModal"];
-
-        if (deleteFileItemModal) {
-            deleteFileItemModal.onOpen((modal, trigger) => {
-                if (trigger) {
-                    Object.assign(modal.data, {
-                        action: trigger.dataset.action,
-                        item: trigger.closest(".files-item"),
-                        filename: (trigger.closest("[data-filename]") as HTMLElement)?.dataset.filename,
-                    });
-                }
-            });
-
-            deleteFileItemModal.onCommand("delete-file", (modal) => {
-                const { action, item, filename } = modal.data;
-
-                new Request(
-                    {
-                        method: "POST",
-                        url: action as string,
-                        data: {
-                            filename,
-                            "csrf-token": app.config.csrfToken as string,
-                        },
-                    },
-                    (response) => {
-                        if (response.status === "success") {
-                            (item as HTMLElement).remove();
-
-                            for (const name in this.form.inputs) {
-                                const input = this.form.inputs[name];
-                                if (input instanceof SelectInput && !input.element.classList.contains("form-file") && !input.element.classList.contains("form-image")) {
-                                    input.removeOption(filename as string);
-                                }
-
-                                if (input instanceof TagsInput && (input.element.classList.contains("form-files") || input.element.classList.contains("form-images"))) {
-                                    input.removeDropdownItem(filename as string);
-                                }
-                            }
-                        }
-
-                        const notification = new Notification(response.message, response.status);
-                        notification.show();
-
-                        modal.close();
-                    },
-                );
-
-                modal.close();
-            });
-        }
     }
 
     private formatFileSize(size: number) {
@@ -389,28 +194,19 @@ export class UploadInput {
         }
     }
 
-    private sortFilesList(filesList: HTMLElement, selector: string = ".file-name") {
-        const filesItems = $$(".files-item", filesList);
-        Array.from(filesItems)
-            .sort((a: HTMLElement, b: HTMLElement) => {
-                const keyA = $(selector, a)?.textContent;
-                const keyB = $(selector, b)?.textContent;
-                return keyA?.localeCompare(keyB ?? "") ?? 0;
-            })
-            .forEach((element: HTMLElement) => {
-                element.parentElement?.appendChild(element);
-            });
-    }
-
-    private addFilesItem(info: { [key: string]: string }, template: HTMLTemplateElement) {
+    private addFilesItem(info: { [key: string]: any }, template: HTMLTemplateElement) {
         const node = template.content.cloneNode(true) as HTMLElement;
         const filesItem = $(".files-item", node) as HTMLElement;
 
         filesItem.dataset.filename = info.name;
-        filesItem.dataset.href += `${info.name}/`;
+        filesItem.dataset.href = info.actions.info;
 
         if (info.type === "image") {
-            ($(".file-thumbnail", filesItem) as HTMLElement).style.backgroundImage = `url(${info.thumbnail})`;
+            const img = document.createElement("img");
+            img.className = "file-thumbnail";
+            img.src = info.thumbnail;
+            img.loading = "lazy";
+            $(".file-thumbnail", filesItem)?.replaceWith(img);
         } else if (info.type === "video") {
             const video = document.createElement("video");
             video.classList.add("file-thumbnail");
@@ -424,18 +220,30 @@ export class UploadInput {
         insertIcon(info.type ? `file-${info.type}` : "file", $(".file-icon", filesItem) as HTMLElement);
 
         ($(".file-name", filesItem) as HTMLElement).textContent = info.name;
-        ($(".file-size", filesItem) as HTMLElement).textContent = `(${info.size})`;
+        ($(".file-date", filesItem) as HTMLElement).textContent = info.lastModifiedTime;
+        ($(".file-size", filesItem) as HTMLElement).textContent = info.size;
 
         ($(".dropdown-button", filesItem) as HTMLElement).dataset.dropdown = `dropdown-${info.hash}`;
         ($(".dropdown-menu", filesItem) as HTMLElement).id = `dropdown-${info.hash}`;
 
-        ($("[data-command=infoFile", filesItem) as HTMLAnchorElement).href += `${info.name}/`;
+        const infoFileCommand = $("[data-command=infoFile]", filesItem) as HTMLAnchorElement;
+        const previewFileCommand = $("[data-command=previewFile]", filesItem) as HTMLAnchorElement;
+        const renameFileCommand = $("[data-command=renameFile]", filesItem) as HTMLElement;
+        const replaceFileCommand = $("[data-command=replaceFile]", filesItem) as HTMLElement;
+        const deleteFileCommand = $("[data-command=deleteFile]", filesItem) as HTMLElement;
 
-        ($("[data-command=previewFile"), filesItem as HTMLAnchorElement).href = info.uri;
-        ($("[data-command=previewFile"), filesItem as HTMLAnchorElement).target = `formwork-preview-file-${info.hash}`;
+        infoFileCommand.href = info.actions.info;
 
-        ($("[data-command=replaceFile", filesItem) as HTMLElement).dataset.extension = `${info.mimeType}`;
+        previewFileCommand.href = info.uri;
+        previewFileCommand.target = `formwork-preview-file-${info.hash}`;
 
-        $(".files-items", this.filesList)?.appendChild(node);
+        renameFileCommand.dataset.action = info.actions.rename;
+
+        replaceFileCommand.dataset.action = info.actions.replace;
+        replaceFileCommand.dataset.mimetype = `${info.mimeType}`;
+
+        deleteFileCommand.dataset.action = info.actions.delete;
+
+        $(".files-items", this.filesList.element)?.appendChild(node);
     }
 }

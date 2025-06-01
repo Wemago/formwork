@@ -1,8 +1,15 @@
 import { $ } from "../utils/selectors";
 import { app } from "../app";
+import { FilesList } from "./fileslist";
 
 export class Files {
     constructor() {
+        const filesView = $("[data-view=files]");
+
+        if (filesView) {
+            new FilesList($(".files-list", filesView) as HTMLElement);
+        }
+
         const fileForm = $("[data-form=file-form]");
 
         if (fileForm) {

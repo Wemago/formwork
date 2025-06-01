@@ -5,6 +5,7 @@ permissions:
     cache: true
     backup: true
     pages: true
+    files: true
     options: true
     updates: true
     users: true

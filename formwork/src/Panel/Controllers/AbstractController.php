@@ -104,6 +104,12 @@ abstract class AbstractController extends BaseAbstractController
                     'permissions' => 'pages',
                     'badge'       => $this->site->descendants()->count(),
                 ],
+                'files' => [
+                    'label'       => $this->translate('panel.files.files'),
+                    'uri'         => '/files/',
+                    'permissions' => 'files',
+                    'badge'       => null,
+                ],
                 'statistics' => [
                     'label'       => $this->translate('panel.statistics.statistics'),
                     'uri'         => '/statistics/',

@@ -35,47 +35,51 @@ final class FilesController extends AbstractController
             return $this->forward(ErrorsController::class, 'forbidden');
         }
 
-        if ($this->request->method() === RequestMethod::POST) {
-            if (!$this->hasPermission('files.upload')) {
-                return $this->forward(ErrorsController::class, 'forbidden');
-            }
-
-            $fields = $this->modal('uploadFile')->fields();
-
-            $fields->setValuesFromRequest($this->request, null)->validate();
-
-            $filesField = $fields->get('files');
-
-            if (!$filesField->isEmpty()) {
-                $files = $filesField->isMultiple() ? $filesField->value() : [$filesField->value()];
-
-                /** @var Page|Site */
-                $parent = $fields->get('parent')->return();
-
-                $destination = $parent instanceof Site
-                    ? $this->config->get('system.files.paths.site')
-                    : $parent->contentPath();
-
-                foreach ($files as $file) {
-                    $this->fileUploader->upload(
-                        $file,
-                        $destination,
-                        $filesField->filename(),
-                        $filesField->acceptMimeTypes(),
-                        $filesField->overwrite(),
-                    );
-                }
-
-                $this->panel->notify($this->translate('panel.files.uploaded'), 'success');
-            }
-
-            return $this->redirect($this->generateRoute('panel.files.index'));
-        }
-
         return new Response($this->view('files.index', [
             'title' => $this->translate('panel.files.files'),
             'files' => $this->getFiles(),
         ]));
+    }
+
+    /**
+     * FilesController@upload action
+     */
+    public function upload(): Response
+    {
+        if (!$this->hasPermission('files.upload')) {
+            return $this->forward(ErrorsController::class, 'forbidden');
+        }
+
+        $fields = $this->modal('uploadFile')->fields();
+
+        $fields->setValuesFromRequest($this->request, null)->validate();
+
+        $filesField = $fields->get('files');
+
+        if (!$filesField->isEmpty()) {
+            $files = $filesField->isMultiple() ? $filesField->value() : [$filesField->value()];
+
+            /** @var Page|Site */
+            $parent = $fields->get('parent')->return();
+
+            $destination = $parent instanceof Site
+                ? $this->config->get('system.files.paths.site')
+                : $parent->contentPath();
+
+            foreach ($files as $file) {
+                $this->fileUploader->upload(
+                    $file,
+                    $destination,
+                    $filesField->filename(),
+                    $filesField->acceptMimeTypes(),
+                    $filesField->overwrite(),
+                );
+            }
+
+            $this->panel->notify($this->translate('panel.files.uploaded'), 'success');
+        }
+
+        return $this->redirect($this->generateRoute('panel.files.index'));
     }
 
     /**

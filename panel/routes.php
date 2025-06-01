@@ -99,9 +99,14 @@ return [
         ],
 
         'panel.files.index' => [
-            'path'    => '/files/',
-            'action'  => 'Formwork\Panel\Controllers\FilesController@index',
-            'methods' => ['GET', 'POST'],
+            'path'   => '/files/',
+            'action' => 'Formwork\Panel\Controllers\FilesController@index',
+        ],
+
+        'panel.files.upload' => [
+            'path'    => '/files/upload/',
+            'action'  => 'Formwork\Panel\Controllers\FilesController@upload',
+            'methods' => ['POST'],
         ],
 
         'panel.files.delete' => [

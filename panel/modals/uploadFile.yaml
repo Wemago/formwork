@@ -2,6 +2,8 @@ title: '{{panel.files.upload}}'
 
 size: large
 
+action: /files/upload/
+
 fields:
     files:
         type: upload

@@ -98,10 +98,12 @@ panel.files.info.name: Name
 panel.files.info.size: Size
 panel.files.info.uri: URI
 panel.files.metadata.updated: File metadata updated
+panel.files.next: Next file
 panel.files.pageNotFound: Cannot get file info, page not found
 panel.files.parent: Parent
 panel.files.position: Position
 panel.files.preview: Preview
+panel.files.previous: Previous file
 panel.files.renamed: File renamed
 panel.files.search: Search files...
 panel.files.upload: Upload files
@@ -208,7 +210,6 @@ panel.pages.languages.editLanguage: Edit %s
 panel.pages.newPage: New page
 panel.pages.newPage.site: Site
 panel.pages.next: Next page
-panel.pages.nextFile: Next file
 panel.pages.page: Page
 panel.pages.page.actions: Actions
 panel.pages.page.cannotChangeNum: Cannot change page number
@@ -247,7 +248,6 @@ panel.pages.pages.search: Search pages...
 panel.pages.preview: Preview
 panel.pages.previewFile: Preview
 panel.pages.previous: Previous page
-panel.pages.previousFile: Previous file
 panel.pages.publish: Publish
 panel.pages.renameFile: Rename file
 panel.pages.renameFile.name: Name

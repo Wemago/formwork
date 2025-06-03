@@ -98,10 +98,12 @@ panel.files.info.name: Назва
 panel.files.info.size: Розмір
 panel.files.info.uri: URI
 panel.files.metadata.updated: Метадані файлу оновлено
+panel.files.next: Наступний файл
 panel.files.pageNotFound: Неможливо отримати інформацію про файл, сторінка не знайдена
 panel.files.parent: Батьківський елемент
 panel.files.position: Позиція
 panel.files.preview: Попередній перегляд
+panel.files.previous: Попередній файл
 panel.files.renamed: Файл перейменовано
 panel.files.search: Пошук файлів...
 panel.files.upload: Завантажити файли
@@ -208,7 +210,6 @@ panel.pages.languages.editLanguage: Редагувати %s
 panel.pages.newPage: Нова сторінка
 panel.pages.newPage.site: Сайт
 panel.pages.next: Наступна сторінка
-panel.pages.nextFile: Наступний файл
 panel.pages.page: Сторінка
 panel.pages.page.actions: Дії
 panel.pages.page.cannotChangeNum: Немає можливості змінити номер сторінки
@@ -247,7 +248,6 @@ panel.pages.pages.search: Пошук сторінок...
 panel.pages.preview: Попередній перегляд
 panel.pages.previewFile: Попередній перегляд
 panel.pages.previous: Попередня сторінка
-panel.pages.previousFile: Попередній файл
 panel.pages.publish: Опублікувати
 panel.pages.renameFile: Перейменувати файл
 panel.pages.renameFile.name: Назва

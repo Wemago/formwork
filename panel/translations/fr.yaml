@@ -98,10 +98,12 @@ panel.files.info.name: Nom
 panel.files.info.size: Taille
 panel.files.info.uri: URI
 panel.files.metadata.updated: Métadonnées du fichier mises à jour
+panel.files.next: Fichier suivant
 panel.files.pageNotFound: Impossible de récupérer les informations sur le fichier, page non trouvée
 panel.files.parent: Parent
 panel.files.position: Position
 panel.files.preview: Aperçu
+panel.files.previous: Fichier précédent
 panel.files.renamed: Fichier renommé
 panel.files.search: Rechercher des fichiers...
 panel.files.upload: Téléverser des fichiers
@@ -208,7 +210,6 @@ panel.pages.languages.editLanguage: Éditer %s
 panel.pages.newPage: Nouvelle page
 panel.pages.newPage.site: Site
 panel.pages.next: Page suivante
-panel.pages.nextFile: Fichier suivant
 panel.pages.page: Page
 panel.pages.page.actions: Actions
 panel.pages.page.cannotChangeNum: Impossible de changer le numéro de page
@@ -247,7 +248,6 @@ panel.pages.pages.search: Rechercher dans les pages…
 panel.pages.preview: Aperçu
 panel.pages.previewFile: Aperçu
 panel.pages.previous: Page précédente
-panel.pages.previousFile: Fichier précédent
 panel.pages.publish: Publier
 panel.pages.renameFile: Renommer le fichier
 panel.pages.renameFile.name: Nom

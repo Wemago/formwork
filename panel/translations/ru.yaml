@@ -98,10 +98,12 @@ panel.files.info.name: Имя
 panel.files.info.size: Размер
 panel.files.info.uri: URI
 panel.files.metadata.updated: Метаданные файла обновлены
+panel.files.next: Следующий файл
 panel.files.pageNotFound: Невозможно получить информацию о файле, страница не найдена
 panel.files.parent: Родительский элемент
 panel.files.position: Позиция
 panel.files.preview: Просмотр
+panel.files.previous: Предыдущий файл
 panel.files.renamed: Файл переименован
 panel.files.search: Поиск файлов...
 panel.files.upload: Загрузить файлы
@@ -208,7 +210,6 @@ panel.pages.languages.editLanguage: Редактировать %s
 panel.pages.newPage: Новая страница
 panel.pages.newPage.site: Сайт
 panel.pages.next: Следующая страница
-panel.pages.nextFile: Следующий файл
 panel.pages.page: Страница
 panel.pages.page.actions: Действия
 panel.pages.page.cannotChangeNum: Невозможно изменить номер страницы
@@ -247,7 +248,6 @@ panel.pages.pages.search: Поиск Страницы ...
 panel.pages.preview: Предварительный просмотр
 panel.pages.previewFile: Предварительный просмотр
 panel.pages.previous: Предыдущая страница
-panel.pages.previousFile: Предыдущий файл
 panel.pages.publish: Опубликовать
 panel.pages.renameFile: Переименовать файл
 panel.pages.renameFile.name: Имя

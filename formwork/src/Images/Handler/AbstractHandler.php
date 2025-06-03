@@ -30,11 +30,13 @@ abstract class AbstractHandler implements HandlerInterface
 
     public static function fromPath(string $path, array $options = []): static
     {
+        // @phpstan-ignore new.staticInAbstractClassStaticMethod
         return new static(FileSystem::read($path), $options);
     }
 
     public static function fromGdImage(GdImage $gdImage, array $options = []): static
     {
+        // @phpstan-ignore new.staticInAbstractClassStaticMethod
         $static = new static('', $options);
         $static->setDataFromGdImage($gdImage);
         return $static;

@@ -64,6 +64,10 @@ class SvgSanitizer extends DomSanitizer
 
         $attributes = $svg->attributes;
 
+        if ($attributes === null) {
+            throw new UnexpectedValueException('Missing attributes');
+        }
+
         for ($i = $attributes->length; $i >= 0; $i--) {
             $attribute = $attributes->item($i);
             if ($attribute instanceof DOMAttr) {

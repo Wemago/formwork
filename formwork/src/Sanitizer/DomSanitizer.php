@@ -219,6 +219,10 @@ class DomSanitizer
     {
         $attributes = $domElement->attributes;
 
+        if ($attributes === null) {
+            throw new UnexpectedValueException('Missing attributes');
+        }
+
         for ($i = $attributes->length; $i >= 0; $i--) {
             $attribute = $attributes->item($i);
 

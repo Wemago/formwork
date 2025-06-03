@@ -202,10 +202,9 @@ class ColorProfile
         $value = substr($this->data, $offset, $length);
         $type = substr($value, 0, 4);
         return match ($type) {
-            'text' => substr($value, 8),
-            'desc' => $this->unpack('Z*', $value, 12)[1],
-            // @phpstan-ignore-next-line
-            'mluc'  => $this->parseMlucString($value)[0] ?? $default,
+            'text'  => substr($value, 8),
+            'desc'  => $this->unpack('Z*', $value, 12)[1],
+            'mluc'  => array_values($this->parseMlucString($value))[0] ?? $default,
             default => $default,
         };
     }
@@ -232,7 +231,11 @@ class ColorProfile
             $stringLength = $this->unpack('N', $data, $position)[1];
             $position += 4;
             $stringOffset = $this->unpack('N', $data, $position)[1];
-            $result[$langCode] = mb_convert_encoding(substr($data, $stringOffset, $stringLength), 'UTF-8', 'UTF-16BE');
+            $value = mb_convert_encoding(substr($data, $stringOffset, $stringLength), 'UTF-8', 'UTF-16BE');
+            if ($value === false) {
+                throw new UnexpectedValueException('Cannot convert mluc string to UTF-8');
+            }
+            $result[$langCode] = $value;
         }
         return $result;
     }

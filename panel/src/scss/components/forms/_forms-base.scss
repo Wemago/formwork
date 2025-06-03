@@ -43,7 +43,7 @@
     border-radius: 0;
 
     &::-webkit-file-upload-button {
-        appearance: button;
+        appearance: auto;
         font: inherit;
     }
 }

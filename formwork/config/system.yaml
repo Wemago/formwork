@@ -41,6 +41,8 @@ fields:
 files:
     allowedExtensions: []
     metadataExtension: .meta.yaml
+    paths:
+        site: '${%ROOT_PATH%}/site/files'
     uploads:
         path: '${%ROOT_PATH%}/site/files'
         baseDestinations:

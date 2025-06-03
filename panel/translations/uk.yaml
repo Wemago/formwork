@@ -54,6 +54,7 @@ panel.errors.error.notFound.description: Сторінка не існує або
 panel.errors.error.notFound.heading: Ой, сторінка не знайдена!
 panel.errors.error.notFound.status: Не знайдено
 panel.files.actions: Дії
+panel.files.backToPage: Назад до сторінки
 panel.files.cannotDelete.fileNotFound: Неможливо видалити файл, файл не знайдено
 panel.files.cannotDelete.pageNotFound: Неможливо видалити файл, сторінка не знайдена
 panel.files.cannotRename.fileAlreadyExists: Неможливо перейменувати файл, файл з таким іменем вже існує
@@ -64,10 +65,47 @@ panel.files.cannotReplace.multipleFiles: Неможливо замінити ф�
 panel.files.cannotReplace.pageNotFound: Неможливо замінити файл, сторінка не знайдена
 panel.files.cannotUpload.pageNotFound: Неможливо завантажити файл, сторінка не знайдена
 panel.files.deleted: Файл видалено
+panel.files.exif: EXIF
 panel.files.fileNotFound: Неможливо отримати інформацію про файл, файл не знайдено
+panel.files.files: Файли
+panel.files.info: Інформація
+panel.files.info.image.colorDepth: Глибина кольору
+panel.files.info.image.colorNumber: Кількість кольорів
+panel.files.info.image.colorProfile: Колірний профіль
+panel.files.info.image.colorSpace: Колірний простір
+panel.files.info.image.dimensions: Розміри
+panel.files.info.image.dimensions.widthByHeightPixels: '%d × %d пікселів'
+panel.files.info.image.exif.aperture: Діафрагма
+panel.files.info.image.exif.camera: Камера
+panel.files.info.image.exif.creationDateAndTime: Дата та час створення
+panel.files.info.image.exif.exposureCompensation: Компенсація експозиції
+panel.files.info.image.exif.exposureProgram: Програма експозиції
+panel.files.info.image.exif.exposureTime: Час експозиції
+panel.files.info.image.exif.flash: Спалах
+panel.files.info.image.exif.focalLength: Фокусна відстань
+panel.files.info.image.exif.lensModel: Модель об'єктива
+panel.files.info.image.exif.meteringMode: Режим замірів
+panel.files.info.image.exif.sensitivity: Чутливість
+panel.files.info.image.exif.whiteBalance: Баланс білого
+panel.files.info.image.frames: '%d кадрів'
+panel.files.info.image.framesCount: Кількість кадрів
+panel.files.info.image.repeats: '%d повторів'
+panel.files.info.image.repeatsCount: Кількість повторів
+panel.files.info.image.resolution: Роздільна здатність
+panel.files.info.lastModifiedTime: Час останнього редагування
+panel.files.info.mimeType: MIME тип
+panel.files.info.name: Назва
+panel.files.info.size: Розмір
+panel.files.info.uri: URI
 panel.files.metadata.updated: Метадані файлу оновлено
 panel.files.pageNotFound: Неможливо отримати інформацію про файл, сторінка не знайдена
+panel.files.parent: Батьківський елемент
+panel.files.position: Позиція
+panel.files.preview: Попередній перегляд
 panel.files.renamed: Файл перейменовано
+panel.files.search: Пошук файлів...
+panel.files.upload: Завантажити файли
+panel.files.uploaded: Файли завантажено
 panel.files.viewAsList: Переглядати як список
 panel.files.viewAsThumbnails: Переглядати як ескізи
 panel.login.attempt.failed: Не вдалося увійти! Спробуйте ще раз.
@@ -84,6 +122,7 @@ panel.modal.action.continue: Продовжити
 panel.modal.action.delete: Видалити
 panel.modal.action.rename: Перейменувати
 panel.modal.action.save: Зберегти
+panel.modal.action.upload: Завантажити
 panel.modal.action.uploadFile: Завантажити файл
 panel.modal.images.noImages: Тут немає зображень
 panel.modal.images.noImages.upload: Будь ласка, завантажте зображення
@@ -161,38 +200,6 @@ panel.pages.deleteFile.prompt: Ви впевнені, що хочете вида
 panel.pages.deletePage: Видалити сторінку
 panel.pages.deletePage.prompt: Ви впевнені, що хочете видалити цю сторінку? Цю дію не можна скасувати.
 panel.pages.editPage: Редагувати сторінку %s
-panel.pages.file.backToPage: Назад до сторінки
-panel.pages.file.exif: EXIF
-panel.pages.file.info: Інформація
-panel.pages.file.info.image.colorDepth: Глибина кольору
-panel.pages.file.info.image.colorNumber: Кількість кольорів
-panel.pages.file.info.image.colorProfile: Колірний профіль
-panel.pages.file.info.image.colorSpace: Колірний простір
-panel.pages.file.info.image.dimensions: Розміри
-panel.pages.file.info.image.dimensions.widthByHeightPixels: '%d × %d пікселів'
-panel.pages.file.info.image.exif.aperture: Діафрагма
-panel.pages.file.info.image.exif.camera: Камера
-panel.pages.file.info.image.exif.creationDateAndTime: Дата та час створення
-panel.pages.file.info.image.exif.exposureCompensation: Компенсація експозиції
-panel.pages.file.info.image.exif.exposureProgram: Програма експозиції
-panel.pages.file.info.image.exif.exposureTime: Час експозиції
-panel.pages.file.info.image.exif.flash: Спалах
-panel.pages.file.info.image.exif.focalLength: Фокусна відстань
-panel.pages.file.info.image.exif.lensModel: Модель об'єктива
-panel.pages.file.info.image.exif.meteringMode: Режим замірів
-panel.pages.file.info.image.exif.sensitivity: Чутливість
-panel.pages.file.info.image.exif.whiteBalance: Баланс білого
-panel.pages.file.info.image.frames: '%d кадрів'
-panel.pages.file.info.image.framesCount: Кількість кадрів
-panel.pages.file.info.image.repeats: '%d повторів'
-panel.pages.file.info.image.repeatsCount: Кількість повторів
-panel.pages.file.info.image.resolution: Роздільна здатність
-panel.pages.file.info.lastModifiedTime: Час останнього редагування
-panel.pages.file.info.mimeType: MIME тип
-panel.pages.file.info.size: Розмір
-panel.pages.file.info.uri: URI
-panel.pages.file.position: Позиція
-panel.pages.file.preview: Попередній перегляд
 panel.pages.history.event.created: Сторінка створена %s %s.
 panel.pages.history.event.edited: Сторінка відредагована %s %s.
 panel.pages.languages: Мови

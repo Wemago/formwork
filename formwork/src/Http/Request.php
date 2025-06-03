@@ -520,17 +520,23 @@ class Request
         foreach ($files as $fieldName => $data) {
             if (is_array($data['name'])) {
                 foreach (array_keys($data['name']) as $i) {
-                    /**
-                     * @var array<string, list<UploadedFile>> $result
-                     */
-                    $result[$fieldName][] = new UploadedFile($fieldName, [
+                    $props = [
                         'name'      => $data['name'][$i],
                         'full_path' => $data['full_path'][$i] ?? '',
                         'type'      => $data['type'][$i] ?? '',
                         'tmp_name'  => $data['tmp_name'][$i] ?? '',
                         'error'     => $data['error'][$i] ?? '',
                         'size'      => $data['size'][$i] ?? '',
-                    ]);
+                    ];
+
+                    if (is_array($data['name'][$i])) {
+                        $result[$fieldName] = $this->prepareFiles([$i => $props])->toArray();
+                    } else {
+                        /**
+                         * @var array<string, list<UploadedFile>> $result
+                         */
+                        $result[$fieldName][] = new UploadedFile($fieldName, $props);
+                    }
                 }
             } else {
                 $result[$fieldName] = new UploadedFile($fieldName, $data);

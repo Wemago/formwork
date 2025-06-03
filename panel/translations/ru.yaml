@@ -54,6 +54,7 @@ panel.errors.error.notFound.description: Страница не существу�
 panel.errors.error.notFound.heading: К сожалению, страница не найдена!
 panel.errors.error.notFound.status: Не обнаружена
 panel.files.actions: Действия
+panel.files.backToPage: Назад к странице
 panel.files.cannotDelete.fileNotFound: Не удается удалить файл, файл не найден
 panel.files.cannotDelete.pageNotFound: Не удается удалить файл, файл не найден
 panel.files.cannotRename.fileAlreadyExists: Невозможно переименовать файл, файл с таким именем уже существует
@@ -64,10 +65,47 @@ panel.files.cannotReplace.multipleFiles: Невозможно заменить �
 panel.files.cannotReplace.pageNotFound: Невозможно заменить файл, страница не найдена
 panel.files.cannotUpload.pageNotFound: Невозможно загрузить файл, страница не найдена
 panel.files.deleted: Файл удален
+panel.files.exif: EXIF
 panel.files.fileNotFound: Невозможно получить информацию о файле, файл не найден
+panel.files.files: Файлы
+panel.files.info: Информация
+panel.files.info.image.colorDepth: Глубина цвета
+panel.files.info.image.colorNumber: Количество цветов
+panel.files.info.image.colorProfile: Профиль цвета
+panel.files.info.image.colorSpace: Цветовое пространство
+panel.files.info.image.dimensions: Размеры
+panel.files.info.image.dimensions.widthByHeightPixels: '%d × %d пикселей'
+panel.files.info.image.exif.aperture: Диафрагма
+panel.files.info.image.exif.camera: Камера
+panel.files.info.image.exif.creationDateAndTime: Дата и время создания
+panel.files.info.image.exif.exposureCompensation: Компенсация экспозиции
+panel.files.info.image.exif.exposureProgram: Программа экспозиции
+panel.files.info.image.exif.exposureTime: Время экспозиции
+panel.files.info.image.exif.flash: Вспышка
+panel.files.info.image.exif.focalLength: Фокусное расстояние
+panel.files.info.image.exif.lensModel: Модель объектива
+panel.files.info.image.exif.meteringMode: Режим измерения
+panel.files.info.image.exif.sensitivity: Чувствительность
+panel.files.info.image.exif.whiteBalance: Баланс белого
+panel.files.info.image.frames: '%d кадров'
+panel.files.info.image.framesCount: Количество кадров
+panel.files.info.image.repeats: '%d повторов'
+panel.files.info.image.repeatsCount: Количество повторений
+panel.files.info.image.resolution: Разрешение
+panel.files.info.lastModifiedTime: Последнее изменение
+panel.files.info.mimeType: Тип MIME
+panel.files.info.name: Имя
+panel.files.info.size: Размер
+panel.files.info.uri: URI
 panel.files.metadata.updated: Метаданные файла обновлены
 panel.files.pageNotFound: Невозможно получить информацию о файле, страница не найдена
+panel.files.parent: Родительский элемент
+panel.files.position: Позиция
+panel.files.preview: Просмотр
 panel.files.renamed: Файл переименован
+panel.files.search: Поиск файлов...
+panel.files.upload: Загрузить файлы
+panel.files.uploaded: Файлы загружены
 panel.files.viewAsList: Просмотр в виде списка
 panel.files.viewAsThumbnails: Просмотр в виде миниатюр
 panel.login.attempt.failed: Войти попытка не удалась! Попробуйте еще раз.
@@ -84,6 +122,7 @@ panel.modal.action.continue: Продолжить
 panel.modal.action.delete: Удалить
 panel.modal.action.rename: Переименовать
 panel.modal.action.save: Сохранить
+panel.modal.action.upload: Загрузить
 panel.modal.action.uploadFile: Загрузить файл
 panel.modal.images.noImages: Там нет изображений здесь
 panel.modal.images.noImages.upload: Пожалуйста, загрузите некоторые изображения
@@ -161,38 +200,6 @@ panel.pages.deleteFile.prompt: Вы уверены, что хотите удал
 panel.pages.deletePage: Удалить страницу
 panel.pages.deletePage.prompt: Вы уверены, что хотите удалить эту страницу? Это действие не может быть отменено.
 panel.pages.editPage: Отредактировать страницу %s
-panel.pages.file.backToPage: Назад к странице
-panel.pages.file.exif: EXIF
-panel.pages.file.info: Информация
-panel.pages.file.info.image.colorDepth: Глубина цвета
-panel.pages.file.info.image.colorNumber: Количество цветов
-panel.pages.file.info.image.colorProfile: Профиль цвета
-panel.pages.file.info.image.colorSpace: Цветовое пространство
-panel.pages.file.info.image.dimensions: Размеры
-panel.pages.file.info.image.dimensions.widthByHeightPixels: '%d × %d пикселей'
-panel.pages.file.info.image.exif.aperture: Диафрагма
-panel.pages.file.info.image.exif.camera: Камера
-panel.pages.file.info.image.exif.creationDateAndTime: Дата и время создания
-panel.pages.file.info.image.exif.exposureCompensation: Компенсация экспозиции
-panel.pages.file.info.image.exif.exposureProgram: Программа экспозиции
-panel.pages.file.info.image.exif.exposureTime: Время экспозиции
-panel.pages.file.info.image.exif.flash: Вспышка
-panel.pages.file.info.image.exif.focalLength: Фокусное расстояние
-panel.pages.file.info.image.exif.lensModel: Модель объектива
-panel.pages.file.info.image.exif.meteringMode: Режим измерения
-panel.pages.file.info.image.exif.sensitivity: Чувствительность
-panel.pages.file.info.image.exif.whiteBalance: Баланс белого
-panel.pages.file.info.image.frames: '%d кадров'
-panel.pages.file.info.image.framesCount: Количество кадров
-panel.pages.file.info.image.repeats: '%d повторов'
-panel.pages.file.info.image.repeatsCount: Количество повторений
-panel.pages.file.info.image.resolution: Разрешение
-panel.pages.file.info.lastModifiedTime: Последнее изменение
-panel.pages.file.info.mimeType: Тип MIME
-panel.pages.file.info.size: Размер
-panel.pages.file.info.uri: URI
-panel.pages.file.position: Позиция
-panel.pages.file.preview: Просмотр
 panel.pages.history.event.created: Страница создана %s %s.
 panel.pages.history.event.edited: Страница изменена %s %s.
 panel.pages.languages: Языки

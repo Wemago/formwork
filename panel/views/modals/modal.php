@@ -1,7 +1,11 @@
 <div id="<?= $modal->id() ?>" class="modal" aria-labelledby="<?= $modal->id() ?>Label">
     <div class="<?= $this->classes(['modal-container', 'modal-size-large' => $modal->size() === 'large']) ?>">
         <?php if ($modal->hasForm()): ?>
-            <form <?php if ($modal->action()) : ?>action="<?= $panel->uri($modal->action()) ?>" <?php endif ?> method="post">
+            <form <?= $this->attr([
+                        'method' => 'post',
+                        'action' => $modal->action() ? $panel->uri($modal->action()) : null,
+                        'enctype' => !$modal->fields()->filterBy('type', 'upload')->isEmpty() ? 'multipart/form-data' : null,
+                    ]) ?>>
             <?php endif ?>
             <div class="modal-header">
                 <div class="caption" id="<?= $modal->id() ?>Label"><?= $this->escape($modal->title()) ?></div>

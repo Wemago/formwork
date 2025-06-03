@@ -98,7 +98,7 @@ class NodeInterpolator
                     break;
 
                 case defined($parent::class . '::' . $name) && $identifierNode->arguments() === null:
-                    $value = constant($parent::class . '::' . $name);
+                    $value = $parent::{$name};
                     break;
 
                 default:

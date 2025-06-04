@@ -15,6 +15,7 @@ import { Statistics } from "./components/views/statistics";
 import { Updates } from "./components/views/updates";
 
 interface AppConfig {
+    siteUri: string;
     baseUri: string;
     csrfToken?: string;
     colorScheme?: string;
@@ -36,6 +37,7 @@ interface ComponentConfig {
 
 class App {
     config: AppConfig = {
+        siteUri: "/",
         baseUri: "/",
     };
 

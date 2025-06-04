@@ -142,6 +142,7 @@ abstract class AbstractController extends BaseAbstractController
                 ],
             ],
             'appConfig' => Json::encode([
+                'siteUri'     => $this->site->uri(includeLanguage: false),
                 'baseUri'     => $this->panel->panelUri(),
                 'csrfToken'   => $this->csrfToken->get($this->panel->getCsrfTokenName()),
                 'colorScheme' => $this->panel->isLoggedIn() ? $this->panel->user()->colorScheme()->getCompatibleSchemes() : null,

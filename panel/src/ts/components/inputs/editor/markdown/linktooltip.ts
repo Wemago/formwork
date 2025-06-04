@@ -1,5 +1,6 @@
 import { debounce } from "../../../../utils/events";
 import { EditorView } from "prosemirror-view";
+import { getMarkRange } from "./utils";
 import { Mark } from "prosemirror-model";
 import { passIcon } from "../../../icons";
 import { Plugin } from "prosemirror-state";
@@ -9,7 +10,6 @@ import { Tooltip } from "../../../tooltip";
 function addBaseUri(text: string, baseUri: string) {
     return text.replace(/^\/?(?!https?:\/\/)(.+)/, `${baseUri}$1`);
 }
-
 class LinkTooltipView {
     editorView: EditorView;
     tooltip?: Tooltip;
@@ -31,24 +31,37 @@ class LinkTooltipView {
     update(view: EditorView) {
         const state = view.state;
 
-        const link = state.selection.$head.marks().find((mark) => mark.type === schema.marks.link);
+        const { from, to } = state.selection;
+
+        const range = getMarkRange(state, schema.marks.link);
+
+        if (!(range && from >= range.from && to <= range.to)) {
+            this.destroy();
+            return;
+        }
+
+        const link = range.mark;
 
         if (link) {
             if (this.tooltip) {
                 this.tooltip.remove();
             }
 
-            const domAtPos = view?.domAtPos(state.selection.$head.pos);
-            const coordsAtPos = view?.coordsAtPos(state.selection.$head.pos);
+            const domAtPos = view.domAtPos(range.from + 1);
+
+            let linkDom: HTMLElement | null = domAtPos.node as HTMLElement;
+
+            while (linkDom && linkDom.nodeType === Node.TEXT_NODE) {
+                linkDom = linkDom.parentElement;
+            }
+
+            if (!(linkDom && linkDom.tagName === "A")) {
+                return;
+            }
 
             passIcon("link", (icon) => {
                 this.tooltip = new Tooltip(`${icon} <a href="${addBaseUri(link.attrs.href, this.baseUri)}" target="_blank">${link.attrs.href}</a>`, {
-                    referenceElement: domAtPos?.node.parentElement as HTMLElement,
-                    position: {
-                        x: coordsAtPos.left + window.scrollX,
-                        y: coordsAtPos.top + window.scrollY,
-                    },
-                    offset: { x: 0, y: -24 },
+                    referenceElement: linkDom,
                     removeOnMouseout: false,
                     delay: 0,
                     zIndex: 7,
@@ -56,8 +69,6 @@ class LinkTooltipView {
 
                 this.tooltip.show();
             });
-        } else {
-            this.destroy();
         }
     }
 

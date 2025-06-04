@@ -21,3 +21,11 @@ buttons:
         label: '{{panel.modal.action.continue}}'
         align: right
         command: insert-link
+
+    remove:
+        action: command
+        icon: trash
+        label: '{{panel.modal.action.delete}}'
+        align: right
+        command: remove-link
+        variant: link

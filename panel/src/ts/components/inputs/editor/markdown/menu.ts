@@ -6,6 +6,7 @@ import { sinkListItem, wrapInList } from "prosemirror-schema-list";
 import { $ } from "../../../../utils/selectors";
 import { app } from "../../../../app";
 import { EditorView } from "prosemirror-view";
+import { getMarkRange } from "./utils";
 import { passIcon } from "../../../icons";
 import { schema } from "prosemirror-markdown";
 
@@ -260,29 +261,67 @@ export function menuPlugin() {
             mark: schema.marks.link,
             command: (state, dispatch, view) => {
                 if (!dispatch) {
-                    return !state.selection.empty;
-                }
-                if (isMarkActive(state, schema.marks.link)) {
-                    toggleMark(schema.marks.link)(state, dispatch);
                     return true;
                 }
 
-                app.modals["linkModal"].onOpen((modal) => {
+                if (!view) {
+                    return false;
+                }
+
+                let currentUri: string | undefined;
+
+                const range = getMarkRange(state, schema.marks.link);
+
+                if (range) {
+                    const nodeAfter = state.selection.$from.nodeAfter;
+                    const linkMark = nodeAfter?.marks.find((mark) => mark.type === schema.marks.link);
+                    currentUri = linkMark?.attrs.href;
+                }
+
+                const { linkModal } = app.modals;
+
+                linkModal.onOpen((modal) => {
                     const uriInput = $('[id="linkModal.uri"]', modal.element) as HTMLInputElement;
-                    uriInput.value = "https://";
-                    uriInput.setSelectionRange(8, 8);
+
+                    if (currentUri) {
+                        uriInput.value = currentUri;
+                    } else {
+                        uriInput.value = "https://";
+                        uriInput.setSelectionRange(8, 8);
+                    }
                 });
 
-                app.modals["linkModal"].open();
+                linkModal.open();
 
-                app.modals["linkModal"].onCommand("insert-link", (modal) => {
+                const { from, to } = state.selection;
+                const inRange = range && from >= range.from && to <= range.to;
+
+                linkModal.onCommand("insert-link", (modal) => {
                     const uriInput = $('[id="linkModal.uri"]', modal.element) as HTMLInputElement;
-                    if (view && uriInput.value) {
-                        toggleMark(schema.marks.link, { href: uriInput.value })(view.state, view.dispatch);
-                        view.focus();
+
+                    if (uriInput.value) {
+                        const linkMark = schema.marks.link.create({ href: uriInput.value });
+
+                        if (!inRange) {
+                            dispatch(view.state.tr.addStoredMark(linkMark));
+                            dispatch(view.state.tr.replaceSelectionWith(schema.text(uriInput.value), true));
+                        } else {
+                            view.dispatch(view.state.tr.removeMark(range.from, range.to, schema.marks.link).addMark(range.from, range.to, linkMark));
+                        }
+                    } else if (inRange) {
+                        view.dispatch(view.state.tr.removeMark(range.from, range.to, schema.marks.link));
                     }
                     modal.close();
                 });
+
+                linkModal.onCommand("remove-link", (modal) => {
+                    if (inRange) {
+                        view.dispatch(view.state.tr.removeMark(range.from, range.to, schema.marks.link));
+                    }
+                    modal.close();
+                });
+
+                linkModal.onClose(() => view.focus());
 
                 return true;
             },
@@ -364,12 +403,21 @@ function isMarkActive(state: EditorState, type: MarkType) {
     return state.doc.rangeHasMark(from, to, type);
 }
 
+let modalsInitialized = false;
+
 function initModals() {
-    const linkModal = app.modals["linkModal"];
+    if (modalsInitialized) {
+        return;
+    }
+
+    const { linkModal } = app.modals;
+
     $('[id="linkModal.uri"]', linkModal.element)?.addEventListener("keydown", (event) => {
         if (event.key === "Enter") {
             linkModal.triggerCommand("insert-link");
             event.preventDefault();
         }
     });
+
+    modalsInitialized = true;
 }

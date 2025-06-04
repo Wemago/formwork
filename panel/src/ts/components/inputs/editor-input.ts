@@ -45,7 +45,7 @@ export class EditorInput {
                 true,
             );
 
-            this.editor = new MarkdownView(editorWrap, addBaseUri(textarea.value, baseUri), inputEventHandler, attributes, baseUri);
+            this.editor = new MarkdownView(editorWrap, addBaseUri(textarea.value, baseUri), inputEventHandler, attributes);
             this.editor.view.dom.style.height = `${textareaHeight}px`;
 
             $(`label[for="${textarea.id}"]`)?.addEventListener("click", () => this.editor.view.focus());
@@ -59,7 +59,7 @@ export class EditorInput {
                     this.editor.view.dom.style.height = `${textareaHeight}px`;
                 } else {
                     this.editor.destroy();
-                    this.editor = new MarkdownView(editorWrap, addBaseUri(this.editor.content, baseUri), inputEventHandler, attributes, baseUri);
+                    this.editor = new MarkdownView(editorWrap, addBaseUri(this.editor.content, baseUri), inputEventHandler, attributes);
                     this.editor.view.dom.style.height = `${textareaHeight}px`;
                 }
                 this.editor.view.focus();

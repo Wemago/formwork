@@ -1,5 +1,6 @@
 import { defaultMarkdownParser, defaultMarkdownSerializer, schema } from "prosemirror-markdown";
 import { EditorState, Plugin, Transaction } from "prosemirror-state";
+import { app } from "../../../../app";
 import { baseKeymap } from "prosemirror-commands";
 import { buildInputRules } from "./inputrules";
 import { buildKeymap } from "./keymap";
@@ -12,7 +13,7 @@ import { menuPlugin } from "./menu";
 export class MarkdownView {
     view: EditorView;
 
-    constructor(target: Element, content: string, inputEventHandler: (content: string) => void, attributes: { [key: string]: string } = {}, baseUri: string) {
+    constructor(target: Element, content: string, inputEventHandler: (content: string) => void, attributes: { [key: string]: string } = {}) {
         this.view = new EditorView(target, {
             state: EditorState.create({
                 doc: defaultMarkdownParser.parse(content) as any,
@@ -22,7 +23,7 @@ export class MarkdownView {
                     keymap(baseKeymap),
                     history(),
                     menuPlugin(),
-                    linkTooltip(baseUri),
+                    linkTooltip(app.config.siteUri),
                     new Plugin({
                         props: {
                             handleDOMEvents: {

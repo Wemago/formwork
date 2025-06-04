@@ -1,5 +1,6 @@
 @use "../mixins" as *;
 @use "../variables" as *;
+@use "../colors" as *;
 
 .editor-toolbar {
     position: relative;
@@ -147,6 +148,12 @@ img.ProseMirror-separator {
 
 .ProseMirror img {
     max-width: 100%;
+}
+
+.ProseMirror a,
+.ProseMirror a:hover {
+    color: var(--color-accent-500);
+    text-decoration: underline;
 }
 
 .cm-editor {

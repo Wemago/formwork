@@ -1,21 +1,7 @@
 ---
 title: 'Another Blog Post'
 publishDate: '2018-06-16 00:00:00'
+summary: "This is the summary of another blog post.\n\n💡 Tip: click on post title to reveal the rest of content."
 ---
-This is the summary of another blog post.
-
-💡 Tip: click on post title to reveal the rest of content.
-
-===
 
 ➡️ Here we go. This is the rest of the blog post.
-
-If you open this post in the [Administration Panel](/panel), you will find that three equal signs `===` mark the transition from the summary to the rest:
-
-```
-💡 Tip: click on post title to reveal the rest of content.
-
-===
-
-➡️ Here we go. This is the rest of the blog post.
-```

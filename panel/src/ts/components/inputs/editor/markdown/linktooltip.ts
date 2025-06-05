@@ -34,7 +34,6 @@ class LinkTooltipView {
         const { from, to } = state.selection;
 
         const range = getMarkRange(state, schema.marks.link);
-
         if (!(range && from >= range.from && to <= range.to)) {
             this.destroy();
             return;
@@ -51,21 +50,27 @@ class LinkTooltipView {
 
             let linkDom: HTMLElement | null = domAtPos.node as HTMLElement;
 
-            while (linkDom && linkDom.nodeType === Node.TEXT_NODE) {
+            while (linkDom && linkDom.tagName !== "A") {
                 linkDom = linkDom.parentElement;
             }
 
-            if (!(linkDom && linkDom.tagName === "A")) {
+            if (!linkDom) {
                 return;
             }
 
             passIcon("link", (icon) => {
-                this.tooltip = new Tooltip(`${icon} <a href="${addBaseUri(link.attrs.href, this.baseUri)}" target="_blank">${link.attrs.href}</a>`, {
-                    referenceElement: linkDom,
-                    removeOnMouseout: false,
-                    delay: 0,
-                    zIndex: 7,
-                });
+                this.tooltip = new Tooltip(
+                    `<div class="flex">
+                        <div>${icon}</div>
+                        <div class="truncate ml-2"><a href="${addBaseUri(link.attrs.href, this.baseUri)}" target="_blank">${link.attrs.href}</a></div>
+                    </div>`,
+                    {
+                        referenceElement: linkDom,
+                        removeOnMouseout: false,
+                        delay: 0,
+                        zIndex: 7,
+                    },
+                );
 
                 this.tooltip.show();
             });

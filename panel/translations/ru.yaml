@@ -129,6 +129,7 @@ panel.modal.action.uploadFile: Загрузить файл
 panel.modal.images.noImages: Там нет изображений здесь
 panel.modal.images.noImages.upload: Пожалуйста, загрузите некоторые изображения
 panel.modal.images.title: Выберите изображение
+panel.modal.link.text: Текст
 panel.modal.link.title: Вставить ссылку
 panel.modal.link.uri: Uri
 panel.navigation.toggle: Переключить навигацию

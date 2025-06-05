@@ -129,6 +129,7 @@ panel.modal.action.uploadFile: Prześlij plik
 panel.modal.images.noImages: Nie ma tu żadnych obrazów
 panel.modal.images.noImages.upload: Prześlij obrazy
 panel.modal.images.title: Wybierz obraz
+panel.modal.link.text: Tekst
 panel.modal.link.title: Wstaw link
 panel.modal.link.uri: URI
 panel.navigation.toggle: Przełącz nawigację

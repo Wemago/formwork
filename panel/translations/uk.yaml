@@ -129,6 +129,7 @@ panel.modal.action.uploadFile: Завантажити файл
 panel.modal.images.noImages: Тут немає зображень
 panel.modal.images.noImages.upload: Будь ласка, завантажте зображення
 panel.modal.images.title: Виберіть зображення
+panel.modal.link.text: Текст
 panel.modal.link.title: Вставити посилання
 panel.modal.link.uri: URI
 panel.navigation.toggle: Перемкнути навігацію

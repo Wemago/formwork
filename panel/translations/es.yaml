@@ -129,6 +129,7 @@ panel.modal.action.uploadFile: Subir un archivo
 panel.modal.images.noImages: No hay imágenes aquí
 panel.modal.images.noImages.upload: Por favor, sube algunas imágenes
 panel.modal.images.title: Seleccionar una imagen
+panel.modal.link.text: Texto
 panel.modal.link.title: Insertar enlace
 panel.modal.link.uri: Uri
 panel.navigation.toggle: Alternar navegación

@@ -1,9 +1,9 @@
+import { $, $$ } from "../../../../utils/selectors";
 import { Command, EditorState, NodeSelection, Plugin } from "prosemirror-state";
 import { lift, setBlockType, toggleMark, wrapIn } from "prosemirror-commands";
 import { MarkType, NodeType } from "prosemirror-model";
 import { redo, redoDepth, undo, undoDepth } from "prosemirror-history";
 import { sinkListItem, wrapInList } from "prosemirror-schema-list";
-import { $ } from "../../../../utils/selectors";
 import { app } from "../../../../app";
 import { EditorView } from "prosemirror-view";
 import { getMarkRange } from "./utils";
@@ -268,58 +268,53 @@ export function menuPlugin() {
                     return false;
                 }
 
-                let currentUri: string | undefined;
+                let { from, to } = state.selection;
 
                 const range = getMarkRange(state, schema.marks.link);
-
-                if (range) {
-                    const nodeAfter = state.selection.$from.nodeAfter;
-                    const linkMark = nodeAfter?.marks.find((mark) => mark.type === schema.marks.link);
-                    currentUri = linkMark?.attrs.href;
+                if (range && from >= range.from && to <= range.to) {
+                    from = range.from;
+                    to = range.to;
                 }
 
                 const { linkModal } = app.modals;
+                const textInput = $('[id="linkModal.text"]', linkModal.element) as HTMLInputElement;
+                const uriInput = $('[id="linkModal.uri"]', linkModal.element) as HTMLInputElement;
+                const removeCommand = $('[data-command="remove-link"]', linkModal.element) as HTMLButtonElement;
 
-                linkModal.onOpen((modal) => {
-                    const uriInput = $('[id="linkModal.uri"]', modal.element) as HTMLInputElement;
+                removeCommand.disabled = !range;
+                textInput.value = "";
 
-                    if (currentUri) {
-                        uriInput.value = currentUri;
-                    } else {
-                        uriInput.value = "https://";
-                        uriInput.setSelectionRange(8, 8);
-                    }
+                if (range) {
+                    textInput.value = range.node.textContent;
+                    uriInput.value = range.mark.attrs.href;
+                    uriInput.setSelectionRange(0, uriInput.value.length);
+                } else {
+                    textInput.value = state.doc.textBetween(from, to);
+                    uriInput.value = "https://";
+                    uriInput.setSelectionRange(8, 8);
+                }
+
+                linkModal.onOpen(() => {
+                    uriInput.focus();
                 });
 
-                linkModal.open();
-
-                const { from, to } = state.selection;
-                const inRange = range && from >= range.from && to <= range.to;
-
                 linkModal.onCommand("insert-link", (modal) => {
-                    const uriInput = $('[id="linkModal.uri"]', modal.element) as HTMLInputElement;
-
                     if (uriInput.value) {
+                        const text = textInput.value || uriInput.value;
                         const linkMark = schema.marks.link.create({ href: uriInput.value });
-
-                        if (!inRange) {
-                            dispatch(view.state.tr.addStoredMark(linkMark));
-                            dispatch(view.state.tr.replaceSelectionWith(schema.text(uriInput.value), true));
-                        } else {
-                            view.dispatch(view.state.tr.removeMark(range.from, range.to, schema.marks.link).addMark(range.from, range.to, linkMark));
-                        }
-                    } else if (inRange) {
-                        view.dispatch(view.state.tr.removeMark(range.from, range.to, schema.marks.link));
+                        dispatch(view.state.tr.insertText(text, from, to).addMark(from, from + text.length, linkMark));
+                    } else {
+                        dispatch(view.state.tr.removeMark(from, to, schema.marks.link));
                     }
                     modal.close();
                 });
 
                 linkModal.onCommand("remove-link", (modal) => {
-                    if (inRange) {
-                        view.dispatch(view.state.tr.removeMark(range.from, range.to, schema.marks.link));
-                    }
+                    dispatch(view.state.tr.removeMark(from, to, schema.marks.link));
                     modal.close();
                 });
+
+                linkModal.open();
 
                 linkModal.onClose(() => view.focus());
 
@@ -412,12 +407,14 @@ function initModals() {
 
     const { linkModal } = app.modals;
 
-    $('[id="linkModal.uri"]', linkModal.element)?.addEventListener("keydown", (event) => {
-        if (event.key === "Enter") {
-            linkModal.triggerCommand("insert-link");
-            event.preventDefault();
-        }
-    });
+    $$('[id="linkModal.text"], [id="linkModal.uri"]', linkModal.element).forEach((input) =>
+        input.addEventListener("keydown", (event) => {
+            if (event.key === "Enter") {
+                linkModal.triggerCommand("insert-link");
+                event.preventDefault();
+            }
+        }),
+    );
 
     modalsInitialized = true;
 }

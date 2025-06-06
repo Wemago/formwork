@@ -58,7 +58,7 @@ class MenuView {
 
         this.update();
 
-        this.dom.addEventListener("mousedown", (e) => {
+        this.dom.addEventListener("click", (e) => {
             e.preventDefault();
             editorView.focus();
             items.forEach(({ command, dom }) => {

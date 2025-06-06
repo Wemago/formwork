@@ -48,7 +48,7 @@ export class StatisticsChart {
                 if (index) {
                     passIcon("circle-small-fill", (icon) => {
                         // @ts-expect-error TODO
-                        const text = `${data.labels[index]}<br><span class="text-color-blue">${icon}</span> ${data.series[0][index]} <span class="text-color-amber ml-2">${icon}</span>${data.series[1][index]}`;
+                        const text = `<div>${data.labels[index]}<br><span class="text-color-blue">${icon}</span> ${data.series[0][index]} <span class="text-color-amber ml-2">${icon}</span>${data.series[1][index]}</div>`;
                         const tooltip = new Tooltip(text, {
                             referenceElement: event.target as HTMLElement,
                             offset: { x: 0, y: -strokeWidth },

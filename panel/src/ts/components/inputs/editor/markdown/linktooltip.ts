@@ -1,6 +1,6 @@
 import { debounce } from "../../../../utils/events";
 import { EditorView } from "prosemirror-view";
-import { getMarkRange } from "./utils";
+import { getMarkRange } from "./commands";
 import { Mark } from "prosemirror-model";
 import { passIcon } from "../../../icons";
 import { Plugin } from "prosemirror-state";

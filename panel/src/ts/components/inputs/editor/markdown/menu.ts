@@ -1,12 +1,9 @@
-import { $, $$ } from "../../../../utils/selectors";
-import { Command, EditorState, NodeSelection, Plugin } from "prosemirror-state";
-import { lift, setBlockType, toggleMark, wrapIn } from "prosemirror-commands";
+import { Command, NodeSelection, Plugin } from "prosemirror-state";
+import { insertImage, insertLink, isMarkActive, lift, redo, setBlockType, sinkListItem, toggleMark, undo, wrapIn, wrapInList } from "./commands";
 import { MarkType, NodeType } from "prosemirror-model";
-import { redo, redoDepth, undo, undoDepth } from "prosemirror-history";
-import { sinkListItem, wrapInList } from "prosemirror-schema-list";
+import { $$ } from "../../../../utils/selectors";
 import { app } from "../../../../app";
 import { EditorView } from "prosemirror-view";
-import { getMarkRange } from "./utils";
 import { passIcon } from "../../../icons";
 import { schema } from "prosemirror-markdown";
 
@@ -119,7 +116,12 @@ function plugin(items: MenuItem[]) {
 }
 
 export function menuPlugin() {
-    initModals();
+    let modalsInitialized = false;
+
+    if (!modalsInitialized) {
+        initModals();
+        modalsInitialized = true;
+    }
 
     return plugin([
         {
@@ -225,132 +227,25 @@ export function menuPlugin() {
         },
         {
             node: schema.nodes.image,
-            command: (state, dispatch, view) => {
-                if (!dispatch) {
-                    return canInsert(state, schema.nodes.image);
-                }
-                if (view) {
-                    app.modals["imagesModal"].open();
-
-                    app.modals["imagesModal"].onCommand("pick-image", (modal) => {
-                        const selected = $(".image-picker-thumbnail.selected", modal.element);
-
-                        if (selected && view) {
-                            const baseUri = $("textarea", view.dom.parentNode!)!.dataset.baseUri;
-                            const filename = selected.dataset.filename;
-                            view.dispatch(
-                                state.tr.replaceSelectionWith(
-                                    schema.nodes.image.createAndFill({
-                                        src: `${baseUri}${filename}`,
-                                        alt: "",
-                                    })!,
-                                ),
-                            );
-                            view.focus();
-                        }
-
-                        modal.close();
-                    });
-                }
-                return true;
-            },
+            command: insertImage,
             dom: createButton("image", app.config.EditorInput.labels.image),
             group: "media",
         },
         {
             mark: schema.marks.link,
-            command: (state, dispatch, view) => {
-                if (!dispatch) {
-                    return true;
-                }
-
-                if (!view) {
-                    return false;
-                }
-
-                let { from, to } = state.selection;
-
-                const range = getMarkRange(state, schema.marks.link);
-                if (range && from >= range.from && to <= range.to) {
-                    from = range.from;
-                    to = range.to;
-                }
-
-                const { linkModal } = app.modals;
-                const textInput = $('[id="linkModal.text"]', linkModal.element) as HTMLInputElement;
-                const uriInput = $('[id="linkModal.uri"]', linkModal.element) as HTMLInputElement;
-                const removeCommand = $('[data-command="remove-link"]', linkModal.element) as HTMLButtonElement;
-
-                removeCommand.disabled = !range;
-                textInput.value = "";
-
-                if (range) {
-                    textInput.value = range.node.textContent;
-                    uriInput.value = range.mark.attrs.href;
-                    uriInput.setSelectionRange(0, uriInput.value.length);
-                } else {
-                    textInput.value = state.doc.textBetween(from, to);
-                    uriInput.value = "https://";
-                    uriInput.setSelectionRange(8, 8);
-                }
-
-                linkModal.onOpen(() => {
-                    uriInput.focus();
-                });
-
-                linkModal.onCommand("insert-link", (modal) => {
-                    if (uriInput.value) {
-                        const text = textInput.value || uriInput.value;
-                        const linkMark = schema.marks.link.create({ href: uriInput.value });
-                        dispatch(view.state.tr.insertText(text, from, to).addMark(from, from + text.length, linkMark));
-                    } else {
-                        dispatch(view.state.tr.removeMark(from, to, schema.marks.link));
-                    }
-                    modal.close();
-                });
-
-                linkModal.onCommand("remove-link", (modal) => {
-                    dispatch(view.state.tr.removeMark(from, to, schema.marks.link));
-                    modal.close();
-                });
-
-                linkModal.open();
-
-                linkModal.onClose(() => view.focus());
-
-                return true;
-            },
+            command: insertLink,
             dom: createButton("link", app.config.EditorInput.labels.link),
             group: "media",
         },
         {
-            command: (state, dispatch, view) => {
-                if (!dispatch) {
-                    return undoDepth(state) > 0;
-                }
-                return undo(state, dispatch, view);
-            },
+            command: undo,
             dom: createButton("rotate-left", app.config.EditorInput.labels.undo),
         },
         {
-            command: (state, dispatch, view) => {
-                if (!dispatch) {
-                    return redoDepth(state) > 0;
-                }
-                return redo(state, dispatch, view);
-            },
+            command: redo,
             dom: createButton("rotate-right", app.config.EditorInput.labels.redo),
         },
     ]);
-}
-
-function canInsert(state: EditorState, nodeType: NodeType) {
-    const $from = state.selection.$from;
-    for (let d = $from.depth; d >= 0; d--) {
-        const index = $from.index(d);
-        if ($from.node(d).canReplaceWith(index, index, nodeType)) return true;
-    }
-    return false;
 }
 
 function createButton(icon: string, title: string) {
@@ -390,21 +285,7 @@ function createDropdown() {
     return dropdown;
 }
 
-function isMarkActive(state: EditorState, type: MarkType) {
-    const { from, $from, to, empty } = state.selection;
-    if (empty) {
-        return !!type.isInSet(state.storedMarks || $from.marks());
-    }
-    return state.doc.rangeHasMark(from, to, type);
-}
-
-let modalsInitialized = false;
-
 function initModals() {
-    if (modalsInitialized) {
-        return;
-    }
-
     const { linkModal } = app.modals;
 
     $$('[id="linkModal.text"], [id="linkModal.uri"]', linkModal.element).forEach((input) =>
@@ -415,6 +296,4 @@ function initModals() {
             }
         }),
     );
-
-    modalsInitialized = true;
 }

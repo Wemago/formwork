@@ -195,6 +195,8 @@ abstract class AbstractController extends BaseAbstractController
                         'paragraph'      => $this->translate('panel.editor.paragraph'),
                         'increaseIndent' => $this->translate('panel.editor.increaseIndent'),
                         'decreaseIndent' => $this->translate('panel.editor.decreaseIndent'),
+                        'edit'           => $this->translate('panel.modal.action.edit'),
+                        'delete'         => $this->translate('panel.modal.action.delete'),
                     ],
                 ],
                 'SelectInput' => [

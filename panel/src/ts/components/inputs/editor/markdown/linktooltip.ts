@@ -1,8 +1,10 @@
-import { debounce } from "../../../../utils/events";
+import { debounce, throttle } from "../../../../utils/events";
+import { getMarkRange, insertLink, removeLink } from "./commands";
+import { $ } from "../../../../utils/selectors";
+import { app } from "../../../../app";
 import { EditorView } from "prosemirror-view";
-import { getMarkRange } from "./commands";
+import { insertIcon } from "../../../icons";
 import { Mark } from "prosemirror-model";
-import { passIcon } from "../../../icons";
 import { Plugin } from "prosemirror-state";
 import { schema } from "prosemirror-markdown";
 import { Tooltip } from "../../../tooltip";
@@ -21,10 +23,14 @@ class LinkTooltipView {
 
         this.baseUri = baseUri;
 
-        this.editorView.dom.addEventListener(
-            "scroll",
-            debounce(() => this.destroy(), 100, true),
-        );
+        const resizeHandler = throttle(() => this.update(this.editorView), 100);
+
+        const scrollHandler = debounce(() => this.destroy(), 100, true);
+
+        window.addEventListener("resize", resizeHandler);
+        window.addEventListener("scroll", scrollHandler);
+
+        this.editorView.dom.addEventListener("scroll", scrollHandler);
         this.editorView.dom.addEventListener("blur", () => this.destroy());
     }
 
@@ -58,22 +64,36 @@ class LinkTooltipView {
                 return;
             }
 
-            passIcon("link", (icon) => {
-                this.tooltip = new Tooltip(
-                    `<div class="flex">
-                        <div>${icon}</div>
-                        <div class="truncate ml-2"><a href="${addBaseUri(link.attrs.href, this.baseUri)}" target="_blank">${link.attrs.href}</a></div>
-                    </div>`,
-                    {
-                        referenceElement: linkDom,
-                        removeOnMouseout: false,
-                        delay: 0,
-                        zIndex: 7,
-                    },
-                );
+            this.tooltip = new Tooltip(
+                `<div class="editor-link-tooltip truncate mr-4"><a href="${addBaseUri(link.attrs.href, this.baseUri)}" target="_blank">${link.attrs.href}</a></div>
+                <div class="separator"></div>
+                <button type="button" class="tooltip-button" data-command="edit-link">${app.config.EditorInput.labels.edit}</button>
+                <div class="separator"></div>
+                <button type="button" class="tooltip-button" data-command="delete-link" aria-label="${app.config.EditorInput.labels.delete}" data-tooltip="${app.config.EditorInput.labels.delete}"></button>`,
+                {
+                    referenceElement: linkDom,
+                    removeOnMouseout: false,
+                    delay: 0,
+                    zIndex: 18,
+                },
+            );
 
-                this.tooltip.show();
-            });
+            const tooltipLink = $(".editor-link-tooltip", this.tooltip.element) as HTMLAnchorElement;
+            const tooltipEditLink = $('[data-command="edit-link"]', this.tooltip.element) as HTMLButtonElement;
+            const tooltipDeleteLink = $('[data-command="delete-link"]', this.tooltip.element) as HTMLButtonElement;
+
+            insertIcon("link", tooltipLink);
+            insertIcon("pencil", tooltipEditLink);
+            insertIcon("trash", tooltipDeleteLink);
+
+            const { state, dispatch } = this.editorView;
+
+            tooltipEditLink.addEventListener("click", () => insertLink(state, dispatch, this.editorView));
+            tooltipDeleteLink.addEventListener("click", () => removeLink(state, dispatch, this.editorView));
+
+            this.tooltip.element.addEventListener("mousedown", (event) => event.preventDefault());
+
+            this.tooltip.show();
         }
     }
 

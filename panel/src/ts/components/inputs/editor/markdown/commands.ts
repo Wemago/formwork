@@ -1,5 +1,6 @@
 import { Command, EditorState } from "prosemirror-state";
 import { Mark, MarkType, Node, NodeType } from "prosemirror-model";
+import { EditorView } from "prosemirror-view";
 export { lift, setBlockType, toggleMark, wrapIn } from "prosemirror-commands";
 export { sinkListItem, wrapInList } from "prosemirror-schema-list";
 import { redo as historyRedo, undo as historyUndo, redoDepth, undoDepth } from "prosemirror-history";
@@ -50,6 +51,10 @@ export const insertLink: Command = (state, dispatch, view) => {
     linkModal.onCommand("insert-link", (modal) => {
         if (uriInput.value) {
             const text = textInput.value || uriInput.value;
+            if (range && range.mark.attrs.href === uriInput.value && range.node.text === text) {
+                modal.close();
+                return;
+            }
             const linkMark = schema.marks.link.create({ href: uriInput.value });
             dispatch(view.state.tr.insertText(text, from, to).addMark(from, from + text.length, linkMark));
         } else {
@@ -63,9 +68,35 @@ export const insertLink: Command = (state, dispatch, view) => {
         modal.close();
     });
 
+    linkModal.onClose(() => {
+        updateView(view);
+        view.focus();
+    });
+
     linkModal.open();
 
-    linkModal.onClose(() => view.focus());
+    return true;
+};
+
+export const removeLink: Command = (state, dispatch, view) => {
+    let { from, to } = state.selection;
+
+    const range = getMarkRange(state, schema.marks.link);
+
+    if (!dispatch) {
+        return !!range;
+    }
+
+    if (!view) {
+        return false;
+    }
+
+    if (range && from >= range.from && to <= range.to) {
+        from = range.from;
+        to = range.to;
+    }
+
+    dispatch(view.state.tr.removeMark(from, to, schema.marks.link));
 
     return true;
 };
@@ -115,6 +146,12 @@ export const redo: Command = (state, dispatch, view) => {
     }
     return historyRedo(state, dispatch, view);
 };
+
+export function updateView(view: EditorView) {
+    const tr = view.state.tr.scrollIntoView();
+    tr.setMeta("addToHistory", false);
+    view.dispatch(tr);
+}
 
 export function canInsert(state: EditorState, nodeType: NodeType) {
     const $from = state.selection.$from;

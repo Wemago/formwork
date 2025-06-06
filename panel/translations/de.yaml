@@ -122,6 +122,7 @@ panel.manage: Verwalten
 panel.modal.action.cancel: Abbrechen
 panel.modal.action.continue: Fortfahren
 panel.modal.action.delete: Löschen
+panel.modal.action.edit: Bearbeiten
 panel.modal.action.rename: Umbenennen
 panel.modal.action.save: Speichern
 panel.modal.action.upload: Hochladen

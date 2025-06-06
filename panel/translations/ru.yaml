@@ -122,6 +122,7 @@ panel.manage: Меню
 panel.modal.action.cancel: Отмена
 panel.modal.action.continue: Продолжить
 panel.modal.action.delete: Удалить
+panel.modal.action.edit: Правка
 panel.modal.action.rename: Переименовать
 panel.modal.action.save: Сохранить
 panel.modal.action.upload: Загрузить

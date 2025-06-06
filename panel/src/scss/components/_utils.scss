@@ -74,6 +74,10 @@
     @include ellipsis;
 }
 
+.text-monospace {
+    font-family: $mono-font-family;
+}
+
 @include make-util(
     "whitespace",
     "white-space",

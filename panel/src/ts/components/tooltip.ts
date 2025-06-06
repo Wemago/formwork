@@ -11,7 +11,7 @@ interface TooltipOptions {
     delay: number;
     timeout: number | null;
     removeOnMouseout: boolean;
-    removeOnClick: boolean;
+    removeOnMousedown: boolean;
     zIndex: number | null;
 }
 
@@ -20,10 +20,10 @@ export class Tooltip {
     options: TooltipOptions;
     delayTimer: number;
     timeoutTimer: number;
-    tooltipElement: HTMLElement;
+    element: HTMLElement;
 
     get removed() {
-        return this.tooltipElement === undefined || !this.options.container.contains(this.tooltipElement);
+        return this.element === undefined || !this.options.container.contains(this.element);
     }
 
     constructor(text: string, options: Partial<TooltipOptions> = {}) {
@@ -38,12 +38,17 @@ export class Tooltip {
             delay: 500,
             timeout: null,
             removeOnMouseout: true,
-            removeOnClick: false,
+            removeOnMousedown: true,
             zIndex: null,
         };
 
         this.text = text;
         this.options = Object.assign({}, defaults, options);
+
+        this.element = document.createElement("div");
+        this.element.className = "tooltip";
+        this.element.role = "tooltip";
+        this.element.innerHTML = this.text;
     }
 
     show() {
@@ -51,12 +56,6 @@ export class Tooltip {
         const container = options.container;
 
         this.delayTimer = window.setTimeout(() => {
-            const tooltip = document.createElement("div");
-            tooltip.className = "tooltip";
-            tooltip.role = "tooltip";
-            tooltip.style.display = "block";
-            tooltip.innerHTML = this.text;
-
             const getRelativePosition = (tooltip: HTMLElement) => {
                 const offset = options.offset;
 
@@ -125,14 +124,14 @@ export class Tooltip {
                 };
             };
 
-            container.appendChild(tooltip);
+            container.appendChild(this.element);
 
-            const position = getTooltipPosition(tooltip);
-            tooltip.style.top = `${position.top}px`;
-            tooltip.style.left = `${position.left}px`;
+            const position = getTooltipPosition(this.element);
+            this.element.style.top = `${position.top}px`;
+            this.element.style.left = `${position.left}px`;
 
             if (options.zIndex !== null) {
-                tooltip.style.zIndex = `${options.zIndex}`;
+                this.element.style.zIndex = `${options.zIndex}`;
             }
 
             if (options.timeout !== null) {
@@ -140,16 +139,14 @@ export class Tooltip {
             }
 
             if (options.removeOnMouseout) {
-                tooltip.addEventListener("mouseout", () => this.remove());
+                this.element.addEventListener("mouseout", () => this.remove());
             }
-
-            this.tooltipElement = tooltip;
         }, options.delay);
 
         const referenceElement = options.referenceElement;
 
         if (referenceElement.tagName.toLowerCase() === "button" || referenceElement.classList.contains("button")) {
-            referenceElement.addEventListener("click", () => {
+            referenceElement.addEventListener("mousedown", () => {
                 this.remove();
             });
             referenceElement.addEventListener("blur", () => this.remove());
@@ -157,25 +154,19 @@ export class Tooltip {
 
         if (options.removeOnMouseout) {
             referenceElement.addEventListener("mouseout", (event: MouseEvent) => {
-                if (event.relatedTarget !== this.tooltipElement) {
+                if (event.relatedTarget !== this.element) {
                     this.remove();
                 }
             });
         }
-        if (options.removeOnClick) {
-            referenceElement.addEventListener("click", () => this.remove());
+        if (options.removeOnMousedown) {
+            referenceElement.addEventListener("mousedown", () => this.remove());
         }
     }
 
     remove() {
         clearTimeout(this.delayTimer);
         clearTimeout(this.timeoutTimer);
-
-        const tooltip = this.tooltipElement;
-        const container = this.options.container;
-
-        if (tooltip !== undefined && container.contains(tooltip)) {
-            container.removeChild(tooltip);
-        }
+        this.element?.remove();
     }
 }

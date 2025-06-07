@@ -9,9 +9,10 @@ fields:
         required: true
 
     uri:
-        type: text
+        type: textarea
         label: '{{panel.modal.link.uri}}'
         required: true
+        rows: 3
 
 buttons:
     dismiss:

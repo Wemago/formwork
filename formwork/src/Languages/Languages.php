@@ -94,6 +94,14 @@ class Languages
     }
 
     /**
+     * Return if there are multiple languages available
+     */
+    public function hasMultiple(): bool
+    {
+        return count($this->available) > 1;
+    }
+
+    /**
      * Get the proper `Language` instance
      */
     protected function resolveLanguage(Language|string|null $language): ?Language

@@ -260,7 +260,7 @@ panel.sections.toggle: Toggle section
 panel.site.languages: Languages
 panel.site.languages.availableLanguages: Available languages
 panel.site.languages.availableLanguages.noLanguages: No languages
-panel.site.languages.preferredLanguage: Use browser prefered language
+panel.site.languages.preferredLanguage: Use browser preferred language
 panel.site.languages.preferredLanguage.disabled: Disabled
 panel.site.languages.preferredLanguage.enabled: Enabled
 panel.statistics.devices: Devices

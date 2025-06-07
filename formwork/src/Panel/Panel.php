@@ -53,6 +53,14 @@ final class Panel
     }
 
     /**
+     * Return the path to the panel
+     */
+    public function path(): string
+    {
+        return $this->config->get('system.panel.path');
+    }
+
+    /**
      * Return a URI relative to the request root
      */
     public function uri(string $route = ''): string

@@ -3,5 +3,5 @@
 <?php endforeach ?>
 
 <script>
-    Formwork.app.load(<?= $appConfig ?>);
+    Formwork.app.load(<?= Formwork\Parsers\Json::encode($panel->getAppConfig()) ?>);
 </script>

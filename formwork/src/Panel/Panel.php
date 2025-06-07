@@ -8,6 +8,8 @@ use Formwork\Http\Request;
 use Formwork\Http\Session\MessageType;
 use Formwork\Languages\LanguageCodes;
 use Formwork\Panel\Modals\Modals;
+use Formwork\Services\Container;
+use Formwork\Translations\Translations;
 use Formwork\Users\ColorScheme;
 use Formwork\Users\Exceptions\UserNotLoggedException;
 use Formwork\Users\User;
@@ -26,10 +28,12 @@ final class Panel
     private Assets $assets;
 
     public function __construct(
+        private readonly Container $container,
         private Config $config,
         private Request $request,
         private Users $users,
         private Modals $modals,
+        private Translations $translations,
     ) {}
 
     /**
@@ -191,5 +195,17 @@ final class Panel
     public function getCsrfTokenName(): string
     {
         return self::CSRF_TOKEN_NAME;
+    }
+
+    /**
+     * Get javascript app config
+     *
+     * @return array<string, mixed>
+     */
+    public function getAppConfig(): array
+    {
+        return $this->container->call(require FileSystem::joinPaths($this->path(), 'appconfig.php'), [
+            'translation' => $this->translations->getCurrent(),
+        ]);
     }
 }

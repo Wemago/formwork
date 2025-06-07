@@ -7,12 +7,10 @@ use Formwork\Controllers\AbstractController as BaseAbstractController;
 use Formwork\Files\Services\FileUploader;
 use Formwork\Panel\Modals\Modal;
 use Formwork\Panel\Panel;
-use Formwork\Parsers\Json;
 use Formwork\Router\Router;
 use Formwork\Security\CsrfToken;
 use Formwork\Services\Container;
 use Formwork\Translations\Translations;
-use Formwork\Utils\Date;
 use Stringable;
 
 abstract class AbstractController extends BaseAbstractController
@@ -141,80 +139,6 @@ abstract class AbstractController extends BaseAbstractController
                     'badge'       => null,
                 ],
             ],
-            'appConfig' => Json::encode([
-                'siteUri'     => $this->site->uri(includeLanguage: false),
-                'baseUri'     => $this->panel->panelUri(),
-                'csrfToken'   => $this->csrfToken->get($this->panel->getCsrfTokenName()),
-                'colorScheme' => $this->panel->isLoggedIn() ? $this->panel->user()->colorScheme()->getCompatibleSchemes() : null,
-                'DateInput'   => [
-                    'weekStarts'     => $this->config->get('system.date.weekStarts'),
-                    'dateFormat'     => Date::formatToPattern($this->config->get('system.date.dateFormat')),
-                    'dateTimeFormat' => Date::formatToPattern($this->config->get('system.date.datetimeFormat')),
-                    'time'           => true,
-                    'labels'         => [
-                        'today'      => $this->translate('date.today'),
-                        'weekdays'   => ['long' => $this->translations->getCurrent()->getStrings('date.weekdays.long'), 'short' => $this->translations->getCurrent()->getStrings('date.weekdays.short')],
-                        'months'     => ['long' => $this->translations->getCurrent()->getStrings('date.months.long'), 'short' => $this->translations->getCurrent()->getStrings('date.months.short')],
-                        'prevMonth'  => $this->translate('fields.date.previousMonth'),
-                        'nextMonth'  => $this->translate('fields.date.nextMonth'),
-                        'prevHour'   => $this->translate('fields.date.previousHour'),
-                        'nextHour'   => $this->translate('fields.date.nextHour'),
-                        'prevMinute' => $this->translate('fields.date.previousMinute'),
-                        'nextMinute' => $this->translate('fields.date.nextMinute'),
-                    ],
-                ],
-                'DurationInput' => [
-                    'labels' => [
-                        'years'   => $this->translations->getCurrent()->getStrings('date.duration.years'),
-                        'months'  => $this->translations->getCurrent()->getStrings('date.duration.months'),
-                        'weeks'   => $this->translations->getCurrent()->getStrings('date.duration.weeks'),
-                        'days'    => $this->translations->getCurrent()->getStrings('date.duration.days'),
-                        'hours'   => $this->translations->getCurrent()->getStrings('date.duration.hours'),
-                        'minutes' => $this->translations->getCurrent()->getStrings('date.duration.minutes'),
-                        'seconds' => $this->translations->getCurrent()->getStrings('date.duration.seconds'),
-                    ],
-                ],
-                'EditorInput' => [
-                    'labels' => [
-                        'bold'           => $this->translate('panel.editor.bold'),
-                        'italic'         => $this->translate('panel.editor.italic'),
-                        'link'           => $this->translate('panel.editor.link'),
-                        'image'          => $this->translate('panel.editor.image'),
-                        'quote'          => $this->translate('panel.editor.quote'),
-                        'undo'           => $this->translate('panel.editor.undo'),
-                        'redo'           => $this->translate('panel.editor.redo'),
-                        'bulletList'     => $this->translate('panel.editor.bulletList'),
-                        'numberedList'   => $this->translate('panel.editor.numberedList'),
-                        'code'           => $this->translate('panel.editor.code'),
-                        'heading1'       => $this->translate('panel.editor.heading1'),
-                        'heading2'       => $this->translate('panel.editor.heading2'),
-                        'heading3'       => $this->translate('panel.editor.heading3'),
-                        'heading4'       => $this->translate('panel.editor.heading4'),
-                        'heading5'       => $this->translate('panel.editor.heading5'),
-                        'heading6'       => $this->translate('panel.editor.heading6'),
-                        'paragraph'      => $this->translate('panel.editor.paragraph'),
-                        'increaseIndent' => $this->translate('panel.editor.increaseIndent'),
-                        'decreaseIndent' => $this->translate('panel.editor.decreaseIndent'),
-                        'edit'           => $this->translate('panel.modal.action.edit'),
-                        'delete'         => $this->translate('panel.modal.action.delete'),
-                    ],
-                ],
-                'SelectInput' => [
-                    'labels' => [
-                        'empty' => $this->translate(('fields.select.empty')),
-                    ],
-                ],
-                'TagsInput' => [
-                    'labels' => [
-                        'remove' => $this->translate('fields.tags.remove'),
-                    ],
-                ],
-                'Backups' => [
-                    'labels' => [
-                        'now' => $this->translate('date.now'),
-                    ],
-                ],
-            ]),
         ];
     }
 }

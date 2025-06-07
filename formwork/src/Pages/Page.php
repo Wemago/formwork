@@ -713,7 +713,7 @@ class Page extends Model implements Stringable
 
         $language ??= $this->language();
 
-        if ($language !== null && !in_array($language, $this->site->languages()->available()->keys(), true)) {
+        if ($language !== null && !$this->site->languages()->available()->has($language)) {
             throw new InvalidValueException('Invalid page language', 'invalidLanguage');
         }
 

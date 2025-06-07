@@ -130,7 +130,7 @@ final class PagesController extends AbstractController
             if ($page->languages()->available()->has($language)) {
                 $page->setLanguage($language);
             }
-        } elseif ($page->language() !== null) {
+        } elseif ($this->site->languages()->hasMultiple() && $page->language() !== null) {
             if ($page->route() === null) {
                 throw new UnexpectedValueException('Unexpected missing page route');
             }
@@ -404,7 +404,11 @@ final class PagesController extends AbstractController
 
         $page->setMultiple($data);
 
-        $page->save($this->site->languages()->default());
+        $language = $this->site->languages()->hasMultiple()
+            ? $this->site->languages()->default()
+            : null;
+
+        $page->save($language);
 
         if ($page->contentPath()) {
             $contentHistory = new ContentHistory($page->contentPath());

@@ -1,4 +1,4 @@
-import { $$ } from "../utils/selectors";
+import { $, $$ } from "../utils/selectors";
 import { debounce } from "../utils/events";
 import { Tooltip } from "./tooltip";
 
@@ -30,6 +30,11 @@ export class Tooltips {
                     this.element = element;
 
                     this.tooltip?.remove();
+
+                    const openModal = $(".modal.open");
+                    if (openModal && !openModal.contains(element)) {
+                        return;
+                    }
 
                     this.tooltip = new Tooltip(element.dataset.tooltip as string, {
                         referenceElement: element,

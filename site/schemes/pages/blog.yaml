@@ -6,8 +6,11 @@ extend: pages.page
 default: false
 
 options:
-    # Specify the page type, in this case `listing`, which means it can show children
-    type: listing
+    # This allows pagination routes for the page
+    allowPagination: true
+
+    # This allows tags for the page
+    allowTags: false
 
     # This controls which template can have children, their order and other attributes
     children:

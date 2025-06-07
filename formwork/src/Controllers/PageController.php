@@ -62,7 +62,11 @@ final class PageController extends AbstractController
                 }
             }
 
-            if (($routeParams->has('tagName') || $routeParams->has('paginationPage')) && $page->scheme()->options()->get('type') !== 'listing') {
+            if ($routeParams->has('paginationPage') && !$page->scheme()->options()->get('allowPagination', false)) {
+                return $this->getPageResponse($this->site->errorPage());
+            }
+
+            if ($routeParams->has('tagName') && !$page->scheme()->options()->get('allowTags', false)) {
                 return $this->getPageResponse($this->site->errorPage());
             }
 

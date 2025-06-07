@@ -1,5 +1,40 @@
 # Changelog
 
+## [2.0.0-beta.5](https://github.com/getformwork/formwork/releases/tag/2.0.0-beta.5)
+
+**Breaking Changes**
+
+- **Move languages from system to site options**
+- Use fine-grained `allowPagination` and `allowTags` scheme options instead of `type: listing`
+
+**Enhancements**
+
+- **Add Files view to the panel**
+- Add fields `width` attribute (@RWDevelopment)
+- Add color field type
+- Improve upload field file lists
+- Update editor links insertion, removal and tooltip
+- Allow uploads from options views
+- Add options-related methods to upload field (`isMultiple()`, `destination()`, `overwrite()`, `filename()`)
+- Prefer using `rawurlencode()` and `rawurldecode()`
+- Add `Uri::encode()`
+- Add `uri()` method to views
+- Add access to site files from `/files` route
+- Add `Languages::hasMultiple()`
+- Avoid multilang behavior without multiple languages
+- Add `Panel::path()`
+- Move app config from `AbstractController` to separate file
+- Move panel navigation from `AbstractController` to separate file
+
+**Bug fixes**
+
+- Fix broken uri generation with numeric prefixes
+- Fix possible altered UTF-8 characters when parsing URI data
+- Fix tooltips showing after modal opening
+
+**Security**
+- Restrict uploaded files destinations
+
 ## [2.0.0-beta.4](https://github.com/getformwork/formwork/releases/tag/2.0.0-beta.4)
 
 **Breaking Changes**

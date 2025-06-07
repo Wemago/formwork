@@ -15,7 +15,7 @@ final class LanguagesFactory
     /**
      * Create a new Languages instance
      *
-     * @param array{available: list<string>, httpPreferred: bool, default?: bool} $config
+     * @param array{available: list<string>, httpPreferred: bool, default?: string} $config
      */
     public function make(array $config): Languages
     {

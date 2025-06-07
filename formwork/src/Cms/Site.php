@@ -506,7 +506,7 @@ class Site extends Model implements Stringable
     /**
      * Set languages
      *
-     * @param array{available: list<string>, httpPreferred: bool, default?: bool} $config
+     * @param array{available: list<string>, httpPreferred: bool, default?: string} $config
      */
     protected function setLanguages(array $config): void
     {

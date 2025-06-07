@@ -62,10 +62,6 @@ images:
     preserveExifData: true
     clearCacheByDefault: false
 
-languages:
-    available: {  }
-    httpPreferred: false
-
 metadata:
     setGenerator: true
 

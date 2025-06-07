@@ -184,12 +184,6 @@ panel.options.system.images.jpegSaveProgressive.disabled: Отключено
 panel.options.system.images.jpegSaveProgressive.enabled: Включено
 panel.options.system.images.pngCompressionLevel: PNG Уровень сжатия
 panel.options.system.images.webpQuality: Качество WebP
-panel.options.system.languages: Языки
-panel.options.system.languages.availableLanguages: Доступные Языки
-panel.options.system.languages.availableLanguages.noLanguages: Нет Языков
-panel.options.system.languages.preferredLanguage: Использовать предпочитаемый язык браузера
-panel.options.system.languages.preferredLanguage.disabled: Выключить
-panel.options.system.languages.preferredLanguage.enabled: Включить
 panel.options.system.uploads.processImages: Обрабатывать (оптимизировать) загруженные изображения
 panel.options.system.uploads.processImages.disabled: Отключено
 panel.options.system.uploads.processImages.enabled: Включено
@@ -263,6 +257,12 @@ panel.register.createUser: Formwork Администратор установл�
 panel.register.register: Регистрация нового пользователя
 panel.request.error.postMaxSize: Запрос HTTP POST превышает максимально допустимый размер
 panel.sections.toggle: Переключить раздел
+panel.site.languages: Языки
+panel.site.languages.availableLanguages: Доступные Языки
+panel.site.languages.availableLanguages.noLanguages: Нет Языков
+panel.site.languages.preferredLanguage: Использовать предпочитаемый язык браузера
+panel.site.languages.preferredLanguage.disabled: Выключить
+panel.site.languages.preferredLanguage.enabled: Включить
 panel.statistics.devices: Устройства
 panel.statistics.devices.type: Тип
 panel.statistics.devices.type.desktop: Компьютер

@@ -13,6 +13,11 @@ layout:
             collapsible: true
             fields: [defaultTemplate]
 
+        languages:
+            collapsible: true
+            label: '{{panel.site.languages}}'
+            fields: [languages.available, languages.httpPreferred]
+
         maintenance:
             label: '{{site.maintenance}}'
             collapsible: true
@@ -43,6 +48,22 @@ fields:
     defaultTemplate:
         type: template
         label: '{{site.pages.defaultTemplate}}'
+
+    languages.available:
+        type: tags
+        label: '{{panel.site.languages.availableLanguages}}'
+        icon: translate
+        placeholder: '{{panel.site.languages.availableLanguages.noLanguages}}'
+        pattern: '^[a-z]{2,3}$'
+        translate: [label, placeholder]
+        options@: languages.names
+
+    languages.httpPreferred:
+        type: togglegroup
+        label: '{{panel.site.languages.preferredLanguage}}'
+        options:
+            1: '{{panel.site.languages.preferredLanguage.enabled}}'
+            0: '{{panel.site.languages.preferredLanguage.disabled}}'
 
     maintenance.enabled:
         type: togglegroup

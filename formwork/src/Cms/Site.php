@@ -6,6 +6,7 @@ use Formwork\Config\Config;
 use Formwork\Files\FileCollection;
 use Formwork\Files\FileFactory;
 use Formwork\Languages\Languages;
+use Formwork\Languages\LanguagesFactory;
 use Formwork\Metadata\MetadataCollection;
 use Formwork\Model\Model;
 use Formwork\Pages\ContentFile;
@@ -119,6 +120,7 @@ class Site extends Model implements Stringable
         array $data,
         protected App $app,
         protected Config $config,
+        protected LanguagesFactory $languagesFactory,
         protected PageFactory $pageFactory,
         protected PageCollectionFactory $pageCollectionFactory,
     ) {
@@ -463,7 +465,6 @@ class Site extends Model implements Stringable
     public function load(): void
     {
         $this->scheme = $this->app->schemes()->get('config.site');
-        $this->languages = $this->app->getService(Languages::class);
         $this->templates = $this->app->getService(Templates::class);
         $this->users = $this->app->getService(Users::class);
 
@@ -500,6 +501,21 @@ class Site extends Model implements Stringable
         }
 
         return $this->files = new FileCollection($files);
+    }
+
+    /**
+     * Set languages
+     *
+     * @param array{available: list<string>, httpPreferred: bool, default?: bool} $config
+     */
+    protected function setLanguages(array $config): void
+    {
+        $this->data['languages'] = $config;
+        $this->languages = $this->languagesFactory->make($config);
+
+        if (($currentTranslation = $this->languages->current() ?? $this->languages->default()) !== null) {
+            $this->app->translations()->setCurrent($currentTranslation->code());
+        }
     }
 
     /**

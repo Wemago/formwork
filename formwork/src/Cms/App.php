@@ -15,7 +15,7 @@ use Formwork\Files\Services\FileUploader;
 use Formwork\Http\Request;
 use Formwork\Http\Response;
 use Formwork\Images\ImageFactory;
-use Formwork\Languages\Languages;
+use Formwork\Languages\LanguagesFactory;
 use Formwork\Pages\PageCollectionFactory;
 use Formwork\Pages\PageFactory;
 use Formwork\Pages\PaginationFactory;
@@ -25,7 +25,6 @@ use Formwork\Schemes\Schemes;
 use Formwork\Security\CsrfToken;
 use Formwork\Services\Container;
 use Formwork\Services\Loaders\ConfigServiceLoader;
-use Formwork\Services\Loaders\LanguagesServiceLoader;
 use Formwork\Services\Loaders\PanelServiceLoader;
 use Formwork\Services\Loaders\SchemesServiceLoader;
 use Formwork\Services\Loaders\SiteServiceLoader;
@@ -204,10 +203,6 @@ final class App
         $container->define(Router::class)
             ->alias('router');
 
-        $container->define(Languages::class)
-            ->loader(LanguagesServiceLoader::class)
-            ->alias('languages');
-
         $container->define(Translations::class)
             ->loader(TranslationsServiceLoader::class)
             ->alias('translations');
@@ -221,6 +216,8 @@ final class App
         $container->define(PaginationFactory::class);
 
         $container->define(PageCollectionFactory::class);
+
+        $container->define(LanguagesFactory::class);
 
         $container->define(Site::class)
             ->loader(SiteServiceLoader::class)

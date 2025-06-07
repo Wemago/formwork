@@ -1,5 +1,9 @@
 author: ''
 
+languages:
+    available: {  }
+    httpPreferred: false
+
 defaultTemplate: page
 
 description: ''

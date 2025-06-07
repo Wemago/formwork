@@ -8,12 +8,15 @@ use Formwork\Http\Request;
 use Formwork\Http\Session\MessageType;
 use Formwork\Languages\LanguageCodes;
 use Formwork\Panel\Modals\Modals;
+use Formwork\Panel\Navigation\NavigationItem;
+use Formwork\Panel\Navigation\NavigationItemCollection;
 use Formwork\Services\Container;
 use Formwork\Translations\Translations;
 use Formwork\Users\ColorScheme;
 use Formwork\Users\Exceptions\UserNotLoggedException;
 use Formwork\Users\User;
 use Formwork\Users\Users;
+use Formwork\Utils\Arr;
 use Formwork\Utils\FileSystem;
 use Formwork\Utils\Str;
 use Formwork\Utils\Uri;
@@ -21,6 +24,11 @@ use Formwork\Utils\Uri;
 final class Panel
 {
     private const string CSRF_TOKEN_NAME = 'panel';
+
+    /**
+     * Panel navigation items
+     */
+    private NavigationItemCollection $navigation;
 
     /**
      * Assets instance
@@ -94,6 +102,22 @@ final class Panel
     public function route(): string
     {
         return '/' . Str::removeStart($this->request->uri(), $this->panelRoot());
+    }
+
+    /**
+     * Get the panel navigation
+     */
+    public function navigation(): NavigationItemCollection
+    {
+        $translation = $this->translations->getCurrent();
+        if (!isset($this->navigation)) {
+            $items = $this->container->call(require FileSystem::joinPaths($this->path(), 'navigation.php'), [
+                'translation' => $translation,
+            ]);
+            $this->navigation = new NavigationItemCollection();
+            $this->navigation->setMultiple(Arr::map($items, fn(array $data, string $id) => new NavigationItem($id, $data)));
+        }
+        return $this->navigation;
     }
 
     /**

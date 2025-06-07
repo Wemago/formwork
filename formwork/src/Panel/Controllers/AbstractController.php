@@ -85,60 +85,10 @@ abstract class AbstractController extends BaseAbstractController
     protected function defaults(): array
     {
         return [
-            'location'   => $this->name,
-            'site'       => $this->site,
-            'panel'      => $this->panel,
-            'csrfToken'  => $this->csrfToken->get($this->panel->getCsrfTokenName()),
-            'navigation' => [
-                'dashboard' => [
-                    'label'       => $this->translate('panel.dashboard.dashboard'),
-                    'uri'         => '/dashboard/',
-                    'permissions' => 'dashboard',
-                    'badge'       => null,
-                ],
-                'pages' => [
-                    'label'       => $this->translate('panel.pages.pages'),
-                    'uri'         => '/pages/',
-                    'permissions' => 'pages',
-                    'badge'       => $this->site->descendants()->count(),
-                ],
-                'files' => [
-                    'label'       => $this->translate('panel.files.files'),
-                    'uri'         => '/files/',
-                    'permissions' => 'files',
-                    'badge'       => null,
-                ],
-                'statistics' => [
-                    'label'       => $this->translate('panel.statistics.statistics'),
-                    'uri'         => '/statistics/',
-                    'permissions' => 'statistics',
-                    'badge'       => null,
-                ],
-                'users' => [
-                    'label'       => $this->translate('panel.users.users'),
-                    'uri'         => '/users/',
-                    'permissions' => 'users',
-                    'badge'       => $this->site->users()->count(),
-                ],
-                'options' => [
-                    'label'       => $this->translate('panel.options.options'),
-                    'uri'         => '/options/',
-                    'permissions' => 'options',
-                    'badge'       => null,
-                ],
-                'tools' => [
-                    'label'       => $this->translate('panel.tools.tools'),
-                    'uri'         => '/tools/',
-                    'permissions' => 'tools',
-                    'badge'       => null,
-                ],
-                'logout' => [
-                    'label'       => $this->translate('panel.login.logout'),
-                    'uri'         => '/logout/',
-                    'permissions' => '*',
-                    'badge'       => null,
-                ],
-            ],
+            'location'  => $this->name,
+            'site'      => $this->site,
+            'panel'     => $this->panel,
+            'csrfToken' => $this->csrfToken->get($this->panel->getCsrfTokenName()),
         ];
     }
 }

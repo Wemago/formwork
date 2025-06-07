@@ -1,32 +1,31 @@
 <?php
 
-namespace Formwork\Services\Loaders;
+namespace Formwork\Languages;
 
-use Formwork\Config\Config;
 use Formwork\Http\Request;
-use Formwork\Languages\Languages;
 use Formwork\Services\Container;
-use Formwork\Services\ServiceLoaderInterface;
 
-final class LanguagesServiceLoader implements ServiceLoaderInterface
+final class LanguagesFactory
 {
     public function __construct(
-        private Config $config,
+        private Container $container,
         private Request $request,
     ) {}
 
-    public function load(Container $container): Languages
+    /**
+     * Create a new Languages instance
+     *
+     * @param array{available: list<string>, httpPreferred: bool, default?: string} $config
+     */
+    public function make(array $config): Languages
     {
-        /**
-         * @var array<string> $available
-         */
-        $available = (array) $this->config->get('system.languages.available');
+        ['available' => $available, 'httpPreferred' => $httpPreferred] = $config;
 
         if (preg_match('~^/(' . implode('|', $available) . ')/~i', $this->request->uri(), $matches)) {
             $requested = $current = $matches[1];
         }
 
-        if ($this->config->get('system.languages.httpPreferred')) {
+        if ($httpPreferred) {
             $languages = $this->request->languages();
             foreach (array_keys($languages) as $code) {
                 if (in_array($code, $available, true)) {
@@ -36,9 +35,9 @@ final class LanguagesServiceLoader implements ServiceLoaderInterface
             }
         }
 
-        return $container->build(Languages::class, ['options' => [
+        return $this->container->build(Languages::class, ['options' => [
             'available' => $available,
-            'default'   => $this->config->get('system.languages.default', $available[0] ?? null),
+            'default'   => $config['default'] ?? $available[0] ?? null,
             'current'   => $current ?? null,
             'requested' => $requested ?? null,
             'preferred' => $preferred ?? null,

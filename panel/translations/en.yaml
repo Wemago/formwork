@@ -184,12 +184,6 @@ panel.options.system.images.jpegSaveProgressive.disabled: Disabled
 panel.options.system.images.jpegSaveProgressive.enabled: Enabled
 panel.options.system.images.pngCompressionLevel: PNG compression level
 panel.options.system.images.webpQuality: WebP quality
-panel.options.system.languages: Languages
-panel.options.system.languages.availableLanguages: Available languages
-panel.options.system.languages.availableLanguages.noLanguages: No languages
-panel.options.system.languages.preferredLanguage: Use browser prefered language
-panel.options.system.languages.preferredLanguage.disabled: Disabled
-panel.options.system.languages.preferredLanguage.enabled: Enabled
 panel.options.system.uploads.processImages: Process (optimize) uploaded images
 panel.options.system.uploads.processImages.disabled: Disabled
 panel.options.system.uploads.processImages.enabled: Enabled
@@ -263,6 +257,12 @@ panel.register.createUser: Formwork is installed but no users were found. Please
 panel.register.register: Register new user
 panel.request.error.postMaxSize: The HTTP POST request exceeds the maximum allowed size
 panel.sections.toggle: Toggle section
+panel.site.languages: Languages
+panel.site.languages.availableLanguages: Available languages
+panel.site.languages.availableLanguages.noLanguages: No languages
+panel.site.languages.preferredLanguage: Use browser preferred language
+panel.site.languages.preferredLanguage.disabled: Disabled
+panel.site.languages.preferredLanguage.enabled: Enabled
 panel.statistics.devices: Devices
 panel.statistics.devices.type: Type
 panel.statistics.devices.type.desktop: Desktop

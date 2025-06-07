@@ -1,11 +1,11 @@
 <?php
 
+use Formwork\Cms\Site;
 use Formwork\Config\Config;
 use Formwork\Controllers\ErrorsControllerInterface;
 use Formwork\Http\RedirectResponse;
 use Formwork\Http\Request;
 use Formwork\Http\ResponseStatus;
-use Formwork\Languages\Languages;
 use Formwork\Router\Router;
 use Formwork\Security\CsrfToken;
 use Formwork\Utils\FileSystem;
@@ -92,10 +92,13 @@ return [
         ],
 
         'language' => [
-            'action' => function (Config $config, Request $request, Router $router, Languages $languages) {
-                if (($requested = $languages->requested()) !== null) {
+            'action' => function (Config $config, Request $request, Router $router, Site $site) {
+                if (!$site->languages()->hasMultiple()) {
+                    return;
+                }
+                if (($requested = $site->languages()->requested()) !== null) {
                     $router->setRequest(Str::removeStart($router->request(), '/' . $requested));
-                } elseif (($preferred = $languages->preferred()) !== null) {
+                } elseif (($preferred = $site->languages()->preferred()) !== null) {
                     // Don't redirect if we are in Panel
                     if ($config->get('system.panel.enabled') && $router->requestHasPrefix($config->get('system.panel.root'))) {
                         return;

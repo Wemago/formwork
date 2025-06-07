@@ -184,12 +184,6 @@ panel.options.system.images.jpegSaveProgressive.disabled: Desactivado
 panel.options.system.images.jpegSaveProgressive.enabled: Activado
 panel.options.system.images.pngCompressionLevel: Nivel de compresión PNG
 panel.options.system.images.webpQuality: Calidad WebP
-panel.options.system.languages: Idiomas
-panel.options.system.languages.availableLanguages: Idiomas disponibles
-panel.options.system.languages.availableLanguages.noLanguages: Sin idiomas
-panel.options.system.languages.preferredLanguage: Usar idioma preferido del navegador
-panel.options.system.languages.preferredLanguage.disabled: Desactivado
-panel.options.system.languages.preferredLanguage.enabled: Activado
 panel.options.system.uploads.processImages: Procesar (optimizar) imágenes cargadas
 panel.options.system.uploads.processImages.disabled: Desactivado
 panel.options.system.uploads.processImages.enabled: Activado
@@ -263,6 +257,12 @@ panel.register.createUser: Formwork está instalado pero no se encontraron usuar
 panel.register.register: Registrar nuevo usuario
 panel.request.error.postMaxSize: La solicitud POST excede el tamaño máximo permitido
 panel.sections.toggle: Alternar sección
+panel.site.languages: Idiomas
+panel.site.languages.availableLanguages: Idiomas disponibles
+panel.site.languages.availableLanguages.noLanguages: Sin idiomas
+panel.site.languages.preferredLanguage: Usar idioma preferido del navegador
+panel.site.languages.preferredLanguage.disabled: Desactivado
+panel.site.languages.preferredLanguage.enabled: Activado
 panel.statistics.devices: Dispositivos
 panel.statistics.devices.type: Tipo
 panel.statistics.devices.type.desktop: Ordenador

@@ -13,11 +13,6 @@ layout:
             label: '{{panel.options.system.content}}'
             fields: [pages.content.safeMode]
 
-        languages:
-            collapsible: true
-            label: '{{panel.options.system.languages}}'
-            fields: [languages.available, languages.httpPreferred]
-
         files:
             collapsible: true
             label: '{{panel.options.system.files}}'
@@ -80,22 +75,6 @@ fields:
         options:
             1: '{{panel.options.system.content.safeMode.enabled}}'
             0: '{{panel.options.system.content.safeMode.disabled}}'
-
-    languages.available:
-        type: tags
-        label: '{{panel.options.system.languages.availableLanguages}}'
-        icon: translate
-        placeholder: '{{panel.options.system.languages.availableLanguages.noLanguages}}'
-        pattern: '^[a-z]{2,3}$'
-        translate: [label, placeholder]
-        options@: languages.names
-
-    languages.httpPreferred:
-        type: togglegroup
-        label: '{{panel.options.system.languages.preferredLanguage}}'
-        options:
-            1: '{{panel.options.system.languages.preferredLanguage.enabled}}'
-            0: '{{panel.options.system.languages.preferredLanguage.disabled}}'
 
     files.allowedExtensions:
         type: tags

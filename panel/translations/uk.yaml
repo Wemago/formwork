@@ -184,12 +184,6 @@ panel.options.system.images.jpegSaveProgressive.disabled: Вимкнено
 panel.options.system.images.jpegSaveProgressive.enabled: Увімкнено
 panel.options.system.images.pngCompressionLevel: Рівень стиснення PNG
 panel.options.system.images.webpQuality: Якість WebP
-panel.options.system.languages: Мови
-panel.options.system.languages.availableLanguages: Доступні мови
-panel.options.system.languages.availableLanguages.noLanguages: Мови не доступні
-panel.options.system.languages.preferredLanguage: Використовувати мову браузера за замовчуванням
-panel.options.system.languages.preferredLanguage.disabled: Вимкнено
-panel.options.system.languages.preferredLanguage.enabled: Увімкнено
 panel.options.system.uploads.processImages: Обробляти (оптимізувати) завантажені зображення
 panel.options.system.uploads.processImages.disabled: Вимкнено
 panel.options.system.uploads.processImages.enabled: Увімкнено
@@ -263,6 +257,12 @@ panel.register.createUser: Formwork встановлено, але корист�
 panel.register.register: Зареєструвати нового користувача
 panel.request.error.postMaxSize: HTTP POST запит перевищує максимальний дозволений розмір
 panel.sections.toggle: Перемкнути розділ
+panel.site.languages: Мови
+panel.site.languages.availableLanguages: Доступні мови
+panel.site.languages.availableLanguages.noLanguages: Мови не доступні
+panel.site.languages.preferredLanguage: Використовувати мову браузера за замовчуванням
+panel.site.languages.preferredLanguage.disabled: Вимкнено
+panel.site.languages.preferredLanguage.enabled: Увімкнено
 panel.statistics.devices: Пристрої
 panel.statistics.devices.type: Тип
 panel.statistics.devices.type.desktop: Комп’ютер

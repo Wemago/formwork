@@ -110,7 +110,7 @@ final class PagesController extends AbstractController
         }
 
         if ($routeParams->has('language')) {
-            if (empty($this->config->get('site.languages.available'))) {
+            if (!$this->site->languages()->hasMultiple()) {
                 if ($page->route() === null) {
                     throw new UnexpectedValueException('Unexpected missing page route');
                 }
@@ -119,7 +119,7 @@ final class PagesController extends AbstractController
 
             $language = $routeParams->get('language');
 
-            if (!in_array($language, $this->config->get('site.languages.available'), true)) {
+            if (!$this->site->languages()->available()->has($language)) {
                 $this->panel->notify($this->translate('panel.pages.page.cannotEdit.invalidLanguage', $language), 'error');
                 if ($page->route() === null) {
                     throw new UnexpectedValueException('Unexpected missing page route');

@@ -93,6 +93,9 @@ return [
 
         'language' => [
             'action' => function (Config $config, Request $request, Router $router, Site $site) {
+                if (!$site->languages()->hasMultiple()) {
+                    return;
+                }
                 if (($requested = $site->languages()->requested()) !== null) {
                     $router->setRequest(Str::removeStart($router->request(), '/' . $requested));
                 } elseif (($preferred = $site->languages()->preferred()) !== null) {

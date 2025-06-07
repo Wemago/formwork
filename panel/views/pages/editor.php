@@ -30,7 +30,7 @@
             <?php if ($panel->user()->permissions()->has('pages.delete')) : ?>
                 <button type="button" class="button button-link" data-modal="deletePageModal" data-modal-action="<?= $panel->uri('/pages/' . trim($page->route(), '/') . '/delete/' . ($currentLanguage ? 'language/' . $currentLanguage . '/' : '')) ?>" title="<?= $this->translate('panel.pages.deletePage') ?>" aria-label="<?= $this->translate('panel.pages.deletePage') ?>" <?php if (!$page->isDeletable()) : ?> disabled<?php endif ?>><?= $this->icon('trash') ?></button>
             <?php endif ?>
-            <?php if ($site->language()->hasMultiple()) : ?>
+            <?php if ($site->languages()->hasMultiple()) : ?>
                 <div class="dropdown">
                     <button type="button" class="button dropdown-button caret button-accent" data-dropdown="languages-dropdown"><?= $this->icon('translate') ?> <?= $this->translate('panel.pages.languages') ?><?php if ($currentLanguage) : ?> <span class="badge badge-blue"><?= $currentLanguage ?></span><?php endif ?></button>
                     <div class="dropdown-menu" id="languages-dropdown">

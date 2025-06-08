@@ -49,7 +49,7 @@ final class App
     /**
      * Current Formwork version
      */
-    public const string VERSION = '2.0.0-beta.5';
+    public const string VERSION = '2.0.0-beta.6';
 
     /**
      * App services container

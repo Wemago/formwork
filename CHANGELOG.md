@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.0.0-beta.6](https://github.com/getformwork/formwork/releases/tag/2.0.0-beta.6)
+
+**Bug fixes**
+
+- Fix page creation
+- Fix unresolved site service altering panel language
+
 ## [2.0.0-beta.5](https://github.com/getformwork/formwork/releases/tag/2.0.0-beta.5)
 
 **Breaking Changes**

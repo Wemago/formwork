@@ -2,6 +2,7 @@
 
 namespace Formwork\Services\Loaders;
 
+use Formwork\Cms\Site;
 use Formwork\Config\Config;
 use Formwork\Controllers\ErrorsControllerInterface;
 use Formwork\Http\Request;
@@ -57,6 +58,9 @@ final class PanelServiceLoader implements ResolutionAwareServiceLoaderInterface
         $this->schemes->loadFromPath($this->config->get('system.schemes.paths.panel'));
 
         $this->translations->loadFromPath($this->config->get('system.translations.paths.panel'));
+
+        // Resolve site to avoid panel language to be changed after
+        $container->get(Site::class);
 
         if ($service->isLoggedIn()) {
             $this->translations->setCurrent($service->user()->language());

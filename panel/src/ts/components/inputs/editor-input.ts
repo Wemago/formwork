@@ -12,59 +12,97 @@ function removeBaseUri(markdown: string, baseUri: string) {
     return markdown.replace(new RegExp(`(!\\[.*\\])\\(${escapeRegExp(baseUri)}([^)]+)\\)`, "g"), "$1($2)");
 }
 
+interface EditorInputOptions {
+    baseUri: string;
+    height: number;
+    spellcheck: boolean;
+    inputEventHandler: (value: string) => void;
+}
+
 export class EditorInput {
     readonly element: HTMLTextAreaElement;
 
     readonly name: string;
 
+    readonly options: EditorInputOptions;
+
+    private container: HTMLElement | null;
+
     private editor: MarkdownView | CodeView;
 
-    constructor(textarea: HTMLTextAreaElement) {
+    constructor(textarea: HTMLTextAreaElement, options: Partial<EditorInputOptions> = {}) {
         this.element = textarea;
         this.name = textarea.name;
 
-        const editorWrap = (textarea.parentNode as HTMLElement).classList.contains("editor-wrap") ? (textarea.parentNode as HTMLElement) : null;
+        const defaults: EditorInputOptions = {
+            baseUri: textarea.dataset.baseUri ?? "",
+            height: textarea.offsetHeight ?? 200,
+            spellcheck: true,
+            inputEventHandler: (value: string) => {
+                this.element.value = removeBaseUri(value, this.options.baseUri);
+                debounce(
+                    () => {
+                        this.element.dispatchEvent(new Event("input", { bubbles: true }));
+                        this.element.dispatchEvent(new Event("change", { bubbles: true }));
+                    },
+                    500,
+                    true,
+                )();
+            },
+        };
 
-        if (editorWrap) {
-            const textareaHeight = textarea.offsetHeight;
-            const baseUri = textarea.dataset.baseUri ?? "";
+        this.options = { ...defaults, ...options };
 
-            const attributes = {
-                spellcheck: textarea.spellcheck ? "true" : "false",
-            };
+        this.container = (textarea.parentNode as HTMLElement).classList.contains("editor-wrap") ? (textarea.parentNode as HTMLElement) : null;
 
+        if (this.container) {
             textarea.style.display = "none";
 
-            const inputEventHandler = debounce(
-                (content: string) => {
-                    textarea.value = removeBaseUri(content, baseUri);
-                    textarea.dispatchEvent(new Event("input", { bubbles: true }));
-                    textarea.dispatchEvent(new Event("change", { bubbles: true }));
-                },
-                500,
-                true,
-            );
+            const mode = window.localStorage.getItem(`formwork.editorMode[${this.name}]`);
 
-            this.editor = new MarkdownView(editorWrap, addBaseUri(textarea.value, baseUri), inputEventHandler, attributes);
-            this.editor.view.dom.style.height = `${textareaHeight}px`;
+            const codeSwitch = $("[data-command=toggle-markdown]", this.container) as HTMLButtonElement;
 
-            $(`label[for="${textarea.id}"]`)?.addEventListener("click", () => this.editor.view.focus());
+            if (mode === "code") {
+                this.switchToCode();
+                codeSwitch.classList.add("is-active");
+            } else {
+                this.switchToMarkdown();
+                codeSwitch.classList.remove("is-active");
+            }
 
-            const codeSwitch = $("[data-command=toggle-markdown]", editorWrap) as HTMLButtonElement;
             codeSwitch.addEventListener("click", () => {
-                codeSwitch.classList.toggle("is-active");
-                if (codeSwitch.classList.contains("is-active")) {
-                    this.editor.destroy();
-                    this.editor = new CodeView(editorWrap, removeBaseUri(this.editor.content, baseUri), inputEventHandler);
-                    this.editor.view.dom.style.height = `${textareaHeight}px`;
+                if (codeSwitch.classList.toggle("is-active")) {
+                    this.switchToCode();
+                    window.localStorage.setItem(`formwork.editorMode[${this.name}]`, "code");
                 } else {
-                    this.editor.destroy();
-                    this.editor = new MarkdownView(editorWrap, addBaseUri(this.editor.content, baseUri), inputEventHandler, attributes);
-                    this.editor.view.dom.style.height = `${textareaHeight}px`;
+                    this.switchToMarkdown();
+                    window.localStorage.setItem(`formwork.editorMode[${this.name}]`, "mardown");
                 }
                 this.editor.view.focus();
             });
+
+            $(`label[for="${textarea.id}"]`)?.addEventListener("click", () => this.editor.view.focus());
         }
+    }
+
+    switchToMarkdown() {
+        if (!this.container) {
+            return;
+        }
+        this.editor?.destroy();
+        this.editor = new MarkdownView(this.container, addBaseUri(this.element.value, this.options.baseUri), this.options.inputEventHandler, {
+            spellcheck: this.options.spellcheck ? "true" : "false",
+        });
+        this.editor.view.dom.style.height = `${this.options.height}px`;
+    }
+
+    switchToCode() {
+        if (!this.container) {
+            return;
+        }
+        this.editor?.destroy();
+        this.editor = new CodeView(this.container, removeBaseUri(this.element.value, this.options.baseUri), this.options.inputEventHandler);
+        this.editor.view.dom.style.height = `${this.options.height}px`;
     }
 
     get value(): string {

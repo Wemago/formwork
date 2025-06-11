@@ -1,6 +1,5 @@
-@use "variables" as *;
-
 @use "sass:map";
+@use "variables" as *;
 
 .header {
     position: sticky;
@@ -37,7 +36,7 @@
 .header-title {
     overflow: hidden;
     flex-grow: 1;
-    font-size: $font-size-h5;
+    font-size: var(--font-size-h5);
     font-weight: 600;
     text-overflow: ellipsis;
     white-space: nowrap;

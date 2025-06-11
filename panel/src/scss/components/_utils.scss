@@ -75,7 +75,7 @@
 }
 
 .text-monospace {
-    font-family: $mono-font-family;
+    font-family: var(--font-family-mono);
 }
 
 @include make-util(

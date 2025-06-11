@@ -1,25 +1,24 @@
 @use "mixins" as *;
-@use "variables" as *;
 
 .button {
     display: inline-block;
     padding: 0.375rem 0.5rem;
     border: 1px solid transparent;
-    border-radius: $border-radius;
+    border-radius: var(--border-radius);
     background-color: transparent;
     color: inherit;
     cursor: default;
-    font-family: $base-font-family;
-    font-size: $font-size-sm;
+    font-family: var(--font-family-sans);
+    font-size: var(--font-size-sm);
     font-weight: 500;
     line-height: 1.15;
     outline: none;
     text-align: center;
     transition:
-        border-color $transition-time-sm,
-        background-color $transition-time-sm,
-        box-shadow $transition-time-sm,
-        color $transition-time-sm;
+        border-color var(--transition-time-sm),
+        background-color var(--transition-time-sm),
+        box-shadow var(--transition-time-sm),
+        color var(--transition-time-sm);
     white-space: nowrap;
     @include user-select-none;
 
@@ -150,13 +149,13 @@
 }
 
 .button-group .button:not(:last-child) {
-    border-right-width: $focusring-width;
+    border-right-width: var(--focusring-width);
     border-bottom-right-radius: 0;
     border-top-right-radius: 0;
 
     &:focus {
         border-right-width: 0;
-        margin-right: $focusring-width;
+        margin-right: var(--focusring-width);
     }
 }
 

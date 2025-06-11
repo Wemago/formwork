@@ -1,5 +1,3 @@
-@use "variables" as *;
-
 .notification-container {
     position: fixed;
     z-index: 14;
@@ -12,16 +10,16 @@
     overflow: hidden;
     width: 350px;
     padding: 1.5rem 2.5rem;
-    border-radius: $border-radius;
+    border-radius: var(--border-radius);
     margin-bottom: 0.5rem;
     animation: fade-in-right 300ms cubic-bezier(0.4, 0, 0.2, 1);
     background-color: var(--color-base-700);
-    box-shadow: $box-shadow-md;
+    box-shadow: var(--box-shadow-md);
     cursor: default;
     text-overflow: ellipsis;
     transition:
-        top $transition-time-md ease-in,
-        opacity $transition-time-sm;
+        top var(--transition-time-md) ease-in,
+        opacity var(--transition-time-sm);
 
     &:hover {
         opacity: 0.95;

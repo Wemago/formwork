@@ -1,5 +1,4 @@
 @use "mixins" as *;
-@use "variables" as *;
 
 .user-summary {
     margin-top: 7.5rem;
@@ -10,10 +9,10 @@
     position: relative;
     width: 12rem;
     height: 12rem;
-    border-radius: $border-radius-round;
+    border-radius: 50%;
     margin: -7.5rem auto 0.5rem;
     background-color: var(--color-base-400);
-    box-shadow: $box-shadow-sm;
+    box-shadow: var(--box-shadow-sm);
 }
 
 .user-summary-image .dropdown {
@@ -29,7 +28,7 @@
 .user-summary-image img {
     width: 12rem;
     height: 12rem;
-    border-radius: $border-radius-round;
+    border-radius: 50%;
 }
 
 .users-list {
@@ -41,7 +40,7 @@
     display: flex;
     align-items: center;
     padding: 0.25rem 0;
-    font-size: $font-size-sm;
+    font-size: var(--font-size-sm);
     font-weight: 600;
     @include user-select-none;
 }
@@ -72,7 +71,7 @@
     height: 2rem;
     border-radius: 50%;
     background-color: var(--color-base-400);
-    box-shadow: $box-shadow-sm;
+    box-shadow: var(--box-shadow-sm);
     vertical-align: middle;
 }
 
@@ -80,13 +79,13 @@
 .user-email {
     max-width: 25%;
     flex: 0 0 25%;
-    font-size: $font-size-sm;
+    font-size: var(--font-size-sm);
 }
 
 .user-last-access {
     max-width: 20%;
     flex: 0 0 20%;
-    font-size: $font-size-sm;
+    font-size: var(--font-size-sm);
     text-align: center;
 }
 

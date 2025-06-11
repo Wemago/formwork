@@ -1,5 +1,4 @@
 @use "mixins" as *;
-@use "variables" as *;
 
 .tooltip {
     position: absolute;
@@ -8,12 +7,12 @@
     min-width: 2rem;
     max-width: 20rem;
     padding: 0.25rem 0.375rem;
-    border-radius: $border-radius;
+    border-radius: var(--border-radius);
     background-color: var(--color-tooltip-inverted);
-    box-shadow: $box-shadow-md;
+    box-shadow: var(--box-shadow-md);
     color: var(--color-base-900);
     cursor: default;
-    font-size: $font-size-xs;
+    font-size: var(--font-size-xs);
     @include user-select-none;
 }
 
@@ -37,7 +36,7 @@
     display: inline-block;
     padding: 0 0.25rem;
     border: 0;
-    border-radius: $border-radius;
+    border-radius: var(--border-radius);
     margin: 0 0.25rem;
     background: transparent;
     color: var(--color-base-900);
@@ -47,8 +46,8 @@
     font-weight: 500;
     text-wrap: nowrap;
     transition:
-        color $transition-time-sm,
-        background-color $transition-time-sm;
+        color var(--transition-time-sm),
+        background-color var(--transition-time-sm);
 
     &:hover {
         background-color: var(--color-base-600);

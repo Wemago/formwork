@@ -1,11 +1,10 @@
-@use "variables" as *;
-
 @use "sass:map";
+@use "variables" as *;
 
 .logo {
     margin-bottom: 2rem;
     color: var(--color-base-100);
-    font-size: $font-size-h5;
+    font-size: var(--font-size-h5);
     font-weight: 600;
     line-height: 1.5rem;
     text-align: center;
@@ -22,6 +21,6 @@
 }
 
 .logo a {
-    padding-top: $focusring-width;
+    padding-top: var(--focusring-width);
     color: var(--color-base-100);
 }

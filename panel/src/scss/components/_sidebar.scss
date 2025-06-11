@@ -1,5 +1,4 @@
 @use "mixins" as *;
-@use "variables" as *;
 
 .sidebar {
     position: fixed;
@@ -11,7 +10,7 @@
     padding: 1rem 1.5rem;
     background: linear-gradient(to bottom, #{var(--color-base-900)} 0%, #{var(--color-base-800)} 100%);
     background-color: var(--color-base-900);
-    box-shadow: $box-shadow-sm;
+    box-shadow: var(--box-shadow-sm);
     @include user-select-none;
 }
 

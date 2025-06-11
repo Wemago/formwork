@@ -7,17 +7,17 @@
     padding: 1.5rem 1.25rem;
     margin-bottom: 1rem;
     background-color: var(--color-base-900);
-    box-shadow: $box-shadow-sm;
+    box-shadow: var(--box-shadow-sm);
 
     @media (min-width: map.get($breakpoints, "sm")) {
         padding: 1.5rem 1.75rem;
-        border-radius: $border-radius;
+        border-radius: var(--border-radius);
     }
 }
 
 .section-header {
     margin-bottom: 1rem;
-    font-size: $font-size-md;
+    font-size: var(--font-size-md);
     font-weight: 600;
     @include user-select-none;
 }
@@ -35,8 +35,8 @@
 .section-toggle .icon {
     margin-right: 0;
     transition:
-        transform $transition-time-sm,
-        color $transition-time-sm;
+        transform var(--transition-time-sm),
+        color var(--transition-time-sm);
 }
 
 .section.collapsed .section-toggle .icon {

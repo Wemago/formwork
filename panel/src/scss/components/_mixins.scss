@@ -25,22 +25,22 @@
         height: 0;
         margin-left: 0.5rem;
         content: " ";
-        vertical-align: $caret-width * 0.5;
+        vertical-align: calc(var(--caret-width) * 0.5);
 
         @if $direction == bottom {
-            border-top: $caret-width solid;
-            border-right: $caret-width solid transparent;
-            border-left: $caret-width solid transparent;
+            border-top: var(--caret-width) solid;
+            border-right: var(--caret-width) solid transparent;
+            border-left: var(--caret-width) solid transparent;
         } @else if $direction == top {
-            border-right: $caret-width solid transparent;
-            border-bottom: $caret-width solid;
-            border-left: $caret-width solid transparent;
+            border-right: var(--caret-width) solid transparent;
+            border-bottom: var(--caret-width) solid;
+            border-left: var(--caret-width) solid transparent;
         }
     }
 }
 
 @mixin focusring {
-    outline: $focusring-width solid var(--color-focusring);
+    outline: var(--focusring-width) solid var(--color-focusring);
 }
 
 @mixin make-columns-globals($columns-count, $breakpoints) {

@@ -1,5 +1,4 @@
 @use "mixins" as *;
-@use "variables" as *;
 
 .dropdown {
     position: relative;
@@ -30,16 +29,16 @@
     min-width: 8rem;
     padding: 0.25rem 0;
     border: 1px solid var(--color-base-500);
-    border-radius: $border-radius;
+    border-radius: var(--border-radius);
     margin-top: 3px;
     background-color: var(--color-base-900);
-    box-shadow: $box-shadow-md;
+    box-shadow: var(--box-shadow-md);
     overflow-y: auto;
 }
 
 .dropdown-list {
     width: 100%;
-    max-height: 6.25 * (2 * 0.5rem * $base-line-height + $font-size-sm);
+    max-height: calc(6.25 * (2 * 0.5rem * var(--line-height-text) + var(--font-size-sm)));
 }
 
 .dropdown-item {
@@ -51,7 +50,7 @@
     color: var(--color-base-100);
     cursor: pointer !important;
     font-family: inherit;
-    font-size: $font-size-sm;
+    font-size: var(--font-size-sm);
     text-align: inherit;
     white-space: nowrap;
 
@@ -87,7 +86,7 @@
     padding: 0.5rem 1rem;
     color: var(--color-base-300);
     cursor: default !important;
-    font-size: $font-size-sm;
+    font-size: var(--font-size-sm);
     white-space: nowrap;
 }
 
@@ -101,7 +100,7 @@
     display: inline-block;
     width: 1.5rem;
     height: 1.5rem;
-    border-radius: $border-radius;
+    border-radius: var(--border-radius);
     margin: -0.75rem 0.5rem -0.5rem 0;
     background-color: var(--color-base-700);
     object-fit: contain;

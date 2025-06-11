@@ -1,5 +1,4 @@
 @use "mixins" as *;
-@use "variables" as *;
 
 @use "sass:color";
 
@@ -113,7 +112,7 @@
 .pages-tree-item-cell,
 .pages-tree-headers-cell {
     padding: 0.25rem;
-    font-size: $font-size-sm;
+    font-size: var(--font-size-sm);
 }
 
 .page-details {
@@ -133,8 +132,8 @@
     & .icon {
         margin-right: 0;
         transition:
-            transform $transition-time-sm,
-            color $transition-time-sm;
+            transform var(--transition-time-sm),
+            color var(--transition-time-sm);
     }
 }
 

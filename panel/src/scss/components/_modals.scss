@@ -1,5 +1,3 @@
-@use "variables" as *;
-
 .modal-backdrop {
     position: fixed;
     z-index: 16;
@@ -42,10 +40,10 @@
     width: 26rem;
     max-width: 26rem;
     border: 1px solid var(--color-base-500);
-    border-radius: $border-radius;
+    border-radius: var(--border-radius);
     margin: 3rem 0.5rem;
     background-color: var(--color-base-900);
-    box-shadow: $box-shadow-lg;
+    box-shadow: var(--box-shadow-lg);
     @media (width >= 26rem) {
         margin: 3rem auto;
     }

@@ -1,8 +1,6 @@
-@use "variables" as *;
-
 .options-form .form-checkbox-label {
     margin-bottom: 0.5rem;
-    font-size: $font-size-md;
+    font-size: var(--font-size-md);
 }
 
 .info-data {
@@ -23,7 +21,7 @@
 
 .info-data-value {
     width: 75%;
-    font-family: $mono-font-family;
-    font-size: $font-size-sm;
+    font-family: var(--font-family-mono);
+    font-size: var(--font-size-sm);
     overflow-wrap: break-word;
 }

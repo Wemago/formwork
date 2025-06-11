@@ -13,10 +13,10 @@
     width: 18rem;
     padding: 0.5rem;
     border: 1px solid var(--color-base-500);
-    border-radius: $border-radius;
+    border-radius: var(--border-radius);
     margin: 3px 1rem 1rem;
     background-color: var(--color-base-900);
-    box-shadow: $box-shadow-md;
+    box-shadow: var(--box-shadow-md);
     color: var(--color-base-100);
 }
 
@@ -47,7 +47,7 @@
     box-shadow: none;
     color: var(--color-base-100);
     cursor: pointer;
-    font-size: $font-size-sm;
+    font-size: var(--font-size-sm);
     outline: none;
 
     &:hover {
@@ -82,14 +82,14 @@
 }
 
 .calendar-header-day {
-    font-size: $font-size-sm;
+    font-size: var(--font-size-sm);
 }
 
 .calendar-day {
-    border-radius: $border-radius;
+    border-radius: var(--border-radius);
     transition:
-        background-color $transition-time-sm,
-        color $transition-time-sm;
+        background-color var(--transition-time-sm),
+        color var(--transition-time-sm);
 
     &:hover {
         background-color: var(--color-accent-400);

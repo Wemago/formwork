@@ -1,45 +1,43 @@
-@use "variables" as *;
-
 h1,
 .h1 {
-    font-size: $font-size-h1;
+    font-size: var(--font-size-h1);
     @extend %heading;
 }
 
 h2,
 .h2 {
-    font-size: $font-size-h2;
+    font-size: var(--font-size-h2);
     @extend %heading;
 }
 
 h3,
 .h3 {
-    font-size: $font-size-h3;
+    font-size: var(--font-size-h3);
     @extend %heading;
 }
 
 h4,
 .h4 {
-    font-size: $font-size-h4;
+    font-size: var(--font-size-h4);
     @extend %heading;
 }
 
 h5,
 .h5 {
-    font-size: $font-size-h5;
+    font-size: var(--font-size-h5);
     @extend %heading;
 }
 
 h6,
 .h6 {
-    font-size: $font-size-h6;
+    font-size: var(--font-size-h6);
     @extend %heading;
 }
 
 %heading {
     margin-top: 0;
     margin-bottom: 0.25rem;
-    font-weight: $headings-font-weight;
+    font-weight: var(--font-weight-headings);
 }
 
 strong {
@@ -49,7 +47,7 @@ strong {
 p {
     margin-top: 0;
     margin-bottom: 0.5rem;
-    line-height: $base-line-height;
+    line-height: var(--line-height-text);
 }
 
 p:last-child {

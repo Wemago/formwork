@@ -1,13 +1,12 @@
 @use "mixins" as *;
-@use "variables" as *;
 
 .login-modal-container {
     max-width: 24rem;
     padding: 2rem;
-    border-radius: $border-radius;
+    border-radius: var(--border-radius);
     margin: 3rem 0.5rem;
     background-color: var(--color-base-900);
-    box-shadow: $box-shadow-sm;
+    box-shadow: var(--box-shadow-sm);
 }
 
 @media (width >= 24rem) {
@@ -23,8 +22,8 @@
     position: relative;
     padding: 1rem 2rem 1rem 3.5rem;
     margin: -2rem -2rem 1rem;
-    border-top-left-radius: $border-radius;
-    border-top-right-radius: $border-radius;
+    border-top-left-radius: var(--border-radius);
+    border-top-right-radius: var(--border-radius);
 
     a {
         display: block;

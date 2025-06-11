@@ -1,23 +1,22 @@
 @use "mixins" as *;
-@use "variables" as *;
 
 .page-details {
     flex: 1;
 }
 
 .page-title {
-    padding: $focusring-width;
-    margin: -($focusring-width);
-    font-size: $font-size-md;
+    padding: var(--focusring-width);
+    margin: calc(-1 * var(--focusring-width));
+    font-size: var(--font-size-md);
 }
 
 .page-route {
     color: var(--color-base-300);
-    font-size: $font-size-sm;
+    font-size: var(--font-size-sm);
 }
 
 .button .page-language {
-    font-size: $font-size-xs;
+    font-size: var(--font-size-xs);
 }
 
 .page-date {
@@ -60,10 +59,10 @@
     display: none;
     padding: 0.5rem;
     border: 1px solid var(--color-base-500);
-    border-radius: $border-radius;
+    border-radius: var(--border-radius);
     margin: 0.25rem 0 1rem;
     background-color: var(--color-base-900);
-    box-shadow: $box-shadow-md;
+    box-shadow: var(--box-shadow-md);
 }
 
 .page-icon > .icon {
@@ -81,17 +80,17 @@
 .page-info-row {
     padding: 0.5rem 0.25rem;
     border-bottom: 1px solid var(--color-base-600);
-    font-size: $font-size-sm;
+    font-size: var(--font-size-sm);
 }
 
 .page-info-badges {
     padding: 0.5rem 0.25rem;
-    font-size: $font-size-md;
+    font-size: var(--font-size-md);
     white-space: nowrap;
 }
 
 .page-languages {
-    font-size: $font-size-md;
+    font-size: var(--font-size-md);
     white-space: nowrap;
 }
 

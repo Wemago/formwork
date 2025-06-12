@@ -1,0 +1,35 @@
+@use "mixins" as *;
+
+.file-preview-container {
+    display: flex;
+    justify-content: center;
+    background-color: var(--color-base-600);
+}
+
+.file-preview-link {
+    cursor: zoom-in;
+    line-height: 0;
+}
+
+.file-preview-image {
+    max-height: 42.5rem;
+    object-fit: contain;
+    @include checkered-background(1.5rem, 0.125);
+}
+
+.file-preview-video {
+    width: 100%;
+    max-height: 42.5rem;
+}
+
+.file-preview-image.has-no-width {
+    width: 20rem;
+}
+
+.file-info-entry-title {
+    font-weight: 600;
+}
+
+.file-info-entry-uri {
+    overflow-wrap: break-word;
+}

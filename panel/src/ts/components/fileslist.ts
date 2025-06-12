@@ -89,7 +89,7 @@ export class FilesList {
                                 const notification = new Notification(response.message, response.status);
 
                                 if (response.status === "success") {
-                                    if (element.closest("[data-form=page-file-form]")) {
+                                    if (element.closest("[data-form=file-form]")) {
                                         window.location.reload();
                                     } else if (response.data.thumbnail) {
                                         const thumbnail = $(".file-thumbnail", element.closest(".files-item") as HTMLElement) as HTMLImageElement | HTMLVideoElement;

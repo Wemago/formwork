@@ -41,8 +41,8 @@
                 <div class="section-header">
                     <span class="caption"><?= $this->translate('panel.files.preview') ?></span>
                 </div>
-                <div class="section-content page-file-preview-container">
-                    <a class="page-file-preview-link" href="<?= $file->uri() ?>"><img class="<?= $this->classes(['page-file-preview-image', 'has-no-width' => $file->mimeType() === 'image/svg+xml' && $file->info()->width() === 0]) ?>" src="<?= $file->uri() ?>"></a>
+                <div class="section-content file-preview-container">
+                    <a class="file-preview-link" href="<?= $file->uri() ?>"><img class="<?= $this->classes(['file-preview-image', 'has-no-width' => $file->mimeType() === 'image/svg+xml' && $file->info()->width() === 0]) ?>" src="<?= $file->uri() ?>"></a>
                 </div>
             </section>
         </div>
@@ -52,8 +52,8 @@
             <div class="section-header">
                 <span class="caption"><?= $this->translate('panel.files.preview') ?></span>
             </div>
-            <div class="section-content page-file-preview-container">
-                <video class="page-file-preview-video" controls playsinline>
+            <div class="section-content file-preview-container">
+                <video class="file-preview-video" controls playsinline>
                     <source src="<?= $file->uri() ?>" type="<?= $file->mimeType() ?>" />
                 </video>
             </div>
@@ -66,20 +66,20 @@
         <div class="section-content">
             <div class="row">
                 <div class="col-sm-1-2 col-md-1-4 mb-4">
-                    <div class="page-file-info-entry-title"><?= $this->translate('panel.files.info.mimeType') ?>:</div>
+                    <div class="file-info-entry-title"><?= $this->translate('panel.files.info.mimeType') ?>:</div>
                     <?= $file->mimeType() ?>
                 </div>
                 <div class="col-sm-1-2 col-md-1-4 mb-4">
-                    <div class="page-file-info-entry-title"><?= $this->translate('panel.files.info.size') ?>:</div>
+                    <div class="file-info-entry-title"><?= $this->translate('panel.files.info.size') ?>:</div>
                     <?= $file->size() ?>
                 </div>
                 <div class="col-sm-1-2 col-md-1-4 mb-4">
-                    <div class="page-file-info-entry-title"><?= $this->translate('panel.files.info.lastModifiedTime') ?>:</div>
+                    <div class="file-info-entry-title"><?= $this->translate('panel.files.info.lastModifiedTime') ?>:</div>
                     <?= $this->datetime($file->lastModifiedTime()) ?>
                 </div>
                 <div class="col-sm-1-2 col-md-1-4 mb-4">
-                    <div class="page-file-info-entry-title"><?= $this->translate('panel.files.info.uri') ?>:</div>
-                    <a class="page-file-info-entry-uri" href="<?= $file->uri() ?>"><?= $file->uri() ?></a>
+                    <div class="file-info-entry-title"><?= $this->translate('panel.files.info.uri') ?>:</div>
+                    <a class="file-info-entry-uri" href="<?= $file->uri() ?>"><?= $file->uri() ?></a>
                 </div>
                 <?php if ($file->type() === 'image') : ?>
                     <?php $this->insert('_files/images/info/info', ['file' => $file]) ?>

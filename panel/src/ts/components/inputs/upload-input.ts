@@ -199,7 +199,6 @@ export class UploadInput {
         const filesItem = $(".files-item", node) as HTMLElement;
 
         filesItem.dataset.filename = info.name;
-        filesItem.dataset.href = info.actions.info;
 
         if (info.type === "image") {
             const img = document.createElement("img");
@@ -219,7 +218,10 @@ export class UploadInput {
 
         insertIcon(info.type ? `file-${info.type}` : "file", $(".file-icon", filesItem) as HTMLElement);
 
-        ($(".file-name", filesItem) as HTMLElement).textContent = info.name;
+        const anchor = $(".file-name a", filesItem) as HTMLAnchorElement;
+        anchor.href = info.actions.info;
+        anchor.textContent = info.name;
+
         ($(".file-date", filesItem) as HTMLElement).textContent = info.lastModifiedTime;
         ($(".file-size", filesItem) as HTMLElement).textContent = info.size;
 

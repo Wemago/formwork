@@ -59,8 +59,10 @@ export class FilesList {
             const target = event.target as HTMLElement;
             if (!target.closest(".dropdown") && target.closest(".files-item")) {
                 const item = target.closest(".files-item") as HTMLElement;
-                if (typeof item.dataset.href === "string") {
-                    location.href = item.dataset.href;
+                const list = item.closest(".files-list") as HTMLElement;
+                const anchor = $(".file-name a", item) as HTMLAnchorElement;
+                if (list.classList.contains("is-thumbnails") && anchor.href) {
+                    location.href = anchor.href;
                 }
             }
         });
@@ -203,9 +205,10 @@ export class FilesList {
                     (response) => {
                         if (response.status === "success") {
                             (item as HTMLElement).dataset.filename = response.data.filename;
-                            (item as HTMLElement).dataset.href = response.data.uri;
 
-                            ($(".file-name", item as HTMLElement) as HTMLElement).innerHTML = response.data.filename;
+                            const anchor = $(".file-name a", item as HTMLElement) as HTMLAnchorElement;
+                            anchor.innerHTML = response.data.filename;
+                            anchor.href = response.data.uri;
 
                             ($("[data-command=infoFile]", item as HTMLElement) as HTMLAnchorElement).href = response.data.actions.info;
                             ($("[data-command=previewFile]", item as HTMLElement) as HTMLAnchorElement).href = response.data.uri;

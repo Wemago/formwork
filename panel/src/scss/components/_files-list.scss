@@ -63,10 +63,12 @@
 
 .file-date {
     flex: 0 0 15%;
+    text-align: center;
 }
 
 .file-size {
     flex: 0 0 10%;
+    text-align: center;
 }
 
 .file-actions {
@@ -97,6 +99,10 @@
         border-color: var(--color-accent-500);
         @include focusring;
     }
+}
+
+.is-thumbnails .file-name a {
+    color: inherit;
 }
 
 .is-thumbnails .file-parent,

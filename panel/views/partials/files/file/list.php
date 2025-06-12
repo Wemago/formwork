@@ -36,10 +36,10 @@
 </div>
 
 <template id="files-item">
-    <div class="files-item" data-filename="" data-href="">
+    <div class="files-item" data-filename="">
         <div class="file-thumbnail"></div>
         <div class="files-item-cell file-icon"></div>
-        <div class="files-item-cell file-name truncate"></div>
+        <div class="files-item-cell file-name truncate"><a></a></div>
         <?php if (in_array('date', $columns, true)) : ?>
             <div class="files-item-cell file-date truncate"></div>
         <?php endif ?>

@@ -1,4 +1,4 @@
-<div class="files-item" data-filename="<?= $file->name() ?>" data-href="<?= $this->uri($app->router()->generate('panel.files.edit', ['model' => $model->getModelIdentifier(), 'id' => $model->route(), 'filename' => $file->name()])) ?>">
+<div class="files-item" data-filename="<?= $file->name() ?>">
     <?php if ($file->type() === 'image') : ?>
         <img class="file-thumbnail" src="<?= $file->square(300, 'contain')->uri() ?>" loading="lazy">
     <?php endif ?>
@@ -6,7 +6,7 @@
         <video class="file-thumbnail" src="<?= $file->uri() ?>" preload="metadata"></video>
     <?php endif ?>
     <div class="files-item-cell file-icon"><?= $this->icon(is_null($file->type()) ? 'file' : 'file-' . $file->type()) ?></div>
-    <div class="files-item-cell file-name truncate"><?= $file->name() ?></div>
+    <div class="files-item-cell file-name truncate"><a href="<?= $this->uri($app->router()->generate('panel.files.edit', ['model' => $model->getModelIdentifier(), 'id' => $model->route(), 'filename' => $file->name()])) ?>"><?= $file->name() ?></a></div>
     <?php if (in_array('parent', $columns, true)) : ?>
         <div class="files-item-cell file-parent truncate show-from-lg">
             <?php if ($model->getModelIdentifier() === 'page'): ?>

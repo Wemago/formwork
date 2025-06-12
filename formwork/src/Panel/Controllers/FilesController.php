@@ -163,7 +163,7 @@ final class FilesController extends AbstractController
             return JsonResponse::success($this->translate('panel.files.deleted'));
         }
         $this->panel->notify($this->translate('panel.files.deleted'), 'success');
-        return $this->redirect($this->generateRoute('panel.files.dashboard'));
+        return $this->redirect($this->generateRoute('panel.files.index'));
     }
 
     /**

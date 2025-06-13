@@ -108,10 +108,13 @@ class Registry
      */
     private function load(): void
     {
-        if (!$this->loaded && FileSystem::exists($this->filename)) {
+        if ($this->loaded) {
+            return;
+        }
+        if (FileSystem::exists($this->filename)) {
             $this->storage = Json::parseFile($this->filename);
-            $this->loaded = true;
             $this->saved = true;
         }
+        $this->loaded = true;
     }
 }

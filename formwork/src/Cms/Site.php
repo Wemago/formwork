@@ -21,7 +21,6 @@ use Formwork\Pages\Traits\PageUri;
 use Formwork\Schemes\Schemes;
 use Formwork\Templates\Templates;
 use Formwork\Users\Users;
-use Formwork\Utils\Arr;
 use Formwork\Utils\FileSystem;
 use Formwork\Utils\Str;
 use Stringable;
@@ -135,18 +134,6 @@ class Site extends Model implements Stringable
     public function site(): Site
     {
         return $this;
-    }
-
-    /**
-     * Return site default data
-     *
-     * @return array<string, mixed>
-     */
-    public function defaults(): array
-    {
-        $defaults = $this->config->getDefaults('site');
-
-        return [...$defaults, ...Arr::reject($this->fields()->pluck('default'), fn($value) => $value === null)];
     }
 
     public function parent(): Page|Site|null
@@ -470,11 +457,8 @@ class Site extends Model implements Stringable
 
         $this->fields = $this->scheme->fields();
         $this->fields->setModel($this);
-        $this->data = [...$this->defaults(), ...$this->data];
 
         $this->fields->setValues($this->data);
-
-        $this->loadRouteAliases();
     }
 
     /**
@@ -558,11 +542,12 @@ class Site extends Model implements Stringable
 
     /**
      * Load site aliases
+     *
+     * @param array<string, string> $aliases
      */
-    protected function loadRouteAliases(): void
+    protected function setRouteAliases(array $aliases): void
     {
-        $this->routeAliases = [];
-        foreach ($this->data['routeAliases'] as $from => $to) {
+        foreach ($aliases as $from => $to) {
             $this->routeAliases[trim((string) $from, '/')] = trim((string) $to, '/');
         }
     }

@@ -23,11 +23,9 @@ class Config implements ArraySerializable
 
     /**
      * @param array<string, mixed> $config
-     * @param array<string, mixed> $defaults
      */
     final public function __construct(
         protected array $config = [],
-        protected array $defaults = [],
     ) {}
 
     /**
@@ -36,14 +34,6 @@ class Config implements ArraySerializable
     public function has(string $key): bool
     {
         return Arr::has($this->config, $key);
-    }
-
-    /**
-     * Check if a key exists in the defaults
-     */
-    public function hasDefaults(string $key): bool
-    {
-        return Arr::has($this->defaults, $key);
     }
 
     /**
@@ -58,37 +48,23 @@ class Config implements ArraySerializable
     }
 
     /**
-     * Get a value from the defaults
-     */
-    public function getDefaults(string $key, mixed $default = null): mixed
-    {
-        if (!$this->resolved) {
-            throw new UnresolvedConfigException('Unresolved config');
-        }
-        return Arr::get($this->defaults, $key, $default);
-    }
-
-    /**
      * Load config from a path
      */
     public function loadFromPath(string $path, bool $defaultConfig = false): void
     {
         foreach (FileSystem::listFiles($path) as $file) {
-            $this->loadFile(FileSystem::joinPaths($path, $file), $defaultConfig);
+            $this->loadFile(FileSystem::joinPaths($path, $file));
         }
     }
 
     /**
      * Load config from a file
      */
-    public function loadFile(string $path, bool $defaultConfig = false): void
+    public function loadFile(string $path): void
     {
         if (FileSystem::isReadable($path) && FileSystem::extension($path) === 'yaml') {
             $name = FileSystem::name($path);
             $data = (array) Yaml::parseFile($path);
-            if ($defaultConfig) {
-                $this->defaults[$name] = isset($this->defaults[$name]) ? array_replace_recursive($this->defaults[$name], $data) : $data;
-            }
             $this->config[$name] = isset($this->config[$name]) ? array_replace_recursive($this->config[$name], $data) : $data;
         }
     }
@@ -122,7 +98,6 @@ class Config implements ArraySerializable
             });
         };
 
-        $resolver($this->defaults);
         $resolver($this->config);
 
         $this->resolved = true;
@@ -134,14 +109,13 @@ class Config implements ArraySerializable
             throw new UnresolvedConfigException('Unresolved config');
         }
         return [
-            'config'   => $this->config,
-            'defaults' => $this->defaults,
+            'config' => $this->config,
         ];
     }
 
     public static function fromArray(array $data): static
     {
-        $static = new static($data['config'], $data['defaults']);
+        $static = new static($data['config']);
         $static->resolved = true;
         return $static;
     }

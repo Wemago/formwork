@@ -88,6 +88,9 @@ panel:
         assets: '${system.panel.path}/assets'
         logs: '${system.panel.path}/logs'
         modals: '${system.panel.path}/modals'
+    config:
+        app: '${system.panel.path}/config/app.php'
+        navigation: '${system.panel.path}/config/navigation.php'
 
 users:
     paths:
@@ -97,8 +100,8 @@ users:
 
 routes:
     files:
-        panel: '${system.panel.path}/routes.php'
-        system: '${%SYSTEM_PATH%}/routes.php'
+        panel: '${system.panel.path}/config/routes/routes.php'
+        system: '${%SYSTEM_PATH%}/config/routes/routes.php'
 
 schemes:
     paths:
@@ -141,3 +144,6 @@ views:
     paths:
         panel: '${system.panel.path}/views'
         system: '${%SYSTEM_PATH%}/views'
+    methods:
+        panel: '${system.panel.path}/config/views/methods.php'
+        system: '${%SYSTEM_PATH%}/config/views/methods.php'

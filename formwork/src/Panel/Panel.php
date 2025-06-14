@@ -111,7 +111,7 @@ final class Panel
     {
         $translation = $this->translations->getCurrent();
         if (!isset($this->navigation)) {
-            $items = $this->container->call(require FileSystem::joinPaths($this->path(), 'navigation.php'), [
+            $items = $this->container->call(require $this->config->get('system.panel.config.navigation'), [
                 'translation' => $translation,
             ]);
             $this->navigation = new NavigationItemCollection();
@@ -228,7 +228,7 @@ final class Panel
      */
     public function getAppConfig(): array
     {
-        return $this->container->call(require FileSystem::joinPaths($this->path(), 'appconfig.php'), [
+        return $this->container->call(require $this->config->get('system.panel.config.app'), [
             'translation' => $this->translations->getCurrent(),
         ]);
     }

@@ -62,11 +62,27 @@ class Config implements ArraySerializable
      */
     public function loadFile(string $path): void
     {
-        if (FileSystem::isReadable($path) && FileSystem::extension($path) === 'yaml') {
-            $name = FileSystem::name($path);
-            $data = (array) Yaml::parseFile($path);
-            $this->config[$name] = isset($this->config[$name]) ? array_replace_recursive($this->config[$name], $data) : $data;
+        if (!FileSystem::isFile($path)) {
+            throw new ConfigLoadingException(sprintf('Config file "%s" does not exist', $path));
         }
+
+        $name = FileSystem::name($path);
+        $extension = FileSystem::extension($path);
+
+        switch ($extension) {
+            case 'php':
+                $data = (array) include $path;
+                break;
+
+            case 'yaml':
+                $data = (array) Yaml::parseFile($path);
+                break;
+
+            default:
+                throw new ConfigLoadingException(sprintf('Unsupported config file type "%s"', $extension));
+        }
+
+        $this->config[$name] = isset($this->config[$name]) ? array_replace_recursive($this->config[$name], $data) : $data;
     }
 
     /**
@@ -108,9 +124,7 @@ class Config implements ArraySerializable
         if (!$this->resolved) {
             throw new UnresolvedConfigException('Unresolved config');
         }
-        return [
-            'config' => $this->config,
-        ];
+        return $this->config;
     }
 
     public static function fromArray(array $data): static

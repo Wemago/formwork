@@ -2,6 +2,7 @@
 
 namespace Formwork\Config;
 
+use Formwork\Config\Exceptions\ConfigLoadingException;
 use Formwork\Config\Exceptions\ConfigResolutionException;
 use Formwork\Config\Exceptions\UnresolvedConfigException;
 use Formwork\Data\Contracts\ArraySerializable;
@@ -17,15 +18,11 @@ class Config implements ArraySerializable
     protected const string INTERPOLATION_REGEX = '/\$(?!\$)\{([%a-z._]+)\}/i';
 
     /**
-     * Whether the config has been resolved
-     */
-    protected bool $resolved = false;
-
-    /**
      * @param array<string, mixed> $config
      */
     final public function __construct(
         protected array $config = [],
+        protected bool $resolved = false,
     ) {}
 
     /**

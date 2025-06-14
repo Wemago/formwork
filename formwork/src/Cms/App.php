@@ -174,15 +174,15 @@ final class App
 
         $container->define(self::class, $this);
 
+        $container->define(Request::class, fn() => Request::fromGlobals())
+            ->alias('request');
+
         $container->define(Config::class)
             ->loader(ConfigServiceLoader::class)
             ->alias('config');
 
         $container->define(ViewFactory::class)
             ->parameter('methods', fn(Container $container, Config $config) => $container->call(require $config->get('system.views.methods.system')));
-
-        $container->define(Request::class, fn() => Request::fromGlobals())
-            ->alias('request');
 
         $container->define(ErrorsController::class)
             ->alias(ErrorsControllerInterface::class);

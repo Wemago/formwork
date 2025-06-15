@@ -131,16 +131,6 @@ final class App
     }
 
     /**
-     * Return default options
-     *
-     * @return array<string, mixed>
-     */
-    public function defaults(): array
-    {
-        return $this->config()->getDefaults('system');
-    }
-
-    /**
      * @template T of object
      *
      * @param class-string<T>|string $name
@@ -184,15 +174,15 @@ final class App
 
         $container->define(self::class, $this);
 
+        $container->define(Request::class, fn() => Request::fromGlobals())
+            ->alias('request');
+
         $container->define(Config::class)
             ->loader(ConfigServiceLoader::class)
             ->alias('config');
 
         $container->define(ViewFactory::class)
-            ->parameter('methods', fn(Container $container) => $container->call(require SYSTEM_PATH . '/methods.php'));
-
-        $container->define(Request::class, fn() => Request::fromGlobals())
-            ->alias('request');
+            ->parameter('methods', fn(Container $container, Config $config) => $container->call(require $config->get('system.views.methods.system')));
 
         $container->define(ErrorsController::class)
             ->alias(ErrorsControllerInterface::class);

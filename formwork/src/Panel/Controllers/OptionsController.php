@@ -2,6 +2,7 @@
 
 namespace Formwork\Panel\Controllers;
 
+use Formwork\Config\Config;
 use Formwork\Fields\FieldCollection;
 use Formwork\Http\RequestMethod;
 use Formwork\Http\Response;
@@ -45,9 +46,8 @@ final class OptionsController extends AbstractController
         $fields = $scheme->fields();
 
         if ($this->request->method() === RequestMethod::POST) {
-            $data = $this->request->input();
             $options = $this->config->get('system');
-            $defaults = $this->app->defaults();
+            $defaults = $this->defaultConfig()->get('system');
             $fields->setValuesFromRequest($this->request, null)->validate();
 
             $differ = $this->updateOptions('system', $fields, $options, $defaults);
@@ -90,7 +90,7 @@ final class OptionsController extends AbstractController
 
         if ($this->request->method() === RequestMethod::POST) {
             $options = $this->site->data();
-            $defaults = $this->site->defaults();
+            $defaults = $this->defaultConfig()->get('site');
             $fields->setValuesFromRequest($this->request, null)->validate();
             $differ = $this->updateOptions('site', $fields, $options, $defaults);
 
@@ -116,6 +116,20 @@ final class OptionsController extends AbstractController
             ]),
             'fields' => $fields,
         ]));
+    }
+
+    /**
+     * Get default config
+     */
+    private function defaultConfig(): Config
+    {
+        $config = new Config();
+        $config->loadFromPath(SYSTEM_PATH . '/config/');
+        $config->resolve([
+            '%ROOT_PATH%'   => ROOT_PATH,
+            '%SYSTEM_PATH%' => SYSTEM_PATH,
+        ]);
+        return $config;
     }
 
     /**

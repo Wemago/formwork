@@ -154,8 +154,13 @@ final class App
             $this->loadRoutes();
             $response = $this->router()->dispatch();
         } catch (Throwable $throwable) {
-            $controller = $this->container->get(ErrorsControllerInterface::class);
-            $response = $controller->error(throwable: $throwable);
+            try {
+                $controller = $this->container->get(ErrorsControllerInterface::class);
+                $response = $controller->error(throwable: $throwable);
+            } catch (Throwable) {
+                ini_restore('display_errors');
+                throw $throwable;
+            }
         }
 
         $this->request()->session()->save();

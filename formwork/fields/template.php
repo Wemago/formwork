@@ -5,16 +5,18 @@ use Formwork\Fields\Field;
 
 return function (Site $site) {
     return [
-        'return' => function (Field $field) use ($site) {
-            return $site->templates()->get($field->value());
-        },
+        'methods' => [
+            'return' => function (Field $field) use ($site) {
+                return $site->templates()->get($field->value());
+            },
 
-        'validate' => function (Field $field, $value) {
-            if ($value === '') {
-                return null;
-            }
+            'validate' => function (Field $field, $value) {
+                if ($value === '') {
+                    return null;
+                }
 
-            return $value;
-        },
+                return $value;
+            },
+        ],
     ];
 };

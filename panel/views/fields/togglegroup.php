@@ -6,7 +6,7 @@
                     'disabled' => $field->isDisabled(),
                     'hidden'   => $field->isHidden(),
                 ]) ?>>
-        <?php foreach ((array) $field->get('options') as $value => $label) : ?>
+        <?php foreach ((array) $field->options() as $value => $label) : ?>
             <label class="form-label">
                 <input <?= $this->attr([
                             'class'   => 'form-input',

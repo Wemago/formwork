@@ -6,14 +6,14 @@
                     'type'       => 'range',
                     'id'         => $field->name(),
                     'name'       => $field->formName(),
-                    'min'        => $field->get('min'),
-                    'max'        => $field->get('max'),
-                    'step'       => $field->get('step'),
+                    'min'        => $field->min(),
+                    'max'        => $field->max(),
+                    'step'       => $field->step(),
                     'value'      => $field->value(),
                     'required'   => $field->isRequired(),
                     'disabled'   => $field->isDisabled(),
                     'hidden'     => $field->isHidden(),
-                    'data-ticks' => $field->get('ticks'),
+                    'data-ticks' => $field->ticks(),
                 ]) ?>>
     </div>
     <output class="form-input-range-value" for="<?= $field->name() ?>"><?= $this->escape($field->value()) ?></output>

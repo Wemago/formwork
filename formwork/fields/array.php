@@ -8,28 +8,37 @@ use Formwork\Utils\Constraint;
 
 return function (App $app) {
     return [
-        'validate' => function (Field $field, $value) {
-            if (Constraint::isEmpty($value)) {
-                return [];
-            }
+        'methods' => [
+            /**
+             * Return whether the field is associative
+             */
+            'isAssociative' => function (Field $field): bool {
+                return $field->is('associative', false);
+            },
 
-            if ($value instanceof Arrayable) {
-                $value = $value->toArray();
-            }
+            'validate' => function (Field $field, $value): array {
+                if (Constraint::isEmpty($value)) {
+                    return [];
+                }
 
-            if (!is_array($value)) {
-                throw new ValidationException(sprintf('Invalid value for field "%s" of type "%s"', $field->name(), $field->type()));
-            }
+                if ($value instanceof Arrayable) {
+                    $value = $value->toArray();
+                }
 
-            if ($field->is('associative')) {
-                foreach (array_keys($value) as $key) {
-                    if (is_int($key)) {
-                        unset($value[$key]);
+                if (!is_array($value)) {
+                    throw new ValidationException(sprintf('Invalid value for field "%s" of type "%s"', $field->name(), $field->type()));
+                }
+
+                if ($field->isAssociative()) {
+                    foreach (array_keys($value) as $key) {
+                        if (is_int($key)) {
+                            unset($value[$key]);
+                        }
                     }
                 }
-            }
 
-            return array_filter($value);
-        },
+                return array_filter($value);
+            },
+        ],
     ];
 };

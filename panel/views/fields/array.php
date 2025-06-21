@@ -1,6 +1,6 @@
 <?php $this->layout('fields.field') ?>
 <div <?= $this->attr([
-            'class'     => ['form-input-array', $field->get('associative') ? 'form-input-array-associative' : ''],
+            'class'     => ['form-input-array', $field->isAssociative() ? 'form-input-array-associative' : ''],
             'id'        => $field->name(),
             'hidden'    => $field->isHidden(),
             'data-name' => $field->formName(),
@@ -8,7 +8,7 @@
     <?php foreach ($field->value() ?: ['' => ''] as $key => $value) : ?>
         <div class="form-input-array-row">
             <span class="sortable-handle" title="<?= $this->translate('panel.dragToReorder') ?>"><?= $this->icon('grabber') ?></span>
-            <?php if ($field->get('associative')) : ?>
+            <?php if ($field->isAssociative()) : ?>
                 <input <?= $this->attr([
                             'type'        => 'text',
                             'class'       => ['form-input', 'form-input-array-key'],
@@ -19,7 +19,7 @@
             <input <?= $this->attr([
                         'type'        => 'text',
                         'class'       => ['form-input', 'form-input-array-value'],
-                        'name'        => $field->formName() . ($field->get('associative') ? '[' . $key . ']' : '[]'),
+                        'name'        => $field->formName() . ($field->isAssociative() ? '[' . $key . ']' : '[]'),
                         'value'       => $value,
                         'placeholder' => $field->get('placeholderValue'),
                     ]) ?>>

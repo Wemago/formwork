@@ -11,47 +11,55 @@ use Formwork\Utils\Constraint;
 
 return function (App $app) {
     return [
-        'return' => function (Field $field): ?Image {
-            return $field->value() !== null
-                ? $field->getImages()->get($field->value())
-                : null;
-        },
+        'methods' => [
+            'return' => function (Field $field): ?Image {
+                return $field->value() !== null
+                    ? $field->getImages()->get($field->value())
+                    : null;
+            },
 
-        'getImages' => function (Field $field): FileCollection {
-            if (!$field->has('options')) {
-                $model = $field->parent()?->model();
+            /**
+             * Get the collection of images associated with the field
+             */
+            'getImages' => function (Field $field): FileCollection {
+                if (!$field->has('options')) {
+                    $model = $field->parent()?->model();
 
-                if ($model === null || !method_exists($model, 'files')) {
-                    throw new InvalidValueException(sprintf('Field "%s" of type "%s" must have a model with files', $field->name(), $field->type()));
+                    if ($model === null || !method_exists($model, 'files')) {
+                        throw new InvalidValueException(sprintf('Field "%s" of type "%s" must have a model with files', $field->name(), $field->type()));
+                    }
+
+                    $files = $model->files();
+                } else {
+                    $files = $field->get('options');
                 }
 
-                $files = $model->files();
-            } else {
-                $files = $field->get('options');
-            }
+                return $files->filter(static fn(File $file) => $file instanceof Image);
+            },
 
-            return $files->filter(static fn(File $file) => $file instanceof Image);
-        },
+            'validate' => function (Field $field, $value): ?string {
+                if (Constraint::isEmpty($value)) {
+                    return null;
+                }
 
-        'validate' => function (Field $field, $value): ?string {
-            if (Constraint::isEmpty($value)) {
-                return null;
-            }
+                if (!is_string($value)) {
+                    throw new ValidationException(sprintf('Invalid value for field "%s" of type "%s"', $field->name(), $field->type()));
+                }
 
-            if (!is_string($value)) {
-                throw new ValidationException(sprintf('Invalid value for field "%s" of type "%s"', $field->name(), $field->type()));
-            }
+                return $value;
+            },
 
-            return $value;
-        },
-
-        'options' => function (Field $field): array {
-            return $field->getImages()
-                ->map(static fn(Image $image) => [
-                    'value' => $image->name(),
-                    'icon'  => 'image',
-                    'thumb' => $image->square(300, 'contain')->uri(),
-                ])->toArray();
-        },
+            /**
+             * Get the field dropdown options
+             */
+            'options' => function (Field $field): array {
+                return $field->getImages()
+                    ->map(static fn(Image $image) => [
+                        'value' => $image->name(),
+                        'icon'  => 'image',
+                        'thumb' => $image->square(300, 'contain')->uri(),
+                    ])->toArray();
+            },
+        ],
     ];
 };

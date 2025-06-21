@@ -2,10 +2,12 @@
 
 namespace Formwork\Fields;
 
+use Closure;
 use Formwork\Config\Config;
 use Formwork\Services\Container;
 use Formwork\Translations\Translations;
 use Formwork\Utils\FileSystem;
+use InvalidArgumentException;
 
 final class FieldFactory
 {
@@ -26,12 +28,39 @@ final class FieldFactory
 
         $field->setTranslation($this->translations->getCurrent());
 
-        $methods = FileSystem::joinPaths($this->config->get('system.fields.path'), $field->type() . '.php');
+        $config = $this->getFieldConfig($field->type());
 
-        if (FileSystem::exists($methods)) {
-            $field->setMethods($this->container->call(require $methods));
+        $type = $field->type();
+
+        $extend = $config['extend'] ?? $type;
+
+        while ($extend !== $type) {
+            $baseConfig = $this->getFieldConfig($extend);
+
+            $type = $extend;
+            $extend = $baseConfig['extend'] ?? $type;
+
+            unset($baseConfig['extend']);
+
+            $config = array_replace_recursive($baseConfig, $config);
         }
 
+        $field->setMethods($config['methods'] ?? []);
+
         return $field;
+    }
+
+    /**
+     * @return array{extend?: string, methods?: array<string, Closure>}
+     */
+    private function getFieldConfig(string $type): array
+    {
+        $configPath = FileSystem::joinPaths($this->config->get('system.fields.path'), $type . '.php');
+
+        if (!FileSystem::exists($configPath)) {
+            throw new InvalidArgumentException(sprintf('Field type "%s" does not exist', $type));
+        }
+
+        return $this->container->call(require $configPath);
     }
 }

@@ -9,54 +9,68 @@ use Formwork\Utils\Constraint;
 
 return function (App $app) {
     return [
-        'toString' => function ($field) {
-            return implode(', ', $field->value() ?? []);
-        },
+        'methods' => [
+            'toString' => function ($field) {
+                return implode(', ', $field->value() ?? []);
+            },
 
-        'return' => function (Field $field): Collection {
-            return Collection::from($field->value() ?? []);
-        },
+            'return' => function (Field $field): Collection {
+                return Collection::from($field->value() ?? []);
+            },
 
-        'validate' => function (Field $field, $value): array {
-            if (Constraint::isEmpty($value)) {
-                return [];
-            }
+            'validate' => function (Field $field, $value): array {
+                if (Constraint::isEmpty($value)) {
+                    return [];
+                }
 
-            if (is_string($value)) {
-                $value = array_map(trim(...), explode(',', $value));
-            }
+                if (is_string($value)) {
+                    $value = array_map(trim(...), explode(',', $value));
+                }
 
-            if (!is_array($value)) {
-                throw new ValidationException(sprintf('Invalid value for field "%s" of type "%s"', $field->name(), $field->type()));
-            }
+                if (!is_array($value)) {
+                    throw new ValidationException(sprintf('Invalid value for field "%s" of type "%s"', $field->name(), $field->type()));
+                }
 
-            if ($field->has('pattern')) {
-                $value = array_filter($value, static fn($item): bool => Constraint::matchesRegex($item, $field->get('pattern')));
-            }
+                if ($field->has('pattern')) {
+                    $value = array_filter($value, static fn($item): bool => Constraint::matchesRegex($item, $field->get('pattern')));
+                }
 
-            if ($field->limit() !== null && count($value) > $field->limit()) {
-                throw new ValidationException(sprintf('Field "%s" of type "%s" has a limit of %d items', $field->name(), $field->type(), $field->get('limit')));
-            }
+                if ($field->limit() !== null && count($value) > $field->limit()) {
+                    throw new ValidationException(sprintf('Field "%s" of type "%s" has a limit of %d items', $field->name(), $field->type(), $field->get('limit')));
+                }
 
-            return array_values(array_filter($value));
-        },
+                return array_values(array_filter($value));
+            },
 
-        'options' => function ($field): ?array {
-            $options = $field->get('options', null);
+            /**
+             * Get the field dropdown options
+             */
+            'options' => function ($field): ?array {
+                $options = $field->get('options', null);
 
-            return $options !== null ? Arr::from($options) : null;
-        },
+                return $options !== null ? Arr::from($options) : null;
+            },
 
-        'accept' => function ($field): string {
-            return $field->get('accept', 'options');
-        },
+            /**
+             * Return whether the field accepts dropdown options
+             */
+            'accept' => function ($field): string {
+                return $field->get('accept', 'options');
+            },
 
-        'limit' => function ($field): ?int {
-            return $field->get('limit', null);
-        },
+            /**
+             * Return the maximum number of tags allowed in the field
+             */
+            'limit' => function ($field): ?int {
+                return $field->get('limit', null);
+            },
 
-        'isOrderable' => function ($field): bool {
-            return $field->is('orderable', true);
-        },
+            /**
+             * Return whether the field tags are orderable
+             */
+            'isOrderable' => function ($field): bool {
+                return $field->is('orderable', true);
+            },
+        ],
     ];
 };

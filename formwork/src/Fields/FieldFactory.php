@@ -28,7 +28,7 @@ final class FieldFactory
 
         $field->setTranslation($this->translations->getCurrent());
 
-        $config = $this->getFieldConfig($field->type());
+        $config = $this->getFieldConfig($field->type(), []);
 
         $type = $field->type();
 
@@ -51,13 +51,18 @@ final class FieldFactory
     }
 
     /**
+     * @param array{extend?: string, methods?: array<string, Closure>} $default
+     *
      * @return array{extend?: string, methods?: array<string, Closure>}
      */
-    private function getFieldConfig(string $type): array
+    private function getFieldConfig(string $type, ?array $default = null): array
     {
         $configPath = FileSystem::joinPaths($this->config->get('system.fields.path'), $type . '.php');
 
         if (!FileSystem::exists($configPath)) {
+            if ($default !== null) {
+                return $default;
+            }
             throw new InvalidArgumentException(sprintf('Field type "%s" does not exist', $type));
         }
 

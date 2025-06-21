@@ -14,22 +14,22 @@ final class Date
     use StaticClass;
 
     /**
-     * Characters used in formats accepted by date()
+     * Characters used in formats accepted by `date()`
      */
     private const string DATE_FORMAT_CHARACTERS = 'AaBcDdeFgGHhIijlLMmnNoOpPrsSTtUuvWwyYzZ';
 
     /**
-     * Regex used to parse formats accepted by date()
+     * Regex used to parse formats accepted by `date()`
      */
     private const string DATE_FORMAT_REGEX = '/(?P<escaped>(?:\\\[A-Za-z])+)|[' . self::DATE_FORMAT_CHARACTERS . ']|(?P<invalid>[A-Za-z])/';
 
     /**
-     * Regex used to parse date patterns like 'DD/MM/YYYY hh:mm:ss'
+     * Regex used to parse date patterns like `DD/MM/YYYY hh:mm:ss`
      */
     private const string PATTERN_REGEX = '/(?:\[(?P<escaped>[^\]]+)\])|[YR]{4}|uuu|[YR]{2}|[MD]{1,4}|[WHhms]{1,2}|[AaZz]|(?P<invalid>[A-Za-z]+)/';
 
     /**
-     * Array used to translate pattern tokens to their date() format counterparts
+     * Array used to translate pattern tokens to their `date()` format counterparts
      *
      * @var array<string, string>
      */
@@ -100,8 +100,9 @@ final class Date
     }
 
     /**
-     * Convert a format accepted by date() to its corresponding pattern, e.g. the format 'd/m/Y \a\t h:i:s'
-     * is converted to 'DD/MM/YYYY [at] hh:mm:ss'
+     * Convert a format accepted by `date()` to its corresponding pattern.
+     *
+     * For instance, the format `d/m/Y \a\t h:i:s` is converted to `DD/MM/YYYY [at] hh:mm:ss`
      */
     public static function formatToPattern(string $format): string
     {
@@ -118,8 +119,10 @@ final class Date
     }
 
     /**
-     * Convert a pattern to its corresponding format accepted by date(), e.g. the format
-     * 'DDDD DD MMMM YYYY [at] HH:mm:ss A [o\' clock]' is converted to 'l d F Y \a\t h:i:s A \o\' \c\l\o\c\k',
+     * Convert a pattern to its corresponding format accepted by `date()`
+     *
+     * For instance, the format `DDDD DD MMMM YYYY [at] HH:mm:ss A [o\' clock]`
+     * is converted to `l d F Y \a\t h:i:s A \o\' \c\l\o\c\k`,
      * where brackets are used to escape literal string portions
      */
     public static function patternToFormat(string $pattern): string
@@ -155,7 +158,7 @@ final class Date
     }
 
     /**
-     * The same as self::formatDateTime() but takes a timestamp instead of a DateTime object
+     * The same as `formatDateTime()` but takes a timestamp instead of a `DateTime` object
      */
     public static function formatTimestamp(int $timestamp, string $format, Translation $translation): string
     {
@@ -163,7 +166,7 @@ final class Date
     }
 
     /**
-     * Formats a DateTime object as a time distance from now
+     * Formats a `DateTime` object as a time distance from now
      */
     public static function formatDateTimeAsDistance(DateTime $dateTime, Translation $translation): string
     {
@@ -200,7 +203,7 @@ final class Date
     }
 
     /**
-     * The same as self::formatDateTimeAsDistance() but takes a timestamp instead of a DateTime object
+     * The same as `formatDateTimeAsDistance()` but takes a timestamp instead of a `DateTime` object
      */
     public static function formatTimestampAsDistance(int $timestamp, Translation $translation): string
     {
@@ -208,7 +211,7 @@ final class Date
     }
 
     /**
-     * Create a DateTime object from a date string and a list of formats
+     * Create a `DateTime` object from a date string and a list of formats
      *
      * @param array<string> $formats
      */
@@ -228,7 +231,7 @@ final class Date
     }
 
     /**
-     * Return a human-readable string containing details about last DateTime error
+     * Return a human-readable string containing details about last `DateTime` error
      */
     private static function getLastDateTimeError(): string
     {

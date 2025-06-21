@@ -200,6 +200,8 @@ class File extends Model implements Arrayable, Stringable
 
     /**
      * Set URI generator
+     *
+     * @internal
      */
     public function setUriGenerator(FileUriGenerator $uriGenerator): void
     {

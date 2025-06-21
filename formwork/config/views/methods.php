@@ -38,10 +38,16 @@ return function (App $app) {
 
         'redirect' => Header::redirect(...),
 
+        /**
+         * Generates a URI for the given route
+         */
         'uri' => static function (string $route) use ($app): string {
             return Uri::make([], Path::join([$app->request()->root(), $route]));
         },
 
+        /**
+         * Parses the given Markdown string and returns the HTML output
+         */
         'markdown' => static function (string $markdown) use ($app): string {
             $currentPage = $app->site()->currentPage();
             return Markdown::parse(
@@ -54,6 +60,9 @@ return function (App $app) {
             );
         },
 
+        /**
+         * Formats a timestamp as a date string
+         */
         'date' => static function (int $timestamp, ?string $format = null) use ($app): string {
             return Date::formatTimestamp(
                 $timestamp,
@@ -62,14 +71,23 @@ return function (App $app) {
             );
         },
 
+        /**
+         * Formats a timestamp as a datetime string
+         */
         'datetime' => static function (int $timestamp) use ($app): string {
             return Date::formatTimestamp($timestamp, $app->config()->get('system.date.datetimeFormat'), $app->translations()->getCurrent());
         },
 
+        /**
+         * Formats a timestamp as a relative time string, e.g. "2 days ago", "in 3 hours"
+         */
         'timedistance' => static function (int $timestamp) use ($app): string {
             return Date::formatTimestampAsDistance($timestamp, $app->translations()->getCurrent());
         },
 
+        /**
+         * Translates a given key using the current translations
+         */
         'translate' => fn(string $key, ...$arguments) => $app->translations()->getCurrent()->translate($key, ...$arguments),
     ];
 };

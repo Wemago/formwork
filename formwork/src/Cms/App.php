@@ -131,6 +131,8 @@ final class App
     }
 
     /**
+     * Get a service from the container
+     *
      * @template T of object
      *
      * @param class-string<T>|string $name

@@ -158,6 +158,9 @@ final class Panel
         return $notifications;
     }
 
+    /**
+     * Get Modals instance
+     */
     public function modals(): Modals
     {
         return $this->modals;
@@ -171,6 +174,12 @@ final class Panel
         return $this->assets ??= new Assets($this->config->get('system.panel.paths.assets'), $this->uri('/assets/'));
     }
 
+    /**
+     * Get the panel color scheme
+     *
+     * If the user is logged in and has set a color scheme, it will be used.
+     * Otherwise, the default color scheme from the configuration will be used.
+     */
     public function colorScheme(): ColorScheme
     {
         $colorScheme = ColorScheme::from($this->config->get('system.panel.colorScheme'));

@@ -26,6 +26,16 @@ trait Methods
     }
 
     /**
+     * Return the defined methods
+     *
+     * @return array<string, Closure>
+     */
+    public function getMethods(): array
+    {
+        return $this->methods;
+    }
+
+    /**
      * Return whether a method is defined in the `$method` property
      */
     public function hasMethod(string $method): bool

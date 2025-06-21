@@ -111,6 +111,11 @@ class Router
         return $this->matchPrefix($prefix);
     }
 
+    /**
+     * Set the router request URI
+     *
+     * @internal
+     */
     public function setRequest(string $request): void
     {
         $requestPath = Uri::path($request) ?? throw new UnexpectedValueException('Cannot get request path');

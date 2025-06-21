@@ -34,8 +34,10 @@ final class Html
     ];
 
     /**
-     * Return a class list separated by spaces, list items are used as class names, associative items
-     * keys are used instead as class names for values that compare to true
+     * Return a class list separated by spaces
+     *
+     * List items are used as class names, associative items keys are used
+     * instead as class names for values that compare to `true`
      *
      * @param array<string, mixed>|list<string> $list
      */
@@ -53,7 +55,7 @@ final class Html
     }
 
     /**
-     * Return an attribute ('name="value"') from $name and $value arguments
+     * Return an attribute `name="value"` from `$name` and `$value` arguments
      *
      * @param array<scalar|null>|scalar|null $value
      */

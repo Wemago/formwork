@@ -311,6 +311,9 @@ class Field implements Arrayable, Stringable
         $this->methods = $methods;
     }
 
+    /**
+     * Set field translation
+     */
     public function setTranslation(Translation $translation): void
     {
         $this->translation = $translation;

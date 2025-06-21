@@ -50,7 +50,7 @@ final class Path
     }
 
     /**
-     * Normalize path separators and remove '.' and '..' segments
+     * Normalize path separators and remove `.` and `..` segments
      */
     public static function normalize(string $path, string $separator = self::DEFAULT_SEPARATOR): string
     {
@@ -61,7 +61,7 @@ final class Path
     }
 
     /**
-     * Split a path into segments removing '.' and '..' ones
+     * Split a path into segments removing `.` and `..`
      *
      * @return array<string>
      */

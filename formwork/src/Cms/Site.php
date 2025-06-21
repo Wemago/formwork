@@ -217,6 +217,9 @@ class Site extends Model implements Stringable
         return $this->templates;
     }
 
+    /**
+     * Get site users
+     */
     public function users(): Users
     {
         return $this->users;
@@ -311,6 +314,9 @@ class Site extends Model implements Stringable
         return $this->storage[$path] ?? ($this->storage[$path] = $this->pageFactory->make(['site' => $this, 'path' => $path]));
     }
 
+    /**
+     * Retrieve all pages from the given directory
+     */
     public function retrievePages(string $path, bool $recursive = false): PageCollection
     {
         /**

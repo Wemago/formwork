@@ -316,7 +316,7 @@ class Request
         return $https;
     }
 
-    /*
+    /**
      * Return whether a request comes from localhost
      */
     public function isLocalhost(): bool

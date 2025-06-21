@@ -97,6 +97,7 @@ return [
                     return;
                 }
                 if (($requested = $site->languages()->requested()) !== null) {
+                    // @phpstan-ignore method.internal
                     $router->setRequest(Str::removeStart($router->request(), '/' . $requested));
                 } elseif (($preferred = $site->languages()->preferred()) !== null) {
                     // Don't redirect if we are in Panel

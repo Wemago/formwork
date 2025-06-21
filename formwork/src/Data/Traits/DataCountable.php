@@ -11,6 +11,9 @@ trait DataCountable
 {
     protected array $data = [];
 
+    /**
+     * Get the number of data items
+     */
     public function count(): int
     {
         return count($this->data);

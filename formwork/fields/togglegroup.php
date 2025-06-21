@@ -6,21 +6,30 @@ use Formwork\Utils\Constraint;
 
 return function (App $app) {
     return [
-        'validate' => function (Field $field, $value) {
-            if (Constraint::isTruthy($value)) {
-                return true;
-            }
+        'methods' => [
+            /**
+             * Return the field options
+             */
+            'options' => function (Field $field): array {
+                return $field->get('options', []);
+            },
 
-            if (Constraint::isFalsy($value)) {
-                return false;
-            }
+            'validate' => function (Field $field, $value) {
+                if (Constraint::isTruthy($value)) {
+                    return true;
+                }
 
-            if (is_numeric($value)) {
-                // This reliably casts numeric values to int or float
-                return $value + 0;
-            }
+                if (Constraint::isFalsy($value)) {
+                    return false;
+                }
 
-            return $value;
-        },
+                if (is_numeric($value)) {
+                    // This reliably casts numeric values to int or float
+                    return $value + 0;
+                }
+
+                return $value;
+            },
+        ],
     ];
 };

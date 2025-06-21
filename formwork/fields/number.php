@@ -6,27 +6,56 @@ use Formwork\Fields\Field;
 
 return function (App $app) {
     return [
-        'validate' => function (Field $field, $value): int|float {
-            if (!is_numeric($value)) {
-                throw new ValidationException(sprintf('Invalid value for field "%s" of type "%s"', $field->name(), $field->type()));
-            }
+        'methods' => [
+            /**
+             * Return the minimum allowed value for the field
+             *
+             * If not set, no minimum value is enforced
+             */
+            'min' => function (Field $field): ?int {
+                return $field->get('min');
+            },
 
-            // This reliably casts numeric values to int or float
-            $value += 0;
+            /**
+             * Return the maximum allowed value for the field
+             *
+             * If not set, no maximum value is enforced
+             */
+            'max' => function (Field $field): ?int {
+                return $field->get('max');
+            },
 
-            if ($field->has('min') && $value < $field->get('min')) {
-                throw new ValidationException(sprintf('The value of field "%s" of type "%s" must be greater than or equal to %d', $field->name(), $field->type(), $field->get('min')));
-            }
+            /**
+             * Return the step value for the field
+             *
+             * If not set, no step value is enforced
+             */
+            'step' => function (Field $field): ?int {
+                return $field->get('step');
+            },
 
-            if ($field->has('max') && $value > $field->get('max')) {
-                throw new ValidationException(sprintf('The value of field "%s" of type "%s" must be less than or equal to %d', $field->name(), $field->type(), $field->get('max')));
-            }
+            'validate' => function (Field $field, $value): int|float {
+                if (!is_numeric($value)) {
+                    throw new ValidationException(sprintf('Invalid value for field "%s" of type "%s"', $field->name(), $field->type()));
+                }
 
-            if ($field->has('step') && ($value - $field->get('min', 0)) % $field->get('step') !== 0) {
-                throw new ValidationException(sprintf('The value of field "%s" of type "%s" does not conform to the step value %d', $field->name(), $field->value(), $field->get('step')));
-            }
+                // This reliably casts numeric values to int or float
+                $value += 0;
 
-            return $value;
-        },
+                if ($field->has('min') && $value < $field->min()) {
+                    throw new ValidationException(sprintf('The value of field "%s" of type "%s" must be greater than or equal to %d', $field->name(), $field->type(), $field->get('min')));
+                }
+
+                if ($field->has('max') && $value > $field->max()) {
+                    throw new ValidationException(sprintf('The value of field "%s" of type "%s" must be less than or equal to %d', $field->name(), $field->type(), $field->get('max')));
+                }
+
+                if ($field->has('step') && ($value - $field->get('min', 0)) % $field->step() !== 0) {
+                    throw new ValidationException(sprintf('The value of field "%s" of type "%s" does not conform to the step value %d', $field->name(), $field->value(), $field->get('step')));
+                }
+
+                return $value;
+            },
+        ],
     ];
 };

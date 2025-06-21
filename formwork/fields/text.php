@@ -7,28 +7,58 @@ use Formwork\Utils\Constraint;
 
 return function (App $app) {
     return [
-        'validate' => function (Field $field, $value): string {
-            if (Constraint::isEmpty($value)) {
-                return '';
-            }
+        'methods' => [
+            /**
+             * Return the minimum allowed length for the field
+             *
+             * If not set, no minimum length is enforced
+             */
+            'minLength' => function (Field $field): ?int {
+                return $field->get('minLength');
+            },
 
-            if (!is_string($value) && !is_numeric($value)) {
-                throw new ValidationException(sprintf('Invalid value for field "%s" of type "%s"', $field->name(), $field->type()));
-            }
+            /**
+             * Return the maximum allowed length for the field
+             *
+             * If not set, no maximum length is enforced
+             */
+            'maxLength' => function (Field $field): ?int {
+                return $field->get('maxLength');
+            },
 
-            if ($field->has('min') && strlen((string) $value) < $field->get('min')) {
-                throw new ValidationException(sprintf('The minimum allowed length for field "%s" of type "%s" is %d', $field->name(), $field->value(), $field->get('min')));
-            }
+            /**
+             * Return the pattern that the field value must match
+             *
+             * This is a regular expression that the value must match.
+             * If not set, no pattern validation is performed.
+             */
+            'pattern' => function (Field $field): ?string {
+                return $field->get('pattern');
+            },
 
-            if ($field->has('max') && strlen((string) $value) > $field->get('max')) {
-                throw new ValidationException(sprintf('The maximum allowed length for field "%s" of type "%s" is %d', $field->name(), $field->value(), $field->get('max')));
-            }
+            'validate' => function (Field $field, $value): string {
+                if (Constraint::isEmpty($value)) {
+                    return '';
+                }
 
-            if ($field->has('pattern') && !Constraint::matchesRegex((string) $value, $field->get('pattern'))) {
-                throw new ValidationException(sprintf('The value of field "%s" of type "%s" does not match the required pattern', $field->name(), $field->value()));
-            }
+                if (!is_string($value) && !is_numeric($value)) {
+                    throw new ValidationException(sprintf('Invalid value for field "%s" of type "%s"', $field->name(), $field->type()));
+                }
 
-            return (string) $value;
-        },
+                if ($field->has('minLength') && strlen((string) $value) < $field->minLength()) {
+                    throw new ValidationException(sprintf('The minimum allowed length for field "%s" of type "%s" is %d', $field->name(), $field->value(), $field->minLength()));
+                }
+
+                if ($field->has('maxLength') && strlen((string) $value) > $field->maxLength()) {
+                    throw new ValidationException(sprintf('The maximum allowed length for field "%s" of type "%s" is %d', $field->name(), $field->value(), $field->maxLength()));
+                }
+
+                if ($field->has('pattern') && !Constraint::matchesRegex((string) $value, $field->pattern())) {
+                    throw new ValidationException(sprintf('The value of field "%s" of type "%s" does not match the required pattern', $field->name(), $field->value()));
+                }
+
+                return (string) $value;
+            },
+        ],
     ];
 };

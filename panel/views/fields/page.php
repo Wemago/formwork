@@ -15,7 +15,7 @@
                         'selected' => $field->value() === '',
                     ]) ?>><?= $this->translate('page.none') ?></option>
         <?php endif ?>
-        <?php if ($field->get('allowSite')) : ?>
+        <?php if ($field->allowSite()) : ?>
             <option <?= $this->attr([
                         'value' => '.',
                         'selected' => $field->value() === '.',

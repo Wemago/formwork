@@ -8,25 +8,30 @@ use Formwork\Utils\Constraint;
 
 return function (App $app) {
     return [
-        'options' => function (Field $field) {
-            return Arr::from($field->get('options', []));
-        },
+        'methods' => [
+            /**
+             * Get the field dropdown options
+             */
+            'options' => function (Field $field) {
+                return Arr::from($field->get('options', []));
+            },
 
-        'validate' => function (Field $field, $value) {
-            if (Constraint::isEmpty($value)) {
-                return '';
-            }
+            'validate' => function (Field $field, $value) {
+                if (Constraint::isEmpty($value)) {
+                    return '';
+                }
 
-            if (!array_key_exists($value, $field->options())) {
-                throw new ValidationException(sprintf('Invalid value for field "%s" of type "%s"', $field->name(), $field->type()));
-            }
+                if (!array_key_exists($value, $field->options())) {
+                    throw new ValidationException(sprintf('Invalid value for field "%s" of type "%s"', $field->name(), $field->type()));
+                }
 
-            if (is_numeric($value)) {
-                // This reliably casts numeric values to int or float
-                return $value + 0;
-            }
+                if (is_numeric($value)) {
+                    // This reliably casts numeric values to int or float
+                    return $value + 0;
+                }
 
-            return $value;
-        },
+                return $value;
+            },
+        ],
     ];
 };

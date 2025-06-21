@@ -8,39 +8,51 @@ use Formwork\Pages\PageCollection;
 
 return function (Site $site) {
     return [
-        'return' => function (Field $field) use ($site) {
-            if ($field->value() === '.' && $field->get('allowSite', false)) {
-                return $site;
-            }
-            return $site->findPage($field->value() ?? '');
-        },
+        'methods' => [
+            'return' => function (Field $field) use ($site) {
+                if ($field->value() === '.' && $field->get('allowSite', false)) {
+                    return $site;
+                }
+                return $site->findPage($field->value() ?? '');
+            },
 
-        'collection' => function (Field $field) use ($site): PageCollection {
-            return $field->get('collection', $site->descendants());
-        },
+            /**
+             * Return whether the field should allow selecting the Site
+             */
+            'allowSite' => function (Field $field): bool {
+                return $field->is('allowSite', false);
+            },
 
-        'setValue' => function (Field $field, $value) use ($site): ?string {
-            if ($value === $site) {
-                return '.';
-            }
+            /**
+             * Get the collection of pages associated with the field
+             */
+            'collection' => function (Field $field) use ($site): PageCollection {
+                return $field->get('collection', $site->descendants());
+            },
 
-            if ($value instanceof Page) {
-                return $value->route();
-            }
+            'setValue' => function (Field $field, $value) use ($site): ?string {
+                if ($value === $site) {
+                    return '.';
+                }
 
-            return $value;
-        },
+                if ($value instanceof Page) {
+                    return $value->route();
+                }
 
-        'validate' => function (Field $field, $value) {
-            if ($value === '') {
-                return null;
-            }
+                return $value;
+            },
 
-            if ($value === '.' && !$field->get('allowSite', false)) {
-                throw new ValidationException('Invalid Site');
-            }
+            'validate' => function (Field $field, $value) {
+                if ($value === '') {
+                    return null;
+                }
 
-            return $value;
-        },
+                if ($value === '.' && !$field->get('allowSite', false)) {
+                    throw new ValidationException('Invalid Site');
+                }
+
+                return $value;
+            },
+        ],
     ];
 };

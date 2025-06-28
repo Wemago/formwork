@@ -98,6 +98,14 @@
             padding: 1.5rem 2rem;
         }
 
+        .error-debug-details details {
+            margin-bottom: 0.5rem;
+        }
+
+        .error-debug-details .__formwork-trace-params {
+            margin-bottom: 1rem;
+        }
+
         .error-debug-editor-uri {
             color: inherit;
             text-decoration: underline;

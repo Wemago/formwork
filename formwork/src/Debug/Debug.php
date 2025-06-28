@@ -2,7 +2,9 @@
 
 namespace Formwork\Debug;
 
+use Closure;
 use Formwork\Traits\StaticClass;
+use ReflectionFunction;
 use ReflectionReference;
 use UnexpectedValueException;
 use UnitEnum;
@@ -84,6 +86,10 @@ final class Debug
 
         .__formwork-dump .__type-property {
             color: #1d75b3;
+        }
+
+        .__formwork-dump .__type-keyword {
+            color: #dd4a68;
         }
 
         .__formwork-dump .__ref:target {
@@ -260,6 +266,65 @@ final class Debug
 
                 static::$refs[] = $id;
 
+                if ($data instanceof Closure) {
+                    $reflectionFunction = new ReflectionFunction($data);
+
+                    $parameters = [];
+
+                    $typeFormatter = fn(string $type) => preg_replace_callback('/\??([^|&]+)/', fn(array $matches) => match ($matches[1]) {
+                        'bool', 'true', 'false', 'int', 'float', 'string', 'null', 'array', 'mixed', 'void', 'never', 'callable', 'iterable', 'resource' => sprintf('<span class="__type-keyword">%s</span>', $matches[0]),
+                        default => sprintf('<span class="__type-name">%s</span>', $matches[0]),
+                    }, $type);
+
+                    foreach ($reflectionFunction->getParameters() as $parameter) {
+                        $type = $parameter->getType();
+                        $parameters[] = $type
+                            ? sprintf('%s %s%s<span class="__type-property">$%s</span>', $typeFormatter((string) $type), $parameter->isVariadic() ? '...' : '', $parameter->isPassedByReference() ? '&' : '', $parameter->getName())
+                            : sprintf('%s%s<span class="__type-property">$%s</span>', $parameter->isVariadic() ? '...' : '', $parameter->isPassedByReference() ? '&' : '', $parameter->getName());
+                    }
+
+                    $returnType = $reflectionFunction->getReturnType();
+
+                    $signature = $returnType
+                        ? sprintf('<span class="__type-name">Closure</span>(%s): %s', implode(', ', $parameters), $typeFormatter((string) $returnType))
+                        : sprintf('<span class="__type-name">Closure</span>(%s)', implode(', ', $parameters));
+
+                    $parts = [];
+
+                    $meta = [
+                        'scope' => $reflectionFunction->isStatic() ? null : $reflectionFunction->getClosureScopeClass()?->getName(),
+                        'class' => $reflectionFunction->isStatic() ? null : $reflectionFunction->getClosureCalledClass()?->getName(),
+                        'this'  => $reflectionFunction->getClosureThis(),
+                    ];
+
+                    foreach ($meta as $property => $value) {
+                        if ($value === null) {
+                            continue;
+                        }
+                        $parts[] = str_repeat(' ', $indent + self::INDENT_SPACES)
+                            . '<span class="__type-property">' . $property . '</span>' . ': '
+                            . self::outputData($value, $indent + self::INDENT_SPACES);
+                    }
+
+                    if ($parts === []) {
+                        return sprintf(
+                            "%s (<span class=\"__ref\" id=\"__formwork-dump-ref-%d\">#%2\$d</span>) {\n%s}",
+                            $signature,
+                            $id,
+                            str_repeat(' ', $indent)
+                        );
+                    }
+
+                    return sprintf(
+                        "%s (<span class=\"__ref\" id=\"__formwork-dump-ref-%d\">#%2\$d</span>) {<span class=\"__formwork-dump-toggle\" onclick=\"__formwork_dump_toggle(this)\" data-target=\"__formwork-dump-id-%3\$d\">▼</span>\n<div class=\"__formwork-dump-collapsed\" id=\"__formwork-dump-id-%d\">%s</div>%s}",
+                        $signature,
+                        $id,
+                        ++static::$counter,
+                        implode("\n", $parts),
+                        str_repeat(' ', $indent)
+                    );
+                }
+
                 foreach ((array) $data as $property => $value) {
                     if (str_starts_with($property, "\0*\0")) {
                         $property = '<span class="__visibility __visibility-protected" title="Protected property">protected</span><span class="__type-property">' . substr($property, 3) . '</span>';
@@ -272,6 +337,15 @@ final class Debug
                     $parts[] = str_repeat(' ', $indent + self::INDENT_SPACES)
                         . $property . ': '
                         . self::outputData($value, $indent + self::INDENT_SPACES);
+                }
+
+                if ($parts === []) {
+                    return sprintf(
+                        "<span class=\"__type-name\">%s</span>(<span class=\"__ref\" id=\"__formwork-dump-ref-%d\">#%2\$d</span>) {\n%s}",
+                        $class,
+                        $id,
+                        str_repeat(' ', $indent)
+                    );
                 }
 
                 return sprintf(

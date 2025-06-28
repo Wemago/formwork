@@ -4,7 +4,12 @@ namespace Formwork\Debug;
 
 use Formwork\Traits\StaticClass;
 use Formwork\Utils\FileSystem;
+use Formwork\Utils\Str;
 use PhpToken;
+use ReflectionFunction;
+use ReflectionMethod;
+use SensitiveParameter;
+use SensitiveParameterValue;
 
 final class CodeDumper
 {
@@ -64,6 +69,63 @@ final class CodeDumper
             .__formwork-code .__type-keyword {
                 color: #dd4a68;
             }
+
+            .__formwork-trace-call {
+                margin: 16px 0 8px;
+                font-family: SFMono-Regular, "SF Mono", "Cascadia Mono", "Liberation Mono", Menlo, Consolas, monospace;
+                font-size: 13px;
+            }
+
+            .__formwork-trace-call .__name {
+                color: #047d65;
+            }
+
+            .__formwork-trace-params {
+                overflow-x: auto;
+                margin-bottom: 16px;
+            }
+
+            .__formwork-trace-params table {
+                width: 100%;
+                border-collapse: collapse;
+            }
+
+            .__formwork-trace-params td {
+                padding: 8px 0;
+                border-top: 1px solid #ddd;
+                border-bottom: 1px solid #ddd;
+            }
+            .__formwork-trace-params .__param-name {
+                width: 20%;
+                vertical-align: top;
+                font-family: SFMono-Regular, "SF Mono", "Cascadia Mono", "Liberation Mono", Menlo, Consolas, monospace;
+                font-size: 13px;
+                overflow-wrap: break-word;
+                color: #1d75b3;
+                padding-right: 8px;
+            }
+
+            .__formwork-trace-params .__formwork-dump {
+                margin: 0;
+                padding: 0;
+                background: transparent;
+                border-radius: 0;
+            }
+
+            .__formwork-trace-params .__param-type {
+                    display: inline-block;
+                    padding: 1px 4px;
+                    border-radius: 4px;
+                    margin-left: 4px;
+                    color: #777;
+                    cursor: default;
+                    font-size: 0.75em;
+            }
+
+            .__formwork-trace-params .__type-default {
+                background-color: #d4f7cf;
+            }
+
         CSS;
 
     /**
@@ -76,11 +138,80 @@ final class CodeDumper
      */
     public static function dumpLine(string $file, int $line, int $contextLines = 5): void
     {
+        self::dumpStyles();
+        echo '<pre class="__formwork-code">', self::highlightLine(self::highlightPhpCode(FileSystem::read($file)), $line, $contextLines), '</pre>';
+    }
+
+    /**
+     * Dump a backtrace frame
+     *
+     * @param array{function: string, line: int, file: string, class?: string, object?: object, type?: string, args: list<mixed>} $frame Backtrace frame
+     */
+    public static function dumpBacktraceFrame(array $frame, int $contextLines = 5): void
+    {
+        self::dumpStyles();
+        self::dumpLine($frame['file'], $frame['line'], $contextLines);
+
+        $result = sprintf('<div class="__formwork-trace-call"><span class="__name">%s</span>%s<span class="__name">%s</span>()</div>', $frame['class'] ?? '', $frame['type'] ?? '', $frame['function']);
+
+        $parameterCount = 0;
+
+        $result .= '<div class="__formwork-trace-params"><table>' . "\n";
+
+        if (!Str::endsWith($frame['function'], '{closure}') && $frame['function'] !== 'include') {
+            $reflection = isset($frame['class']) ? new ReflectionMethod($frame['class'], $frame['function']) : new ReflectionFunction($frame['function']);
+            $parameterCount = count($reflection->getParameters());
+
+            foreach ($reflection->getParameters() as $i => $parameter) {
+                $name = ($parameter->isVariadic() ? '...$' : '$') . $parameter->getName();
+                $values = array_slice($frame['args'], $i, $parameter->isVariadic() ? null : 1);
+                $default = false;
+
+                if ($values === [] && $parameter->isDefaultValueAvailable()) {
+                    $values = [$parameter->getDefaultValue()];
+                    $default = true;
+                }
+
+                foreach ($values as $j => $value) {
+                    if ($parameter->getAttributes(SensitiveParameter::class)) {
+                        $value = new SensitiveParameterValue($value);
+                    }
+                    $result .= "<tr class=\"__row\">\n";
+                    if ($j === 0) {
+                        $result .= sprintf('<td class="__param-name" rowspan="%d">%s', count($values), $name);
+                        if ($default) {
+                            $result .= '<span class="__param-type __type-default">default</span>';
+                        }
+                        $result .= "</td>\n";
+                    }
+
+                    ob_start();
+                    Debug::dump($value);
+
+                    $result .= sprintf("<td>%s</td></tr>\n", ob_get_clean());
+                }
+            }
+        }
+
+        if ($parameterCount < count($frame['args'])) {
+            foreach (array_slice($frame['args'], $parameterCount) as $i => $value) {
+                $result .= sprintf("<tr class=\"__row\">\n<td class=\"__param-name\">#%d</td>\n<td>%s</td></tr>\n", $parameterCount + $i, Debug::dumpToString($value));
+            }
+        }
+        $result .= '</table></div>';
+
+        echo $result;
+    }
+
+    /**
+     * Dump styles
+     */
+    private static function dumpStyles(): void
+    {
         if (!static::$stylesDumped) {
             echo '<style>' . static::$css . '</style>';
             static::$stylesDumped = true;
         }
-        echo '<pre class="__formwork-code">', self::highlightLine(self::highlightPhpCode(FileSystem::read($file)), $line, $contextLines), '</pre>';
     }
 
     /**

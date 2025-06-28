@@ -1281,6 +1281,12 @@ final class MimeType
                 $mimeType = self::fromExtension('svg');
             }
 
+            // Fix type for JavaScript files with application/javascript MIME type
+            // as text/javascript intended usage has changed from OBSOLETED to COMMON (see RFC 9239)
+            if ($mimeType === 'application/javascript') {
+                $mimeType = self::fromExtension('js');
+            }
+
             // Fix wrong type for image/svg+xml
             if ($mimeType === 'text/html') {
                 $domDocument = new DOMDocument();

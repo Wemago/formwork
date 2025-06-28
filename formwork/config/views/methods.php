@@ -54,7 +54,7 @@ return function (App $app) {
                 $markdown,
                 [
                     'site'      => $app->site(),
-                    'safeMode'  => $app->config()->get('system.pages.content.safeMode'),
+                    'allowHtml' => $app->config()->get('system.pages.content.allowHtml'),
                     'baseRoute' => $currentPage !== null ? $currentPage->route() : '/',
                 ]
             );

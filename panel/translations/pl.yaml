@@ -153,10 +153,10 @@ panel.options.system.cache.disabled: Wyłączona
 panel.options.system.cache.enabled: Włączona
 panel.options.system.cache.time: Czas pamięci podręcznej
 panel.options.system.content: Zawartość
-panel.options.system.content.safeMode: Tryb bezpieczny
-panel.options.system.content.safeMode.description: Tryb bezpieczny uniemożliwia używanie tagów HTML w polach Markdown, aby uniknąć luk w zabezpieczeniach. Nawet jeśli jest wyłączony, potencjalnie niebezpieczne tagi, takie jak `<script>` i `<style>`, są konwertowane na tekst
-panel.options.system.content.safeMode.disabled: Wyłączony
-panel.options.system.content.safeMode.enabled: Włączony
+panel.options.system.content.allowHtml: Zezwól na HTML w polach Markdown
+panel.options.system.content.allowHtml.description: Potencjalnie niebezpieczne tagi, takie jak `<script>` i `<style>`, są zawsze zamieniane na tekst
+panel.options.system.content.allowHtml.disabled: Wyłączone
+panel.options.system.content.allowHtml.enabled: Włączone
 panel.options.system.dateAndTime: Data i czas
 panel.options.system.dateAndTime.dateFormat: Format daty
 panel.options.system.dateAndTime.firstWeekday: Pierwszy dzień tygodnia

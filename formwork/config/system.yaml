@@ -71,7 +71,7 @@ pages:
     error: error
     content:
         extension: .md
-        safeMode: true
+        allowHtml: false
 
 panel:
     enabled: true

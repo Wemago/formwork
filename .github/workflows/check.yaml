@@ -1,19 +1,23 @@
-name: Check
+name: Check PHP
 
 on:
   push:
     branches:
       - 2.x
+    paths:
+        - '**.php'
+
   pull_request:
     branches:
       - 2.x
+    paths:
+        - '**.php'
 
 permissions:
   contents: read
 
 jobs:
   check:
-
     runs-on: ubuntu-latest
 
     steps:

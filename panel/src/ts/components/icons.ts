@@ -1,12 +1,20 @@
 import { app } from "../app";
 
 const cache = new Map();
+const pending = new Map();
 
 export function passIcon(icon: string, callback: (iconData: string) => void) {
     if (cache.has(icon)) {
         callback(cache.get(icon));
         return;
     }
+
+    if (pending.has(icon)) {
+        pending.get(icon).push(callback);
+        return;
+    }
+
+    pending.set(icon, [callback]);
 
     const request = new XMLHttpRequest();
 
@@ -15,7 +23,12 @@ export function passIcon(icon: string, callback: (iconData: string) => void) {
         if (data !== "") {
             cache.set(icon, data);
         }
-        callback(data);
+
+        for (const callback of pending.get(icon)) {
+            callback(data);
+        }
+
+        pending.delete(icon);
     };
 
     request.open("GET", `${app.config.baseUri}assets/icons/svg/${icon}.svg`);

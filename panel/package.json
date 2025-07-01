@@ -22,7 +22,10 @@
         "format:ts": "prettier './src/ts/**/*.ts' --write",
         "lint": "yarn lint:css && yarn lint:ts",
         "lint:css": "stylelint './src/scss/**/*.scss' --fix",
-        "lint:ts": "eslint './src/ts/**/*.ts' --fix"
+        "lint:ts": "eslint './src/ts/**/*.ts' --fix",
+        "check": "yarn check:css && yarn check:ts",
+        "check:css": "stylelint './src/scss/**/*.scss'",
+        "check:ts": "eslint './src/ts/**/*.ts'"
     },
     "dependencies": {
         "@codemirror/commands": "^6.8.1",

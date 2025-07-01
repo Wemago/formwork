@@ -17,7 +17,7 @@
         <ul class="sidebar-navigation">
             <?php foreach ($panel->navigation() as $item) : ?>
                 <?php if ($panel->user()->permissions()->has($item->permissions())) : ?>
-                    <li class="<?= ($location === $item->id()) ? 'active' : '' ?>">
+                    <li class="<?= $this->classes(['active' => $location === $item->id()]) ?>">
                         <a href="<?= $panel->uri($item->uri()) ?>"><?= $this->escape($item->label()) ?></a>
                         <?php if ($item->badge()) : ?>
                             <span class="badge"><?= $item->badge() ?></span>

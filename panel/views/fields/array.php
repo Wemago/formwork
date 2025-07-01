@@ -1,6 +1,6 @@
 <?php $this->layout('fields.field') ?>
 <div <?= $this->attr([
-            'class'     => ['form-input-array', $field->isAssociative() ? 'form-input-array-associative' : ''],
+            'class'     => $this->classes(['form-input-array', 'form-input-array-associative' => $field->isAssociative()]),
             'id'        => $field->name(),
             'hidden'    => $field->isHidden(),
             'data-name' => $field->formName(),

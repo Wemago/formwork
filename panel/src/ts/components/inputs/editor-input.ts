@@ -90,7 +90,7 @@ export class EditorInput {
             return;
         }
         this.editor?.destroy();
-        this.editor = new MarkdownView(this.container, addBaseUri(this.element.value, this.options.baseUri), this.options.inputEventHandler, {
+        this.editor = new MarkdownView(this.name, this.container, addBaseUri(this.element.value, this.options.baseUri), this.options.inputEventHandler, {
             spellcheck: this.options.spellcheck ? "true" : "false",
         });
         this.editor.view.dom.style.height = `${this.options.height}px`;

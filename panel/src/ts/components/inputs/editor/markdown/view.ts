@@ -13,7 +13,7 @@ import { menuPlugin } from "./menu";
 export class MarkdownView {
     view: EditorView;
 
-    constructor(target: Element, content: string, inputEventHandler: (content: string) => void, attributes: { [key: string]: string } = {}) {
+    constructor(id: string, target: Element, content: string, inputEventHandler: (content: string) => void, attributes: { [key: string]: string } = {}) {
         this.view = new EditorView(target, {
             state: EditorState.create({
                 doc: defaultMarkdownParser.parse(content) as any,
@@ -22,7 +22,7 @@ export class MarkdownView {
                     keymap(buildKeymap(schema)),
                     keymap(baseKeymap),
                     history(),
-                    menuPlugin(),
+                    menuPlugin(id),
                     linkTooltip(app.config.siteUri),
                     new Plugin({
                         props: {

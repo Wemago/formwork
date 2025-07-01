@@ -23,7 +23,7 @@ class MenuView {
     dom: HTMLElement;
     dropdowns: { [name: string]: HTMLElement };
 
-    constructor(items: MenuItem[], editorView: EditorView) {
+    constructor(id: string, items: MenuItem[], editorView: EditorView) {
         this.items = items;
         this.editorView = editorView;
 
@@ -46,7 +46,7 @@ class MenuView {
 
             if (dropdown) {
                 if (!(dropdown in this.dropdowns)) {
-                    const el = createDropdown();
+                    const el = createDropdown(`${id}-${dropdown}`);
                     this.dropdowns[dropdown] = el;
                     target.appendChild(el);
                 }
@@ -102,20 +102,7 @@ class MenuView {
     }
 }
 
-function plugin(items: MenuItem[]) {
-    return new Plugin({
-        view(editorView: EditorView) {
-            const menuView = new MenuView(items, editorView);
-
-            const toolbar = editorView.dom.parentNode!.querySelector(".editor-toolbar");
-            toolbar!.prepend(menuView.dom);
-
-            return menuView;
-        },
-    });
-}
-
-export function menuPlugin() {
+export function menuPlugin(id: string) {
     let modalsInitialized = false;
 
     if (!modalsInitialized) {
@@ -123,7 +110,7 @@ export function menuPlugin() {
         modalsInitialized = true;
     }
 
-    return plugin([
+    const items = [
         {
             name: app.config.EditorInput.labels.paragraph,
             command: setBlockType(schema.nodes.paragraph),
@@ -245,7 +232,18 @@ export function menuPlugin() {
             command: redo,
             dom: createButton("rotate-right", app.config.EditorInput.labels.redo),
         },
-    ]);
+    ];
+
+    return new Plugin({
+        view(editorView: EditorView) {
+            const menuView = new MenuView(id, items, editorView);
+
+            const toolbar = editorView.dom.parentNode!.querySelector(".editor-toolbar");
+            toolbar!.prepend(menuView.dom);
+
+            return menuView;
+        },
+    });
 }
 
 function createButton(icon: string, title: string) {
@@ -265,20 +263,20 @@ function createMenuItem(text: string) {
     return item;
 }
 
-function createDropdown() {
+function createDropdown(id: string) {
     const dropdown = document.createElement("div");
     dropdown.className = "dropdown";
 
     const btn = document.createElement("button");
     btn.type = "button";
     btn.classList.add("button", "toolbar-button", "dropdown-button", "caret");
-    btn.dataset.dropdown = "dropdown-editor";
+    btn.dataset.dropdown = `dropdown-${id}`;
 
     dropdown.appendChild(btn);
 
     const menu = document.createElement("div");
     menu.className = "dropdown-menu";
-    menu.id = "dropdown-editor";
+    menu.id = `dropdown-${id}`;
 
     dropdown.appendChild(menu);
 

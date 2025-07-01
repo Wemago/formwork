@@ -28,7 +28,7 @@ return function (App $app, Site $site) {
                     (string) $field->value(),
                     [
                         'site'      => $site,
-                        'safeMode'  => $app->config()->get('system.pages.content.safeMode'),
+                        'allowHtml' => $app->config()->get('system.pages.content.allowHtml'),
                         'baseRoute' => $currentPage !== null ? $currentPage->route() : '/',
                     ]
                 );

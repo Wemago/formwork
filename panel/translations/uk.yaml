@@ -153,10 +153,10 @@ panel.options.system.cache.disabled: Вимкнено
 panel.options.system.cache.enabled: Увімкнено
 panel.options.system.cache.time: Час кешу
 panel.options.system.content: Вміст
-panel.options.system.content.safeMode: Безпечний режим
-panel.options.system.content.safeMode.description: Безпечний режим забороняє використання HTML тегів у полях Markdown, щоб уникнути вразливостей безпеки. Навіть якщо вимкнено, потенційно небезпечні теги, такі як `<script>` та `<style>`, перетворюються на текст.
-panel.options.system.content.safeMode.disabled: Вимкнено
-panel.options.system.content.safeMode.enabled: Увімкнено
+panel.options.system.content.allowHtml: Дозволити HTML у полях Markdown
+panel.options.system.content.allowHtml.description: Потенційно небезпечні теги, такі як `<script>` і `<style>`, завжди перетворюються на текст
+panel.options.system.content.allowHtml.disabled: Вимкнено
+panel.options.system.content.allowHtml.enabled: Увімкнено
 panel.options.system.dateAndTime: Дата та час
 panel.options.system.dateAndTime.dateFormat: Формат дати
 panel.options.system.dateAndTime.firstWeekday: Перший день тижня

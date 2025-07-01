@@ -20,10 +20,10 @@ final class Markdown extends AbstractParser
      */
     public static function parse(string $input, array $options = []): string
     {
-        $safeMode = $options['safeMode'] ?? true;
+        $allowHtml = $options['allowHtml'] ??= false;
 
         $environment = new Environment([
-            'html_input'        => $safeMode ? 'escape' : 'allow',
+            'html_input'        => $allowHtml ? 'allow' : 'escape',
             'max_nesting_level' => 10,
             'formwork'          => $options,
         ]);

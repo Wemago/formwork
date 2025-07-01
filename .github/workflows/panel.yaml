@@ -1,0 +1,45 @@
+name: Check panel assets
+
+on:
+  push:
+    branches:
+      - 2.x
+    paths:
+        - 'panel/src/**'
+
+  pull_request:
+    branches:
+      - 2.x
+    paths:
+        - 'panel/src/**'
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+            node-version: latest
+
+      - uses: actions/checkout@v4
+
+      - name: Install dependencies
+        run: |
+          corepack enable
+          cd panel
+          yarn install
+
+      - name: Check TypeScript
+        run: |
+          cd panel
+          yarn run check:ts
+
+      - name: Check CSS
+        run: |
+          cd panel
+          yarn run check:css

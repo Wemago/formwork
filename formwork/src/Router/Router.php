@@ -170,7 +170,7 @@ class Router
     /**
      * Return the current route params
      */
-    public function params(): ?RouteParams
+    public function params(): RouteParams
     {
         return $this->params;
     }

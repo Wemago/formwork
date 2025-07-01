@@ -14,7 +14,7 @@ use Iterator;
 use LogicException;
 
 /**
- * @implements Iterator<string|int,mixed>
+ * @implements Iterator<int|string,mixed>
  */
 abstract class AbstractCollection implements Arrayable, Countable, Iterator
 {

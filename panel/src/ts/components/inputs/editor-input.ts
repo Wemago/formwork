@@ -58,7 +58,11 @@ export class EditorInput {
         if (this.container) {
             textarea.style.display = "none";
 
-            const mode = window.localStorage.getItem(`formwork.editorMode[${this.name}]`);
+            const formName = this.element.form?.dataset.form;
+
+            const key = formName ? `${formName}.${this.name}` : this.name;
+
+            const mode = window.localStorage.getItem(`formwork.editorMode[${key}]`);
 
             const codeSwitch = $("[data-command=toggle-markdown]", this.container) as HTMLButtonElement;
 
@@ -73,10 +77,10 @@ export class EditorInput {
             codeSwitch.addEventListener("click", () => {
                 if (codeSwitch.classList.toggle("is-active")) {
                     this.switchToCode();
-                    window.localStorage.setItem(`formwork.editorMode[${this.name}]`, "code");
+                    window.localStorage.setItem(`formwork.editorMode[${key}]`, "code");
                 } else {
                     this.switchToMarkdown();
-                    window.localStorage.setItem(`formwork.editorMode[${this.name}]`, "mardown");
+                    window.localStorage.setItem(`formwork.editorMode[${key}]`, "mardown");
                 }
                 this.editor.view.focus();
             });

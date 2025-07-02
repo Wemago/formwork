@@ -38,8 +38,12 @@ export class FilesList {
         const searchInput = $(".files-search", this.element);
 
         if (toggle) {
+            const formName = this.element.closest("form")?.dataset.form;
+
             const fieldName = toggle.dataset.for;
-            const viewAs = window.localStorage.getItem(`formwork.filesListViewAs[${fieldName}]`);
+
+            const key = formName ? `${formName}.${fieldName}` : fieldName;
+            const viewAs = window.localStorage.getItem(`formwork.filesListViewAs[${key}]`);
 
             if (viewAs) {
                 $$("input", toggle).forEach((input: HTMLInputElement) => (input.checked = false));
@@ -50,7 +54,7 @@ export class FilesList {
             $$("input", toggle).forEach((input: HTMLInputElement) => {
                 input.addEventListener("input", () => {
                     this.element.classList.toggle("is-thumbnails", input.value === "thumbnails");
-                    window.localStorage.setItem(`formwork.filesListViewAs[${fieldName}]`, input.value);
+                    window.localStorage.setItem(`formwork.filesListViewAs[${key}]`, input.value);
                 });
             });
         }

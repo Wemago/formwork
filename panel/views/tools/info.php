@@ -26,7 +26,7 @@
     <?php endforeach ?>
 
     <?php foreach ($info as $section => $data) : ?>
-        <section class="section collapsible" id="section-<?= $this->escapeAttr(strtolower($section)) ?>">
+        <section class="section collapsible" id="section-<?= $this->slug($section) ?>">
             <div class="section-header">
                 <button type="button" class="button section-toggle mr-2" title="<?= $this->translate('panel.sections.toggle') ?>" aria-label="<?= $this->translate('panel.sections.toggle') ?>"><?= $this->icon('chevron-up') ?></button>
                 <span class="caption"><?= $this->escape($section) ?></span>

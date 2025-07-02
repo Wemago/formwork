@@ -16,8 +16,8 @@
     </div>
     <section class="section user-summary">
         <div class="user-summary-image">
-            <img src="<?= $user->image()->uri() ?>" alt="<?= $panel->user()->username() ?>">
-            <?php if ($panel->user()->canChangeOptionsOf($user) && !$user->hasDefaultImage()) : ?>
+            <?= $this->insert('_user-image', ['user' => $user]) ?>
+            <?php if ($panel->user()->canChangeOptionsOf($user) && $user->image()) : ?>
                 <div class="dropdown">
                     <button type="button" class="button button-link dropdown-button" title="<?= $this->translate('panel.user.image.actions') ?>" data-dropdown="dropdown-user-image"><?= $this->icon('ellipsis-v') ?></button>
                     <div class="dropdown-menu" id="dropdown-user-image">

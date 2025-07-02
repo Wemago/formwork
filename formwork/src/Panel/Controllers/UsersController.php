@@ -99,7 +99,7 @@ final class UsersController extends AbstractController
             }
             FileSystem::delete(FileSystem::joinPaths($this->config->get('system.users.paths.accounts'), $user->username() . '.yaml'));
 
-            if (!$user->hasDefaultImage()) {
+            if ($user->image() !== null) {
                 $this->deleteUserImage($user);
             }
         } catch (TranslatedException $e) {
@@ -290,7 +290,7 @@ final class UsersController extends AbstractController
         $file->square($userImageSize)->save();
 
         // Delete old image
-        if (!$user->hasDefaultImage()) {
+        if ($user->image() !== null) {
             $this->deleteUserImage($user);
         }
 
@@ -304,7 +304,7 @@ final class UsersController extends AbstractController
      */
     private function deleteUserImage(User $user): void
     {
-        if ($user->hasDefaultImage()) {
+        if ($user->image() === null) {
             throw new TranslatedException('Cannot delete default user image', 'panel.user.image.cannotDelete.defaultImage');
         }
 

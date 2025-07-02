@@ -41,7 +41,7 @@ class User extends Model
     /**
      * User image
      */
-    protected Image $image;
+    protected ?Image $image = null;
 
     /**
      * User last access time
@@ -80,16 +80,16 @@ class User extends Model
     /**
      * Return user image
      */
-    public function image(): Image
+    public function image(): ?Image
     {
-        if (isset($this->image)) {
+        if ($this->image !== null) {
             return $this->image;
         }
 
         $path = FileSystem::joinPaths($this->config->get('system.users.paths.images'), (string) $this->data['image']);
 
         if (!FileSystem::isFile($path, assertExists: false)) {
-            $path = FileSystem::joinPaths($this->config->get('system.panel.paths.assets'), 'images/user-image.svg');
+            return $this->image = null;
         }
 
         $file = $this->fileFactory->make($path);
@@ -99,14 +99,6 @@ class User extends Model
         }
 
         return $this->image = $file;
-    }
-
-    /**
-     * Return whether the user has the default image
-     */
-    public function hasDefaultImage(): bool
-    {
-        return $this->image()->path() === FileSystem::joinPaths($this->config->get('system.panel.paths.assets'), 'images/user-image.svg');
     }
 
     /**

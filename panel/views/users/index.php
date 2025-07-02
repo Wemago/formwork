@@ -11,8 +11,8 @@
 
 <section class="section">
     <div class="users-list-headers" aria-hidden="true">
+        <div class="users-headers-cell user-fullname truncate"><?= $this->translate('user.fullname') ?></div>
         <div class="users-headers-cell user-username truncate"><?= $this->translate('user.username') ?></div>
-        <div class="users-headers-cell user-fullname truncate show-from-sm"><?= $this->translate('user.fullname') ?></div>
         <div class="users-headers-cell user-email truncate show-from-md"><?= $this->translate('user.email') ?></div>
         <div class="users-headers-cell user-last-access truncate show-from-sm"><?= $this->translate('panel.user.lastAccess') ?></div>
         <div class="users-headers-cell user-actions"><?= $this->translate('panel.user.actions') ?></div>
@@ -20,11 +20,11 @@
     <div class="users-list">
         <?php foreach ($users as $user) : ?>
             <div class="users-item">
-                <div class="users-item-cell user-username truncate">
-                    <?= $this->insert('_user-image', ['user' => $user, 'class' => 'user-image mr-4']) ?>
-                    <a href="<?= $panel->uri('/users/' . $user->username() . '/profile/') ?>"><?= $this->escape($user->username()) ?></a>
+                <div class="users-item-cell user-fullname">
+                    <?= $this->insert('_user-image', ['user' => $user, 'class' => 'user-image']) ?>
+                    <a href="<?= $panel->uri('/users/' . $user->username() . '/profile/') ?>"><?= $this->escape($user->fullname()) ?></a>
                 </div>
-                <div class="users-item-cell user-fullname truncate show-from-sm"><?= $this->escape($user->fullname()) ?></div>
+                <div class="users-item-cell user-username truncate"><?= $this->escape($user->username()) ?></div>
                 <div class="users-item-cell user-email truncate show-from-md"><?= $this->escape($user->email()) ?></div>
                 <div class="users-item-cell user-last-access truncate show-from-sm"><?= is_null($user->lastAccess()) ? '&infin;' : $this->datetime($user->lastAccess()) ?></div>
                 <div class="users-item-cell user-actions">

@@ -62,10 +62,6 @@
     padding: 0.25rem 0.5rem;
 }
 
-.user-username {
-    flex: 1;
-}
-
 .user-image {
     display: inline-block;
     width: 2rem;
@@ -73,18 +69,22 @@
     border-radius: 50%;
     background-color: var(--color-base-400);
     box-shadow: var(--box-shadow-sm);
-    vertical-align: middle;
 }
 
-.user-fullname,
+.user-fullname {
+    display: flex;
+    flex: 1.5;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.user-username,
 .user-email {
-    max-width: 25%;
-    flex: 0 0 25%;
+    flex: 1;
 }
 
 .user-last-access {
-    max-width: 20%;
-    flex: 0 0 20%;
+    flex: 1;
     text-align: center;
 }
 

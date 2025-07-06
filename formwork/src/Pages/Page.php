@@ -462,6 +462,7 @@ class Page extends Model implements Stringable
             }
             $this->template = $this->site->templates()->get($template);
         }
+        $this->scheme = $this->site->schemes()->get('pages.' . $template);
     }
 
     /**
@@ -879,7 +880,7 @@ class Page extends Model implements Stringable
         } else {
             $this->template ??= $site->templates()->get('default');
 
-            $this->scheme ??= $site->schemes()->get('pages.default');
+            $this->scheme ??= $site->schemes()->get('pages.' . $this->template);
         }
 
         $this->fields ??= $this->scheme()->fields();

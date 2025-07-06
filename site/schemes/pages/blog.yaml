@@ -14,7 +14,7 @@ options:
 
     # This controls which template can have children, their order and other attributes
     children:
-        templates: [post, blog]
+        templates: [post]
         reverse: true
         orderable: false
 

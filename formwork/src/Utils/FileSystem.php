@@ -622,7 +622,7 @@ final class FileSystem
     /**
      * List files and directories contained in a path
      *
-     * @param int $flags Any of FileSystem::LIST_FILES, FileSystem::LIST_DIRECTORIES, FileSystem::LIST_HIDDEN, FileSystem::LIST_VISIBLE, FileSystem::LIST_ALL flags
+     * @param int $flags Any of `FileSystem::LIST_FILES`, `FileSystem::LIST_DIRECTORIES`, `FileSystem::LIST_HIDDEN`, `FileSystem::LIST_VISIBLE`, `FileSystem::LIST_ALL` flags
      *
      * @return Generator<int, string>
      */
@@ -657,7 +657,7 @@ final class FileSystem
     /**
      * Recursively list files and directories contained in a path
      *
-     * @param int $flags Any of FileSystem::LIST_FILES, FileSystem::LIST_DIRECTORIES, FileSystem::LIST_HIDDEN, FileSystem::LIST_VISIBLE, FileSystem::LIST_ALL flags
+     * @param int $flags Any of `FileSystem::LIST_FILES`, `FileSystem::LIST_DIRECTORIES`, `FileSystem::LIST_HIDDEN`, `FileSystem::LIST_VISIBLE`, `FileSystem::LIST_ALL` flags
      *
      * @return Generator<int, string>
      */

@@ -109,6 +109,52 @@ final class Arr
     }
 
     /**
+     * Convert a multidimensional array to a dot notation array, skipping non-associative arrays
+     *
+     * @param array<array-key, TValue> $array
+     *
+     * @return array<string, TValue>
+     *
+     * @template TValue
+     */
+    public static function dot(array $array): array
+    {
+        $result = [];
+
+        foreach ($array as $key => $value) {
+            if (is_array($value) && $value !== [] && self::isAssociative($value)) {
+                foreach (self::dot($value) as $subKey => $subValue) {
+                    $result[$key . '.' . $subKey] = $subValue;
+                }
+            } else {
+                $result[$key] = $value;
+            }
+        }
+
+        return $result;
+    }
+
+    /**
+     * Convert a dot notation array to a multidimensional array
+     *
+     * @param array<string, TValue> $array
+     *
+     * @return array<array-key, TValue>
+     *
+     * @template TValue
+     */
+    public static function undot(array $array): array
+    {
+        $result = [];
+
+        foreach ($array as $key => $value) {
+            self::set($result, $key, $value);
+        }
+
+        return $result;
+    }
+
+    /**
      * Remove from an array all the occurrences of the given value
      *
      * @param array<array-key, TValue> $array

@@ -493,33 +493,21 @@ class Page extends Model implements Stringable
     public function setNum(?int $num = null): void
     {
         if (func_num_args() === 0) {
-            $mode = $this->scheme()->options()->get('num');
-
             $num = $this->num();
 
-            if ($mode === 'date' && $num !== null) {
-                $formats = [
-                    $this->app->config()->get('system.date.dateFormat'),
-                    $this->app->config()->get('system.date.datetimeFormat'),
-                ];
+            $mode = $this->scheme()->options()->get('num');
 
+            if ($mode === 'date') {
                 $timestamp = isset($this->data['publishDate'])
-                    ? Date::toTimestamp($this->data['publishDate'], $formats)
-                    : $this->contentFile()?->lastModifiedTime();
-
-                if ($num === (int) date(self::DATE_NUM_FORMAT, $timestamp)) {
-                    return;
+                    ? Date::toTimestamp($this->data['publishDate'], [$this->app->config()->get('system.date.dateFormat'), $this->app->config()->get('system.date.datetimeFormat')])
+                    : ($this->contentFile()?->lastModifiedTime() ?? time());
+                $num = date(self::DATE_NUM_FORMAT, $timestamp);
+            } elseif ($num === null) {
+                if ($this->parent() === null) {
+                    throw new UnexpectedValueException('Unexpected missing parent');
                 }
+                $num = 1 + max([0, ...$this->parent()->children()->everyItem()->num()->values()]);
             }
-
-            if (!$this->parent()) {
-                throw new UnexpectedValueException('Unexpected missing parent');
-            }
-
-            $num = match ($mode) {
-                'date'  => date(self::DATE_NUM_FORMAT),
-                default => 1 + max([0, ...$this->parent()->children()->everyItem()->num()->values()]),
-            };
         }
 
         $this->num = (int) $num;
@@ -746,9 +734,7 @@ class Page extends Model implements Stringable
             ? Str::before(basename($this->contentFile()->path()), '.')
             : $this->template()->name();
 
-        if (!$this->contentPath() && $this->num === null) {
-            $this->setNum();
-        }
+        $this->setNum();
 
         $contentDir = $this->num()
             ? $this->num() . '-' . $this->slug()

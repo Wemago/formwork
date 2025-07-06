@@ -142,7 +142,10 @@ final class OptionsController extends AbstractController
     private function updateOptions(string $type, FieldCollection $fieldCollection, array $options, array $defaults): bool
     {
         $old = $options;
+
         $options = [];
+
+        $removedKeys = [];
 
         // Update options with new values
         foreach ($fieldCollection as $field) {
@@ -166,10 +169,21 @@ final class OptionsController extends AbstractController
             }
 
             if (Arr::has($defaults, $field->name()) && Arr::get($defaults, $field->name()) === $field->value()) {
+                $removedKeys[] = $field->name();
                 continue;
             }
 
             Arr::set($options, $field->name(), $field->value());
+        }
+
+        // Add options that are not in the defaults nor fields
+        foreach (Arr::dot($old) as $key => $value) {
+            if (in_array($key, $removedKeys, true)) {
+                continue;
+            }
+            if (!Arr::has($defaults, $key) || Arr::get($defaults, $key) !== $value) {
+                Arr::set($options, $key, $value);
+            }
         }
 
         // Update config file if options differ

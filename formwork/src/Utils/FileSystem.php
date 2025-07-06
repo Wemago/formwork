@@ -689,25 +689,37 @@ final class FileSystem
     /**
      * List files contained in a path
      *
-     * @param bool $all Whether to return only visible or all files
+     * @param bool $includeHidden Whether to return only visible or all files
      *
      * @return Generator<int, string>
      */
-    public static function listFiles(string $directory, bool $all = false): Generator
+    public static function listFiles(string $directory, bool $includeHidden = false): Generator
     {
-        return self::listContents($directory, $all ? self::LIST_FILES | self::LIST_HIDDEN : self::LIST_FILES);
+        $flags = self::LIST_FILES;
+        if ($includeHidden) {
+            $flags |= self::LIST_HIDDEN;
+        }
+        return self::listContents($directory, $flags);
     }
 
     /**
      * List directories contained in a path
      *
-     * @param bool $all Whether to return only visible or all directories
+     * @param bool $includeHidden Whether to return only visible or all directories
+     * @param bool $includeEmpty  Whether to include empty directories in the result
      *
      * @return Generator<int, string>
      */
-    public static function listDirectories(string $directory, bool $all = false): Generator
+    public static function listDirectories(string $directory, bool $includeHidden = false, bool $includeEmpty = true): Generator
     {
-        return self::listContents($directory, $all ? self::LIST_DIRECTORIES | self::LIST_HIDDEN : self::LIST_DIRECTORIES);
+        $flags = self::LIST_DIRECTORIES;
+        if ($includeHidden) {
+            $flags |= self::LIST_HIDDEN;
+        }
+        if (!$includeEmpty) {
+            $flags |= self::LIST_EXCLUDE_EMPTY_DIRECTORIES;
+        }
+        return self::listContents($directory, $flags);
     }
 
     /**

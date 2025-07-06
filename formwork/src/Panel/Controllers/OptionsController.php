@@ -46,8 +46,8 @@ final class OptionsController extends AbstractController
         $fields = $scheme->fields();
 
         if ($this->request->method() === RequestMethod::POST) {
-            $options = $this->config->get('system');
-            $defaults = $this->defaultConfig()->get('system');
+            $options = $this->getConfigOverrides()->get('system', []);
+            $defaults = $this->getConfigDefaults()->get('system');
             $fields->setValuesFromRequest($this->request, null)->validate();
 
             $differ = $this->updateOptions('system', $fields, $options, $defaults);
@@ -89,8 +89,8 @@ final class OptionsController extends AbstractController
         $fields = $scheme->fields();
 
         if ($this->request->method() === RequestMethod::POST) {
-            $options = $this->site->data();
-            $defaults = $this->defaultConfig()->get('site');
+            $options = $this->getConfigOverrides()->get('site', []);
+            $defaults = $this->getConfigDefaults()->get('site');
             $fields->setValuesFromRequest($this->request, null)->validate();
             $differ = $this->updateOptions('site', $fields, $options, $defaults);
 
@@ -119,9 +119,9 @@ final class OptionsController extends AbstractController
     }
 
     /**
-     * Get default config
+     * Get config defaults
      */
-    private function defaultConfig(): Config
+    private function getConfigDefaults(): Config
     {
         $config = new Config();
         $config->loadFromPath(SYSTEM_PATH . '/config/');
@@ -129,6 +129,16 @@ final class OptionsController extends AbstractController
             '%ROOT_PATH%'   => ROOT_PATH,
             '%SYSTEM_PATH%' => SYSTEM_PATH,
         ]);
+        return $config;
+    }
+
+    /**
+     * Get config overrides
+     */
+    private function getConfigOverrides(): Config
+    {
+        $config = new Config(resolved: true);
+        $config->loadFromPath(ROOT_PATH . '/site/config/');
         return $config;
     }
 
@@ -143,17 +153,8 @@ final class OptionsController extends AbstractController
     {
         $old = $options;
 
-        $options = [];
-
-        $removedKeys = [];
-
         // Update options with new values
         foreach ($fieldCollection as $field) {
-            // Ignore empty and default values
-            if ($field->isEmpty()) {
-                continue;
-            }
-
             if ($field->type() === 'upload') {
                 $files = $field->isMultiple() ? $field->value() : [$field->value()];
                 foreach ($files as $file) {
@@ -169,20 +170,17 @@ final class OptionsController extends AbstractController
             }
 
             if (Arr::has($defaults, $field->name()) && Arr::get($defaults, $field->name()) === $field->value()) {
-                $removedKeys[] = $field->name();
+                Arr::remove($options, $field->name());
                 continue;
             }
 
             Arr::set($options, $field->name(), $field->value());
         }
 
-        // Add options that are not in the defaults nor fields
-        foreach (Arr::dot($old) as $key => $value) {
-            if (in_array($key, $removedKeys, true)) {
-                continue;
-            }
-            if (!Arr::has($defaults, $key) || Arr::get($defaults, $key) !== $value) {
-                Arr::set($options, $key, $value);
+        // Remove empty arrays from options unless they are present in the old options
+        foreach (Arr::dot($options) as $key => $value) {
+            if ($value === [] && Arr::has($old, $key) && Arr::get($old, $key) !== []) {
+                Arr::remove($options, $key);
             }
         }
 

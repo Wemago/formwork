@@ -53,9 +53,11 @@ return function (App $app) {
             return Markdown::parse(
                 $markdown,
                 [
-                    'site'      => $app->site(),
-                    'allowHtml' => $app->config()->get('system.pages.content.allowHtml'),
-                    'baseRoute' => $currentPage !== null ? $currentPage->route() : '/',
+                    'site'                 => $app->site(),
+                    'baseRoute'            => $currentPage !== null ? $currentPage->route() : '/',
+                    'allowHtml'            => $app->config()->get('system.pages.content.allowHtml'),
+                    'addHeadingIds'        => $app->config()->get('system.pages.content.addHeadingIds'),
+                    'commonmarkExtensions' => $app->config()->get('system.pages.content.commonmarkExtensions', []),
                 ]
             );
         },

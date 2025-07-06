@@ -15,7 +15,6 @@ class FormworkExtension implements ConfigurableExtensionInterface
     {
         $configurationBuilder->addSchema('formwork', Expect::structure([
             'site'             => Expect::type(Site::class),
-            'allowHtml'        => Expect::bool(false),
             'imageAltProperty' => Expect::string('alt'),
             'baseRoute'        => Expect::string('/'),
         ]));

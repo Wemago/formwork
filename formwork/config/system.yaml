@@ -72,6 +72,8 @@ pages:
     content:
         extension: .md
         allowHtml: false
+        addHeadingIds: false
+        commonmarkExtensions: []
 
 panel:
     enabled: true

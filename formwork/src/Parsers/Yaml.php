@@ -28,6 +28,6 @@ final class Yaml extends AbstractEncoder
         if (empty($data)) {
             return '';
         }
-        return SymfonyYaml::dump($data, inline: 4);
+        return SymfonyYaml::dump($data, inline: PHP_INT_MAX, flags: SymfonyYaml::DUMP_MULTI_LINE_LITERAL_BLOCK);
     }
 }

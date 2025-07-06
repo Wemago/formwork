@@ -28,6 +28,11 @@ final class FileSystem
     public const int LIST_HIDDEN = 4;
 
     /**
+     * Exclude empty directories flag
+     */
+    public const int LIST_EXCLUDE_EMPTY_DIRECTORIES = 8;
+
+    /**
      * List visible files and directories flag
      */
     public const int LIST_VISIBLE = self::LIST_FILES | self::LIST_DIRECTORIES;
@@ -622,7 +627,7 @@ final class FileSystem
     /**
      * List files and directories contained in a path
      *
-     * @param int $flags Any of `FileSystem::LIST_FILES`, `FileSystem::LIST_DIRECTORIES`, `FileSystem::LIST_HIDDEN`, `FileSystem::LIST_VISIBLE`, `FileSystem::LIST_ALL` flags
+     * @param int $flags Any of `FileSystem::LIST_FILES`, `FileSystem::LIST_DIRECTORIES`, `FileSystem::LIST_EXCLUDE_EMPTY_DIRECTORIES`, `FileSystem::LIST_HIDDEN`, `FileSystem::LIST_VISIBLE`, `FileSystem::LIST_ALL` flags
      *
      * @return Generator<int, string>
      */
@@ -649,6 +654,9 @@ final class FileSystem
             if (!($flags & self::LIST_DIRECTORIES) && self::isDirectory($itemPath)) {
                 continue;
             }
+            if (($flags & self::LIST_EXCLUDE_EMPTY_DIRECTORIES) && self::isEmptyDirectory($itemPath)) {
+                continue;
+            }
             yield $item;
         }
         @closedir($handle);
@@ -657,7 +665,7 @@ final class FileSystem
     /**
      * Recursively list files and directories contained in a path
      *
-     * @param int $flags Any of `FileSystem::LIST_FILES`, `FileSystem::LIST_DIRECTORIES`, `FileSystem::LIST_HIDDEN`, `FileSystem::LIST_VISIBLE`, `FileSystem::LIST_ALL` flags
+     * @param int $flags Any of `FileSystem::LIST_FILES`, `FileSystem::LIST_DIRECTORIES`, `FileSystem::LIST_EXCLUDE_EMPTY_DIRECTORIES`, `FileSystem::LIST_HIDDEN`, `FileSystem::LIST_VISIBLE`, `FileSystem::LIST_ALL` flags
      *
      * @return Generator<int, string>
      */

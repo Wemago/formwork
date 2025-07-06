@@ -531,7 +531,7 @@ class Site extends Model implements Stringable
      */
     protected function setPath(string $path): void
     {
-        $this->path = $this->data['path'] = FileSystem::normalizePath($path . '/');
+        $this->path = $this->data['path'] = $path;
     }
 
     /**

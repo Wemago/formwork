@@ -87,9 +87,7 @@ final class Arr
     /**
      * Remove data by key using dot notation to traverse if literal key is not found
      *
-     * @param array<string, TValue> $array
-     *
-     * @template TValue
+     * @param array<mixed> $array
      */
     public static function remove(array &$array, string $key): void
     {
@@ -100,8 +98,8 @@ final class Arr
         $segments = explode('.', $key);
         $key = array_pop($segments);
         foreach ($segments as $segment) {
-            if (!array_key_exists($segment, $array)) {
-                $array[$segment] = [];
+            if (!array_key_exists($segment, $array) || !is_array($array[$segment])) {
+                return;
             }
             $array = &$array[$segment];
         }

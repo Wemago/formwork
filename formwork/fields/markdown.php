@@ -27,9 +27,11 @@ return function (App $app, Site $site) {
                 return Markdown::parse(
                     (string) $field->value(),
                     [
-                        'site'      => $site,
-                        'allowHtml' => $app->config()->get('system.pages.content.allowHtml'),
-                        'baseRoute' => $currentPage !== null ? $currentPage->route() : '/',
+                        'site'                 => $site,
+                        'baseRoute'            => $currentPage !== null ? $currentPage->route() : '/',
+                        'allowHtml'            => $app->config()->get('system.pages.content.allowHtml'),
+                        'addHeadingIds'        => $app->config()->get('system.pages.content.addHeadingIds'),
+                        'commonmarkExtensions' => $app->config()->get('system.pages.content.commonmarkExtensions', []),
                     ]
                 );
             },

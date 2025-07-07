@@ -47,7 +47,7 @@ class Config implements ArraySerializable
     /**
      * Load config from a path
      */
-    public function loadFromPath(string $path, bool $defaultConfig = false): void
+    public function loadFromPath(string $path): void
     {
         foreach (FileSystem::listFiles($path) as $file) {
             $this->loadFile(FileSystem::joinPaths($path, $file));

@@ -501,16 +501,15 @@ class Page extends Model implements Stringable
                 $timestamp = isset($this->data['publishDate'])
                     ? Date::toTimestamp($this->data['publishDate'], [$this->app->config()->get('system.date.dateFormat'), $this->app->config()->get('system.date.datetimeFormat')])
                     : ($this->contentFile()?->lastModifiedTime() ?? time());
-                $num = date(self::DATE_NUM_FORMAT, $timestamp);
-            } elseif ($num === null) {
-                if ($this->parent() === null) {
-                    throw new UnexpectedValueException('Unexpected missing parent');
-                }
-                $num = 1 + max([0, ...$this->parent()->children()->everyItem()->num()->values()]);
+                $num = (int) date(self::DATE_NUM_FORMAT, $timestamp);
+            } elseif ($this->parent() === null) {
+                $num = null;
+            } elseif ($this->contentPath() === null && $num === null) {
+                $num = 1 + (int) max([0, ...$this->parent()->children()->everyItem()->num()->values()]);
             }
         }
 
-        $this->num = (int) $num;
+        $this->num = $num;
     }
 
     /**

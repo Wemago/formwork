@@ -117,7 +117,7 @@ panel.login.login: Авторизация
 panel.login.logout: Выйти
 panel.login.password: Пароль
 panel.login.suspiciousRequestDetected: Подозрительный запрос был обнаружен, и по соображениям безопасности вы вышли из системы. Пожалуйста, войдите снова.
-panel.login.username: Имя пользователя
+panel.login.usernameOrEmail: Имя пользователя или e-mail
 panel.manage: Меню
 panel.modal.action.cancel: Отмена
 panel.modal.action.continue: Продолжить

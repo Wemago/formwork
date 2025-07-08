@@ -36,6 +36,17 @@ return function (App $app) {
                 return $field->get('pattern');
             },
 
+            /**
+             * Return the autocomplete attribute for the field
+             *
+             * This is used to specify the type of data that the field represents,
+             * which can help browsers to provide better autocomplete suggestions.
+             * If not set, no autocomplete attribute is added.
+             */
+            'autocomplete' => function (Field $field): ?string {
+                return $field->get('autocomplete');
+            },
+
             'validate' => function (Field $field, $value): string {
                 if (Constraint::isEmpty($value)) {
                     return '';

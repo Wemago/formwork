@@ -1,5 +1,7 @@
 <?php $this->layout('login') ?>
-<div class="caption"><?= $this->translate('panel.register.register') ?></div>
+<div class="section-header">
+    <div class="caption"><?= $this->translate('panel.register.register') ?></div>
+</div>
 <p class="mb-8"><?= $this->translate('panel.register.createUser') ?></p>
 <form action="<?= $panel->uri('/register/') ?>" method="post" data-form="register-form">
     <?php foreach ($fields as $field) : ?>

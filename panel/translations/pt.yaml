@@ -117,7 +117,7 @@ panel.login.login: Login
 panel.login.logout: Logout
 panel.login.password: Password
 panel.login.suspiciousRequestDetected: Uma solicitação suspeita foi detectada e, por motivos de segurança, você foi desconectado. Por favor faça login novamente.
-panel.login.username: Nome do utilizador
+panel.login.usernameOrEmail: Nome de utilizador ou e-mail
 panel.manage: Administrar
 panel.modal.action.cancel: Cancelar
 panel.modal.action.continue: Continuar

@@ -2,12 +2,14 @@
 
 namespace Formwork\Panel\Controllers;
 
+use Formwork\Fields\Exceptions\ValidationException;
 use Formwork\Http\RedirectResponse;
 use Formwork\Http\RequestMethod;
 use Formwork\Http\Response;
 use Formwork\Log\Log;
 use Formwork\Log\Registry;
 use Formwork\Panel\Security\AccessLimiter;
+use Formwork\Schemes\Schemes;
 use Formwork\Users\Exceptions\AuthenticationFailedException;
 use Formwork\Users\Exceptions\UserNotLoggedException;
 use Formwork\Users\User;
@@ -23,18 +25,20 @@ final class AuthenticationController extends AbstractController
     /**
      * Authentication@login action
      */
-    public function login(AccessLimiter $accessLimiter): Response
+    public function login(AccessLimiter $accessLimiter, Schemes $schemes): Response
     {
         if ($this->panel->isLoggedIn()) {
             return $this->redirect($this->generateRoute('panel.index'));
         }
+
+        $fields = $schemes->get('forms.login')->fields();
 
         $csrfTokenName = $this->panel->getCsrfTokenName();
 
         if ($accessLimiter->hasReachedLimit()) {
             $minutes = round($this->config->get('system.panel.loginResetTime') / 60);
             $this->csrfToken->generate($csrfTokenName);
-            return $this->error($this->translate('panel.login.attempt.tooMany', $minutes));
+            return $this->error($this->translate('panel.login.attempt.tooMany', $minutes), ['fields' => $fields]);
         }
 
         if ($this->request->method() === RequestMethod::POST) {
@@ -43,18 +47,20 @@ final class AuthenticationController extends AbstractController
 
             $data = $this->request->input();
 
-            // Ensure no required data is missing
-            if (!$data->hasMultiple(['username', 'password'])) {
+            try {
+                $fields->setValues($data)->validate();
+            } catch (ValidationException) {
+                // If validation fails, generate a new CSRF token and return an error
                 $this->csrfToken->generate($csrfTokenName);
-                $this->error($this->translate('panel.login.attempt.failed'));
+                $this->error($this->translate('panel.login.attempt.failed'), ['fields' => $fields]);
             }
 
             $accessLimiter->registerAttempt();
 
-            $username = $data->get('username');
+            $login = $data->get('login');
 
             /** @var ?User */
-            $user = $this->site->users()->get($username);
+            $user = $this->site->users()->find(fn($user) => $user->username() === $login || $user->email() === $login);
 
             // Authenticate user
             if ($user !== null) {
@@ -66,6 +72,8 @@ final class AuthenticationController extends AbstractController
 
                     $accessLog = new Log(FileSystem::joinPaths($this->config->get('system.panel.paths.logs'), 'access.json'));
                     $lastAccessRegistry = new Registry(FileSystem::joinPaths($this->config->get('system.panel.paths.logs'), 'lastAccess.json'));
+
+                    $username = $user->username();
 
                     $time = $accessLog->log($username);
                     $lastAccessRegistry->set($username, $time);
@@ -85,17 +93,15 @@ final class AuthenticationController extends AbstractController
 
             $this->csrfToken->generate($csrfTokenName);
 
-            return $this->error($this->translate('panel.login.attempt.failed'), [
-                'username' => $username,
-                'error'    => true,
-            ]);
+            return $this->error($this->translate('panel.login.attempt.failed'), ['fields' => $fields]);
         }
 
         // Always generate a new CSRF token
         $this->csrfToken->generate($csrfTokenName);
 
         return new Response($this->view('authentication.login', [
-            'title' => $this->translate('panel.login.login'),
+            'title'  => $this->translate('panel.login.login'),
+            'fields' => $fields,
         ]));
     }
 
@@ -127,7 +133,7 @@ final class AuthenticationController extends AbstractController
      */
     private function error(string $message, array $data = []): Response
     {
-        $defaults = ['title' => $this->translate('panel.login.login')];
+        $defaults = ['title' => $this->translate('panel.login.login'), 'error' => true];
         $this->panel->notify($message, 'error');
         return new Response($this->view('authentication.login', [...$defaults, ...$data]));
     }

@@ -117,7 +117,7 @@ panel.login.login: Zaloguj się
 panel.login.logout: Wyloguj się
 panel.login.password: Hasło
 panel.login.suspiciousRequestDetected: Wykryto podejrzane żądanie, dlatego z powodów bezpieczeństwa zostałeś wylogowany. Zaloguj się ponownie.
-panel.login.username: Nazwa użytkownika
+panel.login.usernameOrEmail: Nazwa użytkownika lub e-mail
 panel.manage: Zarządzaj
 panel.modal.action.cancel: Anuluj
 panel.modal.action.continue: Kontynuuj

@@ -117,7 +117,7 @@ panel.login.login: S’identifier
 panel.login.logout: Déconnexion
 panel.login.password: Mot de passe
 panel.login.suspiciousRequestDetected: Une demande suspecte a été détectée et pour des raisons de sécurité, vous avez été déconnecté. Veuillez vous reconnecter.
-panel.login.username: Nom d’utilisateur
+panel.login.usernameOrEmail: Nom d’utilisateur ou e-mail
 panel.manage: Gérer
 panel.modal.action.cancel: Annuler
 panel.modal.action.continue: Continuer

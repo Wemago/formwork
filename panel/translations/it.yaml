@@ -117,7 +117,7 @@ panel.login.login: Accedi
 panel.login.logout: Esci
 panel.login.password: Password
 panel.login.suspiciousRequestDetected: È stata rilevata una richiesta sospetta e per ragioni di sicurezza si è usciti dalla sessione. Effettua nuovamente l’accesso.
-panel.login.username: Nome utente
+panel.login.usernameOrEmail: Nome utente o e-mail
 panel.manage: Gestione
 panel.modal.action.cancel: Annulla
 panel.modal.action.continue: Continua

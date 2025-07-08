@@ -117,7 +117,7 @@ panel.login.login: Login
 panel.login.logout: Logout
 panel.login.password: Password
 panel.login.suspiciousRequestDetected: A suspicious request has been detected, and for security reasons you have been logged out. Please log in again.
-panel.login.username: Username
+panel.login.usernameOrEmail: Username or e-mail
 panel.manage: Manage
 panel.modal.action.cancel: Cancel
 panel.modal.action.continue: Continue

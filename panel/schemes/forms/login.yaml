@@ -1,0 +1,14 @@
+title: Login
+
+fields:
+    login:
+        type: text
+        label: '{{panel.login.usernameOrEmail}}'
+        required: true
+        autocomplete: username
+
+    password:
+        type: password
+        label: '{{panel.login.password}}'
+        required: true
+        autocomplete: current-password

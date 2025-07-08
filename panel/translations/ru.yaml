@@ -321,9 +321,11 @@ panel.users.newUser.username.suggestion: между 3-20 букв, цифр и -
 panel.users.nextUser: Следующий пользователь
 panel.users.options: Параметры
 panel.users.previousUser: Предыдущий пользователь
+panel.users.user.cannotChangeEmail.alreadyUsed: Невозможно изменить адрес электронной почты, он уже связан с другим аккаунтом
 panel.users.user.cannotChangePassword: Невозможно изменить пароль другого пользователя. Действие не допускается.
 panel.users.user.cannotChangeRole: Невозможно изменить роль %s. Действие не допускается.
 panel.users.user.cannotCreate.alreadyExists: Невозможно создать пользователь, пользователь с таким именем уже существует
+panel.users.user.cannotCreate.emailAlreadyUsed: Невозможно создать пользователя, адрес электронной почты уже связан с другим аккаунтом
 panel.users.user.cannotCreate.varMissing: Невозможно создать пользователя, пропуская переменную
 panel.users.user.cannotDelete: Невозможно удалить пользователь. Вы должны быть администратором, и пользователь не должен быть авторизован.
 panel.users.user.cannotEdit: Невозможно изменить пользователя %s. Действие не допускается.

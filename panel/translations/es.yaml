@@ -321,9 +321,11 @@ panel.users.newUser.username.suggestion: entre 3 y 20 letras, dígitos y - . _
 panel.users.nextUser: Usuario siguiente
 panel.users.options: Opciones
 panel.users.previousUser: Usuario anterior
+panel.users.user.cannotChangeEmail.alreadyUsed: No se puede cambiar el correo del usuario, la dirección ya está asociada a una cuenta
 panel.users.user.cannotChangePassword: No se puede cambiar la contraseña de otro usuario. La acción no está permitida.
 panel.users.user.cannotChangeRole: No se puede cambiar el rol de %s. La acción no está permitida.
 panel.users.user.cannotCreate.alreadyExists: No se puede crear el usuario, ya existe un usuario con el mismo nombre
+panel.users.user.cannotCreate.emailAlreadyUsed: No se puede crear el usuario, la dirección de correo ya está asociada a una cuenta
 panel.users.user.cannotCreate.varMissing: No se puede crear el usuario, falta una variable
 panel.users.user.cannotDelete: No se puede borrar el usuario. Debes ser un administrador y el usuario no debe estar conectado.
 panel.users.user.cannotEdit: No se puede editar el usuario %s. La acción no está permitida.

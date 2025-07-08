@@ -64,6 +64,14 @@ final class UsersController extends AbstractController
             return $this->redirect($this->generateRoute('panel.users'));
         }
 
+        $email = $data->get('email');
+
+        // Ensure email is not already used by another user
+        if ($this->site->users()->filterBy('email', $email)->count() > 0) {
+            $this->panel->notify($this->translate('panel.users.user.cannotCreate.emailAlreadyUsed'), 'error');
+            return $this->redirect($this->generateRoute('panel.users'));
+        }
+
         Yaml::encodeToFile([
             'username' => $username,
             'fullname' => $data->get('fullname'),
@@ -225,6 +233,11 @@ final class UsersController extends AbstractController
         foreach ($fieldCollection as $field) {
             if ($field->isEmpty()) {
                 continue;
+            }
+
+            // Ensure email is not already used by another user
+            if ($field->name() === 'email' && $field->value() !== $user->email() && $this->site->users()->filterBy('email', $field->value())->count() > 0) {
+                throw new TranslatedException(sprintf('Cannot change the email of %s, the address is already used', $user->username()), 'panel.users.user.cannotChangeEmail.alreadyUsed');
             }
 
             if ($field->name() === 'password') {

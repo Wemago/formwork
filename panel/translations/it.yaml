@@ -317,7 +317,7 @@ panel.users.deleteUser: Elimina utente
 panel.users.deleteUser.prompt: Si è sicuri di eliminare l’utente? Questa azione non può essere annullata.
 panel.users.newUser: Nuovo utente
 panel.users.newUser.password.suggestion: almeno 8 caratteri
-panel.users.newUser.username.suggestion: da 3 a 20 lettere, numeri, - e _
+panel.users.newUser.username.suggestion: da 3 a 20 lettere, numeri e - . _
 panel.users.nextUser: Utente successivo
 panel.users.options: Opzioni
 panel.users.previousUser: Utente precedente

@@ -52,7 +52,7 @@ final class AuthenticationController extends AbstractController
             } catch (ValidationException) {
                 // If validation fails, generate a new CSRF token and return an error
                 $this->csrfToken->generate($csrfTokenName);
-                $this->error($this->translate('panel.login.attempt.failed'), ['fields' => $fields]);
+                return $this->error($this->translate('panel.login.attempt.failed'), ['fields' => $fields]);
             }
 
             $accessLimiter->registerAttempt();

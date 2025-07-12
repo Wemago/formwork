@@ -535,7 +535,9 @@ final class Arr
     }
 
     /**
-     * Get the value corresponding to the specified key from each element of an array
+     * Extract an array of values corresponding to the specified key from the given array
+     *
+     * The original array keys are preserved
      *
      * @param array<TKey, array<K, V>> $array
      *
@@ -545,7 +547,7 @@ final class Arr
      * @template K of array-key
      * @template V
      */
-    public static function pluck(array $array, string $key, mixed $default = null): array
+    public static function extract(array $array, string $key, mixed $default = null): array
     {
         return self::map($array, fn($value) => self::get(self::from($value), $key, $default));
     }

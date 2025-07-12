@@ -381,16 +381,28 @@ abstract class AbstractCollection implements Arrayable, Countable, Iterator
     }
 
     /**
-     * Get the value corresponding to the specified key from each item in the collection
+     * Extract an associative array of values corresponding to the specified key from the collection items
      *
-     * Typed collection should implement their own version of this method, optimised for their data type
+     * Typed collections should implement their own version of this method, optimised for their data type
+     *
+     * @return array<mixed>
+     */
+    public function extract(string $key, mixed $default = null): array
+    {
+        // @phpstan-ignore argument.templateType
+        return Arr::extract($this->data, $key, $default);
+    }
+
+    /**
+     * Extract a list of values corresponding to the specified key from the collection items
+     *
+     * This method is similar to `extract()` but does not preserve keys
      *
      * @return array<mixed>
      */
     public function pluck(string $key, mixed $default = null): array
     {
-        // @phpstan-ignore argument.templateType
-        return Arr::pluck($this->data, $key, $default);
+        return array_values($this->extract($key, $default));
     }
 
     /**
@@ -408,7 +420,7 @@ abstract class AbstractCollection implements Arrayable, Countable, Iterator
      */
     public function filterBy(string $key, mixed $value = true, mixed $default = null, ?bool $strict = null): static
     {
-        $values = $this->pluck($key, $default);
+        $values = $this->extract($key, $default);
 
         if (is_callable($value)) {
             $values = Arr::map($values, $value);
@@ -429,7 +441,7 @@ abstract class AbstractCollection implements Arrayable, Countable, Iterator
         bool $caseSensitive = false,
         bool $preserveKeys = true,
     ): static {
-        return $this->sort($direction, $type, $this->pluck($key), $caseSensitive, $preserveKeys);
+        return $this->sort($direction, $type, $this->extract($key), $caseSensitive, $preserveKeys);
     }
 
     /**
@@ -439,7 +451,7 @@ abstract class AbstractCollection implements Arrayable, Countable, Iterator
      */
     public function groupBy(string $key, mixed $default = null): array
     {
-        $values = $this->pluck($key, $default);
+        $values = $this->extract($key, $default);
         return $this->group(fn($v, $k) => $values[$k]);
     }
 

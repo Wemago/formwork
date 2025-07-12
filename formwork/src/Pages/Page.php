@@ -235,7 +235,7 @@ class Page extends Model implements Stringable
         ];
 
         // Merge with scheme default field values
-        $defaults = [...$defaults, ...Arr::reject($this->fields()->pluck('default'), fn($value) => $value === null)];
+        $defaults = [...$defaults, ...Arr::reject($this->fields()->extract('default'), fn($value) => $value === null)];
 
         // If the page doesn't have a route, by default it won't be routable nor cacheable
         if ($this->route() === null) {

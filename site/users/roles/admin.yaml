@@ -1,13 +1,4 @@
 title: '{{user.role.admin}}'
 
 permissions:
-    dashboard: true
-    cache: true
-    backup: true
-    pages: true
-    files: true
-    options: true
-    updates: true
-    users: true
-    statistics: true
-    tools: true
+    panel: true

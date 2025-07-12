@@ -13,7 +13,7 @@ final class StatisticsController extends AbstractController
      */
     public function index(Statistics $statistics): Response
     {
-        if (!$this->hasPermission('statistics')) {
+        if (!$this->hasPermission('panel.statistics')) {
             return $this->forward(ErrorsController::class, 'forbidden');
         }
 

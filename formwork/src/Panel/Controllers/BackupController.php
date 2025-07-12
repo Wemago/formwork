@@ -20,7 +20,7 @@ final class BackupController extends AbstractController
      */
     public function make(): JsonResponse|Response
     {
-        if (!$this->hasPermission('backup.make')) {
+        if (!$this->hasPermission('panel.backup.make')) {
             return $this->forward(ErrorsController::class, 'forbidden');
         }
 
@@ -47,7 +47,7 @@ final class BackupController extends AbstractController
      */
     public function download(RouteParams $routeParams): Response
     {
-        if (!$this->hasPermission('backup.download')) {
+        if (!$this->hasPermission('panel.backup.download')) {
             return $this->forward(ErrorsController::class, 'forbidden');
         }
 
@@ -68,7 +68,7 @@ final class BackupController extends AbstractController
      */
     public function delete(RouteParams $routeParams): Response
     {
-        if (!$this->hasPermission('backup.download')) {
+        if (!$this->hasPermission('panel.backup.download')) {
             return $this->forward(ErrorsController::class, 'forbidden');
         }
 

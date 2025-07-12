@@ -13,7 +13,7 @@ final class DashboardController extends AbstractController
      */
     public function index(Statistics $statistics): Response
     {
-        if (!$this->hasPermission('dashboard')) {
+        if (!$this->hasPermission('panel.dashboard')) {
             return $this->forward(ErrorsController::class, 'forbidden');
         }
 

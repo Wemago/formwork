@@ -25,7 +25,7 @@ final class UsersController extends AbstractController
      */
     public function index(): Response
     {
-        if (!$this->hasPermission('users.index')) {
+        if (!$this->hasPermission('panel.users.index')) {
             return $this->forward(ErrorsController::class, 'forbidden');
         }
 
@@ -40,7 +40,7 @@ final class UsersController extends AbstractController
      */
     public function create(): Response
     {
-        if (!$this->hasPermission('users.create')) {
+        if (!$this->hasPermission('panel.users.create')) {
             return $this->forward(ErrorsController::class, 'forbidden');
         }
 
@@ -89,7 +89,7 @@ final class UsersController extends AbstractController
      */
     public function delete(RouteParams $routeParams): Response
     {
-        if (!$this->hasPermission('users.delete')) {
+        if (!$this->hasPermission('panel.users.delete')) {
             return $this->forward(ErrorsController::class, 'forbidden');
         }
 
@@ -129,7 +129,7 @@ final class UsersController extends AbstractController
      */
     public function deleteImage(RouteParams $routeParams): Response
     {
-        if (!$this->hasPermission('users.deleteImage')) {
+        if (!$this->hasPermission('panel.users.deleteImage')) {
             return $this->forward(ErrorsController::class, 'forbidden');
         }
 

@@ -44,9 +44,9 @@ class NavigationItem implements Arrayable
     /**
      * Get navigation item permissions
      */
-    public function permissions(): string
+    public function permissions(): ?string
     {
-        return $this->data['permissions'] ?? '*';
+        return $this->data['permissions'];
     }
 
     /**

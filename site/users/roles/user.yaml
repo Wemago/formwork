@@ -1,6 +1,6 @@
 title: '{{user.role.user}}'
 
 permissions:
-    dashboard: true
-    pages: true
-    files: true
+    panel.dashboard: true
+    panel.pages: true
+    panel.files: true

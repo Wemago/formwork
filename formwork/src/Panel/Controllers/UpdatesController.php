@@ -18,7 +18,7 @@ final class UpdatesController extends AbstractController
      */
     public function check(Updater $updater): JsonResponse|Response
     {
-        if (!$this->hasPermission('updates.check')) {
+        if (!$this->hasPermission('panel.updates.check')) {
             return $this->forward(ErrorsController::class, 'forbidden');
         }
 
@@ -45,7 +45,7 @@ final class UpdatesController extends AbstractController
      */
     public function update(Updater $updater, AbstractCache $cache): JsonResponse|Response
     {
-        if (!$this->hasPermission('updates.update')) {
+        if (!$this->hasPermission('panel.updates.update')) {
             return $this->forward(ErrorsController::class, 'forbidden');
         }
 

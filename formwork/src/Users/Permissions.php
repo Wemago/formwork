@@ -34,10 +34,6 @@ class Permissions
      */
     public function has(string $permission): bool
     {
-        if ($permission === '*') {
-            return true;
-        }
-
         if (array_key_exists($permission, $this->permissions)) {
             return $this->permissions[$permission];
         }
@@ -45,7 +41,7 @@ class Permissions
         // If $permission is not found try with the upper level one (super permission),
         // e.g. try with 'options' if 'options.updates' is not found
 
-        $superPermission = Str::before($permission, '.');
+        $superPermission = Str::beforeLast($permission, '.');
 
         if ($superPermission !== $permission) {
             return $this->has($superPermission);

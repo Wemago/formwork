@@ -5,7 +5,7 @@
     <div class="header">
         <div class="header-title"><?= $this->translate('panel.files.files') ?></div>
         <div>
-            <?php if ($panel->user()->permissions()->has('files.upload')) : ?>
+            <?php if ($panel->user()->permissions()->has('panel.files.upload')) : ?>
                 <button type="button" class="button button-accent" data-modal="uploadFileModal"><?= $this->icon('cloud-upload') ?> <?= $this->translate('panel.files.upload') ?></button>
             <?php endif ?>
         </div>

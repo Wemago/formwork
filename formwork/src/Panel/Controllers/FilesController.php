@@ -31,7 +31,7 @@ final class FilesController extends AbstractController
      */
     public function index(): Response
     {
-        if (!$this->hasPermission('files.index')) {
+        if (!$this->hasPermission('panel.files.index')) {
             return $this->forward(ErrorsController::class, 'forbidden');
         }
 
@@ -46,7 +46,7 @@ final class FilesController extends AbstractController
      */
     public function upload(): Response
     {
-        if (!$this->hasPermission('files.upload')) {
+        if (!$this->hasPermission('panel.files.upload')) {
             return $this->forward(ErrorsController::class, 'forbidden');
         }
 
@@ -87,7 +87,7 @@ final class FilesController extends AbstractController
      */
     public function edit(RouteParams $routeParams): Response
     {
-        if (!$this->hasPermission('files.edit')) {
+        if (!$this->hasPermission('panel.files.edit')) {
             return $this->forward(ErrorsController::class, 'forbidden');
         }
 
@@ -139,7 +139,7 @@ final class FilesController extends AbstractController
      */
     public function delete(RouteParams $routeParams): JsonResponse|Response
     {
-        if (!$this->hasPermission('files.delete')) {
+        if (!$this->hasPermission('panel.files.delete')) {
             return $this->forward(ErrorsController::class, 'forbidden');
         }
 
@@ -171,7 +171,7 @@ final class FilesController extends AbstractController
      */
     public function rename(RouteParams $routeParams, FileFactory $fileFactory): JsonResponse|Response
     {
-        if (!$this->hasPermission('files.rename')) {
+        if (!$this->hasPermission('panel.files.rename')) {
             return $this->forward(ErrorsController::class, 'forbidden');
         }
 
@@ -240,7 +240,7 @@ final class FilesController extends AbstractController
      */
     public function replace(RouteParams $routeParams): JsonResponse|Response
     {
-        if (!$this->hasPermission('files.replace')) {
+        if (!$this->hasPermission('panel.files.replace')) {
             return $this->forward(ErrorsController::class, 'forbidden');
         }
 

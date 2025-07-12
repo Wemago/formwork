@@ -177,8 +177,10 @@ final class UsersController extends AbstractController
 
         $fields->setModel($user);
 
-        // Disable password and/or role fields if they cannot be changed
-        $fields->get('password')->set('disabled', !$this->panel->user()->canChangePasswordOf($user));
+        // Hide password field if the user cannot change it
+        $fields->get('password')->set('visible', $this->panel->user()->canChangePasswordOf($user));
+
+        // Disable role field if it cannot be changed
         $fields->get('role')->set('disabled', !$this->panel->user()->canChangeRoleOf($user));
 
         if ($this->request->method() === RequestMethod::POST) {

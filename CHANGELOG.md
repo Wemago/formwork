@@ -1,5 +1,43 @@
 # Changelog
 
+## [2.0.0-rc.1](https://github.com/getformwork/formwork/releases/tag/2.0.0-rc.1)
+
+**Breaking Changes**
+
+- **Add `panel.` prefix to permissions names**
+- **Remove permissions from user role (to allow future use for frontend users)**
+- Remove the possibility for administators to change the password of other users
+- Rename `AbstractCollection::pluck()` to `extract()`
+- Rename `system.pages.content.safeMode` to `system.page.content.allowHtml`
+
+**Enhancements**
+- **Refactor login and allow using e-mail to authenticate**
+- **Update starter site content**
+- Improve editor response to state change and remember selected mode
+- Decouple config from defaults
+- Allow php format config
+- Cache resolved config
+- Fallback to default error handler on failure
+- Allow extending fields to share methods
+- Allow default config for base fields
+- Generate user image from full name initials if missing
+- Add `Arr::dot()` and `Arr::undot()`
+- Improve readability of encoded YAML
+- Add `FileSystem::LIST_EXCLUDE_EMPTY_DIRECTORIES()` flag
+- Exclude empty directories from page retrieval
+- Ensure email addresses are not used by different accounts
+- Add non-capturing group to avoid issues with alternation in route patterns
+- Add `$entireMatch` param to `Constraint::matcheRegex()`
+
+**Bug fixes**
+
+- Fix redirect after file deletion
+- Fix unsaved registry without file existence
+- Fix custom config options removed by `OptionsController::updateOptions()`
+- Fix scheme assignment to pages created from the panel
+- Fix page num assignment
+- Fix `Arr::remove()` creating undefined keys while traversing
+
 ## [2.0.0-beta.6](https://github.com/getformwork/formwork/releases/tag/2.0.0-beta.6)
 
 **Bug fixes**

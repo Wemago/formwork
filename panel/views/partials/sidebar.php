@@ -16,7 +16,7 @@
         <div class="caption mb-8"><?= $this->translate('panel.manage') ?></div>
         <ul class="sidebar-navigation">
             <?php foreach ($panel->navigation() as $item) : ?>
-                <?php if ($panel->user()->permissions()->has($item->permissions())) : ?>
+                <?php if ($item->permissions() === null || $panel->user()->permissions()->has($item->permissions())) : ?>
                     <li class="<?= $this->classes(['active' => $location === $item->id()]) ?>">
                         <a href="<?= $panel->uri($item->uri()) ?>"><?= $this->escape($item->label()) ?></a>
                         <?php if ($item->badge()) : ?>

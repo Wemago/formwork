@@ -25,7 +25,7 @@ final class UsersController extends AbstractController
      */
     public function index(): Response
     {
-        if (!$this->hasPermission('users.index')) {
+        if (!$this->hasPermission('panel.users.index')) {
             return $this->forward(ErrorsController::class, 'forbidden');
         }
 
@@ -40,7 +40,7 @@ final class UsersController extends AbstractController
      */
     public function create(): Response
     {
-        if (!$this->hasPermission('users.create')) {
+        if (!$this->hasPermission('panel.users.create')) {
             return $this->forward(ErrorsController::class, 'forbidden');
         }
 
@@ -89,7 +89,7 @@ final class UsersController extends AbstractController
      */
     public function delete(RouteParams $routeParams): Response
     {
-        if (!$this->hasPermission('users.delete')) {
+        if (!$this->hasPermission('panel.users.delete')) {
             return $this->forward(ErrorsController::class, 'forbidden');
         }
 
@@ -129,7 +129,7 @@ final class UsersController extends AbstractController
      */
     public function deleteImage(RouteParams $routeParams): Response
     {
-        if (!$this->hasPermission('users.deleteImage')) {
+        if (!$this->hasPermission('panel.users.deleteImage')) {
             return $this->forward(ErrorsController::class, 'forbidden');
         }
 
@@ -164,6 +164,10 @@ final class UsersController extends AbstractController
      */
     public function profile(RouteParams $routeParams): Response
     {
+        if (!$this->hasPermission('panel.users.profile')) {
+            return $this->forward(ErrorsController::class, 'forbidden');
+        }
+
         $scheme = $this->app->schemes()->get('users.user');
 
         $fields = $scheme->fields();
@@ -177,8 +181,10 @@ final class UsersController extends AbstractController
 
         $fields->setModel($user);
 
-        // Disable password and/or role fields if they cannot be changed
-        $fields->get('password')->set('disabled', !$this->panel->user()->canChangePasswordOf($user));
+        // Hide password field if the user cannot change it
+        $fields->get('password')->set('visible', $this->panel->user()->canChangePasswordOf($user));
+
+        // Disable role field if it cannot be changed
         $fields->get('role')->set('disabled', !$this->panel->user()->canChangeRoleOf($user));
 
         if ($this->request->method() === RequestMethod::POST) {

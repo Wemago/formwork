@@ -15,7 +15,7 @@ final class CacheController extends AbstractController
      */
     public function clear(RouteParams $routeParams, AbstractCache $cache): JsonResponse|Response
     {
-        if (!$this->hasPermission('cache.clear')) {
+        if (!$this->hasPermission('panel.cache.clear')) {
             return $this->forward(ErrorsController::class, 'forbidden');
         }
 

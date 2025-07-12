@@ -38,11 +38,11 @@ final class UsersServiceLoader implements ServiceLoaderInterface
         $this->roleCollection = new RoleCollection();
         foreach (FileSystem::listFiles($path = $this->config->get('system.users.paths.roles')) as $file) {
             /**
-             * @var array{title: string, permissions: array<string, bool>}
+             * @var array{title: string, permissions?: array<string, bool>}
              */
             $data = Yaml::parseFile(FileSystem::joinPaths($path, $file));
             $id = FileSystem::name($file);
-            $permissions = new Permissions($data['permissions']);
+            $permissions = new Permissions($data['permissions'] ?? []);
             $this->roleCollection->set($id, new Role($id, $data['title'], $permissions, $this->translations));
         }
     }

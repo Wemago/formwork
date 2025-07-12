@@ -26,7 +26,7 @@ final class OptionsController extends AbstractController
      */
     public function index(): Response
     {
-        if (!$this->hasPermission('options.site')) {
+        if (!$this->hasPermission('panel.options.site')) {
             return $this->forward(ErrorsController::class, 'forbidden');
         }
 
@@ -38,7 +38,7 @@ final class OptionsController extends AbstractController
      */
     public function systemOptions(Schemes $schemes): Response
     {
-        if (!$this->hasPermission('options.system')) {
+        if (!$this->hasPermission('panel.options.system')) {
             return $this->forward(ErrorsController::class, 'forbidden');
         }
 
@@ -81,7 +81,7 @@ final class OptionsController extends AbstractController
      */
     public function siteOptions(Schemes $schemes): Response
     {
-        if (!$this->hasPermission('options.site')) {
+        if (!$this->hasPermission('panel.options.site')) {
             return $this->forward(ErrorsController::class, 'forbidden');
         }
 

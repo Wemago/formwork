@@ -24,7 +24,7 @@ final class ToolsController extends AbstractController
      */
     public function index(): Response
     {
-        if (!$this->hasPermission('tools.backups')) {
+        if (!$this->hasPermission('panel.tools.backups')) {
             return $this->forward(ErrorsController::class, 'forbidden');
         }
 
@@ -36,7 +36,7 @@ final class ToolsController extends AbstractController
      */
     public function backups(): Response
     {
-        if (!$this->hasPermission('tools.backups')) {
+        if (!$this->hasPermission('panel.tools.backups')) {
             return $this->forward(ErrorsController::class, 'forbidden');
         }
 
@@ -64,7 +64,7 @@ final class ToolsController extends AbstractController
      */
     public function updates(): Response
     {
-        if (!$this->hasPermission('tools.updates')) {
+        if (!$this->hasPermission('panel.tools.updates')) {
             return $this->forward(ErrorsController::class, 'forbidden');
         }
 
@@ -83,7 +83,7 @@ final class ToolsController extends AbstractController
      */
     public function info(): Response
     {
-        if (!$this->hasPermission('tools.info')) {
+        if (!$this->hasPermission('panel.tools.info')) {
             return $this->forward(ErrorsController::class, 'forbidden');
         }
 

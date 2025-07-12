@@ -201,9 +201,6 @@ class User extends Model
      */
     public function canChangePasswordOf(User $user): bool
     {
-        if ($this->isAdmin()) {
-            return true;
-        }
         return $user->isLoggedIn();
     }
 

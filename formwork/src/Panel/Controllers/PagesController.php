@@ -33,7 +33,7 @@ final class PagesController extends AbstractController
      */
     public function index(): Response
     {
-        if (!$this->hasPermission('pages.index')) {
+        if (!$this->hasPermission('panel.pages.index')) {
             return $this->forward(ErrorsController::class, 'forbidden');
         }
 
@@ -52,7 +52,7 @@ final class PagesController extends AbstractController
                 'includeChildren' => true,
                 'class'           => 'pages-tree-root',
                 'parent'          => '.',
-                'orderable'       => $this->panel->user()->permissions()->has('pages.reorder'),
+                'orderable'       => $this->panel->user()->permissions()->has('panel.pages.reorder'),
                 'headers'         => true,
             ]),
         ]));
@@ -63,7 +63,7 @@ final class PagesController extends AbstractController
      */
     public function create(PageFactory $pageFactory): Response
     {
-        if (!$this->hasPermission('pages.create')) {
+        if (!$this->hasPermission('panel.pages.create')) {
             return $this->forward(ErrorsController::class, 'forbidden');
         }
 
@@ -98,7 +98,7 @@ final class PagesController extends AbstractController
      */
     public function edit(RouteParams $routeParams): Response
     {
-        if (!$this->hasPermission('pages.edit')) {
+        if (!$this->hasPermission('panel.pages.edit')) {
             return $this->forward(ErrorsController::class, 'forbidden');
         }
 
@@ -209,6 +209,10 @@ final class PagesController extends AbstractController
      */
     public function preview(RouteParams $routeParams): Response
     {
+        if (!$this->hasPermission('panel.pages.preview')) {
+            return $this->forward(ErrorsController::class, 'forbidden');
+        }
+
         $page = $this->site->findPage($routeParams->get('page'));
 
         if ($page === null) {
@@ -241,7 +245,7 @@ final class PagesController extends AbstractController
      */
     public function reorder(): JsonResponse|Response
     {
-        if (!$this->hasPermission('pages.reorder')) {
+        if (!$this->hasPermission('panel.pages.reorder')) {
             return $this->forward(ErrorsController::class, 'forbidden');
         }
 
@@ -284,7 +288,7 @@ final class PagesController extends AbstractController
      */
     public function delete(RouteParams $routeParams): Response
     {
-        if (!$this->hasPermission('pages.delete')) {
+        if (!$this->hasPermission('panel.pages.delete')) {
             return $this->forward(ErrorsController::class, 'forbidden');
         }
 
@@ -333,7 +337,7 @@ final class PagesController extends AbstractController
      */
     public function upload(RouteParams $routeParams): Response|JsonResponse
     {
-        if (!$this->hasPermission('files.upload')) {
+        if (!$this->hasPermission('panel.files.upload')) {
             return $this->forward(ErrorsController::class, 'forbidden');
         }
 

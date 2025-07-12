@@ -55,13 +55,13 @@
                 <div class="dropdown-menu" id="">
                     <a class="dropdown-item" data-command="infoFile" href=""><?= $this->icon('info-circle') ?> <?= $this->translate('panel.files.info') ?></a>
                     <a class="dropdown-item" data-command="previewFile" href="" target=""><?= $this->icon('eye') ?> <?= $this->translate('panel.pages.previewFile') ?></a>
-                    <?php if ($panel->user()->permissions()->has('pages.renameFiles')) : ?>
+                    <?php if ($panel->user()->permissions()->has('panel.pages.renameFiles')) : ?>
                         <a class="dropdown-item" data-command="renameFile" data-modal="renameFileItemModal" data-action=""><?= $this->icon('pencil') ?> <?= $this->translate('panel.pages.renameFile') ?></a>
                     <?php endif ?>
-                    <?php if ($panel->user()->permissions()->has('pages.replaceFiles')) : ?>
+                    <?php if ($panel->user()->permissions()->has('panel.pages.replaceFiles')) : ?>
                         <a class="dropdown-item" data-command="replaceFile" data-action="" data-mimetype=""><?= $this->icon('cloud-upload') ?> <?= $this->translate('panel.pages.replaceFile') ?></a>
                     <?php endif ?>
-                    <?php if ($panel->user()->permissions()->has('pages.deleteFiles')) : ?>
+                    <?php if ($panel->user()->permissions()->has('panel.pages.deleteFiles')) : ?>
                         <a class="dropdown-item" data-command="deleteFile" data-modal="deleteFileItemModal" data-action=""><?= $this->icon('trash') ?> <?= $this->translate('panel.pages.deleteFile') ?></a>
                     <?php endif ?>
                 </div>

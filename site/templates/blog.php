@@ -9,9 +9,12 @@
 <main>
     <div class="container">
         <?php foreach ($posts as $post) : ?>
-            <article>
+            <article class="article">
+                <?php if ($post->has('coverImage') && ($image = $post->coverImage())) : ?>
+                    <img class="article-cover-image" src="<?= $image->uri() ?>" alt="<?= $this->escape($post->title()) ?>">
+                <?php endif ?>
+                <?php if (!$post->publishDate()->isEmpty()) : ?><time class="article-time"><?= $post->publishDate()->toDuration() ?></time><?php endif ?>
                 <h1 class="article-title"><a href="<?= $post->uri() ?>"><?= $this->escape($post->title()) ?></a></h1>
-                <?php if (!$post->publishDate()->isEmpty()) : ?><div style="font-size: 0.875rem; color: #aaa;"><?= $post->publishDate()->toDuration() ?></div><?php endif ?>
                 <?= $this->insert('_tags', ['post' => $post, 'blog' => $page]) ?>
                 <?php if (!$post->summary()->isEmpty()) : ?>
                     <?= $post->summary() ?>

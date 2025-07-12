@@ -1,3 +1,5 @@
 <?php if ($page->has('coverImage') && ($image = $page->coverImage())) : ?>
-    <div class="cover-image" style="background-image:url(<?= $image->uri() ?>);"></div>
+    <div class="container">
+        <img class="cover-image" src="<?= $image->uri() ?>">
+    </div>
 <?php endif ?>

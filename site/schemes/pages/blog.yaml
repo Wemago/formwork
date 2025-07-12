@@ -10,7 +10,7 @@ options:
     allowPagination: true
 
     # This allows tags for the page
-    allowTags: false
+    allowTags: true
 
     # This controls which template can have children, their order and other attributes
     children:
@@ -31,11 +31,6 @@ fields:
         rows: 5
 
     postsPerPage:
-        type: select
+        type: number
         label: '{{page.postsPerPage}}'
-        options:
-            5: 5
-            10: 10
-            15: 15
-            20: 20
         default: 5

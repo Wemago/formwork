@@ -1,33 +1,32 @@
-window.addEventListener('load', function() {
+window.addEventListener("load", function () {
     /** Toggleable menus handler **/
-    var menuToggles = document.getElementsByClassName('menu-toggle');
-    for (var i = 0; i < menuToggles.length; i++) {
-        var button = menuToggles[i];
-        button.addEventListener('click', function() {
-            var id = this.getAttribute('data-toggle');
-            var element = document.getElementById(id);
+    const menuToggles = document.getElementsByClassName("menu-toggle button");
+    for (const toggle of menuToggles) {
+        toggle.addEventListener("click", () => {
+            const id = toggle.getAttribute("data-toggle");
+            const element = document.getElementById(id);
             helpers.toggleElement(element, 250);
-            element.classList.toggle('menu-expanded');
-            if (this.getAttribute('aria-expanded') !== 'true') {
-                this.setAttribute('aria-expanded', 'true');
+            element.classList.toggle("menu-expanded");
+            if (!element.ariaExpanded) {
+                element.ariaExpanded = true;
             } else {
-                this.setAttribute('aria-expanded', 'false');
+                element.ariaExpanded = false;
             }
         });
     }
 });
 
-var helpers = {
+const helpers = {
     /**
      * Measures real element height as if it was rendered with
      * `display: block` and `height: auto` CSS properties
      */
     measureElementHeight: function (element) {
-        var styleHeight = element.style.height;
-        var styleDisplay = element.style.height;
-        element.style.height = '';
-        element.style.display = 'block';
-        var height = element.clientHeight;
+        const styleHeight = element.style.height;
+        const styleDisplay = element.style.display;
+        element.style.height = "";
+        element.style.display = "block";
+        const height = element.clientHeight;
         element.style.height = styleHeight;
         element.style.display = styleDisplay;
         return height;
@@ -37,24 +36,30 @@ var helpers = {
      * Toggles an element animating its height
      */
     toggleElement: function (element, duration) {
-        var direction = element.clientHeight === 0 ? 1 : -1;
-        var measuredHeight = helpers.measureElementHeight(element);
-        var steps = Math.floor(duration / 10);
-        var delta = measuredHeight / steps * direction;
+        const direction = element.clientHeight === 0 ? 1 : -1;
+        const measuredHeight = helpers.measureElementHeight(element);
+        let steps = Math.floor(duration / 10);
+        const delta = (measuredHeight / steps) * direction;
         if (direction > 0) {
             element.style.height = 0;
         } else {
-            element.style.display = 'block';
-            element.style.height = measuredHeight + 'px';
+            Object.assign(element.style, {
+                display: "block",
+                flex: "1 0 100%",
+                height: measuredHeight + "px",
+            });
         }
-        var interval = window.setInterval(function() {
+        const interval = window.setInterval(() => {
             if (steps-- >= 0) {
-                element.style.height = (parseInt(element.style.height) + delta) + 'px';
+                element.style.height = parseInt(element.style.height) + delta + "px";
             } else {
-                element.style.height = '';
-                element.style.display = '';
+                Object.assign(element.style, {
+                    flex: "",
+                    display: "",
+                    height: "",
+                });
                 window.clearInterval(interval);
             }
         }, 10);
-    }
+    },
 };

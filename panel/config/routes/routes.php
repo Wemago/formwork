@@ -167,7 +167,7 @@ return [
         ],
 
         'panel.users.profile' => [
-            'path'    => '/users/{user:[a-z0-9_-]+}/profile/',
+            'path'    => '/users/{user:[a-zA-Z][a-zA-Z0-9]*(?:[-._][a-zA-Z0-9]+)*}/profile/',
             'action'  => 'Formwork\Panel\Controllers\UsersController@profile',
             'methods' => ['GET', 'POST'],
         ],
@@ -179,13 +179,13 @@ return [
         ],
 
         'panel.users.delete' => [
-            'path'    => '/users/{user:[a-z0-9_-]+}/delete/',
+            'path'    => '/users/{user:[a-zA-Z][a-zA-Z0-9]*(?:[-._][a-zA-Z0-9]+)*}/delete/',
             'action'  => 'Formwork\Panel\Controllers\UsersController@delete',
             'methods' => ['POST'],
         ],
 
         'panel.users.deleteImage' => [
-            'path'    => '/users/{user:[a-z0-9_-]+}/image/delete/',
+            'path'    => '/users/{user:[a-zA-Z][a-zA-Z0-9]*(?:[-._][a-zA-Z0-9]+)*}/image/delete/',
             'action'  => 'Formwork\Panel\Controllers\UsersController@deleteImage',
             'methods' => ['POST'],
         ],

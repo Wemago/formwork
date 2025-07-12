@@ -117,7 +117,7 @@ panel.login.login: S’identifier
 panel.login.logout: Déconnexion
 panel.login.password: Mot de passe
 panel.login.suspiciousRequestDetected: Une demande suspecte a été détectée et pour des raisons de sécurité, vous avez été déconnecté. Veuillez vous reconnecter.
-panel.login.username: Nom d’utilisateur
+panel.login.usernameOrEmail: Nom d’utilisateur ou e-mail
 panel.manage: Gérer
 panel.modal.action.cancel: Annuler
 panel.modal.action.continue: Continuer
@@ -317,13 +317,15 @@ panel.users.deleteUser: Supprimer l’utilisateur
 panel.users.deleteUser.prompt: ÊtesVous sûr de vouloir supprimer cet utilisateur? Cette action est irréversible.
 panel.users.newUser: Nouvel utilisateur
 panel.users.newUser.password.suggestion: au moins 8 caractères
-panel.users.newUser.username.suggestion: entre 3-20 lettres, chiffres et tirets
+panel.users.newUser.username.suggestion: entre 3-20 lettres, chiffres et - . _
 panel.users.nextUser: Utilisateur suivant
 panel.users.options: Options
 panel.users.previousUser: Utilisateur précédent
+panel.users.user.cannotChangeEmail.alreadyUsed: Impossible de modifier l’e-mail de l’utilisateur, l’adresse est déjà associée à un compte
 panel.users.user.cannotChangePassword: Impossible de changer le mot de passe d’un autre utilisateur. L’action n’est pas autorisée.
 panel.users.user.cannotChangeRole: Impossible de changer le rôle de %s. L’action n’est pas autorisée.
 panel.users.user.cannotCreate.alreadyExists: Impossible de créer l’utilisateur, un utilisateur portant le même nom existe déjà
+panel.users.user.cannotCreate.emailAlreadyUsed: Impossible de créer l’utilisateur, l’adresse e-mail est déjà associée à un compte
 panel.users.user.cannotCreate.varMissing: Impossible de créer l’utilisateur, il manque une variable
 panel.users.user.cannotDelete: Impossible de supprimer l’utilisateur. Vous devez être un administrateur et l’utilisateur ne doit pas être connecté.
 panel.users.user.cannotEdit: Impossible de modifier l’utilisateur %s. L’action n’est pas autorisée.

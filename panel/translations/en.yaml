@@ -117,7 +117,7 @@ panel.login.login: Login
 panel.login.logout: Logout
 panel.login.password: Password
 panel.login.suspiciousRequestDetected: A suspicious request has been detected, and for security reasons you have been logged out. Please log in again.
-panel.login.username: Username
+panel.login.usernameOrEmail: Username or e-mail
 panel.manage: Manage
 panel.modal.action.cancel: Cancel
 panel.modal.action.continue: Continue
@@ -317,13 +317,15 @@ panel.users.deleteUser: Delete user
 panel.users.deleteUser.prompt: Are you sure you want to delete this user? This action can’t be undone.
 panel.users.newUser: New user
 panel.users.newUser.password.suggestion: at least 8 characters
-panel.users.newUser.username.suggestion: between 3-20 letters, digits and dashes
+panel.users.newUser.username.suggestion: between 3-20 letters, digits and - . _
 panel.users.nextUser: Next user
 panel.users.options: Options
 panel.users.previousUser: Previous user
+panel.users.user.cannotChangeEmail.alreadyUsed: Cannot change the user email, the address is already associated with an account
 panel.users.user.cannotChangePassword: Cannot change the password of another user. The action is not allowed.
 panel.users.user.cannotChangeRole: Cannot change the role of %s. The action is not allowed.
 panel.users.user.cannotCreate.alreadyExists: Cannot create user, a user with the same name already exists
+panel.users.user.cannotCreate.emailAlreadyUsed: Cannot create user, the email address is already associated with an account
 panel.users.user.cannotCreate.varMissing: Cannot create user, missing a variable
 panel.users.user.cannotDelete: Cannot delete user. You must be an administrator and the user must not be logged in.
 panel.users.user.cannotEdit: Cannot edit user %s. The action is not allowed.

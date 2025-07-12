@@ -117,7 +117,7 @@ panel.login.login: Zaloguj się
 panel.login.logout: Wyloguj się
 panel.login.password: Hasło
 panel.login.suspiciousRequestDetected: Wykryto podejrzane żądanie, dlatego z powodów bezpieczeństwa zostałeś wylogowany. Zaloguj się ponownie.
-panel.login.username: Nazwa użytkownika
+panel.login.usernameOrEmail: Nazwa użytkownika lub e-mail
 panel.manage: Zarządzaj
 panel.modal.action.cancel: Anuluj
 panel.modal.action.continue: Kontynuuj
@@ -317,13 +317,15 @@ panel.users.deleteUser: Usuń użytkownika
 panel.users.deleteUser.prompt: Czy na pewno chcesz usunąć tego użytkownika? Ta operacja jest nieodwracalna.
 panel.users.newUser: Nowy użytkownik
 panel.users.newUser.password.suggestion: co najmniej 8 znaków
-panel.users.newUser.username.suggestion: od 3 do 20 liter, cyfr i myślników
+panel.users.newUser.username.suggestion: od 3 do 20 liter, cyfr i - . _
 panel.users.nextUser: Następny użytkownik
 panel.users.options: Opcje
 panel.users.previousUser: Poprzedni użytkownik
+panel.users.user.cannotChangeEmail.alreadyUsed: Nie można zmienić adresu e-mail użytkownika, adres jest już powiązany z kontem
 panel.users.user.cannotChangePassword: Nie można zmienić hasła innego użytkownika. Ta operacja jest niedozwolona.
 panel.users.user.cannotChangeRole: Nie można zmienić roli użytkownika %s. Ta operacja jest niedozwolona.
 panel.users.user.cannotCreate.alreadyExists: Nie można utworzyć użytkownika, użytkownik o tej samej nazwie już istnieje
+panel.users.user.cannotCreate.emailAlreadyUsed: Nie można utworzyć użytkownika, adres e-mail jest już powiązany z kontem
 panel.users.user.cannotCreate.varMissing: Nie można utworzyć użytkownika, brak zmiennej
 panel.users.user.cannotDelete: Nie można usunąć użytkownika. Musisz być administratorem, a użytkownik nie może być zalogowany.
 panel.users.user.cannotEdit: Nie można edytować użytkownika %s. Ta operacja jest niedozwolona.

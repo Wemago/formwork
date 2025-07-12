@@ -117,7 +117,7 @@ panel.login.login: Авторизация
 panel.login.logout: Выйти
 panel.login.password: Пароль
 panel.login.suspiciousRequestDetected: Подозрительный запрос был обнаружен, и по соображениям безопасности вы вышли из системы. Пожалуйста, войдите снова.
-panel.login.username: Имя пользователя
+panel.login.usernameOrEmail: Имя пользователя или e-mail
 panel.manage: Меню
 panel.modal.action.cancel: Отмена
 panel.modal.action.continue: Продолжить
@@ -317,13 +317,15 @@ panel.users.deleteUser: Удалить пользователя
 panel.users.deleteUser.prompt: Вы уверены, что хотите удалить этого пользователя? Это действие не может быть отменено.
 panel.users.newUser: Новый пользователь
 panel.users.newUser.password.suggestion: не менее 8 символов
-panel.users.newUser.username.suggestion: между 3-20 букв, цифр и тире
+panel.users.newUser.username.suggestion: между 3-20 букв, цифр и - . _
 panel.users.nextUser: Следующий пользователь
 panel.users.options: Параметры
 panel.users.previousUser: Предыдущий пользователь
+panel.users.user.cannotChangeEmail.alreadyUsed: Невозможно изменить адрес электронной почты, он уже связан с другим аккаунтом
 panel.users.user.cannotChangePassword: Невозможно изменить пароль другого пользователя. Действие не допускается.
 panel.users.user.cannotChangeRole: Невозможно изменить роль %s. Действие не допускается.
 panel.users.user.cannotCreate.alreadyExists: Невозможно создать пользователь, пользователь с таким именем уже существует
+panel.users.user.cannotCreate.emailAlreadyUsed: Невозможно создать пользователя, адрес электронной почты уже связан с другим аккаунтом
 panel.users.user.cannotCreate.varMissing: Невозможно создать пользователя, пропуская переменную
 panel.users.user.cannotDelete: Невозможно удалить пользователь. Вы должны быть администратором, и пользователь не должен быть авторизован.
 panel.users.user.cannotEdit: Невозможно изменить пользователя %s. Действие не допускается.

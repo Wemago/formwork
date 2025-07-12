@@ -17,9 +17,13 @@
 <body>
     <main>
         <div class="container-full">
-            <div class="login-modal-container">
-                <?= $this->insert('_login/notification') ?>
-                <?= $this->content() ?>
+            <div class="<?= $this->classes(['login-container', 'form-input-invalid' => $error ?? false]) ?>">
+                <div class="sections">
+                    <section class="section">
+                        <?= $this->insert('_login/notification') ?>
+                        <?= $this->content() ?>
+                    </section>
+                </div>
             </div>
         </div>
     </main>

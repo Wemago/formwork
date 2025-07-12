@@ -1,27 +1,23 @@
 @use "mixins" as *;
 
-.login-modal-container {
+.login-container {
     max-width: 24rem;
-    padding: 2rem;
-    border-radius: var(--border-radius);
     margin: 3rem 0.5rem;
-    background-color: var(--color-base-900);
-    box-shadow: var(--box-shadow-sm);
 }
 
 @media (width >= 24rem) {
-    .login-modal-container {
+    .login-container {
         margin: 3rem auto;
     }
 }
 
-.login-modal-info,
-.login-modal-success,
-.login-modal-warning,
-.login-modal-danger {
+.login-notification-info,
+.login-notification-success,
+.login-notification-warning,
+.login-notification-danger {
     position: relative;
     padding: 1rem 2rem 1rem 3.5rem;
-    margin: -2rem -2rem 1rem;
+    margin: -1.5rem -1.75rem 1rem;
     border-top-left-radius: var(--border-radius);
     border-top-right-radius: var(--border-radius);
 
@@ -41,22 +37,22 @@
     }
 }
 
-.login-modal-info {
+.login-notification-info {
     background-color: var(--color-accent-500);
     color: var(--color-white);
 }
 
-.login-modal-success {
+.login-notification-success {
     background-color: var(--color-success-400);
     color: var(--color-white);
 }
 
-.login-modal-warning {
+.login-notification-warning {
     background-color: var(--color-warning-500);
     color: var(--color-white);
 }
 
-.login-modal-danger {
+.login-notification-danger {
     background-color: var(--color-danger-500);
     color: var(--color-white);
 }

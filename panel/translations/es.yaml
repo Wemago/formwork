@@ -117,7 +117,7 @@ panel.login.login: Iniciar sesión
 panel.login.logout: Cerrar sesión
 panel.login.password: Contraseña
 panel.login.suspiciousRequestDetected: Se detectó una solicitud sospechosa y, por razones de seguridad, se ha cerrado tu sesión. Por favor, inicia sesión nuevamente.
-panel.login.username: Nombre de usuario
+panel.login.usernameOrEmail: Nombre de usuario o email
 panel.manage: Gestionar
 panel.modal.action.cancel: Cancelar
 panel.modal.action.continue: Continuar
@@ -317,13 +317,15 @@ panel.users.deleteUser: Borrar usuario
 panel.users.deleteUser.prompt: ¿Estás seguro de que quieres borrar este usuario? Esta acción no se puede deshacer.
 panel.users.newUser: Nuevo usuario
 panel.users.newUser.password.suggestion: al menos 8 caracteres
-panel.users.newUser.username.suggestion: entre 3 y 20 letras, dígitos y guiones
+panel.users.newUser.username.suggestion: entre 3 y 20 letras, dígitos y - . _
 panel.users.nextUser: Usuario siguiente
 panel.users.options: Opciones
 panel.users.previousUser: Usuario anterior
+panel.users.user.cannotChangeEmail.alreadyUsed: No se puede cambiar el correo del usuario, la dirección ya está asociada a una cuenta
 panel.users.user.cannotChangePassword: No se puede cambiar la contraseña de otro usuario. La acción no está permitida.
 panel.users.user.cannotChangeRole: No se puede cambiar el rol de %s. La acción no está permitida.
 panel.users.user.cannotCreate.alreadyExists: No se puede crear el usuario, ya existe un usuario con el mismo nombre
+panel.users.user.cannotCreate.emailAlreadyUsed: No se puede crear el usuario, la dirección de correo ya está asociada a una cuenta
 panel.users.user.cannotCreate.varMissing: No se puede crear el usuario, falta una variable
 panel.users.user.cannotDelete: No se puede borrar el usuario. Debes ser un administrador y el usuario no debe estar conectado.
 panel.users.user.cannotEdit: No se puede editar el usuario %s. La acción no está permitida.

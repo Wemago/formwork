@@ -22,7 +22,6 @@ fields:
         type: password
         label: '{{user.password}}'
         placeholder: '{{user.password.placeholder}}'
-        disabled: true
         minLength: 8
         autocomplete: new-password
 
@@ -37,7 +36,6 @@ fields:
     role:
         type: select
         label: '{{user.role}}'
-        disabled: true
         options@: site.users.availableRoles
 
     colorScheme:

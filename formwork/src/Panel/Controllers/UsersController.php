@@ -164,6 +164,10 @@ final class UsersController extends AbstractController
      */
     public function profile(RouteParams $routeParams): Response
     {
+        if (!$this->hasPermission('panel.users.profile')) {
+            return $this->forward(ErrorsController::class, 'forbidden');
+        }
+
         $scheme = $this->app->schemes()->get('users.user');
 
         $fields = $scheme->fields();

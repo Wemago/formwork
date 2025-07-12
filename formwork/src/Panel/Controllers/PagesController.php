@@ -209,6 +209,10 @@ final class PagesController extends AbstractController
      */
     public function preview(RouteParams $routeParams): Response
     {
+        if (!$this->hasPermission('panel.pages.preview')) {
+            return $this->forward(ErrorsController::class, 'forbidden');
+        }
+
         $page = $this->site->findPage($routeParams->get('page'));
 
         if ($page === null) {
@@ -390,7 +394,7 @@ final class PagesController extends AbstractController
                 'replace' => $this->router->generate('panel.files.replace', ['model' => $page->getModelIdentifier(), 'id' => $page->route(), 'filename' => $file->name()]),
                 'delete'  => $this->router->generate('panel.files.delete', ['model' => $page->getModelIdentifier(), 'id' => $page->route(), 'filename' => $file->name()]),
             ], fn(string $route): string => Uri::make([], Path::join([$this->request->root(), $route]))),
-        ]), );
+        ]),);
     }
 
     /**

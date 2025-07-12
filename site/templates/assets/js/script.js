@@ -7,10 +7,10 @@ window.addEventListener("load", function () {
             const element = document.getElementById(id);
             helpers.toggleElement(element, 250);
             element.classList.toggle("menu-expanded");
-            if (!element.ariaExpaned) {
-                element.ariaExpaned = true;
+            if (!element.ariaExpanded) {
+                element.ariaExpanded = true;
             } else {
-                element.ariaExpaned = false;
+                element.ariaExpanded = false;
             }
         });
     }
@@ -23,7 +23,7 @@ const helpers = {
      */
     measureElementHeight: function (element) {
         const styleHeight = element.style.height;
-        const styleDisplay = element.style.height;
+        const styleDisplay = element.style.display;
         element.style.height = "";
         element.style.display = "block";
         const height = element.clientHeight;

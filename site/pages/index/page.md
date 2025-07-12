@@ -22,11 +22,11 @@ At the first access you'll be requested to register a new user.
 ![](formwork.png)
 
 ### Manage pages manually
-If you prefer to manage the content manually, just locate the pages in the subdirectories of `📁 site/pages` folder. Each subfolder is named by its slug with by an ordering number prefix, e.g., `01-about`.
+If you prefer to manage the content manually, just locate the pages in the subdirectories of `📁 site/pages` folder. Each subfolder is named by its slug with an ordering number prefix, e.g., `01-about`.
 
 The content of each page is stored in Markdown + YAML files with the `.md` extension and named after the template they use.
 
-For example, an *About* page, using the `page` template and accessibile from the `/about/` route is represented by `site/content/01-about/page.md` file.
+For example, an *About* page, using the `page` template and accessibile from the `/about/` route is represented by `site/pages/01-about/page.md` file.
 
 Each page is structured like this:
 

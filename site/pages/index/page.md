@@ -4,7 +4,7 @@ canonicalRoute: /
 icon: page-home
 ---
 # Welcome to your Formwork site! 
-You’re all set up — now what? Here are a few ideas to get started:
+You're all set up — now what? Here are a few ideas to get started:
 
 - Go to the [Administration Panel](/panel/) to create your first page or tweak settings.  
 - Browse the [Documentation](https://getformwork.org/documentation/) to see how everything works.  
@@ -17,11 +17,11 @@ The [Administration Panel](/panel) makes easy editing pages, changing options an
 
 You can always access it by visiting the [`/panel/`](/panel) page right at the site root.
 
-At the first access you’ll be requested to register a new user.
+At the first access you'll be requested to register a new user.
 
-![](panel.png)
+![](formwork.png)
 
-### Manage Pages Manually
+### Manage pages manually
 If you prefer to manage the content manually, just locate the pages in the subdirectories of `📁 site/pages` folder. Each subfolder is named by its slug with by an ordering number prefix, e.g., `01-about`.
 
 The content of each page is stored in Markdown + YAML files with the `.md` extension and named after the template they use.

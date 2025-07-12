@@ -1,6 +1,6 @@
 :root {
     --font-family-sans: system-ui, sans-serif;
-    --font-family-mono: ui-monospace, "Cascadia Code", "Source Code Pro", Menlo, Consolas, "DejaVu Sans Mono", monospace;
+    --font-family-mono: ui-monospace, "Cascadia Code", "Source Code Pro", menlo, consolas, "DejaVu Sans Mono", monospace;
     --border-radius: 0.375rem;
     --color-white: #fff;
     --color-black: #000;
@@ -102,13 +102,9 @@ h6,
     margin-top: 0;
     margin-bottom: 0.5rem;
     color: var(--color-gray-100);
+    font-weight: 800;
     line-height: 1.15;
     scroll-margin-top: 1rem;
-    font-weight: 800;
-
-    &:not(:first-child) {
-        margin-top: 2rem;
-    }
 }
 
 h1,
@@ -171,10 +167,6 @@ a:hover {
 
 img {
     max-width: 100%;
-}
-
-article {
-    margin-bottom: 2rem;
 }
 
 hr {
@@ -248,9 +240,9 @@ pre {
 
 pre > code {
     padding: 0;
+    background-color: transparent;
     color: inherit;
     font-size: inherit;
-    background-color: transparent;
 }
 
 table {
@@ -356,7 +348,11 @@ tr {
 }
 
 .menu-item {
+    position: relative;
+    display: block;
     padding: 0.5rem;
+    border-radius: var(--border-radius);
+    font-size: 1rem;
 }
 
 .menu-header {
@@ -372,13 +368,6 @@ tr {
     text-decoration: none;
 }
 
-.menu-item {
-    position: relative;
-    display: block;
-    font-size: 1rem;
-    border-radius: var(--border-radius);
-}
-
 .menu-item:hover {
     color: var(--color-blue-300);
 }
@@ -387,20 +376,20 @@ tr {
     position: absolute;
     bottom: 0;
     left: 20%;
+    display: none;
     width: 60%;
     height: 3px;
     border-radius: var(--border-radius);
     background: var(--color-blue-500);
     content: " ";
-    display: none;
 }
 
 .menu-toggle {
     display: flex;
-    padding: 0.5rem 0;
-    margin-left: auto;
     align-items: center;
+    padding: 0.5rem 0;
     border-color: transparent;
+    margin-left: auto;
     background-color: transparent;
 }
 
@@ -433,16 +422,37 @@ tr {
     }
 }
 
-.cover-image {
-    margin-bottom: 2rem;
-    padding-bottom: 30%;
+.article {
+    margin-top: 3rem;
+}
+
+.article-cover-image {
     width: 100%;
-    background-position: center center;
-    background-size: cover;
+    border-radius: var(--border-radius);
+    margin-bottom: 0.5rem;
+    aspect-ratio: 3;
+    object-fit: cover;
+}
+
+.cover-image {
+    width: 100%;
+    border-radius: var(--border-radius);
+    margin-bottom: 2rem;
+    aspect-ratio: 3;
+    object-fit: cover;
+}
+
+.article-title {
+    margin-top: 0.25rem;
 }
 
 .article-title a {
     color: inherit;
+}
+
+.article-time {
+    color: var(--color-gray-400);
+    font-size: 0.875rem;
 }
 
 .read-more {
@@ -451,9 +461,10 @@ tr {
 
 .pagination {
     overflow: auto;
-    margin: auto;
-    margin-bottom: 1rem;
     max-width: 20rem;
+    margin: auto;
+    margin-top: 2rem;
+    margin-bottom: 2rem;
 }
 
 .pagination-previous {
@@ -465,6 +476,7 @@ tr {
 }
 
 .tags {
+    margin-top: 0.5rem;
     margin-bottom: 1rem;
     font-size: 0.75rem;
 }
@@ -478,4 +490,5 @@ tr {
 .tag:hover {
     background-color: var(--color-blue-600);
     color: var(--color-gray-900);
+    text-decoration: none;
 }

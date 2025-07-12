@@ -1,6 +1,1 @@
 title: '{{user.role.user}}'
-
-permissions:
-    panel.dashboard: true
-    panel.pages: true
-    panel.files: true

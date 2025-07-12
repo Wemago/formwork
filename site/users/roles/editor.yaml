@@ -1,0 +1,8 @@
+title: '{{user.role.editor}}'
+
+permissions:
+    panel.dashboard: true
+    panel.files: true
+    panel.pages: true
+    panel.statistics: true
+    panel.users: true

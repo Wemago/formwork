@@ -115,6 +115,7 @@ user.password: Password
 user.password.placeholder: Type a new password to change...
 user.role: Role
 user.role.admin: Administrator
+user.role.editor: Editor
 user.role.user: User
 user.user: User
 user.username: Username

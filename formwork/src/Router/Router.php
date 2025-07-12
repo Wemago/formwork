@@ -320,8 +320,9 @@ class Router
             throw new InvalidRouteException(sprintf('Compilation of route "%s" failed with error: %s', $route->getName(), preg_last_error_msg()));
         }
 
-        // Wrap the regex in tilde delimiters, so we don't need to escape slashes
-        $regex = '~^' . trim($regex, '^$') . '$~';
+        // Wrap the regex in tilde delimiters, so we don't need to escape slashes, ensure the regex matches the entire string.
+        // A non-capturing group is added to avoid issues with alternation
+        $regex = '~^(?:' . trim($regex, '^$') . ')$~';
 
         return new CompiledRoute($path, $regex, $params);
     }
@@ -350,7 +351,9 @@ class Router
 
             $pattern = $this->resolvePatternShortcut($pattern);
 
-            if (!(bool) preg_match('~^' . trim($pattern, '^$') . '$~', (string) $params[$param])) {
+            // Wrap the regex in tilde delimiters, so we don't need to escape slashes, ensure the regex matches the entire string.
+            // A non-capturing group is added to avoid issues with alternation
+            if (!(bool) preg_match('~^(?:' . trim($pattern, '^$') . ')$~', (string) $params[$param])) {
                 throw new InvalidArgumentException(sprintf('Invalid value for param "%s"', $param));
             }
 

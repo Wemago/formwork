@@ -394,7 +394,7 @@ final class PagesController extends AbstractController
                 'replace' => $this->router->generate('panel.files.replace', ['model' => $page->getModelIdentifier(), 'id' => $page->route(), 'filename' => $file->name()]),
                 'delete'  => $this->router->generate('panel.files.delete', ['model' => $page->getModelIdentifier(), 'id' => $page->route(), 'filename' => $file->name()]),
             ], fn(string $route): string => Uri::make([], Path::join([$this->request->root(), $route]))),
-        ]),);
+        ]), );
     }
 
     /**

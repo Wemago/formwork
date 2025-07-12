@@ -64,8 +64,11 @@ final class Constraint
     /**
      * Return whether a value matches the specified regex pattern
      */
-    public static function matchesRegex(string $value, string $regex): bool
+    public static function matchesRegex(string $value, string $regex, bool $entireMatch = true): bool
     {
+        if ($entireMatch) {
+            $regex = '^(?:' . trim($regex, '^$/') . ')$';
+        }
         return (bool) @preg_match(Str::wrap($regex, '/'), $value);
     }
 

@@ -54,7 +54,7 @@ fields:
         label: '{{panel.site.languages.availableLanguages}}'
         icon: translate
         placeholder: '{{panel.site.languages.availableLanguages.noLanguages}}'
-        pattern: '^[a-z]{2,3}$'
+        pattern: '[a-z]{2,3}'
         translate: [label, placeholder]
         options@: languages.names
 

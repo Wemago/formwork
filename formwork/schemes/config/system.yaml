@@ -81,7 +81,7 @@ fields:
         label: '{{panel.options.system.files.allowedExtensions}}'
         icon: file-exclamation
         placeholder: '{{panel.options.system.files.allowedExtensions.noExtensions}}'
-        pattern: '^\.[a-zA-Z0-9]+$'
+        pattern: '\.[a-zA-Z0-9]+'
         options@: mimeTypes.getExtensionTypes()
 
     cache.enabled:

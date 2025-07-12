@@ -7,27 +7,9 @@ use Formwork\Utils\Str;
 class Permissions
 {
     /**
-     * The permission values
-     *
-     * @var array<string, bool>
-     */
-    protected array $permissions = [
-        'dashboard' => false,
-        'cache'     => false,
-        'backup'    => false,
-        'pages'     => false,
-        'options'   => false,
-        'updates'   => false,
-        'users'     => false,
-    ];
-
-    /**
      * @param array<string, bool> $permissions
      */
-    public function __construct(array $permissions)
-    {
-        $this->permissions = [...$this->permissions, ...$permissions];
-    }
+    public function __construct(protected array $permissions) {}
 
     /**
      * Return whether a permission is granted

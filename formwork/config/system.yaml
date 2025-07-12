@@ -131,11 +131,8 @@ updates:
     cleanupAfterInstall: true
     registryFile: '${system.panel.paths.logs}/updates.json'
     ignore:
-        - 'assets/*'
         - 'backup/*'
         - 'cache/*'
-        - 'panel/accounts/*'
-        - 'panel/assets/images/users/*'
         - 'panel/logs/*'
         - 'site/*'
 

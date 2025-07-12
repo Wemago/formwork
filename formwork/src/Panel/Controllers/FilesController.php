@@ -342,7 +342,7 @@ final class FilesController extends AbstractController
 
         $scheme = $file->scheme();
 
-        $defaults = $scheme->fields()->pluck('default');
+        $defaults = $scheme->fields()->extract('default');
 
         foreach ($fieldCollection as $field) {
             if ($field->isEmpty() || (Arr::has($defaults, $field->name()) && Arr::get($defaults, $field->name()) === $field->value())) {

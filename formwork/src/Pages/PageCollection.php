@@ -52,7 +52,7 @@ class PageCollection extends AbstractCollection implements Paginable
         return $pageCollection;
     }
 
-    public function pluck(string $key, mixed $default = null): array
+    public function extract(string $key, mixed $default = null): array
     {
         return $this->everyItem()->get($key, $default)->toArray();
     }

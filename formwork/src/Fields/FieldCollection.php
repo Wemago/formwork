@@ -58,7 +58,7 @@ class FieldCollection extends AbstractCollection
         return $this->model;
     }
 
-    public function pluck(string $key, mixed $default = null): array
+    public function extract(string $key, mixed $default = null): array
     {
         return $this->everyItem()->get($key, $default)->toArray();
     }

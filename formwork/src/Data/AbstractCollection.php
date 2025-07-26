@@ -446,7 +446,7 @@ abstract class AbstractCollection implements Arrayable, Countable, Iterator
             };
         }
 
-        [$filter, $comparison, $strict] = $parameters ??= [Constraint::isEqualTo(...), $value, false];
+        [$filter, $comparison, $strict] = array_replace([Constraint::isEqualTo(...), $value, false], $parameters ?? []);
 
         return $this->filter(fn($v, $k) => $filter($values[$k], $comparison, $strict));
     }

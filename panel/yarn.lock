@@ -123,7 +123,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@codemirror/language@npm:^6.0.0, @codemirror/language@npm:^6.11.1, @codemirror/language@npm:^6.3.0, @codemirror/language@npm:^6.4.0, @codemirror/language@npm:^6.6.0":
+"@codemirror/language@npm:^6.0.0, @codemirror/language@npm:^6.3.0, @codemirror/language@npm:^6.4.0, @codemirror/language@npm:^6.6.0":
   version: 6.11.1
   resolution: "@codemirror/language@npm:6.11.1"
   dependencies:
@@ -134,6 +134,20 @@ __metadata:
     "@lezer/lr": "npm:^1.0.0"
     style-mod: "npm:^4.0.0"
   checksum: 10c0/4d6959f66a8e23fc7d2710f39ac83b603fb91e339ae730a47fd73296ed7c38829491ac74f814b89ba075ae491ba820373fd91d77444d6c0a62c47ba494955e5f
+  languageName: node
+  linkType: hard
+
+"@codemirror/language@npm:^6.11.2":
+  version: 6.11.2
+  resolution: "@codemirror/language@npm:6.11.2"
+  dependencies:
+    "@codemirror/state": "npm:^6.0.0"
+    "@codemirror/view": "npm:^6.23.0"
+    "@lezer/common": "npm:^1.1.0"
+    "@lezer/highlight": "npm:^1.0.0"
+    "@lezer/lr": "npm:^1.0.0"
+    style-mod: "npm:^4.0.0"
+  checksum: 10c0/ed03a8d452a92a01be1b5dd3c65199d0c4559e004a4d2399c16cac3226c879fbe4ea46e6884b442a8033392ea78b658da2c3926b827598a1e5de8f62b5991251
   languageName: node
   linkType: hard
 
@@ -1865,7 +1879,7 @@ __metadata:
   dependencies:
     "@codemirror/commands": "npm:^6.8.1"
     "@codemirror/lang-markdown": "npm:^6.3.2"
-    "@codemirror/language": "npm:^6.11.1"
+    "@codemirror/language": "npm:^6.11.2"
     "@codemirror/view": "npm:^6.38.0"
     "@eslint/js": "npm:^9.30.0"
     "@types/sortablejs": "npm:^1.15.8"

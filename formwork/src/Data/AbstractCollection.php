@@ -448,6 +448,7 @@ abstract class AbstractCollection implements Arrayable, Countable, Iterator
 
         [$filter, $comparison, $strict] = array_replace([Constraint::isEqualTo(...), $value, false], $parameters ?? []);
 
+        // @phpstan-ignore arguments.count
         return $this->filter(fn($v, $k) => $filter($values[$k], $comparison, $strict));
     }
 

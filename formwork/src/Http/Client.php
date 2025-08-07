@@ -73,6 +73,7 @@ class Client
 
         $content = @stream_get_contents($connection['handle'], $connection['length'] ?? -1);
 
+        // @phpstan-ignore identical.alwaysFalse
         if ($content === false) {
             throw new RuntimeException(sprintf('Cannot get stream contents from "%s"', $uri));
         }

@@ -219,6 +219,7 @@ class DomSanitizer
     {
         $attributes = $domElement->attributes;
 
+        // @phpstan-ignore identical.alwaysFalse
         if ($attributes === null) {
             throw new UnexpectedValueException('Missing attributes');
         }

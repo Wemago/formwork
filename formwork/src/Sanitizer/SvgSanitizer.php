@@ -64,6 +64,7 @@ class SvgSanitizer extends DomSanitizer
 
         $attributes = $svg->attributes;
 
+        // @phpstan-ignore identical.alwaysFalse
         if ($attributes === null) {
             throw new UnexpectedValueException('Missing attributes');
         }

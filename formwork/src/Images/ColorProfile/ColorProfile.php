@@ -232,6 +232,7 @@ class ColorProfile
             $position += 4;
             $stringOffset = $this->unpack('N', $data, $position)[1];
             $value = mb_convert_encoding(substr($data, $stringOffset, $stringLength), 'UTF-8', 'UTF-16BE');
+            // @phpstan-ignore identical.alwaysFalse
             if ($value === false) {
                 throw new UnexpectedValueException('Cannot convert mluc string to UTF-8');
             }

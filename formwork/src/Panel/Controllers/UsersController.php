@@ -78,6 +78,7 @@ final class UsersController extends AbstractController
             'hash'     => Password::hash($data->get('password')),
             'email'    => $data->get('email'),
             'language' => $data->get('language'),
+            'role'     => $data->get('role'),
         ], FileSystem::joinPaths($this->config->get('system.users.paths.accounts'), $username . '.yaml'));
 
         $this->panel->notify($this->translate('panel.users.user.created'), 'success');

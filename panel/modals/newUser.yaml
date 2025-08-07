@@ -39,6 +39,12 @@ fields:
         options@: formwork.panel.availableTranslations
         default@: formwork.panel.user.language
 
+    role:
+        type: select
+        label: '{{user.role}}'
+        default: editor
+        options@: site.users.availableRoles
+
 buttons:
     dismiss:
         action: dismiss

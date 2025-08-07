@@ -42,11 +42,9 @@ final class CacheController extends AbstractController
      */
     private function clearPagesCache(AbstractCache $cache): void
     {
-        if ($this->config->get('system.cache.enabled')) {
-            $cache->clear();
-            if ($this->site->contentPath() !== null) {
-                FileSystem::touch($this->site->contentPath());
-            }
+        $cache->clear();
+        if ($this->site->contentPath() !== null) {
+            FileSystem::touch($this->site->contentPath());
         }
     }
 

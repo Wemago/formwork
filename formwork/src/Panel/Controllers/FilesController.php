@@ -202,6 +202,9 @@ final class FilesController extends AbstractController
 
         if ($newName !== $filename) {
             if ($model->files()->has($newName)) {
+                if ($this->request->isXmlHttpRequest()) {
+                    return JsonResponse::error($this->translate('panel.files.cannotRename.fileAlreadyExists'), ResponseStatus::InternalServerError);
+                }
                 $this->panel->notify($this->translate('panel.files.cannotRename.fileAlreadyExists'), 'error');
             } else {
                 $dirname = dirname($file->path());
@@ -213,23 +216,24 @@ final class FilesController extends AbstractController
 
                 $this->updateLastModifiedTime($model);
 
-                if ($this->request->isXmlHttpRequest()) {
-                    return JsonResponse::success($this->translate('panel.files.renamed'), data: [
-                        'filename'         => $newName,
-                        'uri'              => $file->uri(),
-                        'size'             => $file->size(),
-                        'lastModifiedTime' => Date::formatTimestamp(
-                            $file->lastModifiedTime(),
-                            $this->config->get('system.date.datetimeFormat'),
-                            $this->translations->getCurrent()
-                        ),
-                        'type'      => $file->type(),
-                        'thumbnail' => $this->getThumbnailUri($file),
-                        'actions'   => $this->getActionsUri($file, $model),
-                    ]);
-                }
                 $this->panel->notify($this->translate('panel.files.renamed'), 'success');
             }
+        }
+
+        if ($this->request->isXmlHttpRequest()) {
+            return JsonResponse::success($this->translate('panel.files.renamed'), data: [
+                'filename'         => $newName,
+                'uri'              => $file->uri(),
+                'size'             => $file->size(),
+                'lastModifiedTime' => Date::formatTimestamp(
+                    $file->lastModifiedTime(),
+                    $this->config->get('system.date.datetimeFormat'),
+                    $this->translations->getCurrent()
+                ),
+                'type'      => $file->type(),
+                'thumbnail' => $this->getThumbnailUri($file),
+                'actions'   => $this->getActionsUri($file, $model),
+            ]);
         }
 
         return $this->redirect($this->generateRoute('panel.files.edit', [...$routeParams->toArray(), 'filename' => $newName]));

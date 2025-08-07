@@ -62,6 +62,46 @@ final class Constraint
     }
 
     /**
+     * Return whether a value is not equal to another
+     */
+    public static function isNotEqualTo(mixed $value, mixed $comparison, bool $strict = true): bool
+    {
+        return $strict ? $value !== $comparison : $value != $comparison;
+    }
+
+    /**
+     * Return whether a value is greater than another
+     */
+    public static function isGreaterThan(int|float $value, int|float $comparison): bool
+    {
+        return $value > $comparison;
+    }
+
+    /**
+     * Return whether a value is greater than or equal to another
+     */
+    public static function isGreaterThanOrEqualTo(int|float $value, int|float $comparison): bool
+    {
+        return $value >= $comparison;
+    }
+
+    /**
+     * Return whether a value is less than another
+     */
+    public static function isLessThan(int|float $value, int|float $comparison): bool
+    {
+        return $value < $comparison;
+    }
+
+    /**
+     * Return whether a value is less than or equal to another
+     */
+    public static function isLessThanOrEqualTo(int|float $value, int|float $comparison): bool
+    {
+        return $value <= $comparison;
+    }
+
+    /**
      * Return whether a value matches the specified regex pattern
      */
     public static function matchesRegex(string $value, string $regex, bool $entireMatch = true): bool

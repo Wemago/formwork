@@ -418,17 +418,38 @@ abstract class AbstractCollection implements Arrayable, Countable, Iterator
     /**
      * Filter the collection using the key from each item
      */
-    public function filterBy(string $key, mixed $value = true, mixed $default = null, ?bool $strict = null): static
+    public function filterBy(string $key, mixed $value = true, mixed $comparison = null): static
     {
-        $values = $this->extract($key, $default);
+        $values = $this->extract($key);
+
+        $args = func_num_args();
 
         if (is_callable($value)) {
+            if ($args > 2) {
+                throw new LogicException(sprintf('Unexpected third argument passed to %s()', __METHOD__));
+            }
             $values = Arr::map($values, $value);
-            $comparison = true;
-            $strict ??= true;
+            $parameters = [Constraint::isEqualTo(...), true, true];
         }
 
-        return $this->filter(fn($v, $k) => Constraint::isEqualTo($values[$k], $comparison ??= $value, $strict ??= false));
+        if ($args > 2) {
+            $parameters = match ($value) {
+                'equalTo', '==' => [Constraint::isEqualTo(...), $comparison, false],
+                'notEqualTo', '!=' => [Constraint::isNotEqualTo(...), $comparison, false],
+                'strictlyEqualTo', '===' => [Constraint::isEqualTo(...), $comparison, true],
+                'strictlyNotEqualTo', '!==' => [Constraint::isNotEqualTo(...), $comparison, true],
+                'greaterThan', '>' => [Constraint::isGreaterThan(...), $comparison],
+                'greaterThanOrEqualTo', '>=' => [Constraint::isGreaterThanOrEqualTo(...), $comparison],
+                'lessThan', '<' => [Constraint::isLessThan(...), $comparison],
+                'lessThanOrEqualTo', '<=' => [Constraint::isLessThanOrEqualTo(...), $comparison],
+                default => throw new LogicException(sprintf('Unknown filter "%s"', $value)),
+            };
+        }
+
+        [$filter, $comparison, $strict] = array_replace([Constraint::isEqualTo(...), $value, false], $parameters ?? []);
+
+        // @phpstan-ignore arguments.count
+        return $this->filter(fn($v, $k) => $filter($values[$k], $comparison, $strict));
     }
 
     /**

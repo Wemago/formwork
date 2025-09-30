@@ -32,14 +32,14 @@ jobs:
         run: |
           corepack enable
           cd panel
-          yarn install
+          pnpm install
 
       - name: Check TypeScript
         run: |
           cd panel
-          yarn run check:ts
+          pnpm run check:ts
 
       - name: Check CSS
         run: |
           cd panel
-          yarn run check:css
+          pnpm run check:css

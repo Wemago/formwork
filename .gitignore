@@ -6,7 +6,6 @@
 /logs/*
 /vendor/*
 
-/panel/.yarn/*
 /panel/assets/css/*
 /panel/assets/js/*
 /panel/logs/*

@@ -33,8 +33,8 @@ jobs:
         run: |
           corepack enable
           cd panel
-          yarn install
-          yarn build
+          pnpm install
+          pnpm build
 
       - name: Create archive
         run: |

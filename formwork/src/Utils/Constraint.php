@@ -125,8 +125,8 @@ final class Constraint
         if ($start > $end) {
             [$start, $end] = [$end, $start];
         }
-        return ($includeMin ? $value >= $start : $value > $start) &&
-            ($includeMax ? $value <= $end : $value < $end);
+        return ($includeMin ? $value >= $start : $value > $start)
+            && ($includeMax ? $value <= $end : $value < $end);
     }
 
     /**

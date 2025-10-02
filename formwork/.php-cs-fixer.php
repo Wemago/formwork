@@ -10,8 +10,8 @@ $config = new Config();
 
 return $config
     ->setRules([
-        '@PER-CS2.0' => true,
-        '@PHP84Migration' => true,
+        '@auto' => true,
+        '@autoPHPMigration' => true,
         'align_multiline_comment' => true,
         'binary_operator_spaces' => ['default' => 'single_space', 'operators' => ['=>' => 'align_single_space_minimal']],
         'class_attributes_separation' => true,
@@ -50,6 +50,5 @@ return $config
         'phpdoc_var_without_name' => true,
         'single_quote' => true,
         'string_implicit_backslashes' => true,
-        'types_spaces' => true,
     ])
     ->setFinder($finder);

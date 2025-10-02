@@ -72,7 +72,7 @@ final class Cookie
     /**
      * Validate a cookie name
      */
-    private static function validateName(string $name): bool
+    private static function validateName(string $name): true
     {
         if (preg_match(self::INVALID_NAME_CHARACTERS, $name, $matches, PREG_OFFSET_CAPTURE)) {
             [$character, $position] = $matches[0];

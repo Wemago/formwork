@@ -309,7 +309,7 @@ final class FileSystem
     /**
      * Update last modified and access time of a file or a directory
      */
-    public static function touch(string $path): bool
+    public static function touch(string $path): true
     {
         self::assertExists($path, true);
         if (@touch($path)) {
@@ -379,7 +379,7 @@ final class FileSystem
      *
      * @param bool $recursive Whether to delete files recursively or not
      */
-    public static function delete(string $path, bool $recursive = false): bool
+    public static function delete(string $path, bool $recursive = false): true
     {
         if (self::isLink($path)) {
             return self::deleteLink($path);
@@ -396,7 +396,7 @@ final class FileSystem
     /**
      * Delete a file
      */
-    public static function deleteFile(string $file): bool
+    public static function deleteFile(string $file): true
     {
         if (!self::isFile($file)) {
             throw new InvalidArgumentException(sprintf('%s() accepts only files as $file argument', __METHOD__));
@@ -412,7 +412,7 @@ final class FileSystem
      *
      * @param bool $recursive Whether to delete directory content recursively or not
      */
-    public static function deleteDirectory(string $directory, bool $recursive = false): bool
+    public static function deleteDirectory(string $directory, bool $recursive = false): true
     {
         if (!self::isDirectory($directory)) {
             throw new InvalidArgumentException(sprintf('%s() accepts only directories as $directory argument', __METHOD__));
@@ -434,7 +434,7 @@ final class FileSystem
     /**
      * Delete a symbolic link
      */
-    public static function deleteLink(string $link): bool
+    public static function deleteLink(string $link): true
     {
         if (!self::isLink($link)) {
             throw new InvalidArgumentException(sprintf('%s() accepts only links as $link argument', __METHOD__));
@@ -452,7 +452,7 @@ final class FileSystem
      *
      * @param bool $overwrite Whether to overwrite destination or not
      */
-    public static function copy(string $source, string $destination, bool $overwrite = false): bool
+    public static function copy(string $source, string $destination, bool $overwrite = false): true
     {
         if (self::isLink($source)) {
             return self::copyLink($source, $destination, $overwrite);
@@ -471,7 +471,7 @@ final class FileSystem
      *
      * @param bool $overwrite Whether to overwrite destination or not
      */
-    public static function copyFile(string $source, string $destination, bool $overwrite = false): bool
+    public static function copyFile(string $source, string $destination, bool $overwrite = false): true
     {
         if (!self::isFile($source)) {
             throw new InvalidArgumentException(sprintf('%s() accepts only files as $source argument', __METHOD__));
@@ -491,7 +491,7 @@ final class FileSystem
      *
      * @param bool $overwrite Whether to overwrite destination or not
      */
-    public static function copyDirectory(string $source, string $destination, bool $overwrite = false): bool
+    public static function copyDirectory(string $source, string $destination, bool $overwrite = false): true
     {
         if (!self::isDirectory($source)) {
             throw new InvalidArgumentException(sprintf('%s() accepts only directories as $source argument', __METHOD__));
@@ -524,7 +524,7 @@ final class FileSystem
      *
      * @param bool $overwrite Whether to overwrite destination or not
      */
-    public static function copyLink(string $source, string $destination, bool $overwrite = false): bool
+    public static function copyLink(string $source, string $destination, bool $overwrite = false): true
     {
         if (!self::isLink($source)) {
             throw new InvalidArgumentException(sprintf('%s() accepts only links as $source argument', __METHOD__));
@@ -542,7 +542,7 @@ final class FileSystem
      *
      * @param bool $overwrite Whether to overwrite destination file or not
      */
-    public static function move(string $source, string $destination, bool $overwrite = false): bool
+    public static function move(string $source, string $destination, bool $overwrite = false): true
     {
         if (self::isLink($source)) {
             return self::moveLink($source, $destination, $overwrite);
@@ -561,7 +561,7 @@ final class FileSystem
      *
      * @param bool $overwrite Whether to overwrite destination file or not
      */
-    public static function moveFile(string $source, string $destination, bool $overwrite = false): bool
+    public static function moveFile(string $source, string $destination, bool $overwrite = false): true
     {
         if (!self::isFile($source)) {
             throw new InvalidArgumentException(sprintf('%s() accepts only files as $source argument', __METHOD__));
@@ -580,7 +580,7 @@ final class FileSystem
      *
      * @param bool $overwrite Whether to overwrite destination directory or not
      */
-    public static function moveDirectory(string $source, string $destination, bool $overwrite = false): bool
+    public static function moveDirectory(string $source, string $destination, bool $overwrite = false): true
     {
         if (!self::isDirectory($source)) {
             throw new InvalidArgumentException(sprintf('%s() accepts only directories as $source argument', __METHOD__));
@@ -597,7 +597,7 @@ final class FileSystem
      *
      * @param bool $overwrite Whether to overwrite destination directory or not
      */
-    public static function moveLink(string $source, string $destination, bool $overwrite = false): bool
+    public static function moveLink(string $source, string $destination, bool $overwrite = false): true
     {
         if (!self::isLink($source)) {
             throw new InvalidArgumentException(sprintf('%s() accepts only links as $source argument', __METHOD__));
@@ -740,7 +740,7 @@ final class FileSystem
     /**
      * Create a new file with empty content
      */
-    public static function createFile(string $file): bool
+    public static function createFile(string $file): true
     {
         // x+ mode checks file existence atomically
         if (($handle = @fopen($file, 'x+')) !== false) {
@@ -772,7 +772,7 @@ final class FileSystem
     /**
      * Write content to file atomically
      */
-    public static function write(string $file, string $content): bool
+    public static function write(string $file, string $content): true
     {
         if (self::exists($file) && !self::isFile($file)) {
             throw new InvalidArgumentException(sprintf('%s() accepts only files as $file argument', __METHOD__));
@@ -795,7 +795,7 @@ final class FileSystem
      *
      * @param bool $recursive Whether to create directory recursively
      */
-    public static function createDirectory(string $directory, bool $recursive = false): bool
+    public static function createDirectory(string $directory, bool $recursive = false): true
     {
         if (@mkdir($directory, self::DEFAULT_DIRECTORY_MODE, $recursive)) {
             return true;
@@ -808,7 +808,7 @@ final class FileSystem
      *
      * @param bool $assertExists Whether to assert the existence of the link target
      */
-    public static function createLink(string $target, string $link, bool $assertExists = true): bool
+    public static function createLink(string $target, string $link, bool $assertExists = true): true
     {
         if ($assertExists) {
             self::assertExists($target);

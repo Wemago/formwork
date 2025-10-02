@@ -176,9 +176,9 @@ final class Debug
         if (!headers_sent()) {
             ob_start();
         }
-        if (!static::$stylesDumped) {
-            echo '<style>' . static::$css . '</style>', '<script>' . static::$js . '</script>';
-            static::$stylesDumped = true;
+        if (!self::$stylesDumped) {
+            echo '<style>' . self::$css . '</style>', '<script>' . self::$js . '</script>';
+            self::$stylesDumped = true;
         }
         foreach ($data as $d) {
             echo self::dumpToString($d);
@@ -248,7 +248,7 @@ final class Debug
                         . ',';
                 }
 
-                return sprintf("<span class=\"__type-array\">array</span>(<span class=\"__note\">%d</span>) [<span class=\"__formwork-dump-toggle\" onclick=\"__formwork_dump_toggle(this)\" data-target=\"__formwork-dump-id-%2\$d\">▼</span>\n<div class=\"__formwork-dump-collapsed\" id=\"__formwork-dump-id-%d\">%s</div>%s]", count($data), ++static::$counter, implode("\n", $parts), str_repeat(' ', $indent));
+                return sprintf("<span class=\"__type-array\">array</span>(<span class=\"__note\">%d</span>) [<span class=\"__formwork-dump-toggle\" onclick=\"__formwork_dump_toggle(this)\" data-target=\"__formwork-dump-id-%2\$d\">▼</span>\n<div class=\"__formwork-dump-collapsed\" id=\"__formwork-dump-id-%d\">%s</div>%s]", count($data), ++self::$counter, implode("\n", $parts), str_repeat(' ', $indent));
 
             case 'object':
                 if ($data instanceof UnitEnum) {
@@ -260,11 +260,11 @@ final class Debug
                 $class = $data::class;
                 $parts = [];
 
-                if (in_array($id, static::$refs)) {
+                if (in_array($id, self::$refs)) {
                     return sprintf('<span class="__type-name">%s</span>(<span class="__note">#%d</span>) { <span class="__ref"><a href="#__formwork-dump-ref-%2$d" title="Go to reference">...</a></span> }</span>', $class, $id);
                 }
 
-                static::$refs[] = $id;
+                self::$refs[] = $id;
 
                 if ($data instanceof Closure) {
                     $reflectionFunction = new ReflectionFunction($data);
@@ -319,7 +319,7 @@ final class Debug
                         "%s (<span class=\"__ref\" id=\"__formwork-dump-ref-%d\">#%2\$d</span>) {<span class=\"__formwork-dump-toggle\" onclick=\"__formwork_dump_toggle(this)\" data-target=\"__formwork-dump-id-%3\$d\">▼</span>\n<div class=\"__formwork-dump-collapsed\" id=\"__formwork-dump-id-%d\">%s</div>%s}",
                         $signature,
                         $id,
-                        ++static::$counter,
+                        ++self::$counter,
                         implode("\n", $parts),
                         str_repeat(' ', $indent)
                     );
@@ -352,7 +352,7 @@ final class Debug
                     "<span class=\"__type-name\">%s</span>(<span class=\"__ref\" id=\"__formwork-dump-ref-%d\">#%2\$d</span>) {<span class=\"__formwork-dump-toggle\" onclick=\"__formwork_dump_toggle(this)\" data-target=\"__formwork-dump-id-%3\$d\">▼</span>\n<div class=\"__formwork-dump-collapsed\" id=\"__formwork-dump-id-%d\">%s</div>%s}",
                     $class,
                     $id,
-                    ++static::$counter,
+                    ++self::$counter,
                     implode("\n", $parts),
                     str_repeat(' ', $indent)
                 );

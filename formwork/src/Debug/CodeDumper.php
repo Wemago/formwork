@@ -208,9 +208,9 @@ final class CodeDumper
      */
     private static function dumpStyles(): void
     {
-        if (!static::$stylesDumped) {
-            echo '<style>' . static::$css . '</style>';
-            static::$stylesDumped = true;
+        if (!self::$stylesDumped) {
+            echo '<style>' . self::$css . '</style>';
+            self::$stylesDumped = true;
         }
     }
 

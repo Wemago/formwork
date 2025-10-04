@@ -53,6 +53,8 @@ class Field implements Arrayable, Stringable
      * @param string               $name                  Field name
      * @param array<string, mixed> $data
      * @param ?FieldCollection     $parentFieldCollection Parent field collection
+     *
+     * @throws UnexpectedValueException If fields are nested inside other fields
      */
     public function __construct(
         protected string $name,
@@ -189,6 +191,9 @@ class Field implements Arrayable, Stringable
 
     /**
      * Validate field value
+     *
+     * @throws RecursionException  If there is recursion in field validation
+     * @throws ValidationException If the field is required but empty
      */
     public function validate(): static
     {

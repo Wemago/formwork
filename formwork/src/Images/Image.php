@@ -70,6 +70,11 @@ class Image extends File
         return $this->process()->path;
     }
 
+    /**
+     * Get image MIME type
+     *
+     * @throws RuntimeException If image info cannot be determined
+     */
     public function mimeType(): string
     {
         if (!isset($this->mimeType)) {
@@ -139,8 +144,9 @@ class Image extends File
     /**
      * Resize image to a given width and height
      *
-     * @param int<1, max> $width
-     * @param int<1, max> $height
+     * @param int               $width  Target width in pixels
+     * @param int               $height Target height in pixels
+     * @param ResizeMode|string $mode   Resize mode to use
      */
     public function resize(int $width, int $height, ResizeMode|string $mode = ResizeMode::Cover): self
     {
@@ -154,7 +160,8 @@ class Image extends File
     /**
      * Resize image to a square of a given size
      *
-     * @param int<1, max>|null $size
+     * @param int|null          $size Target size in pixels (null for auto)
+     * @param ResizeMode|string $mode Resize mode to use
      */
     public function square(?int $size = null, ResizeMode|string $mode = ResizeMode::Cover): self
     {
@@ -165,10 +172,10 @@ class Image extends File
     /**
      * Crop image to a given width and height starting from a given origin
      *
-     * @param int<0, max> $originX
-     * @param int<0, max> $originY
-     * @param int<1, max> $width
-     * @param int<1, max> $height
+     * @param int $originX Starting X coordinate
+     * @param int $originY Starting Y coordinate
+     * @param int $width   Width of the crop area
+     * @param int $height  Height of the crop area
      */
     public function crop(int $originX, int $originY, int $width, int $height): self
     {
@@ -286,7 +293,7 @@ class Image extends File
     /**
      * Get color profile
      *
-     * @throws RuntimeException if the image has no color profile
+     * @throws RuntimeException If the image has no color profile
      */
     public function getColorProfile(): ?ColorProfile
     {
@@ -296,7 +303,7 @@ class Image extends File
     /**
      * Set color profile
      *
-     * @throws RuntimeException if the image has no color profile
+     * @throws RuntimeException If the image has no color profile
      */
     public function setColorProfile(ColorProfile $colorProfile): void
     {
@@ -306,7 +313,7 @@ class Image extends File
     /**
      * Remove color profile
      *
-     * @throws RuntimeException if the image has no color profile
+     * @throws RuntimeException If the image has no color profile
      */
     public function removeColorProfile(): void
     {
@@ -324,7 +331,7 @@ class Image extends File
     /**
      * Get EXIF data
      *
-     * @throws RuntimeException if the image does not support EXIF data
+     * @throws RuntimeException If the image does not support EXIF data
      */
     public function getExifData(): ?ExifData
     {
@@ -334,7 +341,7 @@ class Image extends File
     /**
      * Set EXIF data
      *
-     * @throws RuntimeException if the image does not support EXIF data
+     * @throws RuntimeException If the image does not support EXIF data
      */
     public function setExifData(ExifData $exifData): void
     {
@@ -344,7 +351,7 @@ class Image extends File
     /**
      * Remove EXIF data
      *
-     * @throws RuntimeException if the image does not support EXIF data
+     * @throws RuntimeException If the image does not support EXIF data
      */
     public function removeExifData(): void
     {
@@ -430,6 +437,8 @@ class Image extends File
 
     /**
      * Save image to a given path with a given MIME type
+     *
+     * @throws RuntimeException If the image type is unsupported or conversion is not supported
      */
     public function saveAs(string $path, ?string $mimeType = null): void
     {
@@ -472,6 +481,8 @@ class Image extends File
 
     /**
      * Get image hash based on its path, transforms and format
+     *
+     * @throws RuntimeException If the image type is unsupported
      */
     protected function getHash(?string $mimeType = null): string
     {
@@ -502,6 +513,8 @@ class Image extends File
 
     /**
      * Get handler for the image according to its MIME type
+     *
+     * @throws RuntimeException If the image type is unsupported
      */
     protected function getHandler(): AbstractHandler
     {
@@ -517,6 +530,8 @@ class Image extends File
 
     /**
      * Initialize image
+     *
+     * @throws RuntimeException If `gd` extension is not loaded or image is not readable
      */
     protected function initialize(): void
     {

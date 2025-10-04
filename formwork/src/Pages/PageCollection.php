@@ -40,7 +40,8 @@ class PageCollection extends AbstractCollection implements Paginable
     /**
      * Paginate the collection
      *
-     * @param int $length Number of items in the pagination
+     * @param int $length      Number of items per page
+     * @param int $currentPage Current page number
      */
     public function paginate(int $length, int $currentPage): self
     {
@@ -86,6 +87,8 @@ class PageCollection extends AbstractCollection implements Paginable
      *
      * @param string $query Query to search for
      * @param int    $min   Minimum query length
+     *
+     * @throws RuntimeException If whitespace normalization fails
      */
     public function search(string $query, int $min = 4): static
     {

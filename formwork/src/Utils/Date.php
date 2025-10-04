@@ -81,7 +81,10 @@ final class Date
     /**
      * Parse a date according to a given format (or the default format if not given) and return the timestamp
      *
-     * @param array<string>|string $format
+     * @param string               $date   The date string to parse
+     * @param array<string>|string $format Format(s) to try when parsing the date
+     *
+     * @throws InvalidArgumentException If the date cannot be parsed according to the given format
      */
     public static function toTimestamp(string $date, string|array $format): int
     {
@@ -103,6 +106,8 @@ final class Date
      * Convert a format accepted by `date()` to its corresponding pattern.
      *
      * For instance, the format `d/m/Y \a\t h:i:s` is converted to `DD/MM/YYYY [at] hh:mm:ss`
+     *
+     * @throws RuntimeException If the format conversion fails due to a regex error
      */
     public static function formatToPattern(string $format): string
     {
@@ -124,6 +129,8 @@ final class Date
      * For instance, the format `DDDD DD MMMM YYYY [at] HH:mm:ss A [o\' clock]`
      * is converted to `l d F Y \a\t h:i:s A \o\' \c\l\o\c\k`,
      * where brackets are used to escape literal string portions
+     *
+     * @throws RuntimeException If the pattern conversion fails due to a regex error
      */
     public static function patternToFormat(string $pattern): string
     {
@@ -140,6 +147,12 @@ final class Date
 
     /**
      * Formats a DateTime object using the current translation for weekdays and months
+     *
+     * @param DateTime    $dateTime    The `DateTime` object to format
+     * @param string      $format      The format string accepted by `date()`
+     * @param Translation $translation The translation object for localized strings
+     *
+     * @throws RuntimeException If the date formatting fails due to a regex error
      */
     public static function formatDateTime(DateTime $dateTime, string $format, Translation $translation): string
     {
@@ -214,6 +227,8 @@ final class Date
      * Create a `DateTime` object from a date string and a list of formats
      *
      * @param array<string> $formats
+     *
+     * @throws InvalidArgumentException If no formats are provided or if the date cannot be parsed
      */
     private static function createDateTime(string $date, array $formats): DateTime
     {

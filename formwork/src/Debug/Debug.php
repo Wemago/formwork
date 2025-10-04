@@ -170,6 +170,8 @@ final class Debug
 
     /**
      * Dump data
+     *
+     * @throws UnexpectedValueException If an unexpected value type is encountered during debugging
      */
     public static function dump(mixed ...$data): void
     {
@@ -188,6 +190,8 @@ final class Debug
 
     /**
      * Dump data and exit
+     *
+     * @throws UnexpectedValueException If an unexpected value type is encountered during debugging
      */
     public static function dd(mixed ...$data): never
     {
@@ -197,6 +201,8 @@ final class Debug
 
     /**
      * Dump data to string
+     *
+     * @throws UnexpectedValueException If an unexpected value type is encountered during debugging
      */
     public static function dumpToString(mixed $data): string
     {
@@ -205,6 +211,8 @@ final class Debug
 
     /**
      * Output data
+     *
+     * @throws UnexpectedValueException If an unexpected value type is encountered during debugging
      */
     private static function outputData(mixed $data, int $indent = 0): string
     {

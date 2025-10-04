@@ -25,6 +25,9 @@ class ColorProfile
      */
     protected array $tags;
 
+    /**
+     * @throws InvalidArgumentException If the ICC profile data is invalid
+     */
     public function __construct(
         protected string $data,
     ) {
@@ -61,6 +64,8 @@ class ColorProfile
 
     /**
      * Get the color profile device class
+     *
+     * @throws UnexpectedValueException If the device class is unexpected
      */
     public function deviceClass(): DeviceClass
     {
@@ -80,6 +85,8 @@ class ColorProfile
 
     /**
      * Get the color profile color space
+     *
+     * @throws UnexpectedValueException If the color space is unexpected
      */
     public function colorSpace(): ColorSpace
     {
@@ -132,6 +139,8 @@ class ColorProfile
 
     /**
      * Get the color profile rendering intent
+     *
+     * @throws UnexpectedValueException If the rendering intent is unexpected
      */
     public function renderingIntent(): RenderingIntent
     {
@@ -212,6 +221,9 @@ class ColorProfile
     /**
      * Parse a multi-lingual Unicode string
      *
+     * @throws InvalidArgumentException If the mluc tag is invalid
+     * @throws UnexpectedValueException If the mluc string cannot be converted to UTF-8
+     *
      * @return array<string, string>
      */
     protected function parseMlucString(string $data): array
@@ -243,6 +255,8 @@ class ColorProfile
 
     /**
      * Unpack data from a binary string
+     *
+     * @throws UnexpectedValueException If the string cannot be unpacked
      *
      * @return array<int|string, mixed>
      */

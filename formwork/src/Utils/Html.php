@@ -92,6 +92,8 @@ final class Html
      * Return a string containing an HTML tag with specified name, attributes and content
      *
      * @param array<string,scalar|null> $attributes
+     *
+     * @throws InvalidArgumentException If content is provided for a void element
      */
     public static function tag(string $name, array $attributes = [], ?string ...$content): string
     {

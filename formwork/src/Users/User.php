@@ -79,6 +79,8 @@ class User extends Model
 
     /**
      * Return user image
+     *
+     * @throws UserImageNotFoundException If the user image file is not a valid image
      */
     public function image(): ?Image
     {
@@ -127,6 +129,8 @@ class User extends Model
 
     /**
      * Authenticate the user
+     *
+     * @throws AuthenticationFailedException If the password verification fails
      */
     public function authenticate(
         #[SensitiveParameter]
@@ -151,6 +155,8 @@ class User extends Model
 
     /**
      * Log out the user
+     *
+     * @throws UserNotLoggedException If the user is not currently logged in
      */
     public function logout(): void
     {

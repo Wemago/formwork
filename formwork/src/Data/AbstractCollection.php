@@ -51,6 +51,8 @@ abstract class AbstractCollection implements Arrayable, Countable, Iterator
 
     /**
      * @param array<int|string, mixed> $data
+     *
+     * @throws LogicException If collection associativeness mismatches data or if typed collection is created from data of different types
      */
     public function __construct(array $data = [])
     {
@@ -165,6 +167,8 @@ abstract class AbstractCollection implements Arrayable, Countable, Iterator
      * Get the key of the given value
      *
      * Return `null` if the item is not present
+     *
+     * @throws LogicException If the collection is not associative
      */
     public function keyOf(mixed $value): int|string|null
     {
@@ -177,6 +181,8 @@ abstract class AbstractCollection implements Arrayable, Countable, Iterator
 
     /**
      * Get the keys of all items
+     *
+     * @throws LogicException If the collection is not associative
      *
      * @return list<int|string>
      */
@@ -417,6 +423,8 @@ abstract class AbstractCollection implements Arrayable, Countable, Iterator
 
     /**
      * Filter the collection using the key from each item
+     *
+     * @throws LogicException If unexpected third argument is passed or if filter is unknown
      */
     public function filterBy(string $key, mixed $value = true, mixed $comparison = null): static
     {
@@ -562,6 +570,8 @@ abstract class AbstractCollection implements Arrayable, Countable, Iterator
 
     /**
      * Add the given value to the collection
+     *
+     * @throws LogicException If the collection is not mutable, associative, or if value type is invalid
      */
     public function add(mixed $value): void
     {
@@ -590,6 +600,8 @@ abstract class AbstractCollection implements Arrayable, Countable, Iterator
 
     /**
      * Remove all occurrences of the given value from the collection
+     *
+     * @throws LogicException If the collection is not mutable or is associative
      */
     public function pull(mixed $value): void
     {
@@ -622,6 +634,8 @@ abstract class AbstractCollection implements Arrayable, Countable, Iterator
 
     /**
      * Return whether the collection has an item with the given key
+     *
+     * @throws LogicException If the collection is not associative
      */
     public function has(string $key): bool
     {
@@ -634,6 +648,8 @@ abstract class AbstractCollection implements Arrayable, Countable, Iterator
     /** Get a collection item by the given key
      *
      * A default value is returned if the item is not present
+     *
+     * @throws LogicException If the collection is not associative
      */
     public function get(string $key, mixed $default = null): mixed
     {
@@ -645,6 +661,8 @@ abstract class AbstractCollection implements Arrayable, Countable, Iterator
 
     /**
      * Set a collection item
+     *
+     * @throws LogicException If the collection is not associative, not mutable, or if value type is invalid
      */
     public function set(string $key, mixed $value): void
     {
@@ -666,6 +684,8 @@ abstract class AbstractCollection implements Arrayable, Countable, Iterator
 
     /**
      * Remove a collection item by key
+     *
+     * @throws LogicException If the collection is not associative or not mutable
      */
     public function remove(string $key): void
     {
@@ -677,6 +697,8 @@ abstract class AbstractCollection implements Arrayable, Countable, Iterator
 
     /**
      * Merge another collection into the current
+     *
+     * @throws LogicException If the collection is not mutable, if associativeness differs, or if data types differ
      */
     public function merge(self $collection): void
     {

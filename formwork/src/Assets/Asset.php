@@ -33,6 +33,9 @@ class Asset
      */
     private string $mimeType;
 
+    /**
+     * @throws AssetNotFoundException If the asset file is not found
+     */
     public function __construct(string $path, string $uri)
     {
         $this->path = FileSystem::normalizePath($path);

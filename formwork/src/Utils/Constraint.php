@@ -2,6 +2,7 @@
 
 namespace Formwork\Utils;
 
+use Error;
 use Formwork\Traits\StaticClass;
 
 final class Constraint
@@ -103,6 +104,8 @@ final class Constraint
 
     /**
      * Return whether a value matches the specified regex pattern
+     *
+     * @param bool $entireMatch Whether to match the entire string or allow partial matches
      */
     public static function matchesRegex(string $value, string $regex, bool $entireMatch = true): bool
     {
@@ -114,6 +117,11 @@ final class Constraint
 
     /**
      * Return whether a value is in the specified range
+     *
+     * @param float|int $start      The minimum value of the range
+     * @param float|int $end        The maximum value of the range
+     * @param bool      $includeMin Whether to include the minimum value in the range
+     * @param bool      $includeMax Whether to include the maximum value in the range
      */
     public static function isInRange(
         int|float $value,
@@ -131,6 +139,12 @@ final class Constraint
 
     /**
      * Return whether an integer value is in the specified range
+     *
+     * @param int  $start      The minimum value of the range
+     * @param int  $end        The maximum value of the range
+     * @param int  $step       The step interval for valid values within the range
+     * @param bool $includeMin Whether to include the minimum value in the range
+     * @param bool $includeMax Whether to include the maximum value in the range
      */
     public static function isInIntegerRange(
         int $value,
@@ -146,6 +160,11 @@ final class Constraint
 
     /**
      * Return whether a value is of the specified type
+     *
+     * @param string $type       The type name or class name to check against
+     * @param bool   $unionTypes Whether to support union types separated by `|`
+     *
+     * @throws Error If the type parameter contains an invalid class name when checking instanceof
      */
     public static function isOfType(mixed $value, string $type, bool $unionTypes = false): bool
     {

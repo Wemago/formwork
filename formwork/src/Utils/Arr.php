@@ -174,7 +174,7 @@ final class Arr
      * @param array<TKey|TReplacementKey, TReplacementValue|TValue> $array
      * @param array<TReplacementKey, TReplacementValue>             $replacement
      *
-     * @throws UnexpectedValueException if some keys in the replacement array are the same of the resulting array
+     * @throws UnexpectedValueException If some keys in the replacement array are the same of the resulting array
      *
      * @return array<TKey, TValue>
      *
@@ -218,6 +218,8 @@ final class Arr
      * Move an item from the given index to another
      *
      * @param array<TKey,TValue> $array
+     * @param int                $fromIndex The source index to move from
+     * @param int                $toIndex   The destination index to move to
      *
      * @template TKey of array-key
      * @template TValue
@@ -369,6 +371,7 @@ final class Arr
      * Return a given array with its values shuffled optionally preserving the key/value pairs
      *
      * @param array<TKey, TValue> $array
+     * @param bool                $preserveKeys Whether to preserve the original keys
      *
      * @return ($preserveKeys is true ? array<TKey, TValue> : list<TValue>)
      *
@@ -586,6 +589,9 @@ final class Arr
      * Flatten array items up to the specified depth
      *
      * @param array<TKey, TValue> $array
+     * @param int                 $depth Maximum depth to flatten
+     *
+     * @throws UnexpectedValueException If the depth parameter is negative
      *
      * @return array<TKey, TValue>
      *
@@ -637,6 +643,9 @@ final class Arr
      * @param                                                $caseSensitive Whether to perform a case-sensitive sorting
      * @param array<TKey>|callable(TValue, TValue): int|null $sortBy        A callback or second array of values used to sort the first
      * @param                                                $preserveKeys  Whether to preserve array keys after sorting
+     *
+     * @throws UnexpectedValueException If the direction parameter is not SORT_ASC or SORT_DESC
+     * @throws UnexpectedValueException If the type parameter is not one of the supported sorting types
      *
      * @return array<TKey, TValue>
      *
@@ -695,6 +704,8 @@ final class Arr
 
     /**
      * Try to convert the given object to array
+     *
+     * @throws UnexpectedValueException If the object cannot be converted to an array
      *
      * @return ($object is array<TKey, TValue>|Traversable<TKey, TValue> ? array<TKey, TValue> : array<mixed>)
      *

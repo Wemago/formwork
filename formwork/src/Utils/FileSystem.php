@@ -118,6 +118,8 @@ final class FileSystem
 
     /**
      * Return current working directory
+     *
+     * @throws FileSystemException If unable to get current working directory
      */
     public static function cwd(): string
     {
@@ -155,6 +157,9 @@ final class FileSystem
      * Assert a file exists or not
      *
      * @param bool $value Whether to assert if file exists or not
+     *
+     * @throws FileNotFoundException If file should exist but doesn't
+     * @throws FileSystemException   If file should not exist but does
      */
     public static function assertExists(string $path, bool $value = true): void
     {
@@ -245,6 +250,8 @@ final class FileSystem
 
     /**
      * Get access time of a file or a directory
+     *
+     * @throws FileSystemException If unable to get access time
      */
     public static function accessTime(string $path): int
     {
@@ -257,6 +264,8 @@ final class FileSystem
 
     /**
      * Get creation time of a file or a directory
+     *
+     * @throws FileSystemException If unable to get creation time
      */
     public static function creationTime(string $path): int
     {
@@ -269,6 +278,8 @@ final class FileSystem
 
     /**
      * Get last modified time of a file or a directory
+     *
+     * @throws FileSystemException If unable to get last modified time
      */
     public static function lastModifiedTime(string $path): int
     {
@@ -281,6 +292,10 @@ final class FileSystem
 
     /**
      * Return whether a directory has been modified since a given time
+     *
+     * @param int $time The timestamp to compare against
+     *
+     * @throws InvalidArgumentException If the path is not a directory
      */
     public static function directoryModifiedSince(string $directory, int $time): bool
     {
@@ -308,6 +323,8 @@ final class FileSystem
 
     /**
      * Update last modified and access time of a file or a directory
+     *
+     * @throws FileSystemException If unable to touch the path
      */
     public static function touch(string $path): true
     {
@@ -320,6 +337,8 @@ final class FileSystem
 
     /**
      * Get an integer representing permissions of a file or a directory
+     *
+     * @throws FileSystemException If unable to get permissions
      */
     public static function mode(string $path): int
     {
@@ -332,6 +351,8 @@ final class FileSystem
 
     /**
      * Get file or directory size in bytes
+     *
+     * @throws FileSystemException If unable to get size or unsupported file type
      */
     public static function size(string $path): int
     {
@@ -346,6 +367,9 @@ final class FileSystem
 
     /**
      * Get file size in bytes
+     *
+     * @throws InvalidArgumentException If the path is not a file
+     * @throws FileSystemException      If unable to get file size
      */
     public static function fileSize(string $file): int
     {
@@ -360,6 +384,8 @@ final class FileSystem
 
     /**
      * Get directory size in bytes recursively
+     *
+     * @throws InvalidArgumentException If the path is not a directory
      */
     public static function directorySize(string $directory): int
     {
@@ -378,6 +404,8 @@ final class FileSystem
      * Delete a file, a directory or a symbolic link
      *
      * @param bool $recursive Whether to delete files recursively or not
+     *
+     * @throws FileSystemException If unable to delete or unsupported file type
      */
     public static function delete(string $path, bool $recursive = false): true
     {
@@ -395,6 +423,9 @@ final class FileSystem
 
     /**
      * Delete a file
+     *
+     * @throws InvalidArgumentException If the path is not a file
+     * @throws FileSystemException      If unable to delete the file
      */
     public static function deleteFile(string $file): true
     {
@@ -411,6 +442,9 @@ final class FileSystem
      * Delete a directory
      *
      * @param bool $recursive Whether to delete directory content recursively or not
+     *
+     * @throws InvalidArgumentException If the path is not a directory
+     * @throws FileSystemException      If unable to delete the directory
      */
     public static function deleteDirectory(string $directory, bool $recursive = false): true
     {
@@ -433,6 +467,9 @@ final class FileSystem
 
     /**
      * Delete a symbolic link
+     *
+     * @throws InvalidArgumentException If the path is not a symbolic link
+     * @throws FileSystemException      If unable to delete the symbolic link
      */
     public static function deleteLink(string $link): true
     {
@@ -451,6 +488,8 @@ final class FileSystem
      * Copy a file, a directory or a symbolic link
      *
      * @param bool $overwrite Whether to overwrite destination or not
+     *
+     * @throws FileSystemException If unable to copy or unsupported file type
      */
     public static function copy(string $source, string $destination, bool $overwrite = false): true
     {
@@ -470,6 +509,9 @@ final class FileSystem
      * Copy a file to another path
      *
      * @param bool $overwrite Whether to overwrite destination or not
+     *
+     * @throws InvalidArgumentException If the source is not a file
+     * @throws FileSystemException      If unable to copy the file
      */
     public static function copyFile(string $source, string $destination, bool $overwrite = false): true
     {
@@ -490,6 +532,9 @@ final class FileSystem
      * Copy a directory to another path
      *
      * @param bool $overwrite Whether to overwrite destination or not
+     *
+     * @throws InvalidArgumentException If the source is not a directory
+     * @throws FileSystemException      If unable to copy the directory
      */
     public static function copyDirectory(string $source, string $destination, bool $overwrite = false): true
     {
@@ -523,6 +568,9 @@ final class FileSystem
      * Copy a symbolic link to another path
      *
      * @param bool $overwrite Whether to overwrite destination or not
+     *
+     * @throws InvalidArgumentException If the source is not a symbolic link
+     * @throws FileSystemException      If unable to copy the symbolic link
      */
     public static function copyLink(string $source, string $destination, bool $overwrite = false): true
     {
@@ -541,6 +589,8 @@ final class FileSystem
      * Move a file, a directory or a symbolic link
      *
      * @param bool $overwrite Whether to overwrite destination file or not
+     *
+     * @throws FileSystemException If unable to move or unsupported file type
      */
     public static function move(string $source, string $destination, bool $overwrite = false): true
     {
@@ -560,6 +610,9 @@ final class FileSystem
      * Move a file to another path
      *
      * @param bool $overwrite Whether to overwrite destination file or not
+     *
+     * @throws InvalidArgumentException If the source is not a file
+     * @throws FileSystemException      If unable to move the file
      */
     public static function moveFile(string $source, string $destination, bool $overwrite = false): true
     {
@@ -579,6 +632,8 @@ final class FileSystem
      * Move a directory to another path
      *
      * @param bool $overwrite Whether to overwrite destination directory or not
+     *
+     * @throws InvalidArgumentException If the source is not a directory
      */
     public static function moveDirectory(string $source, string $destination, bool $overwrite = false): true
     {
@@ -596,6 +651,8 @@ final class FileSystem
      * Move a symbolic link to another path
      *
      * @param bool $overwrite Whether to overwrite destination directory or not
+     *
+     * @throws InvalidArgumentException If the source is not a symbolic link
      */
     public static function moveLink(string $source, string $destination, bool $overwrite = false): true
     {
@@ -609,6 +666,9 @@ final class FileSystem
 
     /**
      * Read the content of a file
+     *
+     * @throws InvalidArgumentException If the path is not a file
+     * @throws FileSystemException      If unable to read the file
      */
     public static function read(string $file): string
     {
@@ -628,6 +688,9 @@ final class FileSystem
      * List files and directories contained in a path
      *
      * @param int $flags Any of `FileSystem::LIST_FILES`, `FileSystem::LIST_DIRECTORIES`, `FileSystem::LIST_EXCLUDE_EMPTY_DIRECTORIES`, `FileSystem::LIST_HIDDEN`, `FileSystem::LIST_VISIBLE`, `FileSystem::LIST_ALL` flags
+     *
+     * @throws InvalidArgumentException If the path is not a directory
+     * @throws FileSystemException      If unable to open the directory
      *
      * @return Generator<int, string>
      */
@@ -666,6 +729,8 @@ final class FileSystem
      * Recursively list files and directories contained in a path
      *
      * @param int $flags Any of `FileSystem::LIST_FILES`, `FileSystem::LIST_DIRECTORIES`, `FileSystem::LIST_EXCLUDE_EMPTY_DIRECTORIES`, `FileSystem::LIST_HIDDEN`, `FileSystem::LIST_VISIBLE`, `FileSystem::LIST_ALL` flags
+     *
+     * @throws InvalidArgumentException If the path is not a directory
      *
      * @return Generator<int, string>
      */
@@ -724,6 +789,9 @@ final class FileSystem
 
     /**
      * Read the target of a symbolic link
+     *
+     * @throws InvalidArgumentException If the path is not a symbolic link
+     * @throws FileSystemException      If unable to resolve the symbolic link
      */
     public static function readLink(string $link): string
     {
@@ -739,6 +807,8 @@ final class FileSystem
 
     /**
      * Create a new file with empty content
+     *
+     * @throws FileSystemException If unable to create the file
      */
     public static function createFile(string $file): true
     {
@@ -753,6 +823,11 @@ final class FileSystem
 
     /**
      * Try to create a temporary file in the specified directory and return its path
+     *
+     * @param string $directory The directory where to create the temporary file
+     * @param string $prefix    Optional prefix for the temporary file name
+     *
+     * @throws FileSystemException If unable to create a temporary file after 10 attempts
      */
     public static function createTemporaryFile(string $directory, string $prefix = ''): string
     {
@@ -771,6 +846,9 @@ final class FileSystem
 
     /**
      * Write content to file atomically
+     *
+     * @throws InvalidArgumentException If the path exists but is not a file
+     * @throws FileSystemException      If unable to write to the file
      */
     public static function write(string $file, string $content): true
     {
@@ -794,6 +872,8 @@ final class FileSystem
      * Create a empty directory
      *
      * @param bool $recursive Whether to create directory recursively
+     *
+     * @throws FileSystemException If unable to create the directory
      */
     public static function createDirectory(string $directory, bool $recursive = false): true
     {
@@ -807,6 +887,8 @@ final class FileSystem
      * Create a symbolic link
      *
      * @param bool $assertExists Whether to assert the existence of the link target
+     *
+     * @throws FileSystemException If unable to create the symbolic link
      */
     public static function createLink(string $target, string $link, bool $assertExists = true): true
     {
@@ -835,6 +917,10 @@ final class FileSystem
     /**
      * Convert shorthand bytes notation to an integer
      *
+     * @param string $shorthand Shorthand bytes notation (e.g., '1K', '2M', '3G')
+     *
+     * @throws InvalidArgumentException If the shorthand notation is invalid
+     *
      * @see https://php.net/manual/en/faq.using.php#faq.using.shorthandbytes
      */
     public static function shorthandToBytes(string $shorthand): int
@@ -854,6 +940,8 @@ final class FileSystem
 
     /**
      * Generate a random file name
+     *
+     * @param string $prefix Optional prefix for the random name
      */
     public static function randomName(string $prefix = ''): string
     {

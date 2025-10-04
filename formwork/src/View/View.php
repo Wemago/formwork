@@ -57,7 +57,10 @@ class View
      * Create a new View instance
      *
      * @param array<string, mixed>   $vars
-     * @param array<string, Closure> $methods
+     * @param string                 $path    Path to view files
+     * @param array<string, Closure> $methods Available methods for the view
+     *
+     * @throws FileNotFoundException If the view file is not found
      */
     public function __construct(
         protected string $name,
@@ -92,6 +95,8 @@ class View
 
     /**
      * Set view layout
+     *
+     * @throws RenderingException If the layout is already set
      */
     public function layout(string $name): void
     {
@@ -105,6 +110,9 @@ class View
      * Insert a view
      *
      * @param array<string, mixed> $vars
+     *
+     * @throws RenderingException    If called outside of rendering context
+     * @throws FileNotFoundException If the inserted view file is not found
      */
     public function insert(string $name, array $vars = []): void
     {
@@ -119,6 +127,10 @@ class View
 
     /**
      * Render the view
+     *
+     * @throws RenderingException If called while already rendering
+     * @throws RenderingException If output buffer contents cannot be retrieved
+     * @throws Throwable          Any exception thrown during view rendering
      */
     public function render(): string
     {
@@ -155,6 +167,9 @@ class View
 
     /**
      * Start the capturing of a block
+     *
+     * @throws RenderingException If called outside of rendering context
+     * @throws RenderingException If the block name `content` is used (reserved)
      */
     public function define(string $block): void
     {
@@ -171,6 +186,10 @@ class View
 
     /**
      * End the capturing of last block
+     *
+     * @throws RenderingException If called outside of rendering context
+     * @throws RenderingException If there are no blocks to end
+     * @throws RenderingException If output buffer contents cannot be retrieved
      */
     public function end(): void
     {
@@ -193,6 +212,9 @@ class View
 
     /**
      * Get the content of a given block
+     *
+     * @throws RenderingException If called outside of rendering context
+     * @throws RenderingException If the block is undefined
      */
     public function block(string $name): string
     {
@@ -207,6 +229,9 @@ class View
 
     /**
      * Get the layout content
+     *
+     * @throws RenderingException If called outside of rendering context
+     * @throws RenderingException If the content block is undefined
      */
     public function content(): string
     {
@@ -228,6 +253,8 @@ class View
      * Return the layout view instance
      *
      * @param array<string, mixed> $vars
+     *
+     * @throws FileNotFoundException If the layout view file is not found
      */
     protected function createLayoutView(string $name, array $vars = []): View
     {
@@ -236,6 +263,9 @@ class View
 
     /**
      * Output the contents of the view
+     *
+     * @throws RenderingException If output buffer contents cannot be retrieved
+     * @throws RenderingException If there are incomplete blocks when rendering finishes
      */
     protected function output(): void
     {
@@ -270,6 +300,8 @@ class View
 
     /**
      * @param list<mixed> $arguments
+     *
+     * @throws RenderingException If called outside of rendering context when methods are not allowed
      */
     protected function callMethod(string $method, array $arguments): mixed
     {

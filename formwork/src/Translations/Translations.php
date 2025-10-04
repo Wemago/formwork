@@ -62,6 +62,8 @@ class Translations
 
     /**
      * Get a translation from code
+     *
+     * @throws InvalidArgumentException If the translation code is invalid and fallback is not requested
      */
     public function get(string $code, bool $fallbackIfInvalid = false): Translation
     {
@@ -104,6 +106,8 @@ class Translations
 
     /**
      * Get current translation
+     *
+     * @throws InvalidArgumentException If the fallback translation code is invalid
      */
     public function getCurrent(): Translation
     {
@@ -112,6 +116,8 @@ class Translations
 
     /**
      * Get the fallback translation
+     *
+     * @throws InvalidArgumentException If the fallback translation code is invalid
      */
     public function getFallback(): Translation
     {

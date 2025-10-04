@@ -396,6 +396,8 @@ class Site extends Model implements Stringable
 
     /**
      * Get site index page
+     *
+     * @throws PageNotFoundException If the site index page cannot be found
      */
     public function indexPage(): Page
     {
@@ -405,6 +407,8 @@ class Site extends Model implements Stringable
 
     /**
      * Return or render site error page
+     *
+     * @throws PageNotFoundException If the site error page cannot be found
      */
     public function errorPage(): Page
     {

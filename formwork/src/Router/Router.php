@@ -114,6 +114,8 @@ class Router
     /**
      * Set the router request URI
      *
+     * @throws UnexpectedValueException If the request path cannot be determined
+     *
      * @internal
      */
     public function setRequest(string $request): void
@@ -177,6 +179,8 @@ class Router
 
     /**
      * Dispatch matching route
+     *
+     * @throws RouteNotFoundException If no route matches the request
      */
     public function dispatch(): Response
     {
@@ -242,6 +246,8 @@ class Router
      * Rewrite current route with given params
      *
      * @param array<string, mixed> $params
+     *
+     * @throws RuntimeException If the router has not dispatched the request yet
      */
     public function rewrite(array $params): string
     {
@@ -293,6 +299,8 @@ class Router
 
     /**
      * Compile a route to a valid regex and params list
+     *
+     * @throws InvalidRouteException If the route compilation fails
      */
     protected function compileRoute(Route $route): CompiledRoute
     {
@@ -331,6 +339,9 @@ class Router
      * Generate route path with given parameters
      *
      * @param array<string, mixed> $params
+     *
+     * @throws InvalidArgumentException If non-optional parameters are missing or have invalid values
+     * @throws InvalidRouteException    If the route generation fails
      */
     protected function generateRoute(Route $route, array $params): string
     {
@@ -401,6 +412,8 @@ class Router
      * Parse callback
      *
      * @param callable|string $action
+     *
+     * @throws InvalidRouteException If the callback is invalid
      */
     protected function parseAction($action): Closure
     {
@@ -423,6 +436,8 @@ class Router
 
     /**
      * Validate param separator
+     *
+     * @throws InvalidRouteException If the parameter is not preceded by a separator
      */
     protected function validateSeparator(?string $separator, string $param): string
     {
@@ -437,6 +452,8 @@ class Router
      * Validate param name
      *
      * @param list<string> $params
+     *
+     * @throws InvalidRouteException If the parameter name is empty or has been used more than once
      */
     protected function validateParamName(?string $param, array $params): string
     {

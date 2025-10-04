@@ -69,6 +69,9 @@ class Template implements Stringable
      * Render template
      *
      * @param array<string, mixed> $vars
+     *
+     * @throws RenderingException If the `page` variable is missing from the vars array
+     * @throws RenderingException If the current page becomes invalid after controller execution
      */
     public function render(array $vars = []): string
     {

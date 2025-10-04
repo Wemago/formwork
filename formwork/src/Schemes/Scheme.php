@@ -37,6 +37,9 @@ class Scheme implements Arrayable
 
     /**
      * @param array<string, mixed> $data
+     *
+     * @throws InvalidArgumentException If the extended scheme ID is invalid
+     * @throws InvalidArgumentException If a scheme tries to extend itself
      */
     public function __construct(
         protected string $id,
@@ -110,6 +113,8 @@ class Scheme implements Arrayable
 
     /**
      * Extend the scheme with another scheme
+     *
+     * @throws InvalidArgumentException If the scheme tries to extend itself
      */
     protected function extend(Scheme $scheme): void
     {

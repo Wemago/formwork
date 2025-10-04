@@ -1252,6 +1252,8 @@ final class MimeType
 
     /**
      * Get MIME type from a file
+     *
+     * @throws RuntimeException If the `fileinfo` extension is not loaded
      */
     public static function fromFile(string $file): string
     {

@@ -57,6 +57,8 @@ final class Panel
 
     /**
      * Return currently logged in user
+     *
+     * @throws UserNotLoggedException If no user is logged in
      */
     public function user(): User
     {

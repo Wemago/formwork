@@ -186,6 +186,8 @@ class File extends Model implements Arrayable, Stringable
 
     /**
      * Get file content hash
+     *
+     * @throws RuntimeException If file hash calculation fails
      */
     public function contentHash(): string
     {
@@ -210,6 +212,8 @@ class File extends Model implements Arrayable, Stringable
 
     /**
      * Get file URI
+     *
+     * @throws FileUriGenerationException If URI generator is not set
      */
     public function uri(): string
     {
@@ -221,6 +225,8 @@ class File extends Model implements Arrayable, Stringable
 
     /**
      * Get file absolute URI
+     *
+     * @throws FileUriGenerationException If URI generator is not set
      */
     public function absoluteUri(): string
     {

@@ -35,6 +35,8 @@ class Config implements ArraySerializable
 
     /**
      * Get a value from the config
+     *
+     * @throws UnresolvedConfigException If the config has not been resolved
      */
     public function get(string $key, mixed $default = null): mixed
     {
@@ -56,6 +58,8 @@ class Config implements ArraySerializable
 
     /**
      * Load config from a file
+     *
+     * @throws ConfigLoadingException If the config file does not exist or has an unsupported type
      */
     public function loadFile(string $path): void
     {
@@ -86,6 +90,8 @@ class Config implements ArraySerializable
      * Resolve config values with the given variables
      *
      * @param array<string, string> $vars
+     *
+     * @throws ConfigResolutionException If a config value cannot be resolved with undefined key or non-string value
      */
     public function resolve(array $vars = []): void
     {
@@ -116,6 +122,11 @@ class Config implements ArraySerializable
         $this->resolved = true;
     }
 
+    /**
+     * Get config as array
+     *
+     * @throws UnresolvedConfigException If the config has not been resolved
+     */
     public function toArray(): array
     {
         if (!$this->resolved) {

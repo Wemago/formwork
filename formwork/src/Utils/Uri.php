@@ -18,6 +18,8 @@ final class Uri
 
     /**
      * Get the scheme of current or a given URI
+     *
+     * @throws InvalidArgumentException If the URI is invalid or contains malformed data
      */
     public static function scheme(string $uri): ?string
     {
@@ -27,6 +29,8 @@ final class Uri
 
     /**
      * Get the host of current or a given URI
+     *
+     * @throws InvalidArgumentException If the URI is invalid or contains malformed data
      */
     public static function host(string $uri): ?string
     {
@@ -36,6 +40,8 @@ final class Uri
 
     /**
      * Get the port of current or a given URI
+     *
+     * @throws InvalidArgumentException If the URI is invalid or contains malformed data
      */
     public static function port(string $uri): ?int
     {
@@ -44,6 +50,8 @@ final class Uri
 
     /**
      * Return the default port of current URI or a given scheme
+     *
+     * @throws InvalidArgumentException If the scheme is unknown
      */
     public static function getDefaultPort(string $scheme): int
     {
@@ -52,6 +60,8 @@ final class Uri
 
     /**
      * Return whether current or a given port is default
+     *
+     * @throws InvalidArgumentException If the scheme is unknown
      */
     public static function isDefaultPort(int $port, string $scheme): bool
     {
@@ -60,6 +70,8 @@ final class Uri
 
     /**
      * Get the path of current or a given URI
+     *
+     * @throws InvalidArgumentException If the URI is invalid or contains malformed data
      */
     public static function path(string $uri): ?string
     {
@@ -68,6 +80,8 @@ final class Uri
 
     /**
      * Get the absolute path of current or a given URI
+     *
+     * @throws InvalidArgumentException If the URI is invalid or contains malformed data
      */
     public static function absolutePath(string $uri): string
     {
@@ -76,6 +90,8 @@ final class Uri
 
     /**
      * Get the query of current or a given URI
+     *
+     * @throws InvalidArgumentException If the URI is invalid or contains malformed data
      */
     public static function query(string $uri): ?string
     {
@@ -84,6 +100,8 @@ final class Uri
 
     /**
      * Get the fragment of current or a given URI
+     *
+     * @throws InvalidArgumentException If the URI is invalid or contains malformed data
      */
     public static function fragment(string $uri): ?string
     {
@@ -92,6 +110,8 @@ final class Uri
 
     /**
      * Get the base URI (scheme://host:port) of current or a given URI
+     *
+     * @throws InvalidArgumentException If the URI is invalid or contains malformed data
      */
     public static function base(string $uri): string
     {
@@ -100,6 +120,8 @@ final class Uri
 
     /**
      * Convert the query of current or a given URI to array
+     *
+     * @throws InvalidArgumentException If the URI is invalid or contains malformed data
      *
      * @return array<array<string>|string>
      */
@@ -112,6 +134,8 @@ final class Uri
     /**
      * Parse current or a given URI and get an associative array
      * containing its scheme, host, port, path, query and fragment
+     *
+     * @throws InvalidArgumentException If the URI is invalid or contains malformed data
      *
      * @return array{scheme: ?string, host: ?string, port: ?int, path: ?string, query: ?string, fragment: ?string}
      */
@@ -130,7 +154,12 @@ final class Uri
     /**
      * Make a URI based on the current or a given one using an array with parts
      *
-     * @param array{scheme?: string, host?: string, port?: int, path?: string, query?: array<string>|string, fragment?: string} $parts
+     * @param array{scheme?: string, host?: string, port?: int, path?: string, query?: array<string>|string, fragment?: string} $parts     Array of URI parts to override
+     * @param string                                                                                                            $uri       The base URI to use
+     * @param bool                                                                                                              $forcePort Whether to always include port in the output even if it's default
+     *
+     * @throws InvalidArgumentException If the URI is invalid or contains malformed data
+     * @throws InvalidArgumentException If the scheme is unknown
      *
      * @see Uri::parse()
      */
@@ -166,6 +195,9 @@ final class Uri
 
     /**
      * Normalize URI fixing required parts and slashes
+     *
+     * @throws InvalidArgumentException If the URI is invalid or contains malformed data
+     * @throws InvalidArgumentException If the scheme is unknown
      */
     public static function normalize(string $uri): string
     {
@@ -174,6 +206,9 @@ final class Uri
 
     /**
      * Remove query from current or a given URI
+     *
+     * @throws InvalidArgumentException If the URI is invalid or contains malformed data
+     * @throws InvalidArgumentException If the scheme is unknown
      */
     public static function removeQuery(string $uri): string
     {
@@ -182,6 +217,9 @@ final class Uri
 
     /**
      * Remove fragment from current or a given URI
+     *
+     * @throws InvalidArgumentException If the URI is invalid or contains malformed data
+     * @throws InvalidArgumentException If the scheme is unknown
      */
     public static function removeFragment(string $uri): string
     {
@@ -190,6 +228,9 @@ final class Uri
 
     /**
      * Resolve a relative URI against current or a given base URI
+     *
+     * @throws InvalidArgumentException If the URI is invalid or contains malformed data
+     * @throws InvalidArgumentException If the scheme is unknown
      */
     public static function resolveRelative(string $uri, string $base): string
     {
@@ -207,6 +248,8 @@ final class Uri
     /**
      * Encode all characters except those that are allowed by the URI syntax.
      * Compared to `rawurlencode()`, this method encodes less characters
+     *
+     * @throws InvalidArgumentException If the URI contains malformed data
      */
     public static function encode(string $uri): string
     {
@@ -216,6 +259,8 @@ final class Uri
 
     /**
      * Parse URI component, throwing an exception when the URI is invalid
+     *
+     * @throws InvalidArgumentException If the URI is invalid or contains malformed data
      */
     private static function parseComponent(string $uri, int $component): mixed
     {

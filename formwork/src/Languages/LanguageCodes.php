@@ -125,6 +125,8 @@ final class LanguageCodes
 
     /**
      * Return language name from language code (e.g. 'it')
+     *
+     * @throws InvalidArgumentException If the language code is invalid
      */
     public static function codeToName(string $code): string
     {
@@ -136,6 +138,8 @@ final class LanguageCodes
 
     /**
      * Return language native name from language code (e.g. 'it')
+     *
+     * @throws InvalidArgumentException If the language code is invalid
      */
     public static function codeToNativeName(string $code): string
     {

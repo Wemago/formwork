@@ -41,6 +41,9 @@ final class Collection extends AbstractCollection
      * Create a collection with the given options
      *
      * @param array<mixed> $data
+     * @param string|null  $dataType    Type constraint for collection items
+     * @param bool         $associative Whether the collection should be associative
+     * @param bool         $mutable     Whether the collection should be mutable
      */
     public static function create(array $data = [], ?string $dataType = null, bool $associative = false, bool $mutable = false): static
     {
@@ -58,7 +61,10 @@ final class Collection extends AbstractCollection
     /**
      * Create a collection of the given type
      *
+     * @param string       $dataType    Type constraint for collection items
      * @param array<mixed> $data
+     * @param bool         $associative Whether the collection should be associative
+     * @param bool         $mutable     Whether the collection should be mutable
      */
     public static function of(string $dataType, array $data = [], bool $associative = false, bool $mutable = false): static
     {
@@ -67,6 +73,12 @@ final class Collection extends AbstractCollection
 
     /**
      * Convert an arrayable object to a collection trying to guess its data type
+     *
+     * @param mixed     $object  The object to convert to a collection
+     * @param bool|null $typed   Whether to enforce typing (null for auto-detection)
+     * @param bool      $mutable Whether the collection should be mutable
+     *
+     * @throws LogicException If creating a typed collection with data of different types
      */
     public static function from(mixed $object, ?bool $typed = null, bool $mutable = false): static
     {

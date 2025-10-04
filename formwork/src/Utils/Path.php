@@ -37,6 +37,9 @@ final class Path
 
     /**
      * Return whether an absolute path is relative to a given absolute base
+     *
+     * @throws InvalidArgumentException If the path parameter is not an absolute path
+     * @throws InvalidArgumentException If the base parameter is not an absolute path
      */
     public static function isRelativeTo(string $path, string $base): bool
     {
@@ -51,6 +54,8 @@ final class Path
 
     /**
      * Normalize path separators and remove `.` and `..` segments
+     *
+     * @throws InvalidArgumentException If the separator is not a valid directory separator
      */
     public static function normalize(string $path, string $separator = self::DEFAULT_SEPARATOR): string
     {
@@ -86,6 +91,8 @@ final class Path
      * Join together an array of paths
      *
      * @param array<string> $paths
+     *
+     * @throws InvalidArgumentException If the separator is not a valid directory separator
      */
     public static function join(array $paths, string $separator = self::DEFAULT_SEPARATOR): string
     {
@@ -97,6 +104,8 @@ final class Path
 
     /**
      * Resolve a path against a given base
+     *
+     * @throws InvalidArgumentException If the separator is not a valid directory separator
      */
     public static function resolve(string $path, string $base, string $separator = self::DEFAULT_SEPARATOR): string
     {
@@ -116,6 +125,11 @@ final class Path
 
     /**
      * Make an absolute path relative to a given base
+     *
+     * @throws InvalidArgumentException If the path parameter is not an absolute path
+     * @throws InvalidArgumentException If the base parameter is not an absolute path
+     * @throws InvalidArgumentException If the separator is not a valid directory separator
+     * @throws InvalidArgumentException If the path and base have incompatible drive letters
      */
     public static function makeRelative(string $path, string $base, string $separator = self::DEFAULT_SEPARATOR): string
     {

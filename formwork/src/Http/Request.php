@@ -487,6 +487,8 @@ class Request
     /**
      * Get a forwarded directive
      *
+     * @throws InvalidArgumentException If the forwarded directive is invalid
+     *
      * @return list<string>
      */
     protected function getForwardedDirective(string $name): array

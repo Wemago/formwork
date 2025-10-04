@@ -43,6 +43,8 @@ class Translation
 
     /**
      * Return a formatted language string
+     *
+     * @throws InvalidArgumentException If the language string key is invalid and no fallback is available
      */
     public function translate(string $key, int|float|string|Stringable ...$arguments): string
     {
@@ -65,6 +67,8 @@ class Translation
 
     /**
      * Return a formatted language string
+     *
+     * @throws InvalidArgumentException If the language string key is invalid and no fallback is available
      *
      * @return list<string>
      */

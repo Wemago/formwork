@@ -65,6 +65,8 @@ final class App
 
     /**
      * @param list<mixed> $arguments
+     *
+     * @throws BadMethodCallException If the called method is not defined
      */
     public function __call(string $name, array $arguments): mixed
     {
@@ -278,6 +280,8 @@ final class App
 
     /**
      * Load error handler
+     *
+     * @throws ErrorException When an error occurs that should be converted to an exception
      */
     private function loadErrorHandler(): void
     {

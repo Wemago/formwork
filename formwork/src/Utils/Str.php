@@ -299,7 +299,8 @@ final class Str
     /**
      * Interpolate values between `{{` and `}}` in a string using an array or a callback
      *
-     * @param array<string, mixed>|Closure $data
+     * @param string                       $string The string containing interpolation sequences
+     * @param array<string, mixed>|Closure $data   Array of key-value pairs or callback function for interpolation
      */
     public static function interpolate(string $string, array|Closure $data): string
     {
@@ -321,6 +322,11 @@ final class Str
 
     /**
      * Split a string in chunks of given length with a delimiter
+     *
+     * @param int    $length    The length of each chunk
+     * @param string $delimiter The delimiter to use between chunks
+     *
+     * @throws UnexpectedValueException If the length parameter is not greater than 0
      */
     public static function chunk(string $string, int $length, string $delimiter): string
     {

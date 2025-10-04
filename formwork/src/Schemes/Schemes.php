@@ -57,6 +57,8 @@ class Schemes
 
     /**
      * Get a scheme from id
+     *
+     * @throws InvalidArgumentException If the scheme ID is invalid or not found
      */
     public function get(string $id): Scheme
     {

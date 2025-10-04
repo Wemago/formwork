@@ -411,6 +411,8 @@ class Page extends Model implements Stringable
 
     /**
      * Set page language
+     *
+     * @throws InvalidValueException If the language is invalid
      */
     public function setLanguage(Language|string|null $language): void
     {
@@ -437,6 +439,8 @@ class Page extends Model implements Stringable
 
     /**
      * Set page parent
+     *
+     * @throws InvalidValueException If the parent is invalid
      */
     public function setParent(Page|Site|string $parent): void
     {
@@ -451,6 +455,8 @@ class Page extends Model implements Stringable
 
     /**
      * Set page template
+     *
+     * @throws InvalidValueException If the template is invalid
      */
     public function setTemplate(Template|string $template): void
     {
@@ -467,6 +473,8 @@ class Page extends Model implements Stringable
 
     /**
      * Set page slug
+     *
+     * @throws InvalidValueException If the slug is invalid, for index or error pages, or if a page with the same route already exists
      */
     public function setSlug(string $slug): void
     {
@@ -637,6 +645,8 @@ class Page extends Model implements Stringable
      *
      * @param array<string, mixed> $data
      *
+     * @throws RuntimeException If the page has not been loaded yet
+     *
      * @internal
      */
     public function reload(array $data = []): void
@@ -686,6 +696,9 @@ class Page extends Model implements Stringable
      * Save page contents and move files if needed
      *
      * @param string|null $language Language code to save the page in
+     *
+     * @throws UnexpectedValueException If parent or parent content path is missing
+     * @throws InvalidValueException    If the language is invalid
      */
     public function save(?string $language = null): void
     {
@@ -890,6 +903,8 @@ class Page extends Model implements Stringable
 
     /**
      * Set page path
+     *
+     * @throws UnexpectedValueException If site path is missing
      */
     protected function setPath(string $path): void
     {

@@ -11,15 +11,19 @@ use UnexpectedValueException;
 final class Resize extends AbstractTransform
 {
     public function __construct(
-        private int $width,
-        private int $height,
+        private ?int $width = null,
+        private ?int $height = null,
         private ResizeMode $resizeMode = ResizeMode::Cover,
     ) {
-        if ($width <= 0) {
+        if ($width === null && $height === null) {
+            throw new InvalidArgumentException('At least one of $width or $height must be specified');
+        }
+
+        if ($width !== null && $width <= 0) {
             throw new InvalidArgumentException('$width must be greater than 0');
         }
 
-        if ($height <= 0) {
+        if ($height !== null && $height <= 0) {
             throw new InvalidArgumentException('$height must be greater than 0');
         }
     }
@@ -44,6 +48,10 @@ final class Resize extends AbstractTransform
         $destinationY = 0;
 
         $sourceRatio = $sourceWidth / $sourceHeight;
+
+        $this->width ??= (int) (($this->height ?? $sourceHeight) * $sourceRatio);
+        $this->height ??= (int) (($this->width ?? $sourceWidth) / $sourceRatio);
+
         $destinationRatio = $this->width / $this->height;
 
         $destinationWidth = $this->width;

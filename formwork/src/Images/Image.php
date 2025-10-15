@@ -144,11 +144,11 @@ class Image extends File
     /**
      * Resize image to a given width and height
      *
-     * @param int               $width  Target width in pixels
-     * @param int               $height Target height in pixels
+     * @param ?int              $width  Target width in pixels
+     * @param ?int              $height Target height in pixels
      * @param ResizeMode|string $mode   Resize mode to use
      */
-    public function resize(int $width, int $height, ResizeMode|string $mode = ResizeMode::Cover): self
+    public function resize(?int $width, ?int $height, ResizeMode|string $mode = ResizeMode::Cover): self
     {
         if (is_string($mode)) {
             $mode = ResizeMode::from($mode);

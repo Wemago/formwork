@@ -39,6 +39,7 @@ final class ServeCommand
         private int $port = 8000,
     ) {
         $this->climate = new CLImate();
+        $this->handleArguments();
     }
 
     /**
@@ -60,6 +61,46 @@ final class ServeCommand
         $this->process->run(function ($type, $buffer): void {
             $this->handleOutput(explode("\n", $buffer));
         });
+    }
+
+    private function handleArguments(): void
+    {
+        $this->climate->description('Start the Formwork development server');
+
+        $this->climate->arguments->add([
+            'host' => [
+                'longPrefix'   => 'host',
+                'description'  => 'Host to bind the server to',
+                'defaultValue' => $this->host,
+            ],
+            'port' => [
+                'longPrefix'   => 'port',
+                'description'  => 'Port to bind the server to',
+                'defaultValue' => $this->port,
+                'castTo'       => 'int',
+            ],
+            'help' => [
+                'prefix'      => 'h',
+                'longPrefix'  => 'help',
+                'description' => 'Show this help screen',
+                'noValue'     => true,
+            ],
+        ]);
+
+        $this->climate->arguments->parse();
+
+        if ($this->climate->arguments->get('help')) {
+            $this->climate->usage();
+            exit;
+        }
+
+        /** @var string */
+        $host = $this->climate->arguments->get('host');
+
+        /** @var int */
+        $port = $this->climate->arguments->get('port');
+
+        [$this->host, $this->port] = [$host, $port];
     }
 
     /**
@@ -160,7 +201,7 @@ final class ServeCommand
      */
     private function splitMessage(string $message): array
     {
-        preg_match('/^([0-9.]+):(\d+) (.+)$/', $message, $matches, PREG_UNMATCHED_AS_NULL);
+        preg_match('/^(.+):(\d+) (.+)$/', $message, $matches, PREG_UNMATCHED_AS_NULL);
         array_shift($matches);
         return $matches;
     }

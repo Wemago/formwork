@@ -4,10 +4,10 @@ namespace Formwork\Images\Handler;
 
 use Formwork\Images\ColorProfile\ColorProfile;
 use Formwork\Images\Exif\ExifData;
+use Formwork\Images\Handler\Exceptions\UnsupportedFeatureException;
 use Formwork\Images\ImageInfo;
 use Formwork\Images\Transform\TransformCollection;
 use GdImage;
-use RuntimeException;
 
 interface HandlerInterface
 {
@@ -53,21 +53,21 @@ interface HandlerInterface
     /**
      * Get color profile
      *
-     * @throws RuntimeException If the image has no color profile
+     * @throws UnsupportedFeatureException If the image does not support color profile
      */
     public function getColorProfile(): ?ColorProfile;
 
     /**
      * Set color profile
      *
-     * @throws RuntimeException If the image does not support color profile
+     * @throws UnsupportedFeatureException If the image does not support color profile
      */
     public function setColorProfile(ColorProfile $colorProfile): void;
 
     /**
      * Remove color profile
      *
-     * @throws RuntimeException If the image has no color profile
+     * @throws UnsupportedFeatureException If the image does not support color profile
      */
     public function removeColorProfile(): void;
 
@@ -84,21 +84,21 @@ interface HandlerInterface
     /**
      * Get EXIF data
      *
-     * @throws RuntimeException If the image does not support EXIF data
+     * @throws UnsupportedFeatureException If the image does not support EXIF data
      */
     public function getExifData(): ?ExifData;
 
     /**
      * Set EXIF data
      *
-     * @throws RuntimeException If the image does not support EXIF data
+     * @throws UnsupportedFeatureException If the image does not support EXIF data
      */
     public function setExifData(ExifData $exifData): void;
 
     /**
      * Remove EXIF data
      *
-     * @throws RuntimeException If the image does not support EXIF data
+     * @throws UnsupportedFeatureException If the image does not support EXIF data
      */
     public function removeExifData(): void;
 

@@ -7,8 +7,6 @@ use GdImage;
 
 final class Desaturate extends AbstractTransform
 {
-    public function __construct() {}
-
     public static function fromArray(array $data): self
     {
         return new self();

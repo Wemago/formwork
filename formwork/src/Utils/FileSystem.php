@@ -910,7 +910,7 @@ final class FileSystem
         if ($bytes <= 0) {
             return '0 B';
         }
-        $exp = min(floor(log($bytes, 1024)), count(self::FILE_SIZE_UNITS) - 1);
+        $exp = min((int) floor(log($bytes, 1024)), count(self::FILE_SIZE_UNITS) - 1);
         return round($bytes / 1024 ** $exp, 2) . ' ' . self::FILE_SIZE_UNITS[$exp];
     }
 

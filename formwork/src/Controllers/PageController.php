@@ -126,7 +126,8 @@ final class PageController extends AbstractController
          */
         $page = $this->site->currentPage();
 
-        $cacheKey = $page->uri(includeLanguage: true);
+        // Use requested route as cache key to inlude parameters like pagination and tags
+        $cacheKey = $this->router->request();
 
         $headers = [];
 

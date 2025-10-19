@@ -59,13 +59,13 @@ composer install
 
 3. Build the administration panel [assets](#building-administration-panel-assets-with-yarn).
 
-### Building administration panel assets with Yarn
-After installing with Composer or cloning from GitHub, you need to build the panel assets with [Yarn](https://yarnpkg.com/) by running the following commands:
+### Building administration panel assets with pnpm
+After installing with Composer or cloning from GitHub, you need to build the panel assets with [pnpm](https://pnpm.io/) by running the following commands:
 
 ```shell
 cd panel
-yarn install
-yarn build
+pnpm install
+pnpm build
 ```
 
 ## Running Formwork server

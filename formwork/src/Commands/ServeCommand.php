@@ -10,8 +10,18 @@ use Symfony\Component\Process\PhpExecutableFinder;
 use Symfony\Component\Process\Process;
 use UnexpectedValueException;
 
-final class ServeCommand
+final class ServeCommand implements CommandInterface
 {
+    /**
+     * Host to bind the server to
+     */
+    private string $host = '127.0.0.1';
+
+    /**
+     * Port to bind the server to
+     */
+    private int $port = 8000;
+
     /**
      * Current request data for the server process
      *
@@ -34,38 +44,16 @@ final class ServeCommand
      */
     private float $startTime;
 
-    public function __construct(
-        private string $host = '127.0.0.1',
-        private int $port = 8000,
-    ) {
+    public function __construct()
+    {
         $this->climate = new CLImate();
-        $this->handleArguments();
     }
 
-    /**
-     * Start the server
-     */
-    public function start(): void
+    public function __invoke(?array $argv = null): never
     {
-        $this->startTime = microtime(true);
+        $argv ??= $_SERVER['argv'] ?? [];
 
-        $php = (new PhpExecutableFinder())->find();
-
-        $this->process = new Process([
-            $php,
-            '-S',
-            $this->host . ':' . $this->port,
-            'formwork/server.php',
-        ], dirname(__DIR__, 3), null, null, 0);
-
-        $this->process->run(function ($type, $buffer): void {
-            $this->handleOutput(explode("\n", $buffer));
-        });
-    }
-
-    private function handleArguments(): void
-    {
-        $this->climate->description('Start the Formwork development server');
+        $this->climate->description(sprintf('<bold>Formwork <cyan>%s</cyan></bold> Development Server', App::VERSION));
 
         $this->climate->arguments->add([
             'host' => [
@@ -90,8 +78,8 @@ final class ServeCommand
         $this->climate->arguments->parse();
 
         if ($this->climate->arguments->get('help')) {
-            $this->climate->usage();
-            exit;
+            $this->climate->usage($argv);
+            exit(0);
         }
 
         /** @var string */
@@ -101,6 +89,30 @@ final class ServeCommand
         $port = $this->climate->arguments->get('port');
 
         [$this->host, $this->port] = [$host, $port];
+
+        $this->start();
+        exit(0);
+    }
+
+    /**
+     * Start the server
+     */
+    private function start(): void
+    {
+        $this->startTime = microtime(true);
+
+        $php = (new PhpExecutableFinder())->find();
+
+        $this->process = new Process([
+            $php,
+            '-S',
+            $this->host . ':' . $this->port,
+            'formwork/server.php',
+        ], dirname(__DIR__, 3), null, null, 0);
+
+        $this->process->run(function ($type, $buffer): void {
+            $this->handleOutput(explode("\n", $buffer));
+        });
     }
 
     /**

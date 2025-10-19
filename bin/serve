@@ -3,6 +3,6 @@
 
 use Formwork\Commands\ServeCommand;
 
-require dirname(__DIR__) . '/vendor/autoload.php';
+require dirname(__DIR__) . '/formwork/bootstrap.php';
 
 (new ServeCommand())->start();

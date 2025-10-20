@@ -87,7 +87,7 @@ class DynamicFieldValue
         $vars = [...self::$vars, 'this' => $this->field];
 
         if (($model = $this->field->parent()?->model()) !== null) {
-            $vars[$model->getModelIdentifier()] = $model;
+            $vars['model'] = $vars[$model->getModelIdentifier()] = $model;
         }
 
         $this->value = Interpolator::interpolate($this->uncomputedValue, $vars);

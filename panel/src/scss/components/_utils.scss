@@ -9,6 +9,22 @@
 @include make-util("mb", "margin-bottom", $spacers);
 @include make-util("mr", "margin-right", $spacers);
 
+@include make-util(
+    "ml",
+    margin-left,
+    (
+        "auto": auto,
+    )
+);
+
+@include make-util(
+    "mr",
+    margin-right,
+    (
+        "auto": auto,
+    )
+);
+
 @include make-util("p", "padding", $spacers);
 @include make-util("pt", "padding-top", $spacers);
 @include make-util("pl", "padding-left", $spacers);
@@ -84,6 +100,17 @@
     (
         "": "nowrap",
         "wrap": "normal",
+    )
+);
+
+@include make-util(
+    "overflow",
+    "overflow",
+    (
+        "hidden": "hidden",
+        "scroll": "scroll",
+        "auto": "auto",
+        "visible": "visible",
     )
 );
 

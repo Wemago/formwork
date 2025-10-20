@@ -53,16 +53,12 @@
                         <div class="page-route truncate mr-2" aria-hidden="true">
                             <span><?= $page->canonicalRoute() ?? $page->route() ?></span>
                         </div>
-                        <?php
-                            $imagePreviewFieldName = $page->scheme()->options()->get('imagePreviewField', '');
-                            $imagePreviewFieldValue = $imagePreviewFieldName == '' ? '' : $page->fields()->get($imagePreviewFieldName);
-                            $imagePreviewFile = $imagePreviewFieldValue == '' ? '' : $page->files()->get($imagePreviewFieldValue);
-                        ?>
-                        <?php if($imagePreviewFile != '') : ?>
-                            <div class="col-sm-1-2 col-xs-1-3 mt-3 pl-0">
-                                <a href="<?= $panel->uri('/pages/' . trim($page->route(), '/') . '/edit/') ?>">
-                                    <img src="<?= $imagePreviewFile->square(300, 'contain')->uri() ?>" alt="" />
-                                </a>
+                        <?php $imagePreviewField = $page->scheme()->options()->get('imagePreviewField') ?>
+                        <?php if ($imagePreviewField !== null && $page->fields()->get($imagePreviewField)?->type() === 'image' && $page->get($imagePreviewField) != '') : ?>
+                            <div class="row mt-3">
+                                <div class="col-sm-1-2 col-xs-1-3">
+                                    <img src="<?= $page->get($imagePreviewField)->square(300, 'contain')->uri() ?>" alt="" />
+                                </div>
                             </div>
                         <?php endif; ?>
                     </div>

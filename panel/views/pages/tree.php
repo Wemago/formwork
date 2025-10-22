@@ -53,6 +53,14 @@
                         <div class="page-route truncate mr-2" aria-hidden="true">
                             <span><?= $page->canonicalRoute() ?? $page->route() ?></span>
                         </div>
+                        <?php $imagePreviewField = $page->scheme()->options()->get('imagePreviewField') ?>
+                        <?php if ($imagePreviewField !== null && $page->fields()->get($imagePreviewField)?->type() === 'image' && $page->get($imagePreviewField) != '') : ?>
+                            <div class="row mt-3">
+                                <div class="col-sm-1-2 col-xs-1-3">
+                                    <img src="<?= $page->get($imagePreviewField)->square(300, 'contain')->uri() ?>" alt="" />
+                                </div>
+                            </div>
+                        <?php endif; ?>
                     </div>
                 </div>
                 <div class="pages-tree-item-cell page-date truncate show-from-lg"><?= $date ?></div>

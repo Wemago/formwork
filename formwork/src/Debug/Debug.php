@@ -284,11 +284,11 @@ final class Debug
                         default => sprintf('<span class="__type-name">%s</span>', $matches[0]),
                     }, $type);
 
-                    foreach ($reflectionFunction->getParameters() as $parameter) {
-                        $type = $parameter->getType();
+                    foreach ($reflectionFunction->getParameters() as $reflectionParameter) {
+                        $type = $reflectionParameter->getType();
                         $parameters[] = $type
-                            ? sprintf('%s %s%s<span class="__type-property">$%s</span>', $typeFormatter((string) $type), $parameter->isVariadic() ? '...' : '', $parameter->isPassedByReference() ? '&' : '', $parameter->getName())
-                            : sprintf('%s%s<span class="__type-property">$%s</span>', $parameter->isVariadic() ? '...' : '', $parameter->isPassedByReference() ? '&' : '', $parameter->getName());
+                            ? sprintf('%s %s%s<span class="__type-property">$%s</span>', $typeFormatter((string) $type), $reflectionParameter->isVariadic() ? '...' : '', $reflectionParameter->isPassedByReference() ? '&' : '', $reflectionParameter->getName())
+                            : sprintf('%s%s<span class="__type-property">$%s</span>', $reflectionParameter->isVariadic() ? '...' : '', $reflectionParameter->isPassedByReference() ? '&' : '', $reflectionParameter->getName());
                     }
 
                     $returnType = $reflectionFunction->getReturnType();

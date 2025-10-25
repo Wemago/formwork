@@ -12,8 +12,8 @@ abstract class AbstractTransform implements TransformInterface
     {
         $data = [];
 
-        foreach ((new ReflectionClass($this))->getProperties() as $property) {
-            $data[$property->getName()] = $property->getValue($this);
+        foreach ((new ReflectionClass($this))->getProperties() as $reflectionProperty) {
+            $data[$reflectionProperty->getName()] = $reflectionProperty->getValue($this);
         }
 
         return $data;

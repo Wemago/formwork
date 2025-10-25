@@ -162,18 +162,18 @@ final class CodeDumper
             $reflection = isset($frame['class']) ? new ReflectionMethod($frame['class'], $frame['function']) : new ReflectionFunction($frame['function']);
             $parameterCount = count($reflection->getParameters());
 
-            foreach ($reflection->getParameters() as $i => $parameter) {
-                $name = ($parameter->isVariadic() ? '...$' : '$') . $parameter->getName();
-                $values = array_slice($frame['args'], $i, $parameter->isVariadic() ? null : 1);
+            foreach ($reflection->getParameters() as $i => $reflectionParameter) {
+                $name = ($reflectionParameter->isVariadic() ? '...$' : '$') . $reflectionParameter->getName();
+                $values = array_slice($frame['args'], $i, $reflectionParameter->isVariadic() ? null : 1);
                 $default = false;
 
-                if ($values === [] && $parameter->isDefaultValueAvailable()) {
-                    $values = [$parameter->getDefaultValue()];
+                if ($values === [] && $reflectionParameter->isDefaultValueAvailable()) {
+                    $values = [$reflectionParameter->getDefaultValue()];
                     $default = true;
                 }
 
                 foreach ($values as $j => $value) {
-                    if ($parameter->getAttributes(SensitiveParameter::class)) {
+                    if ($reflectionParameter->getAttributes(SensitiveParameter::class)) {
                         $value = new SensitiveParameterValue($value);
                     }
                     $result .= "<tr class=\"__row\">\n";

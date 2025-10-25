@@ -2,8 +2,10 @@
 
 declare(strict_types=1);
 
+use Rector\CodeQuality\Rector\ClassConstFetch\VariableConstFetchToClassConstFetchRector;
 use Rector\CodeQuality\Rector\FuncCall\CompactToVariablesRector;
 use Rector\CodeQuality\Rector\Identical\FlipTypeControlToUseExclusiveTypeRector;
+use Rector\CodingStyle\Rector\FunctionLike\FunctionLikeToFirstClassCallableRector;
 use Rector\Config\RectorConfig;
 use Rector\Naming\Rector\Class_\RenamePropertyToMatchTypeRector;
 use Rector\Php74\Rector\Closure\ClosureToArrowFunctionRector;
@@ -32,12 +34,14 @@ return RectorConfig::configure()
         dirname(__DIR__) . '/panel/views',
         dirname(__DIR__) . '/site/templates',
         dirname(__DIR__) . '/vendor',
+        AddOverrideAttributeToOverriddenMethodsRector::class,
         ChangeSwitchToMatchRector::class,
         ClosureToArrowFunctionRector::class,
         CompactToVariablesRector::class,
         FlipTypeControlToUseExclusiveTypeRector::class,
+        FunctionLikeToFirstClassCallableRector::class,
         NullToStrictStringFuncCallArgRector::class,
-        AddOverrideAttributeToOverriddenMethodsRector::class,
         ReadOnlyPropertyRector::class,
         RenamePropertyToMatchTypeRector::class,
+        VariableConstFetchToClassConstFetchRector::class,
     ]);

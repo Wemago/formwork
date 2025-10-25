@@ -6,6 +6,7 @@ use BadMethodCallException;
 use Formwork\Data\Contracts\Arrayable;
 use Formwork\Data\Traits\DataMultipleGetter;
 use Formwork\Data\Traits\DataMultipleSetter;
+use Formwork\Fields\Field;
 use Formwork\Fields\FieldCollection;
 use Formwork\Model\Attributes\ReadonlyModelProperty;
 use Formwork\Schemes\Scheme;
@@ -136,6 +137,14 @@ class Model implements Arrayable
         }
 
         Arr::set($this->data, $key, $value);
+
+        // Set value in the corresponding field if exists
+        if (isset($this->fields) && $this->fields->has($key)) {
+            /** @var Field */
+            $field = $this->fields->get($key);
+            $field->set('value', $value);
+            $field->validate();
+        }
     }
 
     /**

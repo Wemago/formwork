@@ -1,5 +1,27 @@
 # Changelog
 
+# [2.0.0](https://github.com/getformwork/formwork/releases/tag/2.0.0)
+
+**Breaking Changes**
+
+See [2.0.0-beta.1](#200-beta1) to [2.0.0-rc.1](#200-rc1) changelogs for breaking changes in each pre-release
+
+**Enhancements**
+
+- **Add support for basic filters to `AbstractCollection::filterBy()`**
+- **Allow `Image::resize()` to accept only width or height to maintain aspect ratio**
+- Add image preview functionality to panel page tree (@srgirard84)
+- Add inequality constraints to `Constraint` class
+- Add role to new user modal
+- Define a generic model variable for dynamic field values if applicable
+- Clear cache even if not enabled
+- Use pnpm to install panel dependencies
+- Set model values in the corresponding field if exists
+
+**Bug fixes**
+- Use requested route as cache key to inlude parameters
+- Correctly handle bootstrap from cli
+
 ## [2.0.0-rc.1](https://github.com/getformwork/formwork/releases/tag/2.0.0-rc.1)
 
 **Breaking Changes**

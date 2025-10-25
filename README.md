@@ -7,17 +7,14 @@
 [![GitHub All Releases](https://img.shields.io/github/downloads/getformwork/formwork/total.svg)](https://github.com/getformwork/formwork/releases)
 [![Packagist](https://img.shields.io/packagist/dt/getformwork/formwork.svg?color=%23f28d1a&label=Packagist%20downloads)](https://packagist.org/packages/getformwork/formwork)
 
-🏗 Formwork is a flat file-based Content Management System (CMS) to build and manage simple sites.
-
-⚠️ **This is the `README` file for the [`2.x`](https://github.com/getformwork/formwork/tree/2.x) branch, currently in development and NOT STABLE.**
-
-👉 **See the [`1.x`](https://github.com/getformwork/formwork/tree/1.x) branch for the latest stable version.**
+🏗 Formwork is a simple, fast and flexible flat-file CMS that allows you to create and manage websites without the need for a database.
 
 ## Features
-- ⚡️ Lightweight
-- 🗄 No database required!
-- 📦 Easy to [install](#installing)
-- ✨ Out-of-the-box Administration Panel
+- 🗂️ File-based structure
+- 📝 Markdown + YAML for your content
+- 🪗 Flexible structured content
+- 💡 Intuitive API
+- 🛠️ Built-in administration panel
 
 ![](site/pages/index/formwork.png)
 

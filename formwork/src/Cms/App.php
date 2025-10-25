@@ -9,6 +9,7 @@ use Formwork\Cache\FilesCache;
 use Formwork\Config\Config;
 use Formwork\Controllers\ErrorsController;
 use Formwork\Controllers\ErrorsControllerInterface;
+use Formwork\Events\EventDispatcher;
 use Formwork\Files\FileFactory;
 use Formwork\Files\FileUriGenerator;
 use Formwork\Files\Services\FileUploader;
@@ -138,6 +139,15 @@ final class App
     }
 
     /**
+     * Get EventDispatcher instance
+     */
+    public function events(): EventDispatcher
+    {
+        return $this->container->get(EventDispatcher::class);
+    }
+
+
+    /**
      * Get a service from the container
      *
      * @template T of object
@@ -203,6 +213,9 @@ final class App
         $container->define(Container::class, $container);
 
         $container->define(self::class, $this);
+
+        $container->define(EventDispatcher::class)
+            ->alias('events');
 
         $container->define(Request::class, fn() => Request::fromGlobals())
             ->alias('request');

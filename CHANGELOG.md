@@ -1,5 +1,13 @@
 # Changelog
 
+# [2.0.1](https://github.com/getformwork/formwork/releases/tag/2.0.1)
+
+**Bug fixes**
+- Fix `Image::resize()` default parameter values to match the corresponding transform
+- Fix updater etag check
+- Fix updater skipping first archive file
+- Fix minor updater UI details
+
 # [2.0.0](https://github.com/getformwork/formwork/releases/tag/2.0.0)
 
 **Breaking Changes**

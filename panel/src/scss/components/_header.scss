@@ -6,6 +6,7 @@
     z-index: 9;
     top: 3.5rem;
     display: flex;
+    overflow: hidden;
     min-height: 4.5rem;
     align-items: center;
     padding: 0.5rem 1rem;
@@ -34,10 +35,15 @@
 }
 
 .header-title {
-    overflow: hidden;
     flex-grow: 1;
     font-size: var(--font-size-h5);
     font-weight: 600;
-    text-overflow: ellipsis;
-    white-space: nowrap;
+}
+
+.header-title a {
+    color: inherit;
+}
+
+.header-title a:hover {
+    color: var(--color-accent-500);
 }

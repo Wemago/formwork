@@ -28,22 +28,14 @@ export class Pages {
         $$(".page-details").forEach((element) => {
             if ($(".pages-tree-children-toggle", element)) {
                 element.addEventListener("click", (event) => {
+                    const target = event.target as HTMLElement;
+                    if (target.closest("a, .sortable-handle")) {
+                        return;
+                    }
                     togglePageItem(element);
-                    event.stopPropagation();
+                    event.preventDefault();
                 });
             }
-        });
-
-        $$(".page-details a").forEach((element) => {
-            element.addEventListener("click", (event) => {
-                event.stopPropagation();
-            });
-        });
-
-        $$(".pages-tree .sortable-handle").forEach((element) => {
-            element.addEventListener("click", (event) => {
-                event.stopPropagation();
-            });
         });
 
         if (commandExpandAllPages) {
@@ -66,6 +58,10 @@ export class Pages {
                 ($(".pages-tree") as HTMLElement).classList.toggle("is-reordering");
                 commandReorderPages.blur();
             });
+        }
+
+        if (commandExpandAllPages || commandCollapseAllPages || commandReorderPages) {
+            setCommandsState();
         }
 
         if (searchInput) {
@@ -126,7 +122,7 @@ export class Pages {
 
             const parentSelect = form.inputs["newPageModal[parent]"] as SelectInput;
 
-            parentSelect.element.addEventListener("change", () => {
+            const filterAllowedTemplates = () => {
                 const option = parentSelect.selectedDropdownItem;
 
                 if (!option) {
@@ -157,7 +153,11 @@ export class Pages {
                         item.classList.remove("disabled");
                     });
                 }
-            });
+            };
+
+            parentSelect.element.addEventListener("change", () => filterAllowedTemplates());
+
+            filterAllowedTemplates();
         }
 
         if (commandPreview) {
@@ -187,17 +187,38 @@ export class Pages {
             $$(".pages-tree-item").forEach((element) => {
                 element.classList.add("is-expanded");
             });
+            setCommandsState();
         }
 
         function collapseAllPages() {
             $$(".pages-tree-item").forEach((element) => {
                 element.classList.remove("is-expanded");
             });
+            setCommandsState();
         }
 
         function togglePageItem(list: HTMLElement) {
             const element = list.closest(".pages-tree-item");
             element?.classList.toggle("is-expanded");
+            setCommandsState();
+        }
+
+        function setCommandsState() {
+            const allPages = $$(".pages-tree-item.has-children");
+            const expandedPages = $$(".pages-tree-item.has-children.is-expanded");
+            const orderablePages = $$(".pages-tree-item.is-orderable");
+
+            if (commandExpandAllPages) {
+                commandExpandAllPages.disabled = allPages.length === expandedPages.length;
+            }
+
+            if (commandCollapseAllPages) {
+                commandCollapseAllPages.disabled = expandedPages.length === 0;
+            }
+
+            if (commandReorderPages) {
+                commandReorderPages.disabled = orderablePages.length <= 1;
+            }
         }
 
         function initSortable(element: HTMLElement) {

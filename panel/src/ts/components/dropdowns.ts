@@ -26,6 +26,14 @@ export class Dropdowns {
                     }
                 }
             });
+
+            document.addEventListener("focusin", (event) => {
+                const target = event.target as HTMLElement;
+
+                if (!target.closest(".dropdown")) {
+                    $$(".dropdown-menu").forEach((element) => (element.style.display = ""));
+                }
+            });
         }
     }
 }

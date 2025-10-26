@@ -34,7 +34,7 @@
     &[disabled]:hover,
     &.disabled,
     &.disabled:hover {
-        box-shadow: none;
+        box-shadow: 0 2px 0 var(--color-base-600);
         color: var(--color-base-500);
         pointer-events: none;
     }
@@ -81,6 +81,14 @@
         background-color: var(--color-base-500);
         box-shadow: 0 2px 0 var(--color-base-400);
         color: var(--color-base-100);
+    }
+
+    &[disabled],
+    &[disabled]:hover,
+    &.disabled,
+    &.disabled:hover {
+        border-color: var(--color-base-800);
+        background-color: var(--color-base-800);
     }
 }
 
@@ -136,6 +144,13 @@
     & .icon {
         margin-right: 0;
         vertical-align: -0.125rem;
+    }
+
+    &[disabled],
+    &[disabled]:hover,
+    &.disabled,
+    &.disabled:hover {
+        box-shadow: none;
     }
 }
 

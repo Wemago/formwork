@@ -103,7 +103,7 @@ final class Updater
         if (isset($this->getHeaders()['Etag'])) {
             $ETag = trim($this->headers['Etag'], '"');
 
-            if ($this->registry->get('etag') === $ETag) {
+            if ($this->registry->has('etag') && $this->registry->get('etag') === $ETag) {
                 $this->registry->set('upToDate', true);
                 $this->registry->save();
                 return true;

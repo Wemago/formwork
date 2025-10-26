@@ -15,8 +15,8 @@
         <?php $date = $this->datetime($page->contentFile()->lastModifiedTime()) ?>
         <li class="<?= $this->classes([
                         'pages-tree-item',
-                        'pages-tree-level-' . $page->level() => $includeChildren,
-                        'has-children' => $page->hasChildren(),
+                        'pages-tree-level-' . ($page->level() - ($levelOffset ?? 0)) => $includeChildren,
+                        'has-children' => $page->hasChildren() && $page->scheme()->options()->get('children.list', true),
                         'is-orderable' => $page->orderable(),
                         'is-not-orderable' => !$page->orderable()
                     ])
@@ -30,7 +30,7 @@
                     </div>
                     <?php if ($includeChildren) : ?>
                         <div class="pages-tree-icon mr-2">
-                            <?php if ($page->hasChildren()) : ?>
+                            <?php if ($page->hasChildren() && $page->scheme()->options()->get('children.list', true)) : ?>
                                 <button type="button" class="button pages-tree-children-toggle" title="<?= $this->translate('panel.pages.toggleChildren') ?>" aria-label="<?= $this->translate('panel.pages.toggleChildren') ?>"><?= $this->icon('chevron-down') ?></button>
                             <?php endif ?>
                         </div>
@@ -70,12 +70,21 @@
                 </div>
                 <div class="pages-tree-item-cell page-actions">
                     <a class="<?= $this->classes(['button', 'button-link', 'disabled' => !$page->published() || !$page->routable()]) ?>" role="button" <?php if ($page->published() && $page->routable()) : ?>href="<?= $page->uri(includeLanguage: false) ?>" <?php endif ?> target="formwork-view-page-<?= $page->uid() ?>" title="<?= $this->translate('panel.pages.viewPage') ?>" aria-label="<?= $this->translate('panel.pages.viewPage') ?>"><?= $this->icon('arrow-right-up-box') ?></a>
-                    <?php if ($panel->user()->permissions()->has('panel.pages.delete')) : ?>
-                        <button type="button" class="button button-link" data-modal="deletePageModal" data-modal-action="<?= $panel->uri('/pages/' . trim($page->route(), '/') . '/delete/') ?>" title="<?= $this->translate('panel.pages.deletePage') ?>" aria-label="<?= $this->translate('panel.pages.deletePage') ?>" <?php if (!$page->isDeletable()) : ?> disabled<?php endif ?>><?= $this->icon('trash') ?></button>
-                    <?php endif ?>
+                    <div class="dropdown mb-0">
+                        <button type="button" class="button button-link dropdown-button" title="<?= $this->translate('panel.pages.page.actions') ?>" aria-label="<?= $this->translate('panel.pages.page.actions') ?>" data-dropdown="dropdown-<?= $page->uid() ?>"><?= $this->icon('ellipsis-v') ?></button>
+                        <div class="dropdown-menu" id="dropdown-<?= $page->uid() ?>">
+                            <a class="dropdown-item" href="<?= $panel->uri('/pages/' . trim($page->route(), '/') . '/edit/') ?>"><?= $this->icon('pencil') ?> <?= $this->translate('panel.pages.edit') ?></a>
+                            <?php if ($page->hasChildren() && !$page->scheme()->options()->get('children.list', true)) : ?>
+                                <a class="dropdown-item" href="<?= $panel->uri('/pages/' . trim($page->route(), '/') . '/tree/') ?>"><?= $this->icon('pages-level-down') ?> <?= $this->translate('panel.pages.viewChildren') ?></a>
+                            <?php endif ?>
+                            <?php if ($panel->user()->permissions()->has('panel.pages.delete')) : ?>
+                                <button class="dropdown-item" data-modal="deletePageModal" data-modal-action="<?= $panel->uri('/pages/' . trim($page->route(), '/') . '/delete/') ?>" <?php if (!$page->isDeletable()): ?> disabled<?php endif ?>><?= $this->icon('trash') ?> <?= $this->translate('panel.pages.deletePage') ?></button>
+                            <?php endif ?>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <?php if ($includeChildren && $page->hasChildren()) : ?>
+            <?php if ($includeChildren && $page->hasChildren() && $page->scheme()->options()->get('children.list', true)) : ?>
                 <?php $this->insert('pages.tree', [
                     'pages'           => $page->scheme()->options()->get('children.reverse', false) ? $page->children()->reverse() : $page->children(),
                     'includeChildren' => true,

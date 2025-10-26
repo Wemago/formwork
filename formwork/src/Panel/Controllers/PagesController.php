@@ -33,23 +33,48 @@ final class PagesController extends AbstractController
      */
     public function index(): Response
     {
-        if (!$this->hasPermission('panel.pages.index')) {
+        if (!$this->hasPermission('panel.pages.tree')) {
             return $this->forward(ErrorsController::class, 'forbidden');
         }
 
-        $pages = $this->site->pages();
+        return $this->redirect($this->generateRoute('panel.pages.tree'));
+    }
 
-        $indexOffset = $pages->indexOf($this->site->indexPage());
+    /**
+     * Pages@tree action
+     */
+    public function tree(RouteParams $routeParams): Response
+    {
+        if (!$this->hasPermission('panel.pages.tree')) {
+            return $this->forward(ErrorsController::class, 'forbidden');
+        }
+
+        $parent = $routeParams->has('page')
+            ? $this->site->findPage($routeParams->get('page'))
+            : $this->site;
+
+        if ($parent === null || !$parent->hasChildren() || (!$parent->isSite() && $parent->scheme()->options()->get('children.list', true))) {
+            return $this->forward(ErrorsController::class, 'notFound');
+        }
+
+        $pageCollection = $parent->children();
+        $indexOffset = $pageCollection->indexOf($this->site->indexPage());
 
         if ($indexOffset !== null) {
-            $pages->moveItem($indexOffset, 0);
+            $pageCollection->moveItem($indexOffset, 0);
         }
+
+        $includeChildren = $pageCollection->some(fn(Page $page) => $page->hasChildren() && $page->scheme()->options()->get('children.list', true));
+
+        $this->modal('newPage')->setFieldsModel($parent);
 
         return new Response($this->view('pages.index', [
             'title'     => $this->translate('panel.pages.pages'),
+            'parent'    => $parent,
             'pagesTree' => $this->view('pages.tree', [
-                'pages'           => $pages,
-                'includeChildren' => true,
+                'pages'           => $pageCollection,
+                'includeChildren' => $includeChildren,
+                'levelOffset'     => $parent->isSite() ? 0 : $parent->level(),
                 'class'           => 'pages-tree-root',
                 'parent'          => '.',
                 'orderable'       => $this->panel->user()->permissions()->has('panel.pages.reorder'),

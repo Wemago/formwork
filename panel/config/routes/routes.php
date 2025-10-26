@@ -48,6 +48,11 @@ return [
             'action' => 'Formwork\Panel\Controllers\PagesController@index',
         ],
 
+        'panel.pages.tree' => [
+            'path'   => '/pages/{page:all}?/tree/',
+            'action' => 'Formwork\Panel\Controllers\PagesController@tree',
+        ],
+
         'panel.pages.new' => [
             'path'    => '/pages/new/',
             'action'  => 'Formwork\Panel\Controllers\PagesController@create',

@@ -21,6 +21,7 @@ fields:
         type: page
         label: '{{page.parent}}'
         collection@: site.descendants.allowingChildren
+        default@: model.route
         required: true
         allowSite: true
 

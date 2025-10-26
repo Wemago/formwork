@@ -197,6 +197,7 @@ panel.pages.deleteFile: Delete file
 panel.pages.deleteFile.prompt: Are you sure you want to delete this file? This action can’t be undone.
 panel.pages.deletePage: Delete page
 panel.pages.deletePage.prompt: Are you sure you want to delete this page? This action can’t be undone.
+panel.pages.edit: Edit page
 panel.pages.editPage: Edit page %s
 panel.pages.history.event.created: Page created by %s %s.
 panel.pages.history.event.edited: Page edited by %s %s.
@@ -251,6 +252,7 @@ panel.pages.replaceFile: Replace file
 panel.pages.save: Save
 panel.pages.saveOnly: Save without publishing
 panel.pages.toggleChildren: Toggle children pages
+panel.pages.viewChildren: View children pages
 panel.pages.viewPage: View page
 panel.panel: Administration panel
 panel.register.createUser: Formwork is installed but no users were found. Please register a user now.

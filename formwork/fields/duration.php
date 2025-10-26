@@ -29,6 +29,9 @@ return function (App $app) {
                 return $field->get('intervals', ['days', 'hours', 'minutes', 'seconds']);
             },
 
+            /**
+             * Validate the field value
+             */
             'validate' => function (Field $field, $value): int|float {
                 if (!is_numeric($value)) {
                     throw new ValidationException(sprintf('Invalid value for field "%s" of type "%s"', $field->name(), $field->type()));

@@ -18,6 +18,9 @@ return function (App $app) {
                 return Collection::from($field->value() ?? []);
             },
 
+            /**
+             * Validate the field value
+             */
             'validate' => function (Field $field, $value): array {
                 if (Constraint::isEmpty($value)) {
                     return [];

@@ -8,6 +8,9 @@ use Formwork\Utils\Constraint;
 return function (App $app) {
     return [
         'methods' => [
+            /**
+             * Validate the field value
+             */
             'validate' => function (Field $field, $value): string {
                 if (Constraint::isEmpty($value)) {
                     return '';

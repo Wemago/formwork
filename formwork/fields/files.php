@@ -37,6 +37,9 @@ return function (App $app) {
                 return $field->getFiles()->filter(static fn(File $file) => in_array($file->name(), $field->value(), true));
             },
 
+            /**
+             * Validate the field value
+             */
             'validate' => function (Field $field, $value): array {
                 if (Constraint::isEmpty($value)) {
                     return [];

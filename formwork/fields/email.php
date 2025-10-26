@@ -9,6 +9,9 @@ return function (App $app) {
     return [
         'extend'  => 'text',
         'methods' => [
+            /**
+             * Validate the field value
+             */
             'validate' => function (Field $field, $value): string {
                 if (Constraint::isEmpty($value)) {
                     return '';

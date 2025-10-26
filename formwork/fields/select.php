@@ -16,6 +16,9 @@ return function (App $app) {
                 return Arr::from($field->get('options', []));
             },
 
+            /**
+             * Validate the field value
+             */
             'validate' => function (Field $field, $value) {
                 if (Constraint::isEmpty($value)) {
                     return '';

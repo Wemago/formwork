@@ -69,6 +69,9 @@ return function (App $app) {
                 return $field->get('filename');
             },
 
+            /**
+             * Validate the field value
+             */
             'validate' => function (Field $field, $value) use ($app) {
                 if (Constraint::isEmpty($value)) {
                     return null;

@@ -37,6 +37,9 @@ return function (App $app) {
                 return $files->filter(static fn(File $file) => $file instanceof Image);
             },
 
+            /**
+             * Validate the field value
+             */
             'validate' => function (Field $field, $value): ?string {
                 if (Constraint::isEmpty($value)) {
                     return null;

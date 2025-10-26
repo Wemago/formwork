@@ -8,6 +8,9 @@ use Formwork\Utils\Constraint;
 return function (App $app) {
     return [
         'methods' => [
+            /**
+             * Validate the field value
+             */
             'validate' => function (Field $field, $value): bool {
                 if (Constraint::isTruthy($value)) {
                     return true;

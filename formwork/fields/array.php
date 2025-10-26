@@ -16,6 +16,9 @@ return function (App $app) {
                 return $field->is('associative', false);
             },
 
+            /**
+             * Validate the field value
+             */
             'validate' => function (Field $field, $value): array {
                 if (Constraint::isEmpty($value)) {
                     return [];

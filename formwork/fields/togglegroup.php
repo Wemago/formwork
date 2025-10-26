@@ -14,6 +14,9 @@ return function (App $app) {
                 return $field->get('options', []);
             },
 
+            /**
+             * Validate the field value
+             */
             'validate' => function (Field $field, $value) {
                 if (Constraint::isTruthy($value)) {
                     return true;

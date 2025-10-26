@@ -8,6 +8,9 @@ use Formwork\Utils\Constraint;
 return function (App $app) {
     return [
         'methods' => [
+            /**
+             * Validate the field value
+             */
             'validate' => function (Field $field, $value): string {
                 if (!Constraint::matchesRegex($value, '#[0-9A-Fa-f]{6}')) {
                     throw new ValidationException(sprintf('Invalid value for field "%s" of type "%s"', $field->name(), $field->type()));

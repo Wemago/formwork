@@ -79,6 +79,9 @@ return function (App $app): array {
                 return $field->is('time', true);
             },
 
+            /**
+             * Validate the field value
+             */
             'validate' => function (Field $field, $value) use ($app): ?string {
                 if (Constraint::isEmpty($value)) {
                     return null;

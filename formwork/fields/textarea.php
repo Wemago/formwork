@@ -53,6 +53,9 @@ return function (App $app) {
                 return $field->is('spellcheck', true);
             },
 
+            /**
+             * Validate the field value
+             */
             'validate' => function (Field $field, $value): string {
                 if (Constraint::isEmpty($value)) {
                     return '';

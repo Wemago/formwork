@@ -35,6 +35,9 @@ return function (App $app) {
                 return $field->get('options');
             },
 
+            /**
+             * Validate the field value
+             */
             'validate' => function (Field $field, $value): ?string {
                 if (Constraint::isEmpty($value)) {
                     return null;

@@ -42,6 +42,9 @@ return function (Site $site) {
                 return $value;
             },
 
+            /**
+             * Validate the field value
+             */
             'validate' => function (Field $field, $value) {
                 if ($value === '') {
                     return null;

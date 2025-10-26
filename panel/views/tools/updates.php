@@ -16,7 +16,7 @@
         <div class="col-md-1-1">
             <p><strong class="new-version-name">Formwork x.x.x</strong> <?= $this->translate('panel.updates.availableForInstall') ?></p>
             <div class="mb-8"><?= $this->translate('panel.updates.installPrompt') ?></div>
-            <button type="button" class="button" data-command="install-updates"><?= $this->translate('panel.updates.install') ?></button>
+            <button type="button" class="button button-accent" data-command="install-updates"><?= $this->icon('cloud-download') ?> <?= $this->translate('panel.updates.install') ?></button>
         </div>
     </div>
     <div class="row current-version mt-9" style="display: none;">

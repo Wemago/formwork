@@ -66,6 +66,7 @@ export class Updates {
             installCommand.addEventListener("click", () => {
                 newVersion.style.display = "none";
                 spinner.classList.remove("spinner-info");
+                $(".icon", spinner)?.remove();
                 updateStatus.innerHTML = updateStatus.dataset.installingText as string;
 
                 new Request(

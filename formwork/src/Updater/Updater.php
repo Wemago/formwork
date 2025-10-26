@@ -137,27 +137,21 @@ final class Updater
         }
 
         $zipArchive = new ZipArchive();
-        $zipArchive->open($this->options['tempFile']);
-        $baseFolder = $zipArchive->getNameIndex(0);
-
-        if ($baseFolder === false) {
-            throw new RuntimeException('Cannot get base folder from zip archive');
-        }
-
+        $zipArchive->open($this->options['tempFile'], ZipArchive::RDONLY);
         $installedFiles = [];
+        $counter = count($zipArchive);
 
-        for ($i = 1; $i < $zipArchive->numFiles; $i++) {
+        for ($i = 0; $i < $counter; $i++) {
             $filename = $zipArchive->getNameIndex($i);
 
             if ($filename === false) {
                 throw new RuntimeException('Cannot get filename from zip archive');
             }
 
-            $source = Str::removeStart($filename, $baseFolder);
-            $destination = ROOT_PATH . '/' . $source;
+            $destination = FileSystem::joinPaths(ROOT_PATH, $filename);
             $destinationDirectory = dirname($destination);
 
-            if ($this->isCopiable($source)) {
+            if ($this->isCopiable($filename)) {
                 if (!FileSystem::exists($destinationDirectory)) {
                     FileSystem::createDirectory($destinationDirectory);
                 }

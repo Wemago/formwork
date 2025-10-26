@@ -17,6 +17,8 @@ final class DashboardController extends AbstractController
             return $this->forward(ErrorsController::class, 'forbidden');
         }
 
+        $this->modal('newPage')->setFieldsModel($this->site);
+
         return new Response($this->view('dashboard.index', [
             'title'             => $this->translate('panel.dashboard.dashboard'),
             'lastModifiedPages' => $this->view('pages.tree', [

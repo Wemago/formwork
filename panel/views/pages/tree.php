@@ -71,13 +71,16 @@
                     <span class="page-status-label"><?= $this->translate('page.status.' . $page->status()) ?></span>
                 </div>
                 <div class="pages-tree-item-cell page-actions">
+                    <?php if ($includeChildren && $page->hasChildren() && $subtree) : ?>
+                        <a class="button button-link show-from-lg" role="button" href="<?= $panel->uri('/pages/' . trim($page->route(), '/') . '/tree/') ?>" title="<?= $this->translate('panel.pages.viewChildren') ?>" aria-label="<?= $this->translate('panel.pages.viewChildren') ?>"><?= $this->icon('pages-level-down') ?></a>
+                    <?php endif ?>
                     <a class="<?= $this->classes(['button', 'button-link', 'disabled' => !$page->published() || !$page->routable()]) ?>" role="button" <?php if ($page->published() && $page->routable()) : ?>href="<?= $page->uri(includeLanguage: false) ?>" <?php endif ?> target="formwork-view-page-<?= $page->uid() ?>" title="<?= $this->translate('panel.pages.viewPage') ?>" aria-label="<?= $this->translate('panel.pages.viewPage') ?>"><?= $this->icon('arrow-right-up-box') ?></a>
                     <div class="dropdown mb-0">
                         <button type="button" class="button button-link dropdown-button" title="<?= $this->translate('panel.pages.page.actions') ?>" aria-label="<?= $this->translate('panel.pages.page.actions') ?>" data-dropdown="dropdown-<?= $page->uid() ?>"><?= $this->icon('ellipsis-v') ?></button>
                         <div class="dropdown-menu" id="dropdown-<?= $page->uid() ?>">
                             <a class="dropdown-item" href="<?= $panel->uri('/pages/' . trim($page->route(), '/') . '/edit/') ?>"><?= $this->icon('pencil') ?> <?= $this->translate('panel.pages.edit') ?></a>
                             <?php if ($includeChildren && $page->hasChildren() && $subtree) : ?>
-                                <a class="dropdown-item" href="<?= $panel->uri('/pages/' . trim($page->route(), '/') . '/tree/') ?>"><?= $this->icon('pages-level-down') ?> <?= $this->translate('panel.pages.viewChildren') ?></a>
+                                <a class="dropdown-item hide-from-lg" href="<?= $panel->uri('/pages/' . trim($page->route(), '/') . '/tree/') ?>"><?= $this->icon('pages-level-down') ?> <?= $this->translate('panel.pages.viewChildren') ?></a>
                             <?php endif ?>
                             <?php if ($panel->user()->permissions()->has('panel.pages.delete')) : ?>
                                 <button class="dropdown-item" data-modal="deletePageModal" data-modal-action="<?= $panel->uri('/pages/' . trim($page->route(), '/') . '/delete/') ?>" <?php if (!$page->isDeletable()): ?> disabled<?php endif ?>><?= $this->icon('trash') ?> <?= $this->translate('panel.pages.deletePage') ?></button>

@@ -371,30 +371,33 @@ final class PagesController extends AbstractController
 
         $this->updateLastModifiedTime($page);
 
-        return JsonResponse::success($this->translate('panel.uploader.uploaded'), data: Arr::map($uploadedFiles, fn(File $file) => [
-            'name'             => $file->name(),
-            'size'             => $file->size(),
-            'lastModifiedTime' => Date::formatTimestamp(
-                $file->lastModifiedTime(),
-                $this->config->get('system.date.datetimeFormat'),
-                $this->translations->getCurrent()
-            ),
-            'type'      => $file->type(),
-            'mimeType'  => $file->mimeType(),
-            'hash'      => $file->hash(),
-            'uri'       => $file->uri(),
-            'thumbnail' => match ($file->type()) {
-                'image' => $file->square(300, 'contain')->uri(), // @phpstan-ignore method.notFound
-                'video' => $file->uri(),
-                default => null,
-            },
-            'actions' => Arr::map([
-                'info'    => $this->router->generate('panel.files.edit', ['model' => $page->getModelIdentifier(), 'id' => $page->route(), 'filename' => $file->name()]),
-                'rename'  => $this->router->generate('panel.files.rename', ['model' => $page->getModelIdentifier(), 'id' => $page->route(), 'filename' => $file->name()]),
-                'replace' => $this->router->generate('panel.files.replace', ['model' => $page->getModelIdentifier(), 'id' => $page->route(), 'filename' => $file->name()]),
-                'delete'  => $this->router->generate('panel.files.delete', ['model' => $page->getModelIdentifier(), 'id' => $page->route(), 'filename' => $file->name()]),
-            ], fn(string $route): string => Uri::make([], Path::join([$this->request->root(), $route]))),
-        ]), );
+        return JsonResponse::success(
+            $this->translate('panel.uploader.uploaded'),
+            data: Arr::map($uploadedFiles, fn(File $file) => [
+                'name'             => $file->name(),
+                'size'             => $file->size(),
+                'lastModifiedTime' => Date::formatTimestamp(
+                    $file->lastModifiedTime(),
+                    $this->config->get('system.date.datetimeFormat'),
+                    $this->translations->getCurrent()
+                ),
+                'type'      => $file->type(),
+                'mimeType'  => $file->mimeType(),
+                'hash'      => $file->hash(),
+                'uri'       => $file->uri(),
+                'thumbnail' => match ($file->type()) {
+                    'image' => $file->square(300, 'contain')->uri(), // @phpstan-ignore method.notFound
+                    'video' => $file->uri(),
+                    default => null,
+                },
+                'actions' => Arr::map([
+                    'info'    => $this->router->generate('panel.files.edit', ['model' => $page->getModelIdentifier(), 'id' => $page->route(), 'filename' => $file->name()]),
+                    'rename'  => $this->router->generate('panel.files.rename', ['model' => $page->getModelIdentifier(), 'id' => $page->route(), 'filename' => $file->name()]),
+                    'replace' => $this->router->generate('panel.files.replace', ['model' => $page->getModelIdentifier(), 'id' => $page->route(), 'filename' => $file->name()]),
+                    'delete'  => $this->router->generate('panel.files.delete', ['model' => $page->getModelIdentifier(), 'id' => $page->route(), 'filename' => $file->name()]),
+                ], fn(string $route): string => Uri::make([], Path::join([$this->request->root(), $route]))),
+            ]),
+        );
     }
 
     /**

@@ -24,10 +24,9 @@ final class DashboardController extends AbstractController
             'lastModifiedPages' => $this->view('pages.tree', [
                 'pages'           => $this->site->descendants()->sortBy('lastModifiedTime', direction: SORT_DESC)->limit(5),
                 'includeChildren' => false,
-                'class'           => 'pages-tree-root',
-                'parent'          => null,
                 'orderable'       => false,
                 'headers'         => true,
+                'class'           => 'pages-tree-root',
             ]),
             'statistics' => Json::encode($statistics->getChartData()),
         ]));

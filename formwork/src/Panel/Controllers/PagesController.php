@@ -53,7 +53,9 @@ final class PagesController extends AbstractController
             ? $this->site->findPage($routeParams->get('page'))
             : $this->site;
 
-        if ($parent === null || !$parent->hasChildren() || (!$parent->isSite() && $parent->scheme()->options()->get('children.list', true))) {
+        $childrenSubtree = $parent?->scheme()->options()->get('children.subtree', false);
+
+        if ($parent === null || !$parent->hasChildren() || (!$parent->isSite() && !$childrenSubtree)) {
             return $this->forward(ErrorsController::class, 'notFound');
         }
 
@@ -64,8 +66,6 @@ final class PagesController extends AbstractController
             $pageCollection->moveItem($indexOffset, 0);
         }
 
-        $includeChildren = $pageCollection->some(fn(Page $page) => $page->hasChildren() && $page->scheme()->options()->get('children.list', true));
-
         $this->modal('newPage')->setFieldsModel($parent);
 
         return new Response($this->view('pages.index', [
@@ -73,12 +73,12 @@ final class PagesController extends AbstractController
             'parent'    => $parent,
             'pagesTree' => $this->view('pages.tree', [
                 'pages'           => $pageCollection,
-                'includeChildren' => $includeChildren,
-                'levelOffset'     => $parent->isSite() ? 0 : $parent->level(),
-                'class'           => 'pages-tree-root',
-                'parent'          => '.',
+                'parent'          => $parent,
+                'root'            => $parent,
+                'includeChildren' => true,
                 'orderable'       => $this->panel->user()->permissions()->has('panel.pages.reorder'),
                 'headers'         => true,
+                'class'           => 'pages-tree-root',
             ]),
         ]));
     }

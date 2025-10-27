@@ -9,16 +9,18 @@
     </div>
 <?php endif ?>
 
-<ul class="pages-tree <?= $class ?>" data-orderable-children="<?= $orderable ? 'true' : 'false' ?>" <?php if ($parent) : ?> data-parent="<?= $parent ?>" <?php endif ?>>
+<ul <?= $this->attr(['class' => ['pages-tree', $class ?? null], 'data-orderable-children' => $orderable ? 'true' : 'false', 'data-parent' => isset($parent) ? ($parent->isSite() ? '.' : $parent->route()) : null]) ?>>
+    <?php $childrenToggle = ($parent ?? $site)->level() > ($root ?? $site)->level() || $pages->some(fn($page) => $page->hasChildren() && !$page->scheme()->options()->get('children.subtree', false)) ?>
     <?php foreach ($pages as $page) : ?>
         <?php $routable = $page->published() && $page->routable() ?>
         <?php $date = $this->datetime($page->contentFile()->lastModifiedTime()) ?>
+        <?php $subtree = $page->scheme()->options()->get('children.subtree', false) ?>
         <li class="<?= $this->classes([
                         'pages-tree-item',
-                        'pages-tree-level-' . ($page->level() - ($levelOffset ?? 0)) => $includeChildren,
-                        'has-children' => $page->hasChildren() && $page->scheme()->options()->get('children.list', true),
-                        'is-orderable' => $page->orderable(),
-                        'is-not-orderable' => !$page->orderable()
+                        'pages-tree-level-' . ($page->level() - ($root ?? $site)->level()) => $includeChildren,
+                        'has-children'     => $page->hasChildren() && !$subtree,
+                        'is-orderable'     => $page->orderable(),
+                        'is-not-orderable' => !$page->orderable(),
                     ])
                     ?>" data-route="<?= $page->route() ?>">
             <div class="pages-tree-row">
@@ -28,9 +30,9 @@
                             <span title="<?= $this->translate('panel.dragToReorder') ?>"><?= $this->icon('grabber') ?></span>
                         <?php endif ?>
                     </div>
-                    <?php if ($includeChildren) : ?>
+                    <?php if ($childrenToggle) : ?>
                         <div class="pages-tree-icon mr-2">
-                            <?php if ($page->hasChildren() && $page->scheme()->options()->get('children.list', true)) : ?>
+                            <?php if ($page->hasChildren() && !$subtree): ?>
                                 <button type="button" class="button pages-tree-children-toggle" title="<?= $this->translate('panel.pages.toggleChildren') ?>" aria-label="<?= $this->translate('panel.pages.toggleChildren') ?>"><?= $this->icon('chevron-down') ?></button>
                             <?php endif ?>
                         </div>
@@ -74,7 +76,7 @@
                         <button type="button" class="button button-link dropdown-button" title="<?= $this->translate('panel.pages.page.actions') ?>" aria-label="<?= $this->translate('panel.pages.page.actions') ?>" data-dropdown="dropdown-<?= $page->uid() ?>"><?= $this->icon('ellipsis-v') ?></button>
                         <div class="dropdown-menu" id="dropdown-<?= $page->uid() ?>">
                             <a class="dropdown-item" href="<?= $panel->uri('/pages/' . trim($page->route(), '/') . '/edit/') ?>"><?= $this->icon('pencil') ?> <?= $this->translate('panel.pages.edit') ?></a>
-                            <?php if ($page->hasChildren() && !$page->scheme()->options()->get('children.list', true)) : ?>
+                            <?php if ($includeChildren && $page->hasChildren() && $subtree) : ?>
                                 <a class="dropdown-item" href="<?= $panel->uri('/pages/' . trim($page->route(), '/') . '/tree/') ?>"><?= $this->icon('pages-level-down') ?> <?= $this->translate('panel.pages.viewChildren') ?></a>
                             <?php endif ?>
                             <?php if ($panel->user()->permissions()->has('panel.pages.delete')) : ?>
@@ -84,12 +86,12 @@
                     </div>
                 </div>
             </div>
-            <?php if ($includeChildren && $page->hasChildren() && $page->scheme()->options()->get('children.list', true)) : ?>
+            <?php if ($includeChildren && $page->hasChildren() && !$subtree): ?>
                 <?php $this->insert('pages.tree', [
                     'pages'           => $page->scheme()->options()->get('children.reverse', false) ? $page->children()->reverse() : $page->children(),
                     'includeChildren' => true,
                     'class'           => 'pages-tree-children',
-                    'parent'          => $page->route(),
+                    'parent'          => $page,
                     'orderable'       => $orderable && $page->scheme()->options()->get('children.orderable', true),
                     'headers'         => false,
                 ]) ?>

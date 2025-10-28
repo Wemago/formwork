@@ -44,6 +44,8 @@
             </div>
         <?php endif ?>
     </main>
+    <?php $this->assets()->add('js/app.min.js') ?>
+    <?php $this->insert('partials.scripts') ?>
 </body>
 
 </html>

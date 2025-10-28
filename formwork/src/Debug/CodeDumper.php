@@ -26,6 +26,7 @@ final class CodeDumper
                 padding: 12px 8px;
                 border-radius: 4px;
                 background-color: #f0f0f0;
+                color: #333;
                 font-family: SFMono-Regular, "SF Mono", "Cascadia Mono", "Liberation Mono", Menlo, Consolas, monospace;
                 font-size: 13px;
                 overflow-x: auto;
@@ -72,6 +73,10 @@ final class CodeDumper
 
             .__formwork-trace-call {
                 margin: 16px 0 8px;
+                padding: 12px 8px;
+                border-radius: 4px;
+                background-color: #f0f0f0;
+                color: #333;
                 font-family: SFMono-Regular, "SF Mono", "Cascadia Mono", "Liberation Mono", Menlo, Consolas, monospace;
                 font-size: 13px;
             }
@@ -95,6 +100,7 @@ final class CodeDumper
                 border-top: 1px solid #ddd;
                 border-bottom: 1px solid #ddd;
             }
+
             .__formwork-trace-params .__param-name {
                 width: 20%;
                 vertical-align: top;
@@ -105,21 +111,26 @@ final class CodeDumper
                 padding-right: 8px;
             }
 
+            .__formwork-trace-params code {
+                padding: 2px 4px;
+                border-radius: 4px;
+                background-color: #f0f0f0;
+                color: inherit;
+                font-size: inherit;
+            }
+
             .__formwork-trace-params .__formwork-dump {
                 margin: 0;
-                padding: 0;
-                background: transparent;
-                border-radius: 0;
             }
 
             .__formwork-trace-params .__param-type {
-                    display: inline-block;
-                    padding: 1px 4px;
-                    border-radius: 4px;
-                    margin-left: 4px;
-                    color: #777;
-                    cursor: default;
-                    font-size: 0.75em;
+                display: inline-block;
+                padding: 1px 4px;
+                border-radius: 4px;
+                margin-left: 4px;
+                color: #777;
+                cursor: default;
+                font-size: 0.75em;
             }
 
             .__formwork-trace-params .__type-default {
@@ -178,7 +189,7 @@ final class CodeDumper
                     }
                     $result .= "<tr class=\"__row\">\n";
                     if ($j === 0) {
-                        $result .= sprintf('<td class="__param-name" rowspan="%d">%s', count($values), $name);
+                        $result .= sprintf('<td class="__param-name" rowspan="%d"><code>%s</code>', count($values), $name);
                         if ($default) {
                             $result .= '<span class="__param-type __type-default">default</span>';
                         }
@@ -195,7 +206,7 @@ final class CodeDumper
 
         if ($parameterCount < count($frame['args'])) {
             foreach (array_slice($frame['args'], $parameterCount) as $i => $value) {
-                $result .= sprintf("<tr class=\"__row\">\n<td class=\"__param-name\">#%d</td>\n<td>%s</td></tr>\n", $parameterCount + $i, Debug::dumpToString($value));
+                $result .= sprintf("<tr class=\"__row\">\n<td class=\"__param-name\"><code>#%d</code></td>\n<td>%s</td></tr>\n", $parameterCount + $i, Debug::dumpToString($value));
             }
         }
         $result .= '</table></div>';

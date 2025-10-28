@@ -29,6 +29,7 @@ final class Debug
             padding: 12px 8px;
             border-radius: 4px;
             background-color: #f0f0f0;
+            color: #333;
             font-family: SFMono-Regular, "SF Mono", "Cascadia Mono", "Liberation Mono", Menlo, Consolas, monospace;
             font-size: 13px;
             overflow-x: auto;

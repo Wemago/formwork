@@ -74,6 +74,9 @@ class FilesCache extends AbstractCache
      */
     protected function hasExpired(string $key): bool
     {
+        /**
+         * @var CacheItem
+         */
         $cacheItem = Php::parseFile($this->getFile($key));
         return time() >= $cacheItem->expirationTime();
     }

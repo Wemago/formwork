@@ -160,7 +160,7 @@ final class PageController extends AbstractController
         $response = new Response($content, $page->responseStatus(), $page->headers() + $headers);
 
         if ($cacheable) {
-            $this->filesCache->save($cacheKey, $response);
+            $this->filesCache->save($cacheKey, $response, $page->get('cache.time', null));
         }
 
         return $response;

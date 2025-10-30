@@ -126,38 +126,41 @@ final class PageController extends AbstractController
          */
         $page = $this->site->currentPage();
 
-        // Use requested route as cache key to inlude parameters like pagination and tags
+        // Use requested route as cache key to include parameters like pagination and tags
         $cacheKey = $this->router->request();
 
-        $headers = [];
+        $cacheable = $this->config->get('system.cache.enabled')
+            && $this->isRequestCacheable()
+            && $page->cacheable()
+            && !$page->isErrorPage();
 
-        if (($cacheable = $this->config->get('system.cache.enabled') && $this->isRequestCacheable() && $page->cacheable())) {
-            if ($page->contentFile() !== null) {
-                $lastModifiedTime = max($page->lastModifiedTime(), $this->site->lastModifiedTime());
-                $headers = [
-                    'ETag'          => hash('sha256', $page->contentFile()->path() . ':' . $lastModifiedTime),
-                    'Last-Modified' => gmdate('D, d M Y H:i:s T', $lastModifiedTime),
-                ];
+        if ($cacheable && $this->filesCache->has($cacheKey)) {
+            /**
+             * @var int
+             */
+            $cachedTime = $this->filesCache->cachedTime($cacheKey);
+            // Validate cached response
+            if (!$this->site->modifiedSince($cachedTime)) {
+                return $this->filesCache->fetch($cacheKey);
             }
-
-            if ($this->filesCache->has($cacheKey)) {
-                /**
-                 * @var int
-                 */
-                $cachedTime = $this->filesCache->cachedTime($cacheKey);
-                // Validate cached response
-                if (!$this->site->modifiedSince($cachedTime)) {
-                    return $this->filesCache->fetch($cacheKey);
-                }
-
-                $this->filesCache->delete($cacheKey);
-            }
+            $this->filesCache->delete($cacheKey);
         }
 
-        $response = new Response($page->render(), $page->responseStatus(), $page->headers() + $headers);
+        $content = $page->render();
+        $headers = [];
 
         if ($cacheable) {
-            $this->filesCache->save($cacheKey, $response);
+            $lastModifiedTime = max($page->lastModifiedTime(), $this->site->lastModifiedTime());
+            $headers = [
+                'ETag'          => hash('sha256', $content . ':' . $lastModifiedTime),
+                'Last-Modified' => gmdate('D, d M Y H:i:s T', $lastModifiedTime),
+            ];
+        }
+
+        $response = new Response($content, $page->responseStatus(), $page->headers() + $headers);
+
+        if ($cacheable) {
+            $this->filesCache->save($cacheKey, $response, $page->get('cache.time', null));
         }
 
         return $response;
@@ -168,6 +171,7 @@ final class PageController extends AbstractController
      */
     private function isRequestCacheable(): bool
     {
-        return in_array($this->request->method(), [RequestMethod::GET, RequestMethod::HEAD]);
+        return in_array($this->request->method(), [RequestMethod::GET, RequestMethod::HEAD])
+            && $this->request->query()->isEmpty();
     }
 }

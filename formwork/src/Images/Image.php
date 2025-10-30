@@ -470,6 +470,24 @@ class Image extends File
         return $this->handler()->getInfo();
     }
 
+    /**
+     * Get image width. The width is computed after applying transforms (if any).
+     * To get the original image width, use `info()->width()`.
+     */
+    public function width(): int
+    {
+        return $this->process()->info()->width();
+    }
+
+    /**
+     * Get image height. The height is computed after applying transforms (if any).
+     * To get the original image height, use `info()->height()`.
+     */
+    public function height(): int
+    {
+        return $this->process()->info()->height();
+    }
+
     public function toArray(): array
     {
         return [

@@ -6,6 +6,9 @@ use Formwork\Cms\App;
 use League\CLImate\CLImate;
 use League\CLImate\Exceptions\InvalidArgumentException;
 
+/**
+ * @since 2.1.0
+ */
 final class FormworkCommandRunner implements CommandInterface
 {
     /**

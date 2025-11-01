@@ -9,6 +9,9 @@ use Formwork\Updater\Updater;
 use League\CLImate\CLImate;
 use League\CLImate\Exceptions\InvalidArgumentException;
 
+/**
+ * @since 2.1.0
+ */
 final class UpdatesCommand implements CommandInterface
 {
     /**

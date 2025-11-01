@@ -1,5 +1,25 @@
 # Changelog
 
+# [2.1.0](https://github.com/getformwork/formwork/releases/tag/2.1.0)
+
+**Enhancements**
+- **Add the possibility to navigate the pages tree**
+- **Add the `bin/formwork` command to manage cache, backups and updates from cli**
+- **Add support for custom page cache time with `cache.time` option**
+- **Add `Image::width()` and `Image::height()` methods to get computed image dimensions**
+- **Add Dutch and Romanian translations (🤖 AI generated, reviews are welcome)**
+- Check if default config has changed before loading from cache
+- Avoid caching config on cli
+- Extract app loading from `App::run() ` to allow bootstrapping without running the app
+- Set default `updates.force` option to false
+- Improve cacheability check and compute ETag on actual content
+- Improve panel styles and page tree UX
+- Improve panel dropdown items accessibility
+- Improve styling of disabled state of panel buttons and inputs
+
+**Bug fixes**
+- Fix error code dump for dark color scheme
+
 # [2.0.1](https://github.com/getformwork/formwork/releases/tag/2.0.1)
 
 **Bug fixes**

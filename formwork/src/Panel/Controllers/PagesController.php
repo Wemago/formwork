@@ -42,6 +42,8 @@ final class PagesController extends AbstractController
 
     /**
      * Pages@tree action
+     *
+     * @since 2.1.0
      */
     public function tree(RouteParams $routeParams): Response
     {

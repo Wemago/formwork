@@ -473,6 +473,8 @@ class Image extends File
     /**
      * Get image width. The width is computed after applying transforms (if any).
      * To get the original image width, use `info()->width()`.
+     *
+     * @since 2.1.0
      */
     public function width(): int
     {
@@ -482,6 +484,8 @@ class Image extends File
     /**
      * Get image height. The height is computed after applying transforms (if any).
      * To get the original image height, use `info()->height()`.
+     *
+     * @since 2.1.0
      */
     public function height(): int
     {

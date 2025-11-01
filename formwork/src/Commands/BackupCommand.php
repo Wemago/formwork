@@ -8,6 +8,9 @@ use Formwork\Utils\FileSystem;
 use League\CLImate\CLImate;
 use League\CLImate\Exceptions\InvalidArgumentException;
 
+/**
+ * @since 2.1.0
+ */
 final class BackupCommand implements CommandInterface
 {
     /**

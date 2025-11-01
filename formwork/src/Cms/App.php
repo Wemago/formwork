@@ -49,7 +49,7 @@ final class App
     /**
      * Current Formwork version
      */
-    public const string VERSION = '2.0.1';
+    public const string VERSION = '2.1.0';
 
     /**
      * App services container
@@ -153,6 +153,8 @@ final class App
 
     /**
      * Load Formwork app
+     *
+     * @since 2.1.0
      */
     public function load(): void
     {

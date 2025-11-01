@@ -56,6 +56,11 @@ final class App
      */
     private Container $container;
 
+    /**
+     * Whether the app has been loaded
+     */
+    private bool $loaded = false;
+
     public function __construct()
     {
         $this->initializeSingleton();
@@ -147,15 +152,27 @@ final class App
     }
 
     /**
+     * Load Formwork app
+     */
+    public function load(): void
+    {
+        if ($this->loaded) {
+            return;
+        }
+
+        $this->loadErrorHandler();
+        $this->loadServices($this->container);
+        $this->loadRoutes();
+        $this->loaded = true;
+    }
+
+    /**
      * Run Formwork
      */
     public function run(): Response
     {
-        $this->loadErrorHandler();
-
         try {
-            $this->loadServices($this->container);
-            $this->loadRoutes();
+            $this->load();
             $response = $this->router()->dispatch();
         } catch (Throwable $throwable) {
             try {

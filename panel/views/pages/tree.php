@@ -10,7 +10,7 @@
 <?php endif ?>
 
 <ul <?= $this->attr(['class' => ['pages-tree', $class ?? null], 'data-orderable-children' => $orderable ? 'true' : 'false', 'data-parent' => isset($parent) ? ($parent->isSite() ? '.' : $parent->route()) : null]) ?>>
-    <?php $childrenToggle = ($parent ?? $site)->level() > ($root ?? $site)->level() || $pages->some(fn($page) => $page->hasChildren() && !$page->scheme()->options()->get('children.subtree', false)) ?>
+    <?php $childrenToggle = $includeChildren && (($parent ?? $site)->level() > ($root ?? $site)->level() || $pages->some(fn($page) => $page->hasChildren() && !$page->scheme()->options()->get('children.subtree', false))) ?>
     <?php foreach ($pages as $page) : ?>
         <?php $routable = $page->published() && $page->routable() ?>
         <?php $date = $this->datetime($page->contentFile()->lastModifiedTime()) ?>

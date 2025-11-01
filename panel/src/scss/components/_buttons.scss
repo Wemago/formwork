@@ -30,11 +30,8 @@
         @include focusring;
     }
 
-    &[disabled],
-    &[disabled]:hover,
-    &.disabled,
-    &.disabled:hover {
-        box-shadow: 0 2px 0 var(--color-base-600);
+    &:disabled,
+    &.disabled {
         color: var(--color-base-500);
         pointer-events: none;
     }
@@ -66,6 +63,13 @@
         box-shadow: 0 2px 0 var(--color-base-400);
         color: var(--color-white);
     }
+
+    &:disabled,
+    &.disabled {
+        border-color: var(--color-accent-800);
+        background-color: var(--color-accent-800);
+        color: var(--color-base-800);
+    }
 }
 
 .button-secondary {
@@ -83,12 +87,12 @@
         color: var(--color-base-100);
     }
 
-    &[disabled],
-    &[disabled]:hover,
-    &.disabled,
-    &.disabled:hover {
+    &:disabled,
+    &.disabled {
         border-color: var(--color-base-800);
         background-color: var(--color-base-800);
+        box-shadow: 0 2px 0 var(--color-base-600);
+        color: var(--color-base-500);
     }
 }
 
@@ -106,6 +110,14 @@
         box-shadow: 0 2px 0 var(--color-base-400);
         color: var(--color-white);
     }
+
+    &:disabled,
+    &.disabled {
+        border-color: var(--color-success-800);
+        background-color: var(--color-success-800);
+        box-shadow: 0 2px 0 var(--color-base-600);
+        color: var(--color-base-800);
+    }
 }
 
 .button-warning {
@@ -121,6 +133,14 @@
         background-color: var(--color-warning-400);
         box-shadow: 0 2px 0 var(--color-base-400);
         color: var(--color-white);
+    }
+
+    &:disabled,
+    &.disabled {
+        border-color: var(--color-warning-800);
+        background-color: var(--color-warning-800);
+        box-shadow: 0 2px 0 var(--color-base-600);
+        color: var(--color-base-800);
     }
 }
 
@@ -138,19 +158,20 @@
         box-shadow: 0 2px 0 var(--color-base-400);
         color: var(--color-white);
     }
+
+    &:disabled,
+    &.disabled {
+        border-color: var(--color-danger-800);
+        background-color: var(--color-danger-800);
+        box-shadow: 0 2px 0 var(--color-base-600);
+        color: var(--color-base-800);
+    }
 }
 
 .button-link {
     & .icon {
         margin-right: 0;
         vertical-align: -0.125rem;
-    }
-
-    &[disabled],
-    &[disabled]:hover,
-    &.disabled,
-    &.disabled:hover {
-        box-shadow: none;
     }
 }
 

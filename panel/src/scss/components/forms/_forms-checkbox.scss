@@ -23,7 +23,7 @@
 }
 
 .form-checkbox + .form-checkbox-text:hover::before,
-.form-checkbox[disabled] + .form-checkbox-text::before {
+.form-checkbox:disabled + .form-checkbox-text::before {
     background-color: var(--color-base-800);
 }
 
@@ -53,7 +53,7 @@
     content: " ";
 }
 
-.form-checkbox:checked[disabled] + .form-checkbox-text::before {
+.form-checkbox:checked:disabled + .form-checkbox-text::before {
     border-color: var(--color-base-500);
     background-color: var(--color-base-500);
 }

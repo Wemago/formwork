@@ -43,13 +43,6 @@
         display: block;
         margin-left: auto;
     }
-
-    &[disabled],
-    &[disabled]:hover,
-    &.disabled,
-    &.disabled:hover {
-        box-shadow: none;
-    }
 }
 
 .toolbar-button.is-active,

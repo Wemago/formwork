@@ -15,7 +15,7 @@
         <div class="users-headers-cell user-username truncate"><?= $this->translate('user.username') ?></div>
         <div class="users-headers-cell user-email truncate show-from-md"><?= $this->translate('user.email') ?></div>
         <div class="users-headers-cell user-last-access truncate show-from-sm"><?= $this->translate('panel.user.lastAccess') ?></div>
-        <div class="users-headers-cell user-actions"><?= $this->translate('panel.user.actions') ?></div>
+        <div class="users-headers-cell user-actions"><span class="show-from-xs mr-6"><?= $this->translate('panel.user.actions') ?></span></div>
     </div>
     <div class="users-list">
         <?php foreach ($users as $user) : ?>

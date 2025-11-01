@@ -25,7 +25,7 @@
         <?php if (in_array('size', $columns, true)) : ?>
             <div class="files-headers-cell file-size truncate show-from-lg"><?= $this->translate('panel.files.info.size') ?></div>
         <?php endif ?>
-        <div class="files-headers-cell file-actions truncate"><span class="show-from-lg"><?= $this->translate('panel.files.actions') ?></span></div>
+        <div class="files-headers-cell file-actions"><span class="show-from-xs mr-6"><?= $this->translate('panel.files.actions') ?></span></div>
     </div>
 
     <div class="files-items">

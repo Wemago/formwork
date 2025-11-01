@@ -41,7 +41,9 @@ final class ConfigServiceLoader implements ServiceLoaderInterface
                 '%SYSTEM_PATH%' => SYSTEM_PATH,
             ]);
 
-            Php::encodeToFile($config->toArray(), $cacheFile);
+            if (PHP_SAPI !== 'cli') {
+                Php::encodeToFile($config->toArray(), $cacheFile);
+            }
         }
 
         date_default_timezone_set($config->get('system.date.timezone'));

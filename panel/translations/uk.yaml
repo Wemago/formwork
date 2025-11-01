@@ -197,6 +197,7 @@ panel.pages.deleteFile: Видалити файл
 panel.pages.deleteFile.prompt: Ви впевнені, що хочете видалити цей файл? Цю дію не можна скасувати.
 panel.pages.deletePage: Видалити сторінку
 panel.pages.deletePage.prompt: Ви впевнені, що хочете видалити цю сторінку? Цю дію не можна скасувати.
+panel.pages.edit: Редагувати сторінку
 panel.pages.editPage: Редагувати сторінку %s
 panel.pages.history.event.created: Сторінка створена %s %s.
 panel.pages.history.event.edited: Сторінка відредагована %s %s.
@@ -251,6 +252,7 @@ panel.pages.replaceFile: Замінити файл
 panel.pages.save: Зберегти
 panel.pages.saveOnly: Зберегти без публікації
 panel.pages.toggleChildren: Перемкнути дочірні сторінки
+panel.pages.viewChildren: Перегляд підсторінок
 panel.pages.viewPage: Переглянути сторінку
 panel.panel: Панель адміністратора
 panel.register.createUser: Formwork встановлено, але користувачів не знайдено. Зареєструйте користувача зараз.

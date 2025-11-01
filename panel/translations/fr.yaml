@@ -197,6 +197,7 @@ panel.pages.deleteFile: Supprimer le fichier
 panel.pages.deleteFile.prompt: ÊtesVous sûr de vouloir supprimer ce fichier ? Cette action est irréversible.
 panel.pages.deletePage: Supprimer la page
 panel.pages.deletePage.prompt: ÊtesVous sûr de vouloir supprimer cette page ? Cette action est irréversible.
+panel.pages.edit: Modifier la page
 panel.pages.editPage: Modifier la page %s
 panel.pages.history.event.created: Page créée par %s %s.
 panel.pages.history.event.edited: Page modifiée par %s %s.
@@ -251,6 +252,7 @@ panel.pages.replaceFile: Remplacer le fichier
 panel.pages.save: Enregistrer
 panel.pages.saveOnly: Enregistrer sans publier
 panel.pages.toggleChildren: Afficher/Masquer les sous-pages
+panel.pages.viewChildren: Voir les sous-pages
 panel.pages.viewPage: Voir la page
 panel.panel: Panneau d’administration
 panel.register.createUser: Le compte panel est installé mais aucun utilisateur n’a été trouvé. Veuillez enregistrer un utilisateur maintenant.

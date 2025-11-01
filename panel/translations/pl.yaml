@@ -197,6 +197,7 @@ panel.pages.deleteFile: Usuń plik
 panel.pages.deleteFile.prompt: Czy na pewno chcesz usunąć ten plik? Ta akcja jest nieodwracalna.
 panel.pages.deletePage: Usuń stronę
 panel.pages.deletePage.prompt: Czy na pewno chcesz usunąć tę stronę? Ta akcja jest nieodwracalna.
+panel.pages.edit: Edytuj stronę
 panel.pages.editPage: Edytuj stronę %s
 panel.pages.history.event.created: Strona utworzona przez %s %s.
 panel.pages.history.event.edited: Strona edytowana przez %s %s.
@@ -251,6 +252,7 @@ panel.pages.replaceFile: Zamień plik
 panel.pages.save: Zapisz
 panel.pages.saveOnly: Zapisz bez publikowania
 panel.pages.toggleChildren: Przełącz strony podrzędne
+panel.pages.viewChildren: Pokaż podstrony
 panel.pages.viewPage: Wyświetl stronę
 panel.panel: Panel administracyjny
 panel.register.createUser: Formwork jest zainstalowany, ale nie znaleziono żadnych użytkowników. Zarejestruj teraz użytkownika.

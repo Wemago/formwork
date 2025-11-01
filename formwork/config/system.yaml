@@ -124,7 +124,7 @@ translations:
 
 updates:
     time: 900
-    force: true
+    force: false
     tempFile: '${%ROOT_PATH%}/.formwork-update.zip'
     preferDistAssets: true
     backupBefore: true

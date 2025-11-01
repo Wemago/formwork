@@ -21,7 +21,7 @@
                 <div class="dropdown">
                     <button type="button" class="button button-link dropdown-button" title="<?= $this->translate('panel.user.image.actions') ?>" data-dropdown="dropdown-user-image"><?= $this->icon('ellipsis-v') ?></button>
                     <div class="dropdown-menu" id="dropdown-user-image">
-                        <a class="dropdown-item" data-modal="deleteUserImageModal" data-modal-action="<?= $panel->uri('/users/' . $user->username() . '/image/delete/') ?>"><?= $this->icon('user-image-slash') ?> <?= $this->translate('panel.user.image.delete') ?></a>
+                        <button type="button" class="dropdown-item" data-modal="deleteUserImageModal" data-modal-action="<?= $panel->uri('/users/' . $user->username() . '/image/delete/') ?>"><?= $this->icon('user-image-slash') ?> <?= $this->translate('panel.user.image.delete') ?></button>
                     </div>
                 </div>
             <?php endif ?>

@@ -1,0 +1,340 @@
+panel.backup.backup: Backup
+panel.backup.deleted: Backup șters
+panel.backup.error.cannotDelete: Nu se poate șterge backup-ul. %s.
+panel.backup.error.cannotDelete.invalidFilename: Fișier de backup invalid
+panel.backup.error.cannotDownload: Nu se poate descărca backup-ul. %s.
+panel.backup.error.cannotDownload.invalidFilename: Fișier de backup invalid
+panel.backup.error.cannotMake: Nu se poate crea backup-ul. %s.
+panel.backup.ready: Backup gata. Încep descărcarea...
+panel.cache.clear: Golește cache-ul
+panel.cache.clear.images: Golește cache-ul de imagini
+panel.cache.clear.pages: Golește cache-ul de pagini
+panel.cache.cleared: Cache golit
+panel.cache.cleared.images: Cache-ul de imagini a fost golit
+panel.cache.cleared.pages: Cache-ul de pagini a fost golit
+panel.cache.error: Nu se poate goli cache-ul
+panel.dashboard.dashboard: Panou de bord
+panel.dashboard.lastModifiedPages: Pagini editate recent
+panel.dashboard.quickActions: Acțiuni rapide
+panel.dashboard.statistics: Statistici
+panel.dashboard.statistics.uniqueVisitors: Vizitatori unici
+panel.dashboard.statistics.visits: Vizite
+panel.dashboard.welcome: Bine ai venit
+panel.dragToReorder: Trage pentru a reordona
+panel.editor.bold: Aldin
+panel.editor.bulletList: Listă cu marcatori
+panel.editor.code: Cod
+panel.editor.decreaseIndent: Micșorează indentarea
+panel.editor.heading1: Titlu 1
+panel.editor.heading2: Titlu 2
+panel.editor.heading3: Titlu 3
+panel.editor.heading4: Titlu 4
+panel.editor.heading5: Titlu 5
+panel.editor.heading6: Titlu 6
+panel.editor.image: Imagine
+panel.editor.increaseIndent: Mărește indentarea
+panel.editor.italic: Italic
+panel.editor.link: Link
+panel.editor.numberedList: Listă numerotată
+panel.editor.paragraph: Paragraf
+panel.editor.quote: Citat
+panel.editor.redo: Refă
+panel.editor.summary: Rezumat
+panel.editor.toggleMarkdown: Comută Markdown
+panel.editor.undo: Anulează
+panel.errors.action.reportToGithub: Raportează o problemă pe GitHub
+panel.errors.action.returnToDashboard: Întoarce-te la panoul de control
+panel.errors.error.forbidden.description: Nu ai permisiunea de a accesa această pagină.
+panel.errors.error.forbidden.heading: Ups, permisiune necesară!
+panel.errors.error.forbidden.status: Interzis
+panel.errors.error.internalServerError.description: Formwork a întâmpinat o eroare la procesarea solicitării. Verifică configurația Formwork sau jurnalul serverului pentru erori.
+panel.errors.error.internalServerError.heading: Ups, ceva nu a mers bine!
+panel.errors.error.internalServerError.status: Eroare internă a serverului
+panel.errors.error.notFound.description: Pagina nu există sau solicitarea nu este validă.
+panel.errors.error.notFound.heading: Ups, pagina nu a fost găsită!
+panel.errors.error.notFound.status: Negăsit
+panel.files.actions: Acțiuni
+panel.files.backToPage: Înapoi la pagină
+panel.files.cannotDelete.fileNotFound: Nu se poate șterge fișierul, fișierul nu a fost găsit
+panel.files.cannotDelete.pageNotFound: Nu se poate șterge fișierul, fișierul nu a fost găsit
+panel.files.cannotRename.fileAlreadyExists: Nu se poate redenumi fișierul, există deja un fișier cu același nume
+panel.files.cannotRename.fileNotFound: Nu se poate redenumi fișierul, fișierul nu a fost găsit
+panel.files.cannotRename.pageNotFound: Nu se poate redenumi fișierul, pagina nu a fost găsită
+panel.files.cannotReplace.fileNotFound: Nu se poate înlocui fișierul, fișierul nu a fost găsit
+panel.files.cannotReplace.multipleFiles: Nu se poate înlocui fișierul, au fost trimise mai multe fișiere
+panel.files.cannotReplace.pageNotFound: Nu se poate înlocui fișierul, pagina nu a fost găsită
+panel.files.cannotUpload.pageNotFound: Nu se poate încărca fișierul, pagina nu a fost găsită
+panel.files.deleted: Fișier șters
+panel.files.exif: EXIF
+panel.files.fileNotFound: Nu se pot obține informații despre fișier, fișierul nu a fost găsit
+panel.files.files: Fișiere
+panel.files.info: Informații
+panel.files.info.image.colorDepth: Adâncime de culoare
+panel.files.info.image.colorNumber: Număr de culori
+panel.files.info.image.colorProfile: Profil de culoare
+panel.files.info.image.colorSpace: Spațiu de culoare
+panel.files.info.image.dimensions: Dimensiuni
+panel.files.info.image.dimensions.widthByHeightPixels: '%d × %d pixeli'
+panel.files.info.image.exif.aperture: Diafragmă
+panel.files.info.image.exif.camera: Cameră
+panel.files.info.image.exif.creationDateAndTime: Data și ora creare
+panel.files.info.image.exif.exposureCompensation: Compensare expunere
+panel.files.info.image.exif.exposureProgram: Program de expunere
+panel.files.info.image.exif.exposureTime: Timp de expunere
+panel.files.info.image.exif.flash: Blitz
+panel.files.info.image.exif.focalLength: Distanță focală
+panel.files.info.image.exif.lensModel: Model obiectiv
+panel.files.info.image.exif.meteringMode: Mod de măsurare
+panel.files.info.image.exif.sensitivity: Sensibilitate
+panel.files.info.image.exif.whiteBalance: Balans de alb
+panel.files.info.image.frames: '%d cadre'
+panel.files.info.image.framesCount: Număr cadre
+panel.files.info.image.repeats: '%d repetări'
+panel.files.info.image.repeatsCount: Număr repetări
+panel.files.info.image.resolution: Rezoluție
+panel.files.info.lastModifiedTime: Ultima modificare
+panel.files.info.mimeType: Tip MIME
+panel.files.info.name: Nume
+panel.files.info.size: Dimensiune
+panel.files.info.uri: URI
+panel.files.metadata.updated: Metadatele fișierului au fost actualizate
+panel.files.next: Fișierul următor
+panel.files.pageNotFound: Nu se pot obține informații despre fișier, pagina nu a fost găsită
+panel.files.parent: Părinte
+panel.files.position: Poziție
+panel.files.preview: Previzualizare
+panel.files.previous: Fișierul anterior
+panel.files.renamed: Fișierul a fost redenumit
+panel.files.search: Caută fișiere...
+panel.files.upload: Încarcă fișiere
+panel.files.uploaded: Fișiere încărcate
+panel.files.viewAsList: Vizualizează ca listă
+panel.files.viewAsThumbnails: Vizualizează ca miniaturi
+panel.login.attempt.failed: Încercare de autentificare eșuată! Încearcă din nou.
+panel.login.attempt.tooMany: Prea multe încercări de autentificare. Te rog încearcă din nou în %d minute.
+panel.login.loggedOut: Ai fost delogat
+panel.login.login: Autentificare
+panel.login.logout: Deconectare
+panel.login.password: Parolă
+panel.login.suspiciousRequestDetected: A fost detectată o solicitare suspectă și, din motive de securitate, ai fost delogat. Te rugăm să te autentifici din nou.
+panel.login.usernameOrEmail: Nume de utilizator sau e-mail
+panel.manage: Gestionează
+panel.modal.action.cancel: Anulează
+panel.modal.action.continue: Continuă
+panel.modal.action.delete: Șterge
+panel.modal.action.edit: Editează
+panel.modal.action.rename: Redenumește
+panel.modal.action.save: Salvează
+panel.modal.action.upload: Încarcă
+panel.modal.action.uploadFile: Încarcă un fișier
+panel.modal.images.noImages: Nu există imagini aici
+panel.modal.images.noImages.upload: Te rugăm încarcă niște imagini
+panel.modal.images.title: Selectează o imagine
+panel.modal.link.text: Text
+panel.modal.link.title: Inserează link
+panel.modal.link.uri: Uri
+panel.navigation.toggle: Comută navigarea
+panel.options.options: Opțiuni
+panel.options.site: Site
+panel.options.system: Sistem
+panel.options.system.adminPanel: Panoul de administrare
+panel.options.system.adminPanel.defaultColorScheme: Schema de culori implicită
+panel.options.system.adminPanel.defaultColorScheme.dark: Întunecat
+panel.options.system.adminPanel.defaultColorScheme.light: Deschis
+panel.options.system.adminPanel.defaultLanguage: Limba implicită
+panel.options.system.adminPanel.logoutRedirectsTo: Redirecționare după logout
+panel.options.system.adminPanel.logoutRedirectsTo.home: Acasă
+panel.options.system.adminPanel.logoutRedirectsTo.login: Pagina de autentificare
+panel.options.system.adminPanel.sessionTimeout: Timp expirare sesiune
+panel.options.system.backup: Backup
+panel.options.system.backup.backupFilesToKeep: Backup-uri de păstrat pe server
+panel.options.system.cache: Cache
+panel.options.system.cache.disabled: Dezactivat
+panel.options.system.cache.enabled: Activat
+panel.options.system.cache.time: Timp cache
+panel.options.system.content: Conținut
+panel.options.system.content.allowHtml: Permite HTML în câmpurile Markdown
+panel.options.system.content.allowHtml.description: Etichete potențial periculoase precum `<script>` și `<style>` sunt întotdeauna convertite în text
+panel.options.system.content.allowHtml.disabled: Dezactivat
+panel.options.system.content.allowHtml.enabled: Activat
+panel.options.system.dateAndTime: Dată și oră
+panel.options.system.dateAndTime.dateFormat: Format dată
+panel.options.system.dateAndTime.firstWeekday: Prima zi a săptămânii
+panel.options.system.dateAndTime.firstWeekday.monday: Luni
+panel.options.system.dateAndTime.firstWeekday.sunday: Duminică
+panel.options.system.dateAndTime.hourFormat: Format oră
+panel.options.system.dateAndTime.timezone: Fus orar
+panel.options.system.debug: Debug
+panel.options.system.debug.editorUri: URI editor
+panel.options.system.debug.editorUri.description: Folosește `{{filename}}` și `{{line}}` pentru a construi URI-ul care deschide editorul de cod
+panel.options.system.debug.mode: Mod debug
+panel.options.system.debug.mode.description: Modul debug afișează informații despre erori și trebuie dezactivat în producție deoarece poate dezvălui date sensibile
+panel.options.system.debug.mode.disabled: Dezactivat
+panel.options.system.debug.mode.enabled: Activat
+panel.options.system.files: Fișiere
+panel.options.system.files.allowedExtensions: Extensii permise
+panel.options.system.files.allowedExtensions.noExtensions: Nici o extensie (nu sunt permise fișiere)
+panel.options.system.images: Imagini
+panel.options.system.images.clearCacheByDefault: Golește cache-ul de imagini implicit
+panel.options.system.images.clearCacheByDefault.disabled: Dezactivat
+panel.options.system.images.clearCacheByDefault.enabled: Activat
+panel.options.system.images.jpegQuality: Calitate JPEG
+panel.options.system.images.jpegSaveProgressive: Salvează imaginile JPEG ca progressive
+panel.options.system.images.jpegSaveProgressive.disabled: Dezactivat
+panel.options.system.images.jpegSaveProgressive.enabled: Activat
+panel.options.system.images.pngCompressionLevel: Nivel de compresie PNG
+panel.options.system.images.webpQuality: Calitate WebP
+panel.options.system.uploads.processImages: Procesează (optimizează) imaginile încărcate
+panel.options.system.uploads.processImages.disabled: Dezactivat
+panel.options.system.uploads.processImages.enabled: Activat
+panel.options.updated: Opțiuni actualizate
+panel.pages.changes.continue: Continuă fără a salva
+panel.pages.changes.detected: Modificări detectate
+panel.pages.changes.detected.prompt: Ai modificări care nu au fost salvate. Ești sigur că vrei să părăsești această pagină?
+panel.pages.changeSlug: Editează slug
+panel.pages.changeSlug.generate: Generează din titlu
+panel.pages.deleteFile: Șterge fișier
+panel.pages.deleteFile.prompt: Ești sigur că vrei să ștergi acest fișier? Această acțiune nu poate fi anulată.
+panel.pages.deletePage: Șterge pagină
+panel.pages.deletePage.prompt: Ești sigur că vrei să ștergi această pagină? Această acțiune nu poate fi anulată.
+panel.pages.edit: Editează pagină
+panel.pages.editPage: Editează pagina %s
+panel.pages.history.event.created: Pagină creată de %s %s.
+panel.pages.history.event.edited: Pagină editată de %s %s.
+panel.pages.languages: Limbi
+panel.pages.languages.addLanguage: Adaugă %s
+panel.pages.languages.editLanguage: Editează %s
+panel.pages.newPage: Pagină nouă
+panel.pages.newPage.site: Site
+panel.pages.next: Pagina următoare
+panel.pages.page: Pagină
+panel.pages.page.actions: Acțiuni
+panel.pages.page.cannotChangeNum: Nu se poate schimba numărul paginii
+panel.pages.page.cannotCreate: Nu se poate crea pagina
+panel.pages.page.cannotCreate.alreadyExists: Nu se poate crea pagina, o pagină cu aceeași URI există deja
+panel.pages.page.cannotCreate.invalidParent: Nu se poate crea pagina, pagină părinte invalidă
+panel.pages.page.cannotCreate.invalidSlug: Nu se poate crea pagina, slug-ul paginii trebuie să conțină doar litere și cifre separate prin cratime
+panel.pages.page.cannotCreate.invalidTemplate: Nu se poate crea pagina, șablon invalid
+panel.pages.page.cannotCreate.varMissing: Nu se poate crea pagina, lipsește o variabilă
+panel.pages.page.cannotDelete.invalidLanguage: 'Nu se poate șterge pagina, limbă invalidă: %s'
+panel.pages.page.cannotDelete.notDeletable: Nu se poate șterge pagina, pagina nu poate fi ștearsă
+panel.pages.page.cannotDelete.pageNotFound: Nu se poate șterge pagina, pagina nu a fost găsită
+panel.pages.page.cannotEdit.alreadyExists: Nu se poate edita pagina, o pagină cu aceeași URI există deja
+panel.pages.page.cannotEdit.indexOrErrorPageSlug: Nu se poate edita slug-ul paginii index sau paginilor de eroare
+panel.pages.page.cannotEdit.invalidLanguage: 'Nu se poate edita pagina, limbă invalidă: %s'
+panel.pages.page.cannotEdit.invalidParent: Nu se poate edita pagina, pagină părinte invalidă
+panel.pages.page.cannotEdit.invalidSlug: Nu se poate edita slug-ul paginii, acesta trebuie să conțină doar litere și cifre separate prin cratime
+panel.pages.page.cannotEdit.invalidTemplate: Nu se poate edita pagina, șablon invalid
+panel.pages.page.cannotEdit.pageNotFound: Nu se poate edita pagina, pagina nu a fost găsită
+panel.pages.page.cannotEdit.varMissing: Nu se poate edita pagina, lipsește o variabilă
+panel.pages.page.cannotMove: Nu se poate muta pagina
+panel.pages.page.cannotPreview.pageNotFound: Nu se poate previzualiza pagina, pagina nu a fost găsită
+panel.pages.page.cannotPreview.parentChanged: Nu se poate previzualiza pagina, pagina părinte a fost schimbată
+panel.pages.page.created: Pagină creată!
+panel.pages.page.deleted: Pagină ștearsă
+panel.pages.page.edited: Pagină editată
+panel.pages.page.lastModified: Ultima modificare
+panel.pages.page.moved: Pagină mutată!
+panel.pages.page.notFound: Pagina nu a fost găsită
+panel.pages.page.status: Stare
+panel.pages.pages: Pagini
+panel.pages.pages.collapseAll: Restrânge tot
+panel.pages.pages.expandAll: Extinde tot
+panel.pages.pages.reorder: Reordonează
+panel.pages.pages.search: Caută pagini...
+panel.pages.preview: Previzualizare
+panel.pages.previewFile: Previzualizare
+panel.pages.previous: Pagina anterioară
+panel.pages.publish: Publică
+panel.pages.renameFile: Redenumește fișier
+panel.pages.renameFile.name: Nume
+panel.pages.replaceFile: Înlocuiește fișier
+panel.pages.save: Salvează
+panel.pages.saveOnly: Salvează fără a publica
+panel.pages.toggleChildren: Comută subpagini
+panel.pages.viewChildren: Vezi subpagini
+panel.pages.viewPage: Vezi pagina
+panel.panel: Panoul de administrare
+panel.register.createUser: Formwork este instalat dar nu s-au găsit utilizatori. Te rog înregistrează un utilizator acum.
+panel.register.register: Înregistrează utilizator nou
+panel.request.error.postMaxSize: Cererea HTTP POST depășește dimensiunea maximă permisă
+panel.sections.toggle: Comută secțiunea
+panel.site.languages: Limbi
+panel.site.languages.availableLanguages: Limbi disponibile
+panel.site.languages.availableLanguages.noLanguages: Nici o limbă
+panel.site.languages.preferredLanguage: Folosește limba preferată a browserului
+panel.site.languages.preferredLanguage.disabled: Dezactivat
+panel.site.languages.preferredLanguage.enabled: Activat
+panel.statistics.devices: Dispozitive
+panel.statistics.devices.type: Tip
+panel.statistics.devices.type.desktop: Desktop
+panel.statistics.devices.type.mobile: Mobil
+panel.statistics.devices.type.tablet: Tabletă
+panel.statistics.monthlyUniqueVisitors: Vizitatori unici lunar
+panel.statistics.monthlyVisits: Vizite lunare
+panel.statistics.sources: Surse
+panel.statistics.sources.direct: Direct
+panel.statistics.sources.site: Site
+panel.statistics.statistics: Statistici
+panel.statistics.totalVisits: Total vizite
+panel.statistics.totalVisits.percentTotal: '% total'
+panel.statistics.totalVisits.uri: URI
+panel.statistics.visits: Vizite
+panel.statistics.weeklyUniqueVisitors: Vizitatori unici săptămânal
+panel.statistics.weeklyVisits: Vizite săptămânale
+panel.tools.backup.actions: Acțiuni
+panel.tools.backup.date: Dată
+panel.tools.backup.delete: Șterge backup
+panel.tools.backup.file: Fișier
+panel.tools.backup.size: Dimensiune
+panel.tools.backups: Backup-uri
+panel.tools.info: Informații
+panel.tools.latestBackup: 'Ultimul backup:'
+panel.tools.latestBackups: Ultimele backup-uri
+panel.tools.tools: Unelte
+panel.tools.updates: Actualizări
+panel.updates.availableForInstall: este disponibil pentru instalare
+panel.updates.check: Verifică actualizări
+panel.updates.install: Instalează
+panel.updates.installed: Actualizare instalată!
+panel.updates.installPrompt: Dorești să instalezi actualizarea?
+panel.updates.latestVersionAvailable: este ultima versiune disponibilă
+panel.updates.status.cannotCheck: Nu se pot verifica actualizările. Încearcă mai târziu.
+panel.updates.status.cannotInstall: Nu se poate instala actualizarea
+panel.updates.status.cannotMakeBackup: Nu se poate crea backup înainte de actualizare
+panel.updates.status.checking: Se verifică actualizările...
+panel.updates.status.found: Actualizări găsite
+panel.updates.status.installing: Se instalează actualizările...
+panel.updates.status.upToDate: La zi!
+panel.uploader.uploaded: Fișier încărcat
+panel.user.actions: Acțiuni
+panel.user.image.actions: Acțiuni
+panel.user.image.cannotDelete.defaultImage: Nu se poate șterge imaginea implicită a utilizatorului
+panel.user.image.delete: Șterge imaginea utilizatorului
+panel.user.image.delete.prompt: Ești sigur că vrei să ștergi imaginea utilizatorului? Această acțiune nu poate fi anulată.
+panel.user.image.deleted: Imaginea utilizatorului a fost ștearsă
+panel.user.image.uploaded: Imaginea utilizatorului a fost încărcată
+panel.user.lastAccess: Ultimul acces
+panel.users.deleteUser: Șterge utilizator
+panel.users.deleteUser.prompt: Ești sigur că vrei să ștergi acest utilizator? Această acțiune nu poate fi anulată.
+panel.users.newUser: Utilizator nou
+panel.users.newUser.password.suggestion: cel puțin 8 caractere
+panel.users.newUser.username.suggestion: între 3-20 de litere, cifre și - . _
+panel.users.nextUser: Utilizatorul următor
+panel.users.options: Opțiuni
+panel.users.previousUser: Utilizatorul anterior
+panel.users.user.cannotChangeEmail.alreadyUsed: Nu se poate schimba e-mailul utilizatorului, adresa este deja asociată unui cont
+panel.users.user.cannotChangePassword: Nu se poate schimba parola altui utilizator. Această acțiune nu este permisă.
+panel.users.user.cannotChangeRole: Nu se poate schimba rolul lui %s. Această acțiune nu este permisă.
+panel.users.user.cannotCreate.alreadyExists: Nu se poate crea utilizatorul, un utilizator cu același nume există deja
+panel.users.user.cannotCreate.emailAlreadyUsed: Nu se poate crea utilizatorul, adresa de e-mail este deja asociată unui cont
+panel.users.user.cannotCreate.varMissing: Nu se poate crea utilizatorul, lipsește o variabilă
+panel.users.user.cannotDelete: Nu se poate șterge utilizatorul. Trebuie să fii administrator și utilizatorul nu trebuie să fie autentificat.
+panel.users.user.cannotEdit: Nu se poate edita utilizatorul %s. Această acțiune nu este permisă.
+panel.users.user.created: Utilizator creat
+panel.users.user.deleted: Utilizator șters
+panel.users.user.edited: Datele utilizatorului au fost actualizate
+panel.users.user.notFound: Utilizatorul nu a fost găsit
+panel.users.userProfile: '%s profil utilizator'
+panel.users.users: Utilizatori
+panel.viewSite: Vezi site-ul

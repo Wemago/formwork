@@ -1,0 +1,130 @@
+date.distance.ago: '%s geleden'
+date.distance.in: 'over %s'
+date.duration.days: ['dag', 'dagen']
+date.duration.hours: ['uur', 'uren']
+date.duration.minutes: ['minuut', 'minuten']
+date.duration.months: ['maand', 'maanden']
+date.duration.seconds: ['seconde', 'seconden']
+date.duration.weeks: ['week', 'weken']
+date.duration.years: ['jaar', 'jaren']
+date.months.long: ['januari', 'februari', 'maart', 'april', 'mei', 'juni', 'juli', 'augustus', 'september', 'oktober', 'november', 'december']
+date.months.short: ['jan', 'feb', 'mrt', 'apr', 'mei', 'jun', 'jul', 'aug', 'sep', 'okt', 'nov', 'dec']
+date.never: nooit
+date.noDate: Geen datum
+date.now: nu
+date.today: Vandaag
+date.weekdays.long: ['zondag', 'maandag', 'dinsdag', 'woensdag', 'donderdag', 'vrijdag', 'zaterdag']
+date.weekdays.short: ['zo', 'ma', 'di', 'wo', 'do', 'vr', 'za']
+fields.array.add: Toevoegen
+fields.array.remove: Verwijderen
+fields.date.nextHour: Volgend uur
+fields.date.nextMinute: Volgende minuut
+fields.date.nextMonth: Volgende maand
+fields.date.previousHour: Vorig uur
+fields.date.previousMinute: Vorige minuut
+fields.date.previousMonth: Vorige maand
+fields.file.none: (Geen)
+fields.file.uploadLabel: <strong>Klik</strong> om een bestand te kiezen of <strong>sleep</strong> het hierheen
+fields.image.none: (Geen)
+fields.select.empty: Geen overeenkomende opties
+fields.tags.remove: Verwijderen
+file.metadata: Metadata
+file.metadata.alternativeText: Alternatieve tekst
+page.attributes: Attributen
+page.cacheable: Cachebaar
+page.content: Inhoud
+page.files: Bestanden
+page.image: Afbeelding
+page.listed: In lijst
+page.listed.description: Lijstpagina’s zijn zichtbaar in het menu
+page.noFiles: Geen bestanden
+page.noImage: Geen afbeelding
+page.none: (Geen)
+page.noTags: Geen tags
+page.notListed: Niet in lijst
+page.notRoutable: Niet routbaar
+page.options: Opties
+page.page: Pagina
+page.parent: Bovenliggende pagina
+page.postsPerPage: Berichten per pagina
+page.publishDate: Publicatiedatum
+page.routable: Routbaar
+page.routable.description: Routbare pagina’s zijn bereikbaar via hun adres
+page.slug: Slug
+page.slug.suggestion: alleen letters, cijfers en streepjes
+page.status.notPublished: Niet gepubliceerd
+page.status.published: Gepubliceerd
+page.status.published.description: Gepubliceerde pagina’s zijn zichtbaar op de site en bereikbaar via hun adres
+page.summary: Samenvatting
+page.tags: Tags
+page.template: Sjabloon
+page.text: Tekst
+page.title: Titel
+page.unpublishDate: Datum van intrekking
+site.advanced: Geavanceerde opties
+site.advanced.aliases: Aliassen
+site.advanced.aliases.alias: Alias
+site.advanced.aliases.route: Route
+site.advanced.metadata: HTML-metadata
+site.advanced.metadata.content: Inhoud
+site.advanced.metadata.name: Naam
+site.info: Info
+site.info.author: Auteur
+site.info.description: Beschrijving
+site.info.language: Taal
+site.info.title: Titel
+site.maintenance: Onderhoud
+site.maintenance.enabled: Onderhoudsmodus
+site.maintenance.enabled.disabled: Uitgeschakeld
+site.maintenance.enabled.enabled: Ingeschakeld
+site.maintenance.page: Onderhoudspagina
+site.pages: Pagina’s
+site.pages.defaultTemplate: Standaardsjabloon
+site.statistics: Statistieken
+site.statistics.enabled: Paginaweergaven bijhouden
+site.statistics.enabled.disabled: Uitgeschakeld
+site.statistics.enabled.enabled: Ingeschakeld
+site.statistics.trackLocalhost: Bezoeken vanaf localhost bijhouden
+site.statistics.trackLocalhost.disabled: Uitgeschakeld
+site.statistics.trackLocalhost.enabled: Ingeschakeld
+site.statistics.visitsDelay: Bezoekvertraging
+site.statistics.visitsDelay.description: Vertraging tussen bezoeken van dezelfde gebruiker aan dezelfde pagina om als verschillend te tellen
+upload.error: Kan bestand niet uploaden. %s.
+upload.error.alreadyExists: Een bestand met dezelfde naam bestaat al
+upload.error.cannotMoveToDestination: Kon het geüploade bestand niet naar de bestemming verplaatsen
+upload.error.cannotWrite: Kon bestand niet op schijf schrijven
+upload.error.destinationTooLong: Bestemmingspad te lang
+upload.error.fileName: Ongeldige bestandsnaam
+upload.error.fileNameTooLong: Bestandsnaam te lang
+upload.error.hiddenFiles: Verborgen bestanden die met een punt beginnen kunnen niet worden geüpload
+upload.error.mimeType: Bestandstype niet toegestaan
+upload.error.noFile: Er is geen bestand geüpload
+upload.error.noTemp: Tijdelijke map ontbreekt
+upload.error.partial: Het bestand is slechts gedeeltelijk geüpload
+upload.error.phpExtension: Uploaden gestopt door extensie
+upload.error.size: Het geüploade bestand overschrijdt de maximale bestandsgrootte
+user.colorScheme: Kleurenschema
+user.colorScheme.auto: Automatisch
+user.colorScheme.dark: Donker
+user.colorScheme.light: Licht
+user.email: E-mail
+user.fullname: Volledige naam
+user.image: Afbeelding
+user.language: Taal
+user.password: Wachtwoord
+user.password.placeholder: Typ een nieuw wachtwoord om te wijzigen...
+user.role: Rol
+user.role.admin: Beheerder
+user.role.editor: Redacteur
+user.role.user: Gebruiker
+user.user: Gebruiker
+user.username: Gebruikersnaam
+zip.error.alreadyExists: Het archief bestaat al
+zip.error.cannotOpen: Kan het archief niet openen
+zip.error.cannotRead: Kan het archief niet lezen
+zip.error.inconsistentArchive: Inconsistent archief
+zip.error.invalidArgument: Ongeldig argument
+zip.error.memoryFailure: Geheugenfout
+zip.error.notFound: Archief niet gevonden
+zip.error.notZipArchive: Geen ZIP-archief
+zip.error.unspecified: Niet-gespecificeerde fout

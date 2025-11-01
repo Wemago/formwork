@@ -1,0 +1,130 @@
+date.distance.ago: 'acum %s'
+date.distance.in: 'în %s'
+date.duration.days: ['zi', 'zile']
+date.duration.hours: ['oră', 'ore']
+date.duration.minutes: ['minut', 'minute']
+date.duration.months: ['lună', 'luni']
+date.duration.seconds: ['secundă', 'secunde']
+date.duration.weeks: ['săptămână', 'săptămâni']
+date.duration.years: ['an', 'ani']
+date.months.long: ['ianuarie', 'februarie', 'martie', 'aprilie', 'mai', 'iunie', 'iulie', 'august', 'septembrie', 'octombrie', 'noiembrie', 'decembrie']
+date.months.short: ['ian', 'feb', 'mar', 'apr', 'mai', 'iun', 'iul', 'aug', 'sep', 'oct', 'nov', 'dec']
+date.never: niciodată
+date.noDate: Fără dată
+date.now: acum
+date.today: Astăzi
+date.weekdays.long: ['duminică', 'luni', 'marți', 'miercuri', 'joi', 'vineri', 'sâmbătă']
+date.weekdays.short: ['dum', 'lun', 'mar', 'mie', 'joi', 'vin', 'sâm']
+fields.array.add: Adaugă
+fields.array.remove: Elimină
+fields.date.nextHour: Ora următoare
+fields.date.nextMinute: Minutul următor
+fields.date.nextMonth: Luna următoare
+fields.date.previousHour: Ora precedentă
+fields.date.previousMinute: Minutul precedent
+fields.date.previousMonth: Luna precedentă
+fields.file.none: (Niciunul)
+fields.file.uploadLabel: <strong>Click</strong> pentru a alege un fișier de încărcat sau <strong>trage</strong> aici
+fields.image.none: (Niciuna)
+fields.select.empty: Nicio opțiune corespunzătoare
+fields.tags.remove: Elimină
+file.metadata: Metadate
+file.metadata.alternativeText: Text alternativ
+page.attributes: Atribute
+page.cacheable: Cacheabil
+page.content: Conținut
+page.files: Fișiere
+page.image: Imagine
+page.listed: Listată
+page.listed.description: Paginile listate sunt vizibile în meniu
+page.noFiles: Fără fișiere
+page.noImage: Fără imagine
+page.none: (Niciuna)
+page.noTags: Fără etichete
+page.notListed: Nelistată
+page.notRoutable: Nerutabilă
+page.options: Opțiuni
+page.page: Pagină
+page.parent: Pagină părinte
+page.postsPerPage: Articole pe pagină
+page.publishDate: Dată publicare
+page.routable: Rutabilă
+page.routable.description: Paginile rutabile sunt accesibile de la adresa lor
+page.slug: Slug
+page.slug.suggestion: doar litere, cifre și cratime
+page.status.notPublished: Nepublicată
+page.status.published: Publicată
+page.status.published.description: Paginile publicate sunt vizibile pe site și accesibile de la adresa lor
+page.summary: Rezumat
+page.tags: Etichete
+page.template: Șablon
+page.text: Text
+page.title: Titlu
+page.unpublishDate: Dată depublicare
+site.advanced: Opțiuni avansate
+site.advanced.aliases: Aliasuri
+site.advanced.aliases.alias: Alias
+site.advanced.aliases.route: Rută
+site.advanced.metadata: Metadate HTML
+site.advanced.metadata.content: Conținut
+site.advanced.metadata.name: Nume
+site.info: Informații
+site.info.author: Autor
+site.info.description: Descriere
+site.info.language: Limbă
+site.info.title: Titlu
+site.maintenance: Mentenanță
+site.maintenance.enabled: Mod de mentenanță
+site.maintenance.enabled.disabled: Dezactivat
+site.maintenance.enabled.enabled: Activat
+site.maintenance.page: Pagină de mentenanță
+site.pages: Pagini
+site.pages.defaultTemplate: Șablon implicit
+site.statistics: Statistici
+site.statistics.enabled: Urmărește vizitele paginilor
+site.statistics.enabled.disabled: Dezactivat
+site.statistics.enabled.enabled: Activat
+site.statistics.trackLocalhost: Urmărește vizitele de la localhost
+site.statistics.trackLocalhost.disabled: Dezactivat
+site.statistics.trackLocalhost.enabled: Activat
+site.statistics.visitsDelay: Întârziere vizite
+site.statistics.visitsDelay.description: Întârziere între vizitele aceluiași utilizator pe aceeași pagină pentru a fi considerate diferite
+upload.error: Nu se poate încărca fișierul. %s.
+upload.error.alreadyExists: Există deja un fișier cu același nume
+upload.error.cannotMoveToDestination: Nu s-a putut muta fișierul încărcat la destinație
+upload.error.cannotWrite: Nu s-a putut scrie fișierul pe disc
+upload.error.destinationTooLong: Calea destinației este prea lungă
+upload.error.fileName: Nume de fișier nevalid
+upload.error.fileNameTooLong: Numele fișierului este prea lung
+upload.error.hiddenFiles: Nu se pot încărca fișiere ascunse care încep cu punct
+upload.error.mimeType: Tip de fișier nepermis
+upload.error.noFile: Niciun fișier nu a fost încărcat
+upload.error.noTemp: Lipsește un dosar temporar
+upload.error.partial: Fișierul a fost încărcat doar parțial
+upload.error.phpExtension: Încărcarea fișierului a fost oprită de o extensie
+upload.error.size: Fișierul încărcat depășește dimensiunea maximă permisă
+user.colorScheme: Schemat de culori
+user.colorScheme.auto: Automat
+user.colorScheme.dark: Întunecat
+user.colorScheme.light: Deschis
+user.email: Email
+user.fullname: Nume complet
+user.image: Imagine
+user.language: Limbă
+user.password: Parolă
+user.password.placeholder: Tastează o parolă nouă pentru a o schimba...
+user.role: Rol
+user.role.admin: Administrator
+user.role.editor: Editor
+user.role.user: Utilizator
+user.user: Utilizator
+user.username: Nume de utilizator
+zip.error.alreadyExists: Arhiva există deja
+zip.error.cannotOpen: Nu se poate deschide arhiva
+zip.error.cannotRead: Nu se poate citi arhiva
+zip.error.inconsistentArchive: Arhivă inconsistentă
+zip.error.invalidArgument: Argument nevalid
+zip.error.memoryFailure: Eroare de memorie
+zip.error.notFound: Arhivă negăsită
+zip.error.notZipArchive: Nu este o arhivă ZIP
+zip.error.unspecified: Eroare nespecificată

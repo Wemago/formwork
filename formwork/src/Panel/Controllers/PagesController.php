@@ -33,27 +33,52 @@ final class PagesController extends AbstractController
      */
     public function index(): Response
     {
-        if (!$this->hasPermission('panel.pages.index')) {
+        if (!$this->hasPermission('panel.pages.tree')) {
             return $this->forward(ErrorsController::class, 'forbidden');
         }
 
-        $pages = $this->site->pages();
+        return $this->redirect($this->generateRoute('panel.pages.tree'));
+    }
 
-        $indexOffset = $pages->indexOf($this->site->indexPage());
+    /**
+     * Pages@tree action
+     */
+    public function tree(RouteParams $routeParams): Response
+    {
+        if (!$this->hasPermission('panel.pages.tree')) {
+            return $this->forward(ErrorsController::class, 'forbidden');
+        }
+
+        $parent = $routeParams->has('page')
+            ? $this->site->findPage($routeParams->get('page'))
+            : $this->site;
+
+        $childrenSubtree = $parent?->scheme()->options()->get('children.subtree', false);
+
+        if ($parent === null || !$parent->hasChildren() || (!$parent->isSite() && !$childrenSubtree)) {
+            return $this->forward(ErrorsController::class, 'notFound');
+        }
+
+        $pageCollection = $parent->children();
+        $indexOffset = $pageCollection->indexOf($this->site->indexPage());
 
         if ($indexOffset !== null) {
-            $pages->moveItem($indexOffset, 0);
+            $pageCollection->moveItem($indexOffset, 0);
         }
+
+        $this->modal('newPage')->setFieldsModel($parent);
 
         return new Response($this->view('pages.index', [
             'title'     => $this->translate('panel.pages.pages'),
+            'parent'    => $parent,
             'pagesTree' => $this->view('pages.tree', [
-                'pages'           => $pages,
+                'pages'           => $pageCollection,
+                'parent'          => $parent,
+                'root'            => $parent,
                 'includeChildren' => true,
-                'class'           => 'pages-tree-root',
-                'parent'          => '.',
                 'orderable'       => $this->panel->user()->permissions()->has('panel.pages.reorder'),
                 'headers'         => true,
+                'class'           => 'pages-tree-root',
             ]),
         ]));
     }

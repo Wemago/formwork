@@ -59,13 +59,14 @@
         color: var(--color-base-100);
     }
 
-    &.disabled {
-        color: var(--color-base-300);
+    &.disabled,
+    &[disabled] {
+        color: var(--color-base-500);
         cursor: default !important;
 
         &:hover {
             background-color: transparent;
-            color: var(--color-base-300);
+            color: var(--color-base-500);
         }
     }
 
@@ -77,6 +78,12 @@
     & .icon {
         display: inline-block;
         margin-right: 0.25rem;
+    }
+
+    &:focus {
+        background-color: var(--color-base-700);
+        color: var(--color-base-100);
+        @include focusring;
     }
 }
 

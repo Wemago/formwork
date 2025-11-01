@@ -197,6 +197,7 @@ panel.pages.deleteFile: Borrar archivo
 panel.pages.deleteFile.prompt: ¿Estás seguro de que quieres borrar este archivo? Esta acción no se puede deshacer.
 panel.pages.deletePage: Borrar página
 panel.pages.deletePage.prompt: ¿Estás seguro de que quieres borrar esta página? Esta acción no se puede deshacer.
+panel.pages.edit: Editar página
 panel.pages.editPage: Editar página %s
 panel.pages.history.event.created: Página creada por %s %s.
 panel.pages.history.event.edited: Página editada por %s %s.
@@ -251,6 +252,7 @@ panel.pages.replaceFile: Reemplazar archivo
 panel.pages.save: Guardar
 panel.pages.saveOnly: Guardar sin publicar
 panel.pages.toggleChildren: Alternar páginas secundarias
+panel.pages.viewChildren: Ver subpáginas
 panel.pages.viewPage: Ver página
 panel.panel: Panel de administración
 panel.register.createUser: Formwork está instalado pero no se encontraron usuarios. Por favor, registra un usuario ahora.

@@ -1,9 +1,21 @@
 <?php $this->layout('panel') ?>
 
-<?php $this->modals()->add('newPage') ?>
-
 <div class="header">
-    <div class="header-title"><?= $this->translate('panel.pages.pages') ?> <span class="badge"><?= $app->site()->descendants()->count() ?></span></div>
+    <div class="flex mr-auto overflow-hidden">
+        <div class="min-w-0 flex">
+            <div class="header-title mr-4"><?= $this->translate('panel.pages.pages') ?></div>
+            <?php foreach ($parent->ancestors()->reverse()->with($parent) as $page) : ?>
+                <div class="text-color-gray-medium mr-4">/</div>
+                <?php if ($page->isSite()) : ?>
+                    <div class="header-icon"><?= $this->icon('globe') ?></div>
+                    <div class="header-title truncate mr-4"><a href="<?= $panel->uri('/pages/') ?>"><?= $this->translate('panel.options.site') ?></a></div>
+                <?php else: ?>
+                    <div class="header-icon"><?= $this->icon($page->icon()) ?></div>
+                    <div class="header-title truncate mr-4"><a href="<?= $panel->uri('/pages/' . trim($page->route(), '/') . '/edit/') ?>"><?= $this->escape($page->title()) ?></a></div>
+                <?php endif ?>
+            <?php endforeach ?>
+        </div>
+    </div>
     <div>
         <?php if ($panel->user()->permissions()->has('panel.pages.create')) : ?>
             <button type="button" class="button button-accent" data-modal="newPageModal"><?= $this->icon('plus-circle') ?> <?= $this->translate('panel.pages.newPage') ?></button>
@@ -20,9 +32,9 @@
             </div>
         </div>
         <div class="whitespace-nowrap">
-            <button type="button" class="button button-secondary mb-4" data-command="expand-all-pages"><?= $this->icon('chevron-down') ?> <?= $this->translate('panel.pages.pages.expandAll') ?></button>
-            <button type="button" class="button button-secondary mb-4" data-command="collapse-all-pages"><?= $this->icon('chevron-up') ?> <?= $this->translate('panel.pages.pages.collapseAll') ?></button>
-            <button type="button" class="button button-secondary mb-4" data-command="reorder-pages"><?= $this->icon('reorder-v') ?> <?= $this->translate('panel.pages.pages.reorder') ?></button>
+            <button type="button" class="button button-secondary mb-4" data-command="expand-all-pages" disabled><?= $this->icon('chevron-down') ?> <?= $this->translate('panel.pages.pages.expandAll') ?></button>
+            <button type="button" class="button button-secondary mb-4" data-command="collapse-all-pages" disabled><?= $this->icon('chevron-up') ?> <?= $this->translate('panel.pages.pages.collapseAll') ?></button>
+            <button type="button" class="button button-secondary mb-4" data-command="reorder-pages" disabled><?= $this->icon('reorder-v') ?> <?= $this->translate('panel.pages.pages.reorder') ?></button>
         </div>
     </div>
     <?= $pagesTree ?>

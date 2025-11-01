@@ -197,6 +197,7 @@ panel.pages.deleteFile: Datei löschen
 panel.pages.deleteFile.prompt: Möchten Sie diese Datei wirklich löschen? Diese Aktion kann nicht rückgängig gemacht werden.
 panel.pages.deletePage: Seite löschen
 panel.pages.deletePage.prompt: Möchten Sie diese Seite wirklich löschen? Diese Aktion kann nicht rückgängig gemacht werden.
+panel.pages.edit: Seite bearbeiten
 panel.pages.editPage: Seite bearbeiten %s
 panel.pages.history.event.created: Seite erstellt von %s %s.
 panel.pages.history.event.edited: Seite bearbeitet von %s %s.
@@ -251,6 +252,7 @@ panel.pages.replaceFile: Datei ersetzen
 panel.pages.save: Speichern
 panel.pages.saveOnly: Speichern ohne zu veröffentlichen
 panel.pages.toggleChildren: Untergeordnete Seiten umschalten
+panel.pages.viewChildren: Unterseiten anzeigen
 panel.pages.viewPage: Seite anzeigen
 panel.panel: Administrationspanel
 panel.register.createUser: Formwork ist installiert, aber es wurden keine Benutzer gefunden. Bitte registrieren Sie jetzt einen Benutzer.

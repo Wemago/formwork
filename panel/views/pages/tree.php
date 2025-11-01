@@ -5,20 +5,22 @@
         <div class="pages-tree-headers-cell page-details truncate"><?= $this->translate('page.title') ?></div>
         <div class="pages-tree-headers-cell page-date truncate show-from-lg"><?= $this->translate('panel.pages.page.lastModified') ?></div>
         <div class="pages-tree-headers-cell page-status truncate show-from-xs"><?= $this->translate('panel.pages.page.status') ?></div>
-        <div class="pages-tree-headers-cell page-actions"><?= $this->translate('panel.pages.page.actions') ?></div>
+        <div class="pages-tree-headers-cell page-actions"><span class="show-from-xs mr-6"><?= $this->translate('panel.pages.page.actions') ?></span></div>
     </div>
 <?php endif ?>
 
-<ul class="pages-tree <?= $class ?>" data-orderable-children="<?= $orderable ? 'true' : 'false' ?>" <?php if ($parent) : ?> data-parent="<?= $parent ?>" <?php endif ?>>
+<ul <?= $this->attr(['class' => ['pages-tree', $class ?? null], 'data-orderable-children' => $orderable ? 'true' : 'false', 'data-parent' => isset($parent) ? ($parent->isSite() ? '.' : $parent->route()) : null]) ?>>
+    <?php $childrenToggle = ($parent ?? $site)->level() > ($root ?? $site)->level() || $pages->some(fn($page) => $page->hasChildren() && !$page->scheme()->options()->get('children.subtree', false)) ?>
     <?php foreach ($pages as $page) : ?>
         <?php $routable = $page->published() && $page->routable() ?>
         <?php $date = $this->datetime($page->contentFile()->lastModifiedTime()) ?>
+        <?php $subtree = $page->scheme()->options()->get('children.subtree', false) ?>
         <li class="<?= $this->classes([
                         'pages-tree-item',
-                        'pages-tree-level-' . $page->level() => $includeChildren,
-                        'has-children' => $page->hasChildren(),
-                        'is-orderable' => $page->orderable(),
-                        'is-not-orderable' => !$page->orderable()
+                        'pages-tree-level-' . ($page->level() - ($root ?? $site)->level()) => $includeChildren,
+                        'has-children'     => $page->hasChildren() && !$subtree,
+                        'is-orderable'     => $page->orderable(),
+                        'is-not-orderable' => !$page->orderable(),
                     ])
                     ?>" data-route="<?= $page->route() ?>">
             <div class="pages-tree-row">
@@ -28,9 +30,9 @@
                             <span title="<?= $this->translate('panel.dragToReorder') ?>"><?= $this->icon('grabber') ?></span>
                         <?php endif ?>
                     </div>
-                    <?php if ($includeChildren) : ?>
+                    <?php if ($childrenToggle) : ?>
                         <div class="pages-tree-icon mr-2">
-                            <?php if ($page->hasChildren()) : ?>
+                            <?php if ($page->hasChildren() && !$subtree) : ?>
                                 <button type="button" class="button pages-tree-children-toggle" title="<?= $this->translate('panel.pages.toggleChildren') ?>" aria-label="<?= $this->translate('panel.pages.toggleChildren') ?>"><?= $this->icon('chevron-down') ?></button>
                             <?php endif ?>
                         </div>
@@ -69,18 +71,30 @@
                     <span class="page-status-label"><?= $this->translate('page.status.' . $page->status()) ?></span>
                 </div>
                 <div class="pages-tree-item-cell page-actions">
-                    <a class="<?= $this->classes(['button', 'button-link', 'disabled' => !$page->published() || !$page->routable()]) ?>" role="button" <?php if ($page->published() && $page->routable()) : ?>href="<?= $page->uri(includeLanguage: false) ?>" <?php endif ?> target="formwork-view-page-<?= $page->uid() ?>" title="<?= $this->translate('panel.pages.viewPage') ?>" aria-label="<?= $this->translate('panel.pages.viewPage') ?>"><?= $this->icon('arrow-right-up-box') ?></a>
-                    <?php if ($panel->user()->permissions()->has('panel.pages.delete')) : ?>
-                        <button type="button" class="button button-link" data-modal="deletePageModal" data-modal-action="<?= $panel->uri('/pages/' . trim($page->route(), '/') . '/delete/') ?>" title="<?= $this->translate('panel.pages.deletePage') ?>" aria-label="<?= $this->translate('panel.pages.deletePage') ?>" <?php if (!$page->isDeletable()) : ?> disabled<?php endif ?>><?= $this->icon('trash') ?></button>
+                    <?php if ($includeChildren && $page->hasChildren() && $subtree) : ?>
+                        <a class="button button-link show-from-lg" role="button" href="<?= $panel->uri('/pages/' . trim($page->route(), '/') . '/tree/') ?>" title="<?= $this->translate('panel.pages.viewChildren') ?>" aria-label="<?= $this->translate('panel.pages.viewChildren') ?>"><?= $this->icon('pages-level-down') ?></a>
                     <?php endif ?>
+                    <a class="<?= $this->classes(['button', 'button-link', 'disabled' => !$page->published() || !$page->routable()]) ?>" role="button" <?php if ($page->published() && $page->routable()) : ?>href="<?= $page->uri(includeLanguage: false) ?>" <?php endif ?> target="formwork-view-page-<?= $page->uid() ?>" title="<?= $this->translate('panel.pages.viewPage') ?>" aria-label="<?= $this->translate('panel.pages.viewPage') ?>"><?= $this->icon('arrow-right-up-box') ?></a>
+                    <div class="dropdown mb-0">
+                        <button type="button" class="button button-link dropdown-button" title="<?= $this->translate('panel.pages.page.actions') ?>" aria-label="<?= $this->translate('panel.pages.page.actions') ?>" data-dropdown="dropdown-<?= $page->uid() ?>"><?= $this->icon('ellipsis-v') ?></button>
+                        <div class="dropdown-menu" id="dropdown-<?= $page->uid() ?>">
+                            <a class="dropdown-item" href="<?= $panel->uri('/pages/' . trim($page->route(), '/') . '/edit/') ?>"><?= $this->icon('pencil') ?> <?= $this->translate('panel.pages.edit') ?></a>
+                            <?php if ($includeChildren && $page->hasChildren() && $subtree) : ?>
+                                <a class="dropdown-item hide-from-lg" href="<?= $panel->uri('/pages/' . trim($page->route(), '/') . '/tree/') ?>"><?= $this->icon('pages-level-down') ?> <?= $this->translate('panel.pages.viewChildren') ?></a>
+                            <?php endif ?>
+                            <?php if ($panel->user()->permissions()->has('panel.pages.delete')) : ?>
+                                <button class="dropdown-item" data-modal="deletePageModal" data-modal-action="<?= $panel->uri('/pages/' . trim($page->route(), '/') . '/delete/') ?>" <?php if (!$page->isDeletable()) : ?> disabled<?php endif ?>><?= $this->icon('trash') ?> <?= $this->translate('panel.pages.deletePage') ?></button>
+                            <?php endif ?>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <?php if ($includeChildren && $page->hasChildren()) : ?>
+            <?php if ($includeChildren && $page->hasChildren() && !$subtree) : ?>
                 <?php $this->insert('pages.tree', [
                     'pages'           => $page->scheme()->options()->get('children.reverse', false) ? $page->children()->reverse() : $page->children(),
                     'includeChildren' => true,
                     'class'           => 'pages-tree-children',
-                    'parent'          => $page->route(),
+                    'parent'          => $page,
                     'orderable'       => $orderable && $page->scheme()->options()->get('children.orderable', true),
                     'headers'         => false,
                 ]) ?>

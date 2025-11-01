@@ -197,6 +197,7 @@ panel.pages.deleteFile: Удалить файл
 panel.pages.deleteFile.prompt: Вы уверены, что хотите удалить этот файл? Это действие не может быть отменено.
 panel.pages.deletePage: Удалить страницу
 panel.pages.deletePage.prompt: Вы уверены, что хотите удалить эту страницу? Это действие не может быть отменено.
+panel.pages.edit: Редактировать страницу
 panel.pages.editPage: Отредактировать страницу %s
 panel.pages.history.event.created: Страница создана %s %s.
 panel.pages.history.event.edited: Страница изменена %s %s.
@@ -251,6 +252,7 @@ panel.pages.replaceFile: Заменить файл
 panel.pages.save: Сохранить
 panel.pages.saveOnly: Сохранить без публикации
 panel.pages.toggleChildren: Переключить дочерние страницы
+panel.pages.viewChildren: Смотреть вложенные
 panel.pages.viewPage: Просмотреть страницу
 panel.panel: Панель администрирования
 panel.register.createUser: Formwork Администратор установлен, но не было найдено ни одного пользователя. Пожалуйста зарегистрировать пользователя в настоящее время.

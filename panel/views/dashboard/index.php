@@ -1,7 +1,5 @@
 <?php $this->layout('panel') ?>
 
-<?php $this->modals()->add('newPage') ?>
-
 <div data-view="dashboard">
     <div class="header">
         <div class="header-title"><?= $this->translate('panel.dashboard.dashboard') ?></div>

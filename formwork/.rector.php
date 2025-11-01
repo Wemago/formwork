@@ -7,6 +7,7 @@ use Rector\CodeQuality\Rector\FuncCall\CompactToVariablesRector;
 use Rector\CodeQuality\Rector\Identical\FlipTypeControlToUseExclusiveTypeRector;
 use Rector\CodingStyle\Rector\FunctionLike\FunctionLikeToFirstClassCallableRector;
 use Rector\Config\RectorConfig;
+use Rector\DeadCode\Rector\MethodCall\RemoveNullArgOnNullDefaultParamRector;
 use Rector\Naming\Rector\Class_\RenamePropertyToMatchTypeRector;
 use Rector\Php74\Rector\Closure\ClosureToArrowFunctionRector;
 use Rector\Php80\Rector\Switch_\ChangeSwitchToMatchRector;
@@ -42,6 +43,7 @@ return RectorConfig::configure()
         FunctionLikeToFirstClassCallableRector::class,
         NullToStrictStringFuncCallArgRector::class,
         ReadOnlyPropertyRector::class,
+        RemoveNullArgOnNullDefaultParamRector::class,
         RenamePropertyToMatchTypeRector::class,
         VariableConstFetchToClassConstFetchRector::class,
     ]);

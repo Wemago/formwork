@@ -24,7 +24,11 @@ final class ConfigServiceLoader implements ServiceLoaderInterface
             FileSystem::createDirectory($cachePath);
         }
 
-        if (FileSystem::exists($cacheFile) && !FileSystem::directoryModifiedSince(ROOT_PATH . '/site/config/', FileSystem::lastModifiedTime($cacheFile))) {
+        if (
+            FileSystem::exists($cacheFile)
+            && !FileSystem::directoryModifiedSince(ROOT_PATH . '/site/config/', FileSystem::lastModifiedTime($cacheFile))
+            && !FileSystem::directoryModifiedSince(SYSTEM_PATH . '/config/', FileSystem::lastModifiedTime($cacheFile))
+        ) {
             $config = new Config(require $cacheFile, resolved: true);
         } else {
             $config = new Config();

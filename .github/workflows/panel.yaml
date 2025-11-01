@@ -21,6 +21,8 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - uses: actions/checkout@v4
+
       - name: Setup pnpm
         uses: pnpm/action-setup@v4
         with:
@@ -32,8 +34,6 @@ jobs:
           node-version: latest
           cache: pnpm
           cache-dependency-path: '**/pnpm-lock.yaml'
-
-      - uses: actions/checkout@v4
 
       - name: Install dependencies
         run: |

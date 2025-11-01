@@ -32,7 +32,7 @@
                     </div>
                     <?php if ($childrenToggle) : ?>
                         <div class="pages-tree-icon mr-2">
-                            <?php if ($page->hasChildren() && !$subtree): ?>
+                            <?php if ($page->hasChildren() && !$subtree) : ?>
                                 <button type="button" class="button pages-tree-children-toggle" title="<?= $this->translate('panel.pages.toggleChildren') ?>" aria-label="<?= $this->translate('panel.pages.toggleChildren') ?>"><?= $this->icon('chevron-down') ?></button>
                             <?php endif ?>
                         </div>
@@ -83,13 +83,13 @@
                                 <a class="dropdown-item hide-from-lg" href="<?= $panel->uri('/pages/' . trim($page->route(), '/') . '/tree/') ?>"><?= $this->icon('pages-level-down') ?> <?= $this->translate('panel.pages.viewChildren') ?></a>
                             <?php endif ?>
                             <?php if ($panel->user()->permissions()->has('panel.pages.delete')) : ?>
-                                <button class="dropdown-item" data-modal="deletePageModal" data-modal-action="<?= $panel->uri('/pages/' . trim($page->route(), '/') . '/delete/') ?>" <?php if (!$page->isDeletable()): ?> disabled<?php endif ?>><?= $this->icon('trash') ?> <?= $this->translate('panel.pages.deletePage') ?></button>
+                                <button class="dropdown-item" data-modal="deletePageModal" data-modal-action="<?= $panel->uri('/pages/' . trim($page->route(), '/') . '/delete/') ?>" <?php if (!$page->isDeletable()) : ?> disabled<?php endif ?>><?= $this->icon('trash') ?> <?= $this->translate('panel.pages.deletePage') ?></button>
                             <?php endif ?>
                         </div>
                     </div>
                 </div>
             </div>
-            <?php if ($includeChildren && $page->hasChildren() && !$subtree): ?>
+            <?php if ($includeChildren && $page->hasChildren() && !$subtree) : ?>
                 <?php $this->insert('pages.tree', [
                     'pages'           => $page->scheme()->options()->get('children.reverse', false) ? $page->children()->reverse() : $page->children(),
                     'includeChildren' => true,

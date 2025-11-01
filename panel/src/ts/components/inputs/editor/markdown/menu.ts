@@ -257,7 +257,8 @@ function createButton(icon: string, title: string) {
 }
 
 function createMenuItem(text: string) {
-    const item = document.createElement("a");
+    const item = document.createElement("button");
+    item.type = "button";
     item.className = "dropdown-item";
     item.innerHTML = text;
     return item;

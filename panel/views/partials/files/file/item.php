@@ -30,13 +30,13 @@
                 <a class="dropdown-item" data-command="infoFile" href="<?= $this->uri($app->router()->generate('panel.files.edit', ['model' => $model->getModelIdentifier(), 'id' => $model->route(), 'filename' => $file->name()])) ?>"><?= $this->icon('info-circle') ?> <?= $this->translate('panel.files.info') ?></a>
                 <a class="dropdown-item" data-command="previewFile" href="<?= $file->uri() ?>" target="formwork-preview-file-<?= $file->hash() ?>"><?= $this->icon('eye') ?> <?= $this->translate('panel.pages.previewFile') ?></a>
                 <?php if ($panel->user()->permissions()->has('panel.pages.renameFiles')) : ?>
-                    <a class="dropdown-item" data-command="renameFile" data-modal="renameFileItemModal" data-action="<?= $this->uri($app->router()->generate('panel.files.rename', ['model' => $model->getModelIdentifier(), 'id' => $model->route(), 'filename' => $file->name()])) ?>"><?= $this->icon('pencil') ?> <?= $this->translate('panel.pages.renameFile') ?></a>
+                    <button type="button" class="dropdown-item" data-command="renameFile" data-modal="renameFileItemModal" data-action="<?= $this->uri($app->router()->generate('panel.files.rename', ['model' => $model->getModelIdentifier(), 'id' => $model->route(), 'filename' => $file->name()])) ?>"><?= $this->icon('pencil') ?> <?= $this->translate('panel.pages.renameFile') ?></button>
                 <?php endif ?>
                 <?php if ($panel->user()->permissions()->has('panel.pages.replaceFiles')) : ?>
-                    <a class="dropdown-item" data-command="replaceFile" data-action="<?= $this->uri($app->router()->generate('panel.files.replace', ['model' => $model->getModelIdentifier(), 'id' => $model->route(), 'filename' => $file->name()])) ?>" data-mimetype="<?= $file->mimeType() ?>"><?= $this->icon('cloud-upload') ?> <?= $this->translate('panel.pages.replaceFile') ?></a>
+                    <button type="button" class="dropdown-item" data-command="replaceFile" data-action="<?= $this->uri($app->router()->generate('panel.files.replace', ['model' => $model->getModelIdentifier(), 'id' => $model->route(), 'filename' => $file->name()])) ?>" data-mimetype="<?= $file->mimeType() ?>"><?= $this->icon('cloud-upload') ?> <?= $this->translate('panel.pages.replaceFile') ?></button>
                 <?php endif ?>
                 <?php if ($panel->user()->permissions()->has('panel.pages.deleteFiles')) : ?>
-                    <a class="dropdown-item" data-command="deleteFile" data-modal="deleteFileItemModal" data-action="<?= $this->uri($app->router()->generate('panel.files.delete', ['model' => $model->getModelIdentifier(), 'id' => $model->route(), 'filename' => $file->name()])) ?>"><?= $this->icon('trash') ?> <?= $this->translate('panel.pages.deleteFile') ?></a>
+                    <button type="button" class="dropdown-item" data-command="deleteFile" data-modal="deleteFileItemModal" data-action="<?= $this->uri($app->router()->generate('panel.files.delete', ['model' => $model->getModelIdentifier(), 'id' => $model->route(), 'filename' => $file->name()])) ?>"><?= $this->icon('trash') ?> <?= $this->translate('panel.pages.deleteFile') ?></button>
                 <?php endif ?>
             </div>
         </div>

@@ -83,7 +83,7 @@
                                 <a class="dropdown-item hide-from-lg" href="<?= $panel->uri('/pages/' . trim($page->route(), '/') . '/tree/') ?>"><?= $this->icon('pages-level-down') ?> <?= $this->translate('panel.pages.viewChildren') ?></a>
                             <?php endif ?>
                             <?php if ($panel->user()->permissions()->has('panel.pages.delete')) : ?>
-                                <button class="dropdown-item" data-modal="deletePageModal" data-modal-action="<?= $panel->uri('/pages/' . trim($page->route(), '/') . '/delete/') ?>" <?php if (!$page->isDeletable()) : ?> disabled<?php endif ?>><?= $this->icon('trash') ?> <?= $this->translate('panel.pages.deletePage') ?></button>
+                                <button type="button" class="dropdown-item" data-modal="deletePageModal" data-modal-action="<?= $panel->uri('/pages/' . trim($page->route(), '/') . '/delete/') ?>" <?php if (!$page->isDeletable()) : ?> disabled<?php endif ?>><?= $this->icon('trash') ?> <?= $this->translate('panel.pages.deletePage') ?></button>
                             <?php endif ?>
                         </div>
                     </div>

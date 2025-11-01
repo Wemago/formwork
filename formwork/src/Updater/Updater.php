@@ -32,14 +32,15 @@ final class Updater
     /**
      * Updates registry default data
      *
-     * @var array{lastCheck: ?int, lastUpdate: ?int, etag: ?string, release: ?array{name: string, tag: string, date: int, archive: string}, upToDate: bool}
+     * @var array{lastCheck: ?int, lastUpdate: ?int, currentRelease: string, releaseArchiveEtag: ?string, release: ?array{name: string, tag: string, date: int, archive: string}, upToDate: bool}
      */
     private array $registryDefaults = [
-        'lastCheck'  => null,
-        'lastUpdate' => null,
-        'etag'       => null,
-        'release'    => null,
-        'upToDate'   => false,
+        'lastCheck'          => null,
+        'lastUpdate'         => null,
+        'currentRelease'     => App::VERSION,
+        'releaseArchiveEtag' => null,
+        'release'            => null,
+        'upToDate'           => false,
     ];
 
     /**
@@ -55,11 +56,11 @@ final class Updater
     private array $release;
 
     /**
-     * Headers to send in HTTP(S) requests
+     * Release archive headers
      *
      * @var array<string, string>
      */
-    private array $headers;
+    private array $releaseArchiveHeaders;
 
     /**
      * @param array<string, mixed> $options
@@ -84,30 +85,37 @@ final class Updater
      */
     public function checkUpdates(): bool
     {
-        if ($this->registry->has('lastCheck') && time() - $this->registry->get('lastCheck') < $this->options['time']) {
+        if (
+            !$this->options['force']
+            && $this->registry->has('currentRelease') && $this->registry->get('currentRelease') === App::VERSION
+            && $this->registry->has('lastCheck') && time() - $this->registry->get('lastCheck') < $this->options['time']
+        ) {
+            $this->release = $this->registry->get('release');
             return $this->registry->get('upToDate');
         }
 
         $this->loadRelease();
 
+        $this->registry->set('lastCheck', time());
+        $this->registry->set('currentRelease', App::VERSION);
         $this->registry->set('release', $this->release);
 
-        $this->registry->set('lastCheck', time());
+        $isInstallable = $this->isVersionInstallable($this->release['tag']);
+        $isSameVersion = $this->release['tag'] === $this->registry->get('currentRelease');
 
-        if (!$this->isVersionInstallable($this->release['tag'])) {
+        // Only fetch remote headers when we already know it's the same version
+        $etagUnchanged = $isSameVersion
+            && (
+                // Don't consider ETag if we don't have it stored (fresh install or registry reset)
+                !$this->registry->has('releaseArchiveEtag')
+
+                || $this->registry->get('releaseArchiveEtag') === $this->getReleaseArchiveEtag()
+            );
+
+        if (!$isInstallable || $etagUnchanged) {
             $this->registry->set('upToDate', true);
             $this->registry->save();
             return true;
-        }
-
-        if (isset($this->getHeaders()['Etag'])) {
-            $ETag = trim($this->headers['Etag'], '"');
-
-            if ($this->registry->has('etag') && $this->registry->get('etag') === $ETag) {
-                $this->registry->set('upToDate', true);
-                $this->registry->save();
-                return true;
-            }
         }
 
         $this->registry->set('upToDate', false);
@@ -124,11 +132,9 @@ final class Updater
     {
         $this->checkUpdates();
 
-        if (!$this->options['force'] && $this->registry->get('upToDate')) {
+        if ($this->registry->get('upToDate')) {
             return null;
         }
-
-        $this->loadRelease();
 
         $this->client->download($this->release['archive'], $this->options['tempFile']);
 
@@ -176,11 +182,8 @@ final class Updater
         }
 
         $this->registry->set('lastUpdate', time());
-
-        if (isset($this->getHeaders()['Etag'])) {
-            $ETag = trim($this->headers['Etag'], '"');
-            $this->registry->set('etag', $ETag);
-        }
+        $this->registry->set('currentRelease', $this->release['tag']);
+        $this->registry->set('releaseArchiveEtag', $this->getReleaseArchiveEtag());
 
         $this->registry->set('upToDate', true);
         $this->registry->save();
@@ -241,9 +244,17 @@ final class Updater
      *
      * @return array<string, string>
      */
-    private function getHeaders(): array
+    private function getReleaseArchiveHeaders(): array
     {
-        return $this->headers ?? ($this->headers = $this->client->fetchHeaders($this->release['archive'])->toArray());
+        return $this->releaseArchiveHeaders ?? ($this->releaseArchiveHeaders = $this->client->fetchHeaders($this->release['archive'])->toArray());
+    }
+
+    /**
+     * Get release archive ETag
+     */
+    private function getReleaseArchiveEtag(): string
+    {
+        return trim($this->getReleaseArchiveHeaders()['Etag'], '"');
     }
 
     /**

@@ -1,0 +1,340 @@
+panel.backup.backup: Backup
+panel.backup.deleted: Backup verwijderd
+panel.backup.error.cannotDelete: Kan backup niet verwijderen. %s.
+panel.backup.error.cannotDelete.invalidFilename: Ongeldig back-upbestand
+panel.backup.error.cannotDownload: Kan backup niet downloaden. %s.
+panel.backup.error.cannotDownload.invalidFilename: Ongeldig back-upbestand
+panel.backup.error.cannotMake: Kan backup niet aanmaken. %s.
+panel.backup.ready: Backup gereed. Start downloaden...
+panel.cache.clear: Cache legen
+panel.cache.clear.images: Cache voor afbeeldingen legen
+panel.cache.clear.pages: Cache voor pagina's legen
+panel.cache.cleared: Cache geleegd
+panel.cache.cleared.images: Afbeeldingscache geleegd
+panel.cache.cleared.pages: Pagina-cache geleegd
+panel.cache.error: Kan cache niet legen
+panel.dashboard.dashboard: Dashboard
+panel.dashboard.lastModifiedPages: Recent bewerkte pagina's
+panel.dashboard.quickActions: Snelle acties
+panel.dashboard.statistics: Statistieken
+panel.dashboard.statistics.uniqueVisitors: Unieke bezoekers
+panel.dashboard.statistics.visits: Bezoeken
+panel.dashboard.welcome: Welkom
+panel.dragToReorder: Sleep om te herschikken
+panel.editor.bold: Vet
+panel.editor.bulletList: Opsommingstekens
+panel.editor.code: Code
+panel.editor.decreaseIndent: Inspringing verkleinen
+panel.editor.heading1: Kop 1
+panel.editor.heading2: Kop 2
+panel.editor.heading3: Kop 3
+panel.editor.heading4: Kop 4
+panel.editor.heading5: Kop 5
+panel.editor.heading6: Kop 6
+panel.editor.image: Afbeelding
+panel.editor.increaseIndent: Inspringing vergroten
+panel.editor.italic: Cursief
+panel.editor.link: Link
+panel.editor.numberedList: Genummerde lijst
+panel.editor.paragraph: Alinea
+panel.editor.quote: Citaat
+panel.editor.redo: Herstellen
+panel.editor.summary: Samenvatting
+panel.editor.toggleMarkdown: Markdown wisselen
+panel.editor.undo: Ongedaan maken
+panel.errors.action.reportToGithub: Meld een probleem op GitHub
+panel.errors.action.returnToDashboard: Terug naar dashboard
+panel.errors.error.forbidden.description: Je hebt geen toestemming om deze pagina te bekijken.
+panel.errors.error.forbidden.heading: Oeps, toestemming vereist!
+panel.errors.error.forbidden.status: Verboden
+panel.errors.error.internalServerError.description: Formwork is een fout tegengekomen bij het verwerken van je verzoek. Controleer de Formwork-configuratie of de serverlog voor fouten.
+panel.errors.error.internalServerError.heading: Oeps, er is iets misgegaan!
+panel.errors.error.internalServerError.status: Interne serverfout
+panel.errors.error.notFound.description: De pagina bestaat niet of het verzoek is niet geldig.
+panel.errors.error.notFound.heading: Oeps, pagina niet gevonden!
+panel.errors.error.notFound.status: Niet gevonden
+panel.files.actions: Acties
+panel.files.backToPage: Terug naar pagina
+panel.files.cannotDelete.fileNotFound: Kan bestand niet verwijderen, bestand niet gevonden
+panel.files.cannotDelete.pageNotFound: Kan bestand niet verwijderen, bestand niet gevonden
+panel.files.cannotRename.fileAlreadyExists: Kan bestand niet hernoemen, er bestaat al een bestand met die naam
+panel.files.cannotRename.fileNotFound: Kan bestand niet hernoemen, bestand niet gevonden
+panel.files.cannotRename.pageNotFound: Kan bestand niet hernoemen, pagina niet gevonden
+panel.files.cannotReplace.fileNotFound: Kan bestand niet vervangen, bestand niet gevonden
+panel.files.cannotReplace.multipleFiles: Kan bestand niet vervangen, meerdere bestanden opgegeven
+panel.files.cannotReplace.pageNotFound: Kan bestand niet vervangen, pagina niet gevonden
+panel.files.cannotUpload.pageNotFound: Kan bestand niet uploaden, pagina niet gevonden
+panel.files.deleted: Bestand verwijderd
+panel.files.exif: EXIF
+panel.files.fileNotFound: Kan bestandgegevens niet ophalen, bestand niet gevonden
+panel.files.files: Bestanden
+panel.files.info: Info
+panel.files.info.image.colorDepth: Kleurendiepte
+panel.files.info.image.colorNumber: Aantal kleuren
+panel.files.info.image.colorProfile: Kleurprofiel
+panel.files.info.image.colorSpace: Kleurruimte
+panel.files.info.image.dimensions: Afmetingen
+panel.files.info.image.dimensions.widthByHeightPixels: '%d × %d pixels'
+panel.files.info.image.exif.aperture: Diafragma
+panel.files.info.image.exif.camera: Camera
+panel.files.info.image.exif.creationDateAndTime: Aanmaakdatum en -tijd
+panel.files.info.image.exif.exposureCompensation: Belichtingscompensatie
+panel.files.info.image.exif.exposureProgram: Belichtingsprogramma
+panel.files.info.image.exif.exposureTime: Belichtingstijd
+panel.files.info.image.exif.flash: Flits
+panel.files.info.image.exif.focalLength: Brandpuntsafstand
+panel.files.info.image.exif.lensModel: Objectiefmodel
+panel.files.info.image.exif.meteringMode: Meetmethode
+panel.files.info.image.exif.sensitivity: Gevoeligheid
+panel.files.info.image.exif.whiteBalance: Witbalans
+panel.files.info.image.frames: '%d frames'
+panel.files.info.image.framesCount: Aantal frames
+panel.files.info.image.repeats: '%d herhalingen'
+panel.files.info.image.repeatsCount: Aantal herhalingen
+panel.files.info.image.resolution: Resolutie
+panel.files.info.lastModifiedTime: Laatste wijziging
+panel.files.info.mimeType: MIME-type
+panel.files.info.name: Naam
+panel.files.info.size: Grootte
+panel.files.info.uri: URI
+panel.files.metadata.updated: Bestandmetadata bijgewerkt
+panel.files.next: Volgend bestand
+panel.files.pageNotFound: Kan bestandgegevens niet ophalen, pagina niet gevonden
+panel.files.parent: Ouder
+panel.files.position: Positie
+panel.files.preview: Voorbeeld
+panel.files.previous: Vorig bestand
+panel.files.renamed: Bestand hernoemd
+panel.files.search: Bestanden zoeken...
+panel.files.upload: Bestand uploaden
+panel.files.uploaded: Bestanden geüpload
+panel.files.viewAsList: Weergeven als lijst
+panel.files.viewAsThumbnails: Weergeven als miniaturen
+panel.login.attempt.failed: Aanmeldpoging mislukt! Probeer het opnieuw.
+panel.login.attempt.tooMany: Te veel aanmeldpogingen. Probeer het opnieuw over %d minuten.
+panel.login.loggedOut: Je bent uitgelogd
+panel.login.login: Inloggen
+panel.login.logout: Uitloggen
+panel.login.password: Wachtwoord
+panel.login.suspiciousRequestDetected: Er is een verdachte aanvraag gedetecteerd en om veiligheidsredenen ben je uitgelogd. Log opnieuw in.
+panel.login.usernameOrEmail: Gebruikersnaam of e-mail
+panel.manage: Beheer
+panel.modal.action.cancel: Annuleer
+panel.modal.action.continue: Doorgaan
+panel.modal.action.delete: Verwijderen
+panel.modal.action.edit: Bewerken
+panel.modal.action.rename: Hernoemen
+panel.modal.action.save: Opslaan
+panel.modal.action.upload: Uploaden
+panel.modal.action.uploadFile: Bestand uploaden
+panel.modal.images.noImages: Er zijn hier geen afbeeldingen
+panel.modal.images.noImages.upload: Upload aub enkele afbeeldingen
+panel.modal.images.title: Selecteer een afbeelding
+panel.modal.link.text: Tekst
+panel.modal.link.title: Link invoegen
+panel.modal.link.uri: Uri
+panel.navigation.toggle: Navigatie wisselen
+panel.options.options: Opties
+panel.options.site: Site
+panel.options.system: Systeem
+panel.options.system.adminPanel: Administratiepaneel
+panel.options.system.adminPanel.defaultColorScheme: Standaard kleurenschema
+panel.options.system.adminPanel.defaultColorScheme.dark: Donker
+panel.options.system.adminPanel.defaultColorScheme.light: Licht
+panel.options.system.adminPanel.defaultLanguage: Standaardtaal
+panel.options.system.adminPanel.logoutRedirectsTo: Uitloggen doorsturen naar
+panel.options.system.adminPanel.logoutRedirectsTo.home: Startpagina
+panel.options.system.adminPanel.logoutRedirectsTo.login: Inlogpagina
+panel.options.system.adminPanel.sessionTimeout: Sessie time-out
+panel.options.system.backup: Backup
+panel.options.system.backup.backupFilesToKeep: Backups om op de server te bewaren
+panel.options.system.cache: Cache
+panel.options.system.cache.disabled: Uitgeschakeld
+panel.options.system.cache.enabled: Ingeschakeld
+panel.options.system.cache.time: Cache-tijd
+panel.options.system.content: Inhoud
+panel.options.system.content.allowHtml: HTML toestaan in Markdown-velden
+panel.options.system.content.allowHtml.description: Potentieel gevaarlijke tags zoals `<script>` en `<style>` worden altijd naar tekst geconverteerd
+panel.options.system.content.allowHtml.disabled: Uitgeschakeld
+panel.options.system.content.allowHtml.enabled: Ingeschakeld
+panel.options.system.dateAndTime: Datum en tijd
+panel.options.system.dateAndTime.dateFormat: Datumformaat
+panel.options.system.dateAndTime.firstWeekday: Eerste weekdag
+panel.options.system.dateAndTime.firstWeekday.monday: Maandag
+panel.options.system.dateAndTime.firstWeekday.sunday: Zondag
+panel.options.system.dateAndTime.hourFormat: Uurformaat
+panel.options.system.dateAndTime.timezone: Tijdzone
+panel.options.system.debug: Debug
+panel.options.system.debug.editorUri: Editor-URI
+panel.options.system.debug.editorUri.description: Gebruik `{{filename}}` en `{{line}}` om de URI te bouwen die de code-editor opent
+panel.options.system.debug.mode: Debug-modus
+panel.options.system.debug.mode.description: Debug-modus toont foutinformatie en moet uitgeschakeld zijn in productie omdat het gevoelige data kan onthullen
+panel.options.system.debug.mode.disabled: Uitgeschakeld
+panel.options.system.debug.mode.enabled: Ingeschakeld
+panel.options.system.files: Bestanden
+panel.options.system.files.allowedExtensions: Toegestane extensies
+panel.options.system.files.allowedExtensions.noExtensions: Geen extensies (geen bestanden toegestaan)
+panel.options.system.images: Afbeeldingen
+panel.options.system.images.clearCacheByDefault: Afbeeldingscache standaard legen
+panel.options.system.images.clearCacheByDefault.disabled: Uitgeschakeld
+panel.options.system.images.clearCacheByDefault.enabled: Ingeschakeld
+panel.options.system.images.jpegQuality: JPEG-kwaliteit
+panel.options.system.images.jpegSaveProgressive: Sla JPEG-afbeeldingen progressief op
+panel.options.system.images.jpegSaveProgressive.disabled: Uitgeschakeld
+panel.options.system.images.jpegSaveProgressive.enabled: Ingeschakeld
+panel.options.system.images.pngCompressionLevel: PNG-compressieniveau
+panel.options.system.images.webpQuality: WebP-kwaliteit
+panel.options.system.uploads.processImages: Verwerk (optimaliseer) geüploade afbeeldingen
+panel.options.system.uploads.processImages.disabled: Uitgeschakeld
+panel.options.system.uploads.processImages.enabled: Ingeschakeld
+panel.options.updated: Opties bijgewerkt
+panel.pages.changes.continue: Doorgaan zonder op te slaan
+panel.pages.changes.detected: Wijzigingen gedetecteerd
+panel.pages.changes.detected.prompt: Je hebt wijzigingen die niet zijn opgeslagen. Weet je zeker dat je deze pagina wilt verlaten?
+panel.pages.changeSlug: Slug bewerken
+panel.pages.changeSlug.generate: Genereer vanuit titel
+panel.pages.deleteFile: Bestand verwijderen
+panel.pages.deleteFile.prompt: Weet je zeker dat je dit bestand wilt verwijderen? Deze actie kan niet ongedaan worden gemaakt.
+panel.pages.deletePage: Pagina verwijderen
+panel.pages.deletePage.prompt: Weet je zeker dat je deze pagina wilt verwijderen? Deze actie kan niet ongedaan worden gemaakt.
+panel.pages.edit: Pagina bewerken
+panel.pages.editPage: Pagina %s bewerken
+panel.pages.history.event.created: Pagina aangemaakt door %s %s.
+panel.pages.history.event.edited: Pagina bewerkt door %s %s.
+panel.pages.languages: Talen
+panel.pages.languages.addLanguage: Voeg %s toe
+panel.pages.languages.editLanguage: Bewerk %s
+panel.pages.newPage: Nieuwe pagina
+panel.pages.newPage.site: Site
+panel.pages.next: Volgende pagina
+panel.pages.page: Pagina
+panel.pages.page.actions: Acties
+panel.pages.page.cannotChangeNum: Paginanummer kan niet worden gewijzigd
+panel.pages.page.cannotCreate: Kan pagina niet aanmaken
+panel.pages.page.cannotCreate.alreadyExists: Kan pagina niet aanmaken, een pagina met dezelfde URI bestaat al
+panel.pages.page.cannotCreate.invalidParent: Kan pagina niet aanmaken, ongeldige bovenliggende pagina
+panel.pages.page.cannotCreate.invalidSlug: Kan pagina niet aanmaken, slug van de pagina mag alleen letters en cijfers bevatten, gescheiden door streepjes
+panel.pages.page.cannotCreate.invalidTemplate: Kan pagina niet aanmaken, ongeldig sjabloon
+panel.pages.page.cannotCreate.varMissing: Kan pagina niet aanmaken, ontbrekende variabele
+panel.pages.page.cannotDelete.invalidLanguage: 'Kan pagina niet verwijderen, ongeldige taal: %s'
+panel.pages.page.cannotDelete.notDeletable: Kan pagina niet verwijderen, de pagina is niet verwijderbaar
+panel.pages.page.cannotDelete.pageNotFound: Kan pagina niet verwijderen, pagina niet gevonden
+panel.pages.page.cannotEdit.alreadyExists: Kan pagina niet bewerken, een pagina met dezelfde URI bestaat al
+panel.pages.page.cannotEdit.indexOrErrorPageSlug: Kan slug van index- of foutpagina niet bewerken
+panel.pages.page.cannotEdit.invalidLanguage: 'Kan pagina niet bewerken, ongeldige taal: %s'
+panel.pages.page.cannotEdit.invalidParent: Kan pagina niet bewerken, ongeldige bovenliggende pagina
+panel.pages.page.cannotEdit.invalidSlug: Kan slug van de pagina niet bewerken, deze mag alleen letters en cijfers bevatten gescheiden door streepjes
+panel.pages.page.cannotEdit.invalidTemplate: Kan pagina niet bewerken, ongeldig sjabloon
+panel.pages.page.cannotEdit.pageNotFound: Kan pagina niet bewerken, pagina niet gevonden
+panel.pages.page.cannotEdit.varMissing: Kan pagina niet bewerken, ontbrekende variabele
+panel.pages.page.cannotMove: Kan pagina niet verplaatsen
+panel.pages.page.cannotPreview.pageNotFound: Kan pagina niet bekijken, pagina niet gevonden
+panel.pages.page.cannotPreview.parentChanged: Kan pagina niet bekijken, bovenliggende pagina is veranderd
+panel.pages.page.created: Pagina aangemaakt!
+panel.pages.page.deleted: Pagina verwijderd
+panel.pages.page.edited: Pagina bewerkt
+panel.pages.page.lastModified: Laatste wijziging
+panel.pages.page.moved: Pagina verplaatst!
+panel.pages.page.notFound: Pagina niet gevonden
+panel.pages.page.status: Status
+panel.pages.pages: Pagina's
+panel.pages.pages.collapseAll: Vouw alles in
+panel.pages.pages.expandAll: Vouw alles uit
+panel.pages.pages.reorder: Herschikken
+panel.pages.pages.search: Pagina's zoeken...
+panel.pages.preview: Voorbeeld
+panel.pages.previewFile: Voorbeeld
+panel.pages.previous: Vorige pagina
+panel.pages.publish: Publiceer
+panel.pages.renameFile: Bestand hernoemen
+panel.pages.renameFile.name: Naam
+panel.pages.replaceFile: Bestand vervangen
+panel.pages.save: Opslaan
+panel.pages.saveOnly: Opslaan zonder publiceren
+panel.pages.toggleChildren: Kindpagina's tonen/verbergen
+panel.pages.viewChildren: Bekijk subpagina's
+panel.pages.viewPage: Bekijk pagina
+panel.panel: Administratiepaneel
+panel.register.createUser: Formwork is geïnstalleerd maar er zijn geen gebruikers gevonden. Maak nu een gebruiker aan.
+panel.register.register: Nieuwe gebruiker registreren
+panel.request.error.postMaxSize: De HTTP POST-aanvraag overschrijdt de maximaal toegestane grootte
+panel.sections.toggle: Sectie wisselen
+panel.site.languages: Talen
+panel.site.languages.availableLanguages: Beschikbare talen
+panel.site.languages.availableLanguages.noLanguages: Geen talen
+panel.site.languages.preferredLanguage: Gebruik door de browser geprefereerde taal
+panel.site.languages.preferredLanguage.disabled: Uitgeschakeld
+panel.site.languages.preferredLanguage.enabled: Ingeschakeld
+panel.statistics.devices: Apparaten
+panel.statistics.devices.type: Type
+panel.statistics.devices.type.desktop: Desktop
+panel.statistics.devices.type.mobile: Mobiel
+panel.statistics.devices.type.tablet: Tablet
+panel.statistics.monthlyUniqueVisitors: Maandelijkse unieke bezoekers
+panel.statistics.monthlyVisits: Maandelijkse bezoeken
+panel.statistics.sources: Bronnen
+panel.statistics.sources.direct: Direct
+panel.statistics.sources.site: Site
+panel.statistics.statistics: Statistieken
+panel.statistics.totalVisits: Totaal bezoeken
+panel.statistics.totalVisits.percentTotal: '% totaal'
+panel.statistics.totalVisits.uri: URI
+panel.statistics.visits: Bezoeken
+panel.statistics.weeklyUniqueVisitors: Wekelijkse unieke bezoekers
+panel.statistics.weeklyVisits: Wekelijkse bezoeken
+panel.tools.backup.actions: Acties
+panel.tools.backup.date: Datum
+panel.tools.backup.delete: Backup verwijderen
+panel.tools.backup.file: Bestand
+panel.tools.backup.size: Grootte
+panel.tools.backups: Backups
+panel.tools.info: Info
+panel.tools.latestBackup: 'Laatste backup:'
+panel.tools.latestBackups: Laatste backups
+panel.tools.tools: Hulpmiddelen
+panel.tools.updates: Updates
+panel.updates.availableForInstall: is beschikbaar voor installatie
+panel.updates.check: Controleer op updates
+panel.updates.install: Installeren
+panel.updates.installed: Update geïnstalleerd!
+panel.updates.installPrompt: Wil je de update installeren?
+panel.updates.latestVersionAvailable: is de nieuwste beschikbare versie
+panel.updates.status.cannotCheck: Kan niet controleren op updates. Probeer later opnieuw.
+panel.updates.status.cannotInstall: Kan update niet installeren
+panel.updates.status.cannotMakeBackup: Kan geen backup maken vóór het updaten
+panel.updates.status.checking: Controleren op updates...
+panel.updates.status.found: Updates gevonden
+panel.updates.status.installing: Updates installeren...
+panel.updates.status.upToDate: Up-to-date!
+panel.uploader.uploaded: Bestand geüpload
+panel.user.actions: Acties
+panel.user.image.actions: Acties
+panel.user.image.cannotDelete.defaultImage: Kan standaardgebruikersafbeelding niet verwijderen
+panel.user.image.delete: Gebruikersafbeelding verwijderen
+panel.user.image.delete.prompt: Weet je zeker dat je de gebruikersafbeelding wilt verwijderen? Deze actie kan niet ongedaan worden gemaakt.
+panel.user.image.deleted: Gebruikersafbeelding verwijderd
+panel.user.image.uploaded: Gebruikersafbeelding geüpload
+panel.user.lastAccess: Laatste toegang
+panel.users.deleteUser: Gebruiker verwijderen
+panel.users.deleteUser.prompt: Weet je zeker dat je deze gebruiker wilt verwijderen? Deze actie kan niet ongedaan worden gemaakt.
+panel.users.newUser: Nieuwe gebruiker
+panel.users.newUser.password.suggestion: ten minste 8 tekens
+panel.users.newUser.username.suggestion: tussen 3-20 letters, cijfers en - . _
+panel.users.nextUser: Volgende gebruiker
+panel.users.options: Opties
+panel.users.previousUser: Vorige gebruiker
+panel.users.user.cannotChangeEmail.alreadyUsed: Kan e-mail van gebruiker niet wijzigen, het adres is al gekoppeld aan een account
+panel.users.user.cannotChangePassword: Kan wachtwoord van een andere gebruiker niet wijzigen. Deze actie is niet toegestaan.
+panel.users.user.cannotChangeRole: Kan rol van %s niet wijzigen. Deze actie is niet toegestaan.
+panel.users.user.cannotCreate.alreadyExists: Kan gebruiker niet aanmaken, een gebruiker met dezelfde naam bestaat al
+panel.users.user.cannotCreate.emailAlreadyUsed: Kan gebruiker niet aanmaken, het e-mailadres is al gekoppeld aan een account
+panel.users.user.cannotCreate.varMissing: Kan gebruiker niet aanmaken, ontbrekende variabele
+panel.users.user.cannotDelete: Kan gebruiker niet verwijderen. Je moet beheerder zijn en de gebruiker mag niet ingelogd zijn.
+panel.users.user.cannotEdit: Kan gebruiker %s niet bewerken. Deze actie is niet toegestaan.
+panel.users.user.created: Gebruiker aangemaakt
+panel.users.user.deleted: Gebruiker verwijderd
+panel.users.user.edited: Gebruikersgegevens bijgewerkt
+panel.users.user.notFound: Gebruiker niet gevonden
+panel.users.userProfile: '%s gebruikersprofiel'
+panel.users.users: Gebruikers
+panel.viewSite: Bekijk site

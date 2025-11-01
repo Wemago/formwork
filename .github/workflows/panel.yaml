@@ -31,6 +31,7 @@ jobs:
         with:
           node-version: latest
           cache: pnpm
+          cache-dependency-path: '**/pnpm-lock.yaml'
 
       - uses: actions/checkout@v4
 

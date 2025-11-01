@@ -10,7 +10,7 @@ if (!defined('SYSTEM_PATH')) {
 
 // Check PHP version requirements
 if (!version_compare(PHP_VERSION, '8.3.0', '>=')) {
-    if (php_sapi_name() === 'cli') {
+    if (PHP_SAPI === 'cli') {
         printf("Formwork requires PHP 8.3.0 or higher. You are running PHP %s.\n", PHP_VERSION);
         exit(1);
     }
@@ -22,7 +22,7 @@ if (!version_compare(PHP_VERSION, '8.3.0', '>=')) {
 if (file_exists(ROOT_PATH . '/vendor/autoload.php')) {
     require ROOT_PATH . '/vendor/autoload.php';
 } else {
-    if (php_sapi_name() === 'cli') {
+    if (PHP_SAPI === 'cli') {
         echo "Composer autoloader not found. Please run \"composer install\" in the root directory.\n";
         exit(1);
     }

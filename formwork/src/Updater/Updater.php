@@ -194,9 +194,9 @@ final class Updater
     /**
      * Get latest release data
      *
-     * @return array{name: string, tag: string, date: int, archive: string}
+     * @return ?array{name: string, tag: string, date: int, archive: string}
      */
-    public function latestRelease(): array
+    public function latestRelease(): ?array
     {
         return $this->registry->get('release');
     }

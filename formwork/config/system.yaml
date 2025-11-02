@@ -96,6 +96,10 @@ panel:
         app: '${system.panel.path}/config/app.php'
         navigation: '${system.panel.path}/config/navigation.php'
 
+plugins:
+    enabled: true
+    path: '${%ROOT_PATH%}/site/plugins'
+
 users:
     paths:
         accounts: '${%ROOT_PATH%}/site/users/accounts'

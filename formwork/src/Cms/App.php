@@ -21,12 +21,14 @@ use Formwork\Pages\PageCollectionFactory;
 use Formwork\Pages\PageFactory;
 use Formwork\Pages\PaginationFactory;
 use Formwork\Panel\Panel;
+use Formwork\Plugins\Plugins;
 use Formwork\Router\Router;
 use Formwork\Schemes\Schemes;
 use Formwork\Security\CsrfToken;
 use Formwork\Services\Container;
 use Formwork\Services\Loaders\ConfigServiceLoader;
 use Formwork\Services\Loaders\PanelServiceLoader;
+use Formwork\Services\Loaders\PluginsServiceLoader;
 use Formwork\Services\Loaders\SchemesServiceLoader;
 use Formwork\Services\Loaders\SiteServiceLoader;
 use Formwork\Services\Loaders\TemplatesServiceLoader;
@@ -146,6 +148,13 @@ final class App
         return $this->container->get(EventDispatcher::class);
     }
 
+    /**
+     * Get Plugins instance
+     */
+    public function plugins(): Plugins
+    {
+        return $this->container->get(Plugins::class);
+    }
 
     /**
      * Get a service from the container
@@ -176,6 +185,7 @@ final class App
 
         $this->loadErrorHandler();
         $this->loadServices($this->container);
+        $this->plugins()->initializeEnabled();
         $this->loadRoutes();
         $this->loaded = true;
     }
@@ -296,6 +306,10 @@ final class App
         $container->define(FileUriGenerator::class);
 
         $container->define(FileUploader::class);
+
+        $container->define(Plugins::class)
+            ->loader(PluginsServiceLoader::class)
+            ->alias('plugins');
     }
 
     /**

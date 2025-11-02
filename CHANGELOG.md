@@ -1,5 +1,11 @@
 # Changelog
 
+# [2.1.1](https://github.com/getformwork/formwork/releases/tag/2.1.0)
+
+**Bug fixes**
+- Fix missing absolute path preventing backup creation in some environments
+- Move league/climate to non-dev requires to ensure it's available for the `bin/formwork` command
+
 # [2.1.0](https://github.com/getformwork/formwork/releases/tag/2.1.0)
 
 **Enhancements**

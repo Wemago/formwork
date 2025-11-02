@@ -46,7 +46,7 @@ final class Backupper
         if (($status = $zipArchive->open($destination, ZipArchive::CREATE)) === true) {
             foreach (FileSystem::listRecursive($source, FileSystem::LIST_ALL) as $file) {
                 if ($this->isCopiable($file)) {
-                    $zipArchive->addFile($file, $file);
+                    $zipArchive->addFile(FileSystem::joinPaths($source, $file), $file);
                 }
             }
             $zipArchive->close();

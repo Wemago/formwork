@@ -154,7 +154,8 @@ final class Updater
                 throw new RuntimeException('Cannot get filename from zip archive');
             }
 
-            $destination = FileSystem::joinPaths(ROOT_PATH, $filename);
+            $root = ROOT_PATH;
+            $destination = FileSystem::joinPaths($root, $filename);
             $destinationDirectory = dirname($destination);
 
             if ($this->isCopiable($filename)) {
@@ -162,15 +163,18 @@ final class Updater
                     FileSystem::createDirectory($destinationDirectory);
                 }
                 if (!Str::endsWith($destination, DIRECTORY_SEPARATOR)) {
-                    $contents = $zipArchive->getFromIndex($i);
-                    if ($contents === false) {
-                        throw new RuntimeException(sprintf('Cannot read "%s" from zip archive', $filename));
+                    if ($zipArchive->extractTo($root, $filename) === false) {
+                        throw new RuntimeException(sprintf('Cannot extract "%s" from zip archive', $filename));
                     }
-                    FileSystem::write($destination, $contents);
+                    if ($zipArchive->getExternalAttributesIndex($i, $opsys, $perms) && $opsys === ZipArchive::OPSYS_UNIX) {
+                        @chmod($destination, ($perms >> 16) & 0o777);
+                    }
                 }
                 $installedFiles[] = $destination;
             }
         }
+
+        $zipArchive->close();
 
         FileSystem::delete($this->options['tempFile']);
 

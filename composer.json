@@ -1,12 +1,13 @@
 {
     "name": "getformwork/formwork",
-    "description": "A file-based Content Management System (CMS) to make and manage simple sites",
+    "description": "A simple, fast and flexible flat-file CMS to create and manage websites without a database",
     "type": "project",
-    "homepage": "https://github.com/getformwork/formwork",
+    "homepage": "https://getformwork.org",
     "license": "MIT",
     "authors": [
         {
-            "name": "Giuseppe Criscione"
+            "name": "Formwork Team",
+            "homepage": "https://getformwork.org"
         }
     ],
     "autoload": {

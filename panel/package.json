@@ -1,15 +1,19 @@
 {
-    "name": "formwork-panel",
+    "private": true,
     "description": "Formwork CMS Administration Panel",
-    "author": "Giuseppe Criscione",
-    "license": "MIT",
     "type": "module",
+    "homepage": "https://getformwork.org",
+    "license": "MIT",
+    "contributors": [
+        {
+            "name": "Formwork Team",
+            "url": "https://getformwork.org"
+        }
+    ],
     "repository": {
         "type": "git",
-        "url": "git+https://github.com/getformwork/formwork.git"
-    },
-    "bugs": {
-        "url": "https://github.com/getformwork/formwork/issues"
+        "url": "git+https://github.com/getformwork/formwork.git",
+        "directory": "panel"
     },
     "scripts": {
         "build": "pnpm build:css && pnpm build:js",

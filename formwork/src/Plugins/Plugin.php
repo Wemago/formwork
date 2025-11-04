@@ -5,6 +5,7 @@ namespace Formwork\Plugins;
 use Composer\Autoload\ClassLoader;
 use Formwork\Cms\App;
 use Formwork\Utils\Str;
+use Formwork\View\ViewFactory;
 
 class Plugin
 {
@@ -13,7 +14,7 @@ class Plugin
      */
     protected bool $initialized = false;
 
-    public function __construct(protected string $path, protected App $app) {}
+    public function __construct(protected string $path, protected App $app, protected ViewFactory $viewFactory) {}
 
     /**
      * Get the plugin path
@@ -29,6 +30,9 @@ class Plugin
     public function initialize(): void
     {
         $this->initialized = true;
+        $this->viewFactory->setResolutionPaths([
+            'plugin:' . basename($this->path()) => $this->path() . '/views/',
+        ]);
     }
 
     /**

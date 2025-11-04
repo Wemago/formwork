@@ -1,5 +1,5 @@
 <?php if ($field->get('listFiles', false) && ($model = $field->parent()?->model())) : ?>
-    <?php $this->insert('partials.files.file.list', ['name' => $field->name(), 'files' => $field->collection()->map(fn($file) => [$file, $model]), 'columns' => ['date', 'size']]); ?>
+    <?php $this->insert('@panel._files.file.list', ['name' => $field->name(), 'files' => $field->collection()->map(fn($file) => [$file, $model]), 'columns' => ['date', 'size']]); ?>
 <?php endif ?>
 <?php if ($field->has('label')) : ?>
     <label class="<?= $this->classes(['form-label', 'form-label-required' => $field->isRequired()]) ?>" for="<?= $field->name() ?>"><?= $this->escape($this->append($field->label(), ':')) ?></label>
@@ -20,5 +20,5 @@
             ]) ?>>
     <span><?= $this->icon('cloud-upload') ?> <?= $this->translate('fields.file.uploadLabel') ?></span>
 </label>
-<?php $this->insert('fields.partials.errors') ?>
-<?php $this->insert('fields.partials.description') ?>
+<?php $this->insert('@panel.fields.partials.errors') ?>
+<?php $this->insert('@panel.fields.partials.description') ?>

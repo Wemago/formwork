@@ -72,7 +72,6 @@ abstract class AbstractController extends BaseAbstractController
         $view = $this->viewFactory->make(
             $name,
             [...$this->defaults(), ...$data],
-            $this->config->get('system.views.paths.panel'),
         );
         return $view->render();
     }

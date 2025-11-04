@@ -1,4 +1,4 @@
-<?php $this->layout('fields.field') ?>
+<?php $this->layout('@panel.fields.field') ?>
 <div class="flex">
     <div class="form-input-range">
         <input <?= $this->attr([

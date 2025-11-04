@@ -19,9 +19,9 @@ final class DashboardController extends AbstractController
 
         $this->modal('newPage')->setFieldsModel($this->site);
 
-        return new Response($this->view('dashboard.index', [
+        return new Response($this->view('@panel.dashboard.index', [
             'title'             => $this->translate('panel.dashboard.dashboard'),
-            'lastModifiedPages' => $this->view('pages.tree', [
+            'lastModifiedPages' => $this->view('@panel.pages.tree', [
                 'pages'           => $this->site->descendants()->sortBy('lastModifiedTime', direction: SORT_DESC)->limit(5),
                 'includeChildren' => false,
                 'orderable'       => false,

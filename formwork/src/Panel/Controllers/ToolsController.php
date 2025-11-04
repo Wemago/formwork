@@ -56,9 +56,9 @@ final class ToolsController extends AbstractController
             'size'        => FileSystem::formatSize(FileSystem::size($path)),
         ]);
 
-        return new Response($this->view('tools.backups', [
+        return new Response($this->view('@panel.tools.backups', [
             'title' => $this->translate('panel.tools.backups'),
-            'tabs'  => $this->view('tools.tabs', [
+            'tabs'  => $this->view('@panel.tools.tabs', [
                 'tabs'    => $this->tabs,
                 'current' => 'backups',
             ]),
@@ -75,9 +75,9 @@ final class ToolsController extends AbstractController
             return $this->forward(ErrorsController::class, 'forbidden');
         }
 
-        return new Response($this->view('tools.updates', [
+        return new Response($this->view('@panel.tools.updates', [
             'title' => $this->translate('panel.tools.updates'),
-            'tabs'  => $this->view('tools.tabs', [
+            'tabs'  => $this->view('@panel.tools.tabs', [
                 'tabs'    => $this->tabs,
                 'current' => 'updates',
             ]),
@@ -219,9 +219,9 @@ final class ToolsController extends AbstractController
         ksort($data['HTTP Request Headers']);
         ksort($data['HTTP Response Headers']);
 
-        return new Response($this->view('tools.info', [
+        return new Response($this->view('@panel.tools.info', [
             'title' => $this->translate('panel.tools.info'),
-            'tabs'  => $this->view('tools.tabs', [
+            'tabs'  => $this->view('@panel.tools.tabs', [
                 'tabs'    => $this->tabs,
                 'current' => 'info',
             ]),

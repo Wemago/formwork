@@ -1,4 +1,4 @@
-<?php $this->layout('panel') ?>
+<?php $this->layout('@panel.panel') ?>
 <?php $this->modals()->add('uploadFile') ?>
 
 <div data-view="files">
@@ -14,7 +14,7 @@
 
     <div class="section">
         <div class="section-content">
-            <?php $this->insert('partials.files.file.list', ['name' => 'view-files', 'files' => $files, 'columns' => ['parent', 'date', 'size']]) ?>
+            <?php $this->insert('@panel._files.file.list', ['name' => 'view-files', 'files' => $files, 'columns' => ['parent', 'date', 'size']]) ?>
         </div>
     </div>
 </div>

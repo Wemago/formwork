@@ -1,6 +1,6 @@
-<?php $this->layout('fields.field') ?>
+<?php $this->layout('@panel.fields.field') ?>
 <div class="form-input-wrap">
-    <?= $this->insert('fields.partials.icon', ['icon' => $field->get('icon', 'files')]) ?>
+    <?= $this->insert('@panel.fields.partials.icon', ['icon' => $field->get('icon', 'files')]) ?>
     <input <?= $this->attr([
                 'class'          => $this->classes(['form-input', 'form-input-tags', 'form-files', 'is-invalid' => ($field->isValidated() && !$field->isValid()), $field->get('class')]),
                 'type'           => 'text',

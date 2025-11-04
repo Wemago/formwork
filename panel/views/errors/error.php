@@ -8,7 +8,7 @@
     <link rel="icon" type="image/svg+xml" href="<?= $this->assets()->get('images/icon.svg')->uri() ?>">
     <link rel="alternate icon" href="<?= $this->assets()->get('images/icon.png')->uri() ?>">
     <?php $this->assets()->add('css/panel.min.css') ?>
-    <?php $this->insert('partials.stylesheets') ?>
+    <?php $this->insert('@panel.partials.stylesheets') ?>
 </head>
 
 <body>
@@ -42,7 +42,7 @@
         <?php endif ?>
     </main>
     <?php $this->assets()->add('js/app.min.js', ['module' => true]) ?>
-    <?php $this->insert('partials.scripts') ?>
+    <?php $this->insert('@panel._scripts') ?>
 </body>
 
 </html>

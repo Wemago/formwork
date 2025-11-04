@@ -1,4 +1,4 @@
-<?php $this->layout('fields.field') ?>
+<?php $this->layout('@panel.fields.field') ?>
 <textarea <?= $this->attr([
                 'class'        => $this->classes(['form-textarea', 'is-invalid' => ($field->isValidated() && !$field->isValid()), $field->get('class')]),
                 'id'           => $field->name(),

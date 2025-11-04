@@ -11,11 +11,11 @@
     <link rel="icon" type="image/svg+xml" href="<?= $this->assets()->get('images/icon.svg')->uri() ?>">
     <link rel="alternate icon" href="<?= $this->assets()->get('images/icon.png')->uri() ?>">
     <?php $this->assets()->add('css/panel.min.css') ?>
-    <?php $this->insert('partials.stylesheets') ?>
+    <?php $this->insert('@panel.partials.stylesheets') ?>
 </head>
 
 <body>
-    <?php $this->insert('partials.sidebar') ?>
+    <?php $this->insert('@panel._sidebar') ?>
     <header class="panel-header">
         <span class="show-from-sm text-color-gray-dark"><?= $this->translate('panel.panel') ?></span>
         <span class="show-from-sm ml-5 mr-2 text-color-gray-medium">/</span>
@@ -32,10 +32,10 @@
         </div>
     </main>
     <?php foreach ($this->modals() as $modal) : ?>
-        <?php $this->insert('modals.modal', ['modal' => $modal]) ?>
+        <?php $this->insert('@panel.modals.modal', ['modal' => $modal]) ?>
     <?php endforeach ?>
     <?php $this->assets()->add('js/app.min.js', ['module' => true]) ?>
-    <?php $this->insert('partials.scripts') ?>
+    <?php $this->insert('@panel._scripts') ?>
 </body>
 
 </html>

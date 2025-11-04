@@ -235,6 +235,7 @@ final class App
             ->alias('config');
 
         $container->define(ViewFactory::class)
+            ->parameter('resolutionPaths', fn(Config $config) => ['system' => $config->get('system.views.paths.system')])
             ->parameter('methods', fn(Container $container, Config $config) => $container->call(require $config->get('system.views.methods.system')));
 
         $container->define(ErrorsController::class)

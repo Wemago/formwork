@@ -4,31 +4,31 @@ namespace Formwork\View;
 
 use Closure;
 use Formwork\Cms\App;
-use Formwork\Config\Config;
 
 final class ViewFactory
 {
     /**
      * @param array<string, Closure> $methods
+     * @param array<string, string>  $resolutionPaths
      */
     public function __construct(
         private array $methods,
+        private array $resolutionPaths,
         private App $app,
-        private Config $config,
     ) {}
 
     /**
      * Create a new View instance
      *
-     * @param array<string, mixed>   $vars
-     * @param array<string, Closure> $methods
+     * @param array<string, mixed>      $vars
+     * @param array<string>|string|null $resolutionPaths
+     * @param array<string, Closure>    $methods
      */
-    public function make(string $name, array $vars = [], ?string $path = null, array $methods = []): View
+    public function make(string $name, array $vars = [], array|string|null $resolutionPaths = null, array $methods = []): View
     {
         $vars = [...$this->defaults(), ...$vars];
-        $path ??= $this->config->get('system.views.paths.system');
         $methods = [...$this->methods, ...$methods];
-        return new View($name, $vars, $path, $methods);
+        return new View($name, $vars, $resolutionPaths ?? $this->resolutionPaths, $methods);
     }
 
     /**
@@ -39,6 +39,16 @@ final class ViewFactory
     public function setMethods(Closure|array $methods): void
     {
         $this->methods = [...$this->methods, ...(array) $methods];
+    }
+
+    /**
+     * Add a view resolution path
+     *
+     * @param array<string, string> $resolutionPaths
+     */
+    public function setResolutionPaths(array $resolutionPaths): void
+    {
+        $this->resolutionPaths = [...$this->resolutionPaths, ...$resolutionPaths];
     }
 
     /**

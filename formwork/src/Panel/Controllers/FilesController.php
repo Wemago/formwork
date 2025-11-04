@@ -35,7 +35,7 @@ final class FilesController extends AbstractController
             return $this->forward(ErrorsController::class, 'forbidden');
         }
 
-        return new Response($this->view('files.index', [
+        return new Response($this->view('@panel.files.index', [
             'title' => $this->translate('panel.files.files'),
             'files' => $this->getFiles(),
         ]));
@@ -140,7 +140,7 @@ final class FilesController extends AbstractController
 
         $responseStatus = ($valid || $this->request->method() === RequestMethod::GET) ? ResponseStatus::OK : ResponseStatus::UnprocessableEntity;
 
-        return new Response($this->view('files.edit', [
+        return new Response($this->view('@panel.files.edit', [
             'title' => $file->name(),
             'model' => $model,
             'file'  => $file,

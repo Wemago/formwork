@@ -99,7 +99,7 @@ final class AuthenticationController extends AbstractController
         // Always generate a new CSRF token
         $this->csrfToken->generate($csrfTokenName);
 
-        return new Response($this->view('authentication.login', [
+        return new Response($this->view('@panel.authentication.login', [
             'title'  => $this->translate('panel.login.login'),
             'fields' => $fields,
         ]));
@@ -135,6 +135,6 @@ final class AuthenticationController extends AbstractController
     {
         $defaults = ['title' => $this->translate('panel.login.login'), 'error' => true];
         $this->panel->notify($message, 'error');
-        return new Response($this->view('authentication.login', [...$defaults, ...$data]));
+        return new Response($this->view('@panel.authentication.login', [...$defaults, ...$data]));
     }
 }

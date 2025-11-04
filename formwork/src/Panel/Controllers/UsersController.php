@@ -30,7 +30,7 @@ final class UsersController extends AbstractController
             return $this->forward(ErrorsController::class, 'forbidden');
         }
 
-        return new Response($this->view('users.index', [
+        return new Response($this->view('@panel.users.index', [
             'title' => $this->translate('panel.users.users'),
             'users' => $this->site->users()->sortBy('username'),
         ]));
@@ -223,7 +223,7 @@ final class UsersController extends AbstractController
 
         $responseStatus = ($valid || $this->request->method() === RequestMethod::GET) ? ResponseStatus::OK : ResponseStatus::UnprocessableEntity;
 
-        return new Response($this->view('users.profile', [
+        return new Response($this->view('@panel.users.profile', [
             'title'  => $this->translate('panel.users.userProfile', $user->username()),
             'user'   => $user,
             'fields' => $fields,

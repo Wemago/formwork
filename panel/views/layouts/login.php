@@ -9,7 +9,7 @@
     <link rel="icon" type="image/svg+xml" href="<?= $this->assets()->get('images/icon.svg')->uri() ?>">
     <link rel="alternate icon" href="<?= $this->assets()->get('images/icon.png')->uri() ?>">
     <?php $this->assets()->add('css/panel.min.css') ?>
-    <?php $this->insert('partials.stylesheets') ?>
+    <?php $this->insert('@panel.partials.stylesheets') ?>
 </head>
 
 <body>
@@ -18,7 +18,7 @@
             <div class="<?= $this->classes(['login-container', 'form-input-invalid' => $error ?? false]) ?>">
                 <div class="sections">
                     <section class="section">
-                        <?= $this->insert('_login/notification') ?>
+                        <?= $this->insert('@panel._login.notification') ?>
                         <?= $this->content() ?>
                     </section>
                 </div>
@@ -26,7 +26,7 @@
         </div>
     </main>
     <?php $this->assets()->add('js/app.min.js', ['module' => true]) ?>
-    <?php $this->insert('partials.scripts') ?>
+    <?php $this->insert('@panel._scripts') ?>
 </body>
 
 </html>

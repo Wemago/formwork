@@ -41,7 +41,7 @@ final class PageController extends AbstractController
                 $route = $maintenancePage->route();
             } else {
                 $status = ResponseStatus::ServiceUnavailable;
-                return new Response($this->view('errors.maintenance', ['status' => $status->code(), 'message' => $status->message()]), $status);
+                return new Response($this->view('@system.errors.maintenance', ['status' => $status->code(), 'message' => $status->message()]), $status);
             }
         }
 

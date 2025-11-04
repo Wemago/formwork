@@ -1,4 +1,4 @@
-<?php $this->layout('panel') ?>
+<?php $this->layout('@panel.panel') ?>
 
 <?php $this->modals()->add('changes') ?>
 
@@ -13,6 +13,6 @@
     </div>
     <?= $tabs ?>
     <div>
-        <?php $this->insert('fields', ['fields' => $fields]) ?>
+        <?php $this->insert('@panel.fields', ['fields' => $fields]) ?>
     </div>
 </form>

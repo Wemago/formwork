@@ -4,7 +4,7 @@
     <a href="<?= $panel->uri('/users/' . $panel->user()->username() . '/profile/') ?>">
         <div class="panel-user-card">
             <div class="panel-user-image">
-                <?= $this->insert('_user-image', ['user' => $panel->user()]) ?>
+                <?= $this->insert('@panel._user-image', ['user' => $panel->user()]) ?>
             </div>
             <div class="panel-user-details">
                 <div class="panel-user-fullname"><?= $this->escape($panel->user()->fullname()) ?></div>

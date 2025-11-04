@@ -70,10 +70,10 @@ final class PagesController extends AbstractController
 
         $this->modal('newPage')->setFieldsModel($parent);
 
-        return new Response($this->view('pages.index', [
+        return new Response($this->view('@panel.pages.index', [
             'title'     => $this->translate('panel.pages.pages'),
             'parent'    => $parent,
-            'pagesTree' => $this->view('pages.tree', [
+            'pagesTree' => $this->view('@panel.pages.tree', [
                 'pages'           => $pageCollection,
                 'parent'          => $parent,
                 'root'            => $parent,
@@ -293,7 +293,7 @@ final class PagesController extends AbstractController
 
         $responseStatus = ($valid || $this->request->method() === RequestMethod::GET) ? ResponseStatus::OK : ResponseStatus::UnprocessableEntity;
 
-        return new Response($this->view('pages.editor', [
+        return new Response($this->view('@panel.pages.editor', [
             'title'           => $this->translate('panel.pages.editPage', (string) $page->title()),
             'page'            => $page,
             'fields'          => $fieldCollection,

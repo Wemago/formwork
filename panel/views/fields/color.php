@@ -1,4 +1,4 @@
-<?php $this->layout('fields.field') ?>
+<?php $this->layout('@panel.fields.field') ?>
 <div class="form-input-wrap">
     <div class="flex">
         <input <?= $this->attr([

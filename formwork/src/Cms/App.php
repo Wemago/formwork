@@ -6,6 +6,8 @@ use BadMethodCallException;
 use ErrorException;
 use Formwork\Cache\AbstractCache;
 use Formwork\Cache\FilesCache;
+use Formwork\Cms\Events\RoutesAfterLoadEvent;
+use Formwork\Cms\Events\RoutesBeforeLoadEvent;
 use Formwork\Config\Config;
 use Formwork\Controllers\ErrorsController;
 use Formwork\Controllers\ErrorsControllerInterface;
@@ -318,6 +320,8 @@ final class App
      */
     private function loadRoutes(): void
     {
+        $this->events()->dispatch(new RoutesBeforeLoadEvent($this->router()));
+
         if ($this->config()->get('system.panel.enabled')) {
             $this->router()->loadFromFile(
                 $this->config()->get('system.routes.files.panel'),
@@ -326,6 +330,8 @@ final class App
         }
 
         $this->router()->loadFromFile($this->config()->get('system.routes.files.system'));
+
+        $this->events()->dispatch(new RoutesAfterLoadEvent($this->router()));
     }
 
     /**

@@ -1,6 +1,11 @@
 # Changelog
 
-# [2.1.1](https://github.com/getformwork/formwork/releases/tag/2.1.0)
+# [2.1.2](https://github.com/getformwork/formwork/releases/tag/2.1.2)
+
+**Bug fixes**
+- Fix file permissions ignored on updates extraction
+
+# [2.1.1](https://github.com/getformwork/formwork/releases/tag/2.1.1)
 
 **Bug fixes**
 - Fix missing absolute path preventing backup creation in some environments

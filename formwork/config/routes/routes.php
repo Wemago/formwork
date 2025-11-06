@@ -34,12 +34,18 @@ return [
             'path'   => '/files/{name}/',
             'action' => 'Formwork\Controllers\FilesController@file',
         ],
-        'tag.pagination' => [
-            'path'   => '/{page:all}/tag/{tagName:slug}/page/{paginationPage:number}/',
+        'taxonomy.pagination' => [
+            'path'  => '/{page:all}/{taxonomy}/{taxonomyTerm:slug}/page/{paginationPage:number}/',
+            'where' => [
+                'taxonomy' => fn($value, Site $site) => in_array($value, $site->taxonomies(), true),
+            ],
             'action' => 'Formwork\Controllers\PageController@load',
         ],
-        'tag' => [
-            'path'   => '/{page:all}/tag/{tagName:slug}/',
+        'taxonomy' => [
+            'path'  => '/{page:all}/{taxonomy}/{taxonomyTerm:slug}/',
+            'where' => [
+                'taxonomy' => fn($value, Site $site) => in_array($value, $site->taxonomies(), true),
+            ],
             'action' => 'Formwork\Controllers\PageController@load',
         ],
         'page.pagination' => [

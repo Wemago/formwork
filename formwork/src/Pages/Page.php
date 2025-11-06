@@ -231,6 +231,7 @@ class Page extends Model implements Stringable
             'headers'        => [],
             'responseStatus' => 200,
             'metadata'       => [],
+            'taxonomy'       => [],
             'content'        => '',
         ];
 
@@ -384,6 +385,30 @@ class Page extends Model implements Stringable
     public function files(): FileCollection
     {
         return $this->files;
+    }
+
+    /**
+     * Get page taxonomy
+     *
+     * @return array<string, list<string>>
+     */
+    public function taxonomy(): array
+    {
+        return $this->data['taxonomy'];
+    }
+
+    /**
+     * Set page taxonomy
+     *
+     * @param array<string, list<string>> $taxonomy
+     */
+    public function setTaxonomy(array $taxonomy): void
+    {
+        if (!Arr::every($taxonomy, fn($terms, $taxonomyName) => is_string($taxonomyName)
+            && is_array($terms) && Arr::every($terms, fn($term) => is_string($term)))) {
+            throw new InvalidValueException('Invalid taxonomy format');
+        }
+        $this->data['taxonomy'] = $taxonomy;
     }
 
     /**

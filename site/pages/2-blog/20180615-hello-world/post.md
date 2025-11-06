@@ -6,9 +6,10 @@ summary: |-
 
     This simple phrase has become a time-honored tradition in programming. It’s the output of the very first program most developers write when learning a new language, a framework, or — like now — setting up a new site.
 coverImage: nasa-vhsz50aafas-unsplash.jpg
-tags:
-    - ideas
-    - 'getting started'
+taxonomy:
+    tag:
+        - ideas
+        - 'getting started'
 ---
 ## Why "Hello World"?
 

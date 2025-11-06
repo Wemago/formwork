@@ -3,11 +3,12 @@ title: 'A Walk in the Park'
 summary: 'Sometimes the simplest things bring the most peace. A quiet stroll beneath the trees, birdsong in the air, and the crunch of gravel underfoot.'
 publishDate: '2025-05-05 22:16:00'
 coverImage: spencer-demera-opsimocytr0-unsplash.jpg
-tags:
-    - lifestyle
-    - relaxation
-    - ideas
-    - mindfulness
+taxonomy:
+    tag:
+        - lifestyle
+        - relaxation
+        - ideas
+        - mindfulness
 ---
 ## Nature’s small details
 

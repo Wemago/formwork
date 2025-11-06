@@ -2,6 +2,7 @@
 
 namespace Formwork\Router;
 
+use Closure;
 use InvalidArgumentException;
 
 class Route
@@ -40,6 +41,13 @@ class Route
      * @var list<string>
      */
     protected array $types = self::DEFAULT_TYPES;
+
+    /**
+     * Route parameter constraints
+     *
+     * @var array<string, array<mixed>|Closure>
+     */
+    protected array $constraints = [];
 
     /**
      * Route prefix
@@ -147,5 +155,26 @@ class Route
     public function getPrefix(): string
     {
         return $this->prefix;
+    }
+
+    /**
+     * Set route parameter constraint
+     *
+     * @param array<mixed>|Closure $constraint
+     */
+    public function where(string $parameter, Closure|array $constraint): self
+    {
+        $this->constraints[$parameter] = $constraint;
+        return $this;
+    }
+
+    /**
+     * Get route parameter constraints
+     *
+     * @return array<string, array<mixed>|Closure>
+     */
+    public function getConstraints(): array
+    {
+        return $this->constraints;
     }
 }

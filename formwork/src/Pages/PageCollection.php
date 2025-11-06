@@ -5,6 +5,7 @@ namespace Formwork\Pages;
 use Formwork\Cms\Site;
 use Formwork\Data\AbstractCollection;
 use Formwork\Data\Contracts\Paginable;
+use Formwork\Utils\Arr;
 use Formwork\Utils\Str;
 use RuntimeException;
 
@@ -80,6 +81,28 @@ class PageCollection extends AbstractCollection implements Paginable
     public function allowingChildren(): static
     {
         return $this->filterBy('allowChildren');
+    }
+
+    /**
+     * Get all the pages in the collection having the specified taxonomy terms
+     *
+     * @param array<string, list<string>> $taxonomy Taxonomy terms to filter by
+     * @param bool                        $slug     Whether the provided terms are slugs
+     */
+    public function havingTaxonomy(array $taxonomy, bool $slug = false): static
+    {
+        return $this->filter(function (Page $page) use ($taxonomy, $slug): bool {
+            foreach ($taxonomy as $taxonomyName => $terms) {
+                $pageTerms = $page->taxonomy()[$taxonomyName] ?? [];
+                if ($slug) {
+                    $pageTerms = Arr::map($pageTerms, fn($term) => Str::slug($term));
+                }
+                if (array_intersect($terms, $pageTerms) === []) {
+                    return false;
+                }
+            }
+            return true;
+        });
     }
 
     /**

@@ -105,7 +105,7 @@ class Site extends Model implements Stringable
      *
      * @var array<string, string>
      */
-    protected array $routeAliases;
+    protected array $routeAliases = [];
 
     /**
      * Site files
@@ -560,5 +560,6 @@ class Site extends Model implements Stringable
         foreach ($aliases as $from => $to) {
             $this->routeAliases[trim((string) $from, '/')] = trim((string) $to, '/');
         }
+        $this->data['routeAliases'] = $this->routeAliases;
     }
 }

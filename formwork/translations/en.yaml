@@ -64,9 +64,11 @@ page.unpublishDate: Unpublish date
 site.advanced: Advanced options
 site.advanced.aliases: Aliases
 site.advanced.aliases.alias: Alias
+site.advanced.aliases.description: Site route aliases to map custom URIs to specific pages
 site.advanced.aliases.route: Route
 site.advanced.metadata: HTML metadata
 site.advanced.metadata.content: Content
+site.advanced.metadata.description: HTML metadata to add as `<meta>` tags in the pages `<head>`, such as OpenGraph properties for social media previews
 site.advanced.metadata.name: Name
 site.info: Info
 site.info.author: Author

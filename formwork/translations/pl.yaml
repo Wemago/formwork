@@ -64,9 +64,11 @@ page.unpublishDate: Data wycofania publikacji
 site.advanced: Zaawansowane opcje
 site.advanced.aliases: Alias
 site.advanced.aliases.alias: Alias
+site.advanced.aliases.description: Aliasy tras witryny do mapowania niestandardowych URI na określone strony
 site.advanced.aliases.route: Trasa
 site.advanced.metadata: Metadane HTML
 site.advanced.metadata.content: Zawartość
+site.advanced.metadata.description: Metadane HTML do dodania jako znaczniki `<meta>` w `<head>` stron, np. właściwości OpenGraph dla podglądu w mediach społecznościowych
 site.advanced.metadata.name: Nazwa
 site.info: Informacje
 site.info.author: Autor

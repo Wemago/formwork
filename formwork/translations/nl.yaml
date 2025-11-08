@@ -64,9 +64,11 @@ page.unpublishDate: Datum van intrekking
 site.advanced: Geavanceerde opties
 site.advanced.aliases: Aliassen
 site.advanced.aliases.alias: Alias
+site.advanced.aliases.description: Sitepad-aliasen om aangepaste URI’s aan specifieke pagina’s te koppelen
 site.advanced.aliases.route: Route
 site.advanced.metadata: HTML-metadata
 site.advanced.metadata.content: Inhoud
+site.advanced.metadata.description: HTML-metadata om toe te voegen als `<meta>`-tags in de `<head>` van pagina’s, zoals OpenGraph-eigenschappen voor sociale media-voorbeelden
 site.advanced.metadata.name: Naam
 site.info: Info
 site.info.author: Auteur

@@ -64,9 +64,11 @@ page.unpublishDate: Dată depublicare
 site.advanced: Opțiuni avansate
 site.advanced.aliases: Aliasuri
 site.advanced.aliases.alias: Alias
+site.advanced.aliases.description: Aliasuri de rute ale site-ului pentru a mapa URI personalizate către pagini specifice
 site.advanced.aliases.route: Rută
 site.advanced.metadata: Metadate HTML
 site.advanced.metadata.content: Conținut
+site.advanced.metadata.description: Metadate HTML de adăugat ca etichete `<meta>` în `<head>`-ul paginilor, precum proprietățile OpenGraph pentru previzualizări în rețelele sociale
 site.advanced.metadata.name: Nume
 site.info: Informații
 site.info.author: Autor

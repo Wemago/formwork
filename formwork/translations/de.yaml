@@ -64,9 +64,11 @@ page.unpublishDate: Veröffentlichungsdatum aufheben
 site.advanced: Erweiterte Optionen
 site.advanced.aliases: Aliasnamen
 site.advanced.aliases.alias: Alias
+site.advanced.aliases.description: Website-Routen-Aliasse zum Zuordnen benutzerdefinierter URIs zu bestimmten Seiten
 site.advanced.aliases.route: Route
 site.advanced.metadata: HTML-Metadaten
 site.advanced.metadata.content: Inhalt
+site.advanced.metadata.description: HTML-Metadaten, die als `<meta>`-Tags im `<head>` der Seiten hinzugefügt werden, z. B. OpenGraph-Eigenschaften für Social-Media-Vorschauen
 site.advanced.metadata.name: Name
 site.info: Info
 site.info.author: Autor

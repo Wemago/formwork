@@ -64,9 +64,11 @@ page.unpublishDate: Data de cancelamento da publicação
 site.advanced: Opções avançadas
 site.advanced.aliases: Aliases
 site.advanced.aliases.alias: Alias
+site.advanced.aliases.description: Aliases de rotas do site para mapear URIs personalizadas para páginas específicas
 site.advanced.aliases.route: Rota
 site.advanced.metadata: Metadados HTML
 site.advanced.metadata.content: Conteúdo
+site.advanced.metadata.description: Metadados HTML para adicionar como etiquetas `<meta>` no `<head>` das páginas, como propriedades OpenGraph para pré-visualizações nas redes sociais
 site.advanced.metadata.name: Nome
 site.info: Informações
 site.info.author: Autor

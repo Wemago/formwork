@@ -106,6 +106,7 @@ fields:
         associative: true
         placeholderKey: '{{site.advanced.metadata.name}}'
         placeholderValue: '{{site.advanced.metadata.content}}'
+        description: '{{site.advanced.metadata.description}}'
 
     routeAliases:
         type: array
@@ -113,3 +114,4 @@ fields:
         associative: true
         placeholderKey: '{{site.advanced.aliases.alias}}'
         placeholderValue: '{{site.advanced.aliases.route}}'
+        description: '{{site.advanced.aliases.description}}'

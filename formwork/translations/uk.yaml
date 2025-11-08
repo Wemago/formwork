@@ -64,9 +64,11 @@ page.unpublishDate: Дата зняття публікації
 site.advanced: Розширені опції
 site.advanced.aliases: Псевдоніми
 site.advanced.aliases.alias: Псевдонім
+site.advanced.aliases.description: Аліаси маршрутів сайту для зіставлення власних URI з певними сторінками
 site.advanced.aliases.route: Маршрут
 site.advanced.metadata: HTML метадані
 site.advanced.metadata.content: Вміст
+site.advanced.metadata.description: HTML-метадані для додавання як теги `<meta>` у `<head>` сторінок, наприклад властивості OpenGraph для попереднього перегляду в соцмережах
 site.advanced.metadata.name: Назва
 site.info: Інформація
 site.info.author: Автор

@@ -64,9 +64,11 @@ page.unpublishDate: Date de péremption
 site.advanced: Options avancées
 site.advanced.aliases: Alias
 site.advanced.aliases.alias: Alias
+site.advanced.aliases.description: Alias de routes du site pour associer des URI personnalisées à des pages spécifiques
 site.advanced.aliases.route: Route
 site.advanced.metadata: Métadonnées HTML
 site.advanced.metadata.content: Contenu
+site.advanced.metadata.description: Métadonnées HTML à ajouter comme balises `<meta>` dans le `<head>` des pages, par exemple les propriétés OpenGraph pour les aperçus sur les réseaux sociaux
 site.advanced.metadata.name: Nom
 site.info: Info
 site.info.author: Auteur

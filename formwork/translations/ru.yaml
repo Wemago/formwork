@@ -64,9 +64,11 @@ page.unpublishDate: Дата Отменить публикацию
 site.advanced: Расширенные настройки
 site.advanced.aliases: Псевдонимы
 site.advanced.aliases.alias: Псевдоним
+site.advanced.aliases.description: Псевдонимы маршрутов сайта для сопоставления пользовательских URI с определёнными страницами
 site.advanced.aliases.route: Маршрут
 site.advanced.metadata: Метаданные HTML
 site.advanced.metadata.content: Содержание
+site.advanced.metadata.description: HTML-метаданные для добавления в виде тегов `<meta>` в `<head>` страниц, например свойства OpenGraph для предпросмотра в соцсетях
 site.advanced.metadata.name: Имя
 site.info: Информация
 site.info.author: Автор

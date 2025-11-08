@@ -1,5 +1,15 @@
 # Changelog
 
+# [2.1.3](https://github.com/getformwork/formwork/releases/tag/2.1.3)
+
+**Bug fixes**
+- Fix route aliases not available in panel site options
+
+**Enhancements**
+- Add descriptions to advanced site fields
+- Add `--hostname` option to the `bin/formwork backup` command
+- Reduce backup size by ignoring vendor files by default
+
 # [2.1.2](https://github.com/getformwork/formwork/releases/tag/2.1.2)
 
 **Bug fixes**

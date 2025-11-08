@@ -20,6 +20,13 @@ final class ToolsController extends AbstractController
     private array $tabs = ['backups', 'updates', 'info'];
 
     /**
+     * Cached composer.json data
+     *
+     * @var array<string, mixed>
+     */
+    private array $composerJson;
+
+    /**
      * Tools@index action
      */
     public function index(): Response
@@ -91,7 +98,14 @@ final class ToolsController extends AbstractController
 
         $gdInfo = extension_loaded('gd') ? gd_info() : [];
 
-        $dependencies = $this->getDependencies();
+        $dependenciesData = $this->getDependencies();
+        $dependencies = [];
+
+        foreach ($this->getRequiredDependencies() as $package) {
+            if (isset($dependenciesData[$package])) {
+                $dependencies[$package] = $dependenciesData[$package]['version'];
+            }
+        }
 
         $formwork = [
             'Formwork Version' => $this->app::VERSION,
@@ -119,12 +133,8 @@ final class ToolsController extends AbstractController
         }
 
         $data = @[
-            'Dependencies' => [
-                'symfony/yaml'             => $dependencies['symfony/yaml']['version'],
-                'league/commonmark'        => $dependencies['league/commonmark']['version'],
-                'jaybizzle/crawler-detect' => $dependencies['jaybizzle/crawler-detect']['version'],
-            ],
-            'System' => [
+            'Dependencies' => $dependencies,
+            'System'       => [
                 'Directory Separator' => DIRECTORY_SEPARATOR,
                 'EOL Symbol'          => addcslashes(PHP_EOL, "\r\n"),
                 'Max Path Length'     => FileSystem::MAX_PATH_LENGTH,
@@ -257,6 +267,24 @@ final class ToolsController extends AbstractController
     }
 
     /**
+     * Get required dependencies from composer.json
+     *
+     * @return list<string>
+     */
+    private function getRequiredDependencies(): array
+    {
+        $required = [];
+        if (($composer = $this->getComposerJson()) !== []) {
+            foreach ($composer['require'] as $package => $version) {
+                if ($package !== 'php' && !Str::startsWith($package, 'ext-')) {
+                    $required[] = $package;
+                }
+            }
+        }
+        return $required;
+    }
+
+    /**
      * Get required PHP extensions from composer.json
      *
      * @return list<string>
@@ -264,8 +292,7 @@ final class ToolsController extends AbstractController
     private function getRequiredExtensions(): array
     {
         $extensions = [];
-        if (FileSystem::exists(ROOT_PATH . '/composer.json')) {
-            $composer = Json::parseFile(ROOT_PATH . '/composer.json');
+        if (($composer = $this->getComposerJson()) !== []) {
             foreach ($composer['require'] as $package => $version) {
                 if (Str::startsWith($package, 'ext-')) {
                     $extensions[] = Str::after($package, 'ext-');
@@ -273,5 +300,21 @@ final class ToolsController extends AbstractController
             }
         }
         return $extensions;
+    }
+
+    /**
+     * Get composer.json data
+     *
+     * @return array<string, mixed>
+     */
+    private function getComposerJson(): array
+    {
+        if (isset($this->composerJson)) {
+            return $this->composerJson;
+        }
+        if (FileSystem::exists(ROOT_PATH . '/composer.json')) {
+            return $this->composerJson = Json::parseFile(ROOT_PATH . '/composer.json');
+        }
+        return $this->composerJson = [];
     }
 }

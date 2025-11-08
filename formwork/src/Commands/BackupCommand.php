@@ -44,6 +44,13 @@ final class BackupCommand implements CommandInterface
                 'description' => 'Backup action to perform (make, list)',
                 'required'    => true,
             ],
+            'hostname' => [
+                'longPrefix'   => 'hostname',
+                'description'  => 'Set the hostname for the backup (default: current system hostname)',
+                'defaultValue' => null,
+                'castTo'       => 'string',
+                'noValue'      => false,
+            ],
             'help' => [
                 'prefix'      => 'h',
                 'longPrefix'  => 'help',
@@ -96,7 +103,9 @@ final class BackupCommand implements CommandInterface
     public function make(array $argv = []): void
     {
         $this->climate->out('Creating backup... this may take a while depending on the size of your installation.');
-        $file = $this->getBackupper()->backup();
+        /** @var string $hostname */
+        $hostname = $this->climate->arguments->get('hostname') ?: null;
+        $file = $this->getBackupper($hostname)->backup();
         $this->climate->br()->out(sprintf('<green>Backup created:</green> %s', $file));
     }
 
@@ -125,9 +134,9 @@ final class BackupCommand implements CommandInterface
     /**
      * Get Backupper instance
      */
-    private function getBackupper(): Backupper
+    private function getBackupper(?string $hostname = null): Backupper
     {
-        return new Backupper([...$this->app->config()->get('system.backup'), 'hostname' => gethostname() ?: 'local-cli']);
+        return new Backupper([...$this->app->config()->get('system.backup'), 'hostname' => $hostname ?? (gethostname() ?: 'local-cli')]);
     }
 
     /**

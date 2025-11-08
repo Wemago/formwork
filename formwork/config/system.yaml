@@ -11,6 +11,7 @@ backup:
         - '*.gitkeep'
         - 'backup/*'
         - 'cache/*'
+        - 'vendor/*'
         - '*node_modules/*'
 
 cache:

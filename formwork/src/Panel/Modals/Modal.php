@@ -85,6 +85,14 @@ class Modal implements Arrayable
     }
 
     /**
+     * Get modal target
+     */
+    public function target(): ?string
+    {
+        return $this->data['target'] ?? null;
+    }
+
+    /**
      * Get modal size
      */
     public function size(): string
@@ -131,6 +139,14 @@ class Modal implements Arrayable
     public function open(bool $open = true): void
     {
         $this->data['open'] = $open;
+    }
+
+    /**
+     * Set modal target
+     */
+    public function setTarget(?string $target): void
+    {
+        $this->data['target'] = $target;
     }
 
     /**

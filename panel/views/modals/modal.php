@@ -4,6 +4,7 @@
             <form <?= $this->attr([
                         'method' => 'post',
                         'action' => $modal->action() ? $panel->uri($modal->action()) : null,
+                        'target' => $modal->target() ? $modal->target() : null,
                         'enctype' => !$modal->fields()->filterBy('type', 'upload')->isEmpty() ? 'multipart/form-data' : null,
                     ]) ?>>
             <?php endif ?>

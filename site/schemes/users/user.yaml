@@ -12,6 +12,7 @@ fields:
         type: text
         label: '{{user.fullname}}'
         required: true
+        icon: user
 
     email:
         type: email

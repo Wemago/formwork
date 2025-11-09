@@ -6,6 +6,7 @@ fields:
         label: '{{panel.login.usernameOrEmail}}'
         required: true
         autocomplete: username
+        icon: user
 
     password:
         type: password

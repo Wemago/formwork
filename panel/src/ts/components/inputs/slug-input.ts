@@ -23,6 +23,7 @@ export class SlugInput {
         if (source) {
             if (autoUpdate) {
                 source.addEventListener("input", () => (this.element.value = makeSlug(source.value)));
+                this.element.value = makeSlug(source.value);
             } else {
                 const generateButton = $(`[data-generate-slug="${this.element.id}"]`) as HTMLButtonElement | null;
                 if (generateButton) {

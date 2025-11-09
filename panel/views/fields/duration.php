@@ -1,6 +1,6 @@
 <?php $this->layout('fields.field') ?>
 <div class="form-input-wrap">
-    <span class="form-input-icon"><?= $this->icon($field->get('icon', 'hourglass')) ?></span>
+    <?= $this->insert('fields.partials.icon', ['icon' => $field->get('icon', 'hourglass')]) ?>
     <input <?= $this->attr([
                 'class'          => ['form-input', 'form-input-duration'],
                 'type'           => 'number',

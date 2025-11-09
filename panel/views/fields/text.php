@@ -1,8 +1,6 @@
 <?php $this->layout('fields.field') ?>
 <div class="form-input-wrap">
-    <?php if ($field->has('icon')) : ?>
-        <span class="form-input-icon"><?= $this->icon($field->get('icon')) ?></span>
-    <?php endif ?>
+    <?= $this->insert('fields.partials.icon', ['icon' => $field->get('icon')]) ?>
     <input <?= $this->attr([
                 'class'        => ['form-input', $field->get('class')],
                 'type'         => 'text',

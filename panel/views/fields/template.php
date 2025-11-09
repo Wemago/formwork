@@ -1,6 +1,6 @@
 <?php $this->layout('fields.field') ?>
 <div class="form-input-wrap">
-    <span class="form-input-icon"><?= $this->icon($field->get('icon', 'template')) ?></span>
+    <?= $this->insert('fields.partials.icon', ['icon' => $field->get('icon', 'template')]) ?>
     <select <?= $this->attr([
                 'class'    => 'form-select',
                 'id'       => $field->name(),

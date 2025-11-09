@@ -1,6 +1,6 @@
 <?php $this->layout('fields.field') ?>
 <div class="form-input-wrap">
-    <span class="form-input-icon"><?= $this->icon($field->get('icon', 'calendar-clock')) ?></span>
+    <?= $this->insert('fields.partials.icon', ['icon' => $field->get('icon', 'calendar-clock')]) ?>
     <input <?= $this->attr([
                 'type'        => 'text',
                 'class'       => ['form-input', 'form-input-date'],

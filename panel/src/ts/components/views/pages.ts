@@ -120,6 +120,13 @@ export class Pages {
         if (newPageModal) {
             const form = newPageModal.form as Form;
 
+            const url = new URL(window.location.href);
+
+            if (url.searchParams.has("createNew")) {
+                url.searchParams.delete("createNew");
+                window.history.replaceState({}, document.title, url.toString());
+            }
+
             const parentSelect = form.inputs["newPageModal[parent]"] as SelectInput;
 
             const filterAllowedTemplates = () => {

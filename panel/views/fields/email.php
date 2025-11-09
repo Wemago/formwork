@@ -1,6 +1,6 @@
 <?php $this->layout('fields.field') ?>
 <div class="form-input-wrap">
-    <?= $this->insert('fields.partials.icon', ['icon' => $field->get('icon')]) ?>
+    <?= $this->insert('fields.partials.icon', ['icon' => $field->get('icon', 'envelope')]) ?>
     <input <?= $this->attr([
                 'class'        => 'form-input',
                 'type'         => 'email',

@@ -10,7 +10,6 @@
 <?php endif ?>
 
 <ul <?= $this->attr(['class' => ['pages-tree', $class ?? null], 'data-orderable-children' => $orderable ? 'true' : 'false', 'data-parent' => isset($parent) ? ($parent->isSite() ? '.' : $parent->route()) : null]) ?>>
-    <?php $childrenToggle = $includeChildren && (($parent ?? $site)->level() > ($root ?? $site)->level() || $pages->some(fn($page) => $page->hasChildren() && !$page->scheme()->options()->get('children.subtree', false))) ?>
     <?php foreach ($pages as $page) : ?>
         <?php $routable = $page->published() && $page->routable() ?>
         <?php $date = $this->datetime($page->contentFile()->lastModifiedTime()) ?>
@@ -30,10 +29,10 @@
                             <span title="<?= $this->translate('panel.dragToReorder') ?>"><?= $this->icon('grabber') ?></span>
                         <?php endif ?>
                     </div>
-                    <?php if ($childrenToggle) : ?>
-                        <div class="pages-tree-icon mr-2">
+                    <?php if ($includeChildren) : ?>
+                        <div class="pages-tree-icon pages-tree-children-toggle mr-2">
                             <?php if ($page->hasChildren() && !$subtree) : ?>
-                                <button type="button" class="button pages-tree-children-toggle" title="<?= $this->translate('panel.pages.toggleChildren') ?>" aria-label="<?= $this->translate('panel.pages.toggleChildren') ?>"><?= $this->icon('chevron-down') ?></button>
+                                <button type="button" class="button" title="<?= $this->translate('panel.pages.toggleChildren') ?>" aria-label="<?= $this->translate('panel.pages.toggleChildren') ?>"><?= $this->icon('chevron-down') ?></button>
                             <?php endif ?>
                         </div>
                     <?php endif ?>

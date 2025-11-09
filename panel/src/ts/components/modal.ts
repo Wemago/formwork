@@ -36,6 +36,10 @@ export class Modal {
             : null;
 
         this.registerEvents();
+
+        if (element.classList.contains("open")) {
+            this.open();
+        }
     }
 
     get isOpen() {

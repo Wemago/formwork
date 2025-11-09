@@ -93,6 +93,14 @@ class Modal implements Arrayable
     }
 
     /**
+     * Return whether the modal is open
+     */
+    public function isOpen(): bool
+    {
+        return $this->data['open'] ?? false;
+    }
+
+    /**
      * Get modal fields
      */
     public function fields(): FieldCollection
@@ -115,6 +123,14 @@ class Modal implements Arrayable
     public function setFieldsModel(Model $model): void
     {
         $this->fieldsModel = $model;
+    }
+
+    /**
+     * Open or close the modal
+     */
+    public function open(bool $open = true): void
+    {
+        $this->data['open'] = $open;
     }
 
     /**

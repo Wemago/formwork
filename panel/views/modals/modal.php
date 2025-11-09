@@ -1,4 +1,4 @@
-<div id="<?= $modal->id() ?>" class="modal" aria-labelledby="<?= $modal->id() ?>Label">
+<div id="<?= $modal->id() ?>" class="<?= $this->classes(['modal', 'open' => $modal->isOpen()]) ?>" aria-labelledby="<?= $modal->id() ?>Label">
     <div class="<?= $this->classes(['modal-container', 'modal-size-large' => $modal->size() === 'large']) ?>">
         <?php if ($modal->hasForm()): ?>
             <form <?= $this->attr([

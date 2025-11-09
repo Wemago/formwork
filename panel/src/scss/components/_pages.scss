@@ -67,7 +67,8 @@
     vertical-align: -0.25rem;
 }
 
-.page-icon:hover .page-info {
+.page-icon:hover .page-info,
+.header-icon:hover .page-info {
     display: block;
 }
 

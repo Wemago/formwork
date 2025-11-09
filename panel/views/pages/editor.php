@@ -9,6 +9,7 @@
             <div class="flex">
                 <div class="header-icon">
                     <?= $this->icon($page->icon()) ?>
+                    <?= $this->insert('_pages.info', ['page' => $page]) ?>
                 </div>
                 <div class="header-title truncate">
                     <?= $this->escape($page->title()) ?>

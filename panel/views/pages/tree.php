@@ -1,4 +1,5 @@
 <?php $this->modals()->add('deletePageItem') ?>
+<?php $this->modals()->add('duplicatePage') ?>
 
 <?php if ($headers) : ?>
     <div class="pages-tree-headers" aria-hidden="true">
@@ -80,6 +81,9 @@
                             <a class="dropdown-item" href="<?= $panel->uri('/pages/' . trim($page->route(), '/') . '/edit/') ?>"><?= $this->icon('pencil') ?> <?= $this->translate('panel.pages.edit') ?></a>
                             <?php if ($includeChildren && $page->hasChildren() && $subtree) : ?>
                                 <a class="dropdown-item hide-from-lg" href="<?= $panel->uri('/pages/' . trim($page->route(), '/') . '/tree/') ?>"><?= $this->icon('pages-level-down') ?> <?= $this->translate('panel.pages.viewChildren') ?></a>
+                            <?php endif ?>
+                            <?php if ($panel->user()->permissions()->has('panel.pages.duplicate')) : ?>
+                                <button type="button" class="dropdown-item" data-modal="duplicatePageModal" data-modal-action="<?= $panel->uri('/pages/' . trim($page->route(), '/') . '/duplicate/') ?>" data-duplicate-title="<?= $this->escapeAttr($this->translate('panel.pages.duplicatePage.title', $page->title())) ?>" <?php if (!$page->isDuplicable()) : ?> disabled<?php endif ?>><?= $this->icon('duplicate') ?> <?= $this->translate('panel.pages.duplicatePage') ?></button>
                             <?php endif ?>
                             <?php if ($panel->user()->permissions()->has('panel.pages.delete')) : ?>
                                 <button type="button" class="dropdown-item" data-modal="deletePageItemModal" data-action="<?= $panel->uri('/pages/' . trim($page->route(), '/') . '/delete/') ?>" <?php if (!$page->isDeletable()) : ?> disabled<?php endif ?>><?= $this->icon('trash') ?> <?= $this->translate('panel.pages.deletePage') ?></button>

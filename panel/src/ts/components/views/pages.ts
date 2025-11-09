@@ -1,5 +1,5 @@
 import { $, $$ } from "../../utils/selectors";
-import { escapeRegExp, makeDiacriticsRegExp } from "../../utils/validation";
+import { escapeRegExp, makeDiacriticsRegExp, makeSlug } from "../../utils/validation";
 import { app } from "../../app";
 import { debounce } from "../../utils/events";
 import { Form } from "../form";
@@ -19,6 +19,7 @@ export class Pages {
 
         const newPageModal = app.modals["newPageModal"];
         const deletePageItemModal = app.modals["deletePageItemModal"];
+        const duplicatePageModal = app.modals["duplicatePageModal"];
 
         $$(".pages-tree").forEach((element) => {
             if (element.dataset.orderableChildren === "true") {
@@ -211,6 +212,22 @@ export class Pages {
                         modal.close();
                     },
                 );
+            });
+        }
+
+        if (duplicatePageModal) {
+            duplicatePageModal.onOpen((modal, trigger) => {
+                if (trigger && modal.form) {
+                    const duplicateTitle = trigger.dataset.duplicateTitle;
+
+                    if (duplicateTitle) {
+                        const title = $('[name="duplicatePageModal[title]"]', modal.form.element) as HTMLInputElement;
+                        const slug = $('[name="duplicatePageModal[slug]"]', modal.form.element) as HTMLInputElement;
+                        title.value = duplicateTitle;
+                        slug.value = makeSlug(duplicateTitle);
+                        title.setSelectionRange(0, title.value.length);
+                    }
+                }
             });
         }
 

@@ -1,0 +1,30 @@
+title: '{{panel.pages.duplicatePage}}'
+
+action: /pages/duplicate/
+
+fields:
+    title:
+        type: text
+        label: '{{page.title}}'
+        required: true
+
+    slug:
+        type: slug
+        label: '{{page.slug}}'
+        suggestion: '{{page.slug.suggestion}}'
+        required: true
+        pattern: '[a-z0-9\-]+'
+        source: title
+
+buttons:
+    dismiss:
+        action: dismiss
+        icon: times-circle
+        label: '{{panel.modal.action.cancel}}'
+        variant: secondary
+
+    submit:
+        action: submit
+        icon: check-circle
+        label: '{{panel.modal.action.continue}}'
+        align: right

@@ -121,6 +121,53 @@ final class PagesController extends AbstractController
     }
 
     /**
+     * Pages@duplicate action
+     */
+    public function duplicate(RouteParams $routeParams): Response
+    {
+        if (!$this->hasPermission('panel.pages.duplicate')) {
+            return $this->forward(ErrorsController::class, 'forbidden');
+        }
+
+        $requestData = $this->request->input();
+
+        $fields = $this->modal('duplicatePage')->fields();
+
+        $page = $this->site->findPage($routeParams->get('page'));
+
+        if ($page === null) {
+            $this->panel->notify($this->translate('panel.pages.page.cannotEdit.pageNotFound'), 'error');
+            return $this->redirectToReferer(default: $this->generateRoute('panel.pages'), base: $this->panel->panelRoot());
+        }
+
+        if ($page->hasChildren()) {
+            $this->panel->notify($this->translate('panel.pages.page.cannotEdit.pageNotFound'), 'error');
+            return $this->redirectToReferer(default: $this->generateRoute('panel.pages'), base: $this->panel->panelRoot());
+        }
+
+        try {
+            $fields->setValues($requestData)->validate();
+
+            // Let's duplicate the page
+            $duplicatePage = $this->duplicatePage($page, $fields);
+            $this->panel->notify($this->translate('panel.pages.page.created'), 'success');
+        } catch (TranslatedException $e) {
+            $this->panel->notify($this->translate($e->getLanguageString()), 'error');
+            return $this->redirectToReferer(default: $this->generateRoute('panel.pages'), base: $this->panel->panelRoot());
+        } catch (InvalidValueException $e) {
+            $identifier = $e->getIdentifier() ?? 'varMissing';
+            $this->panel->notify($this->translate('panel.pages.page.cannotCreate.' . $identifier), 'error');
+            return $this->redirectToReferer(default: $this->generateRoute('panel.pages'), base: $this->panel->panelRoot());
+        }
+
+        if ($duplicatePage->route() === null) {
+            throw new UnexpectedValueException('Unexpected missing page route');
+        }
+
+        return $this->redirect($this->generateRoute('panel.pages.edit', ['page' => trim($duplicatePage->route(), '/')]));
+    }
+
+    /**
      * Pages@edit action
      */
     public function edit(RouteParams $routeParams): Response
@@ -473,6 +520,24 @@ final class PagesController extends AbstractController
         }
 
         return $page;
+    }
+
+    /**
+     * Duplicate a page
+     */
+    private function duplicatePage(Page $page, FieldCollection $fieldCollection): Page
+    {
+        $data = [...$fieldCollection->everyItem()->value()->toArray(), 'published' => false];
+
+        $duplicatePage = $page->duplicate($data);
+
+        if ($duplicatePage->contentPath()) {
+            $contentHistory = new ContentHistory($duplicatePage->contentPath());
+            $contentHistory->update(ContentHistoryEvent::Created, $this->panel->user()->username(), time());
+            $contentHistory->save();
+        }
+
+        return $duplicatePage;
     }
 
     /**

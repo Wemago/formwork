@@ -642,6 +642,14 @@ class Page extends Model implements Stringable
     }
 
     /**
+     * Return whether the page is duplicable
+     */
+    public function isDuplicable(): bool
+    {
+        return !($this->hasChildren() || $this->isIndexPage() || $this->isErrorPage());
+    }
+
+    /**
      * Return whether the slug is editable
      */
     public function isSlugEditable(): bool
@@ -727,6 +735,48 @@ class Page extends Model implements Stringable
      */
     public function save(?string $language = null): void
     {
+        $this->write($language, copy: false);
+    }
+
+    /**
+     * Duplicate the page
+     *
+     * @param array<string, mixed> $with     Data to override in the duplicated page
+     * @param string|null          $language Language code to duplicate the page in
+     *
+     * @throws UnexpectedValueException If parent or parent content path is missing
+     * @throws InvalidValueException    If the language is invalid
+     */
+    public function duplicate(array $with = [], ?string $language = null): Page
+    {
+        if (!$this->isDuplicable()) {
+            throw new RuntimeException('Cannot duplicate a non-duplicable page');
+        }
+
+        $duplicatePage = clone $this;
+
+        $duplicatePage->setMultiple($with);
+
+        if (!isset($with['slug'])) {
+            $duplicatePage->setSlug($this->slug() . '-copy');
+        }
+
+        $duplicatePage->write($language, copy: true);
+
+        return $duplicatePage;
+    }
+
+    /**
+     * Write page contents and move or copy files if needed
+     *
+     * @param string|null $language Language code to save the page in
+     * @param bool        $copy     Whether to copy the page instead of moving it
+     *
+     * @throws UnexpectedValueException If parent or parent content path is missing
+     * @throws InvalidValueException    If the language is invalid
+     */
+    protected function write(?string $language = null, bool $copy = false): void
+    {
         if ($this->parent() === null) {
             throw new UnexpectedValueException('Unexpected missing parent');
         }
@@ -803,7 +853,11 @@ class Page extends Model implements Stringable
                     FileSystem::createDirectory($contentPath, recursive: true);
                 }
                 if ($this->contentPath() !== null) {
-                    FileSystem::moveDirectory($this->contentPath(), $contentPath, overwrite: FileSystem::isEmptyDirectory($contentPath, assertExists: false));
+                    if ($copy) {
+                        FileSystem::copyDirectory($this->contentPath(), $contentPath, overwrite: FileSystem::isEmptyDirectory($contentPath, assertExists: false));
+                    } else {
+                        FileSystem::moveDirectory($this->contentPath(), $contentPath, overwrite: FileSystem::isEmptyDirectory($contentPath, assertExists: false));
+                    }
                 }
             } elseif ($contentTemplate !== $this->template->name() && $this->contentFile() !== null) {
                 FileSystem::delete($this->contentFile()->path());

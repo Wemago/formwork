@@ -204,6 +204,8 @@ panel.pages.history.event.edited: Page edited by %s %s.
 panel.pages.languages: Languages
 panel.pages.languages.addLanguage: Add %s
 panel.pages.languages.editLanguage: Edit %s
+panel.pages.duplicatePage: Duplicate page
+panel.pages.duplicatePage.title: '%s copy'
 panel.pages.newPage: New page
 panel.pages.newPage.site: Site
 panel.pages.next: Next page

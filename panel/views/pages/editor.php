@@ -1,6 +1,6 @@
 <?php $this->layout('panel') ?>
 
-<?php $this->modals()->addMultiple(['changes', 'deletePage']) ?>
+<?php $this->modals()->addMultiple(['changes', 'deletePage', 'duplicatePage']) ?>
 
 <form method="post" data-form="page-editor-form" enctype="multipart/form-data">
     <input type="submit" <?= $this->attr(['hidden' => true, 'aria-hidden' => 'true', 'tabindex' => -1, 'data-command' => 'save', 'formaction' => $history?->isJustCreated() ? '?publish=false' : null]) ?>>
@@ -28,9 +28,17 @@
             <a class="<?= $this->classes(['button', 'button-link', 'show-from-md', 'disabled' => !$nextPage]) ?>" role="button" <?php if ($nextPage) : ?>href="<?= $panel->uri('/pages/' . trim($nextPage->route(), '/') . '/edit/') ?>" <?php endif ?> title="<?= $this->translate('panel.pages.next') ?>" aria-label="<?= $this->translate('panel.pages.next') ?>"><?= $this->icon('chevron-right') ?></a>
             <a class="<?= $this->classes(['button', 'button-link', 'disabled' => !$page->published() || !$page->routable()]) ?>" role="button" <?php if ($page->published() && $page->routable()) : ?>href="<?= $page->uri(includeLanguage: $currentLanguage ?: true) ?>" <?php endif ?> target="formwork-view-page-<?= $page->uid() ?>" title="<?= $this->translate('panel.pages.viewPage') ?>" aria-label="<?= $this->translate('panel.pages.viewPage') ?>"><?= $this->icon('arrow-right-up-box') ?></a>
             <button type="submit" class="<?= $this->classes(['button', 'button-link', 'disabled' => !$page->routable()]) ?>" data-command="preview" formaction="<?= $panel->uri('/pages/' . trim($page->route(), '/') . '/preview/') ?>" formtarget="formwork-preview-<?= $page->uid() ?>" title="<?= $this->translate('panel.pages.preview') ?>" aria-label="<?= $this->translate('panel.pages.preview') ?>"><?= $this->icon('eye') ?></button>
-            <?php if ($panel->user()->permissions()->has('panel.pages.delete')) : ?>
-                <button type="button" class="button button-link" data-modal="deletePageModal" data-modal-action="<?= $panel->uri('/pages/' . trim($page->route(), '/') . '/delete/' . ($currentLanguage ? 'language/' . $currentLanguage . '/' : '')) ?>" title="<?= $this->translate('panel.pages.deletePage') ?>" aria-label="<?= $this->translate('panel.pages.deletePage') ?>" <?php if (!$page->isDeletable()) : ?> disabled<?php endif ?>><?= $this->icon('trash') ?></button>
-            <?php endif ?>
+            <div class="dropdown mb-0">
+                <button type="button" class="button button-link dropdown-button" title="<?= $this->translate('panel.pages.page.actions') ?>" aria-label="<?= $this->translate('panel.pages.page.actions') ?>" data-dropdown="actions-dropdown"><?= $this->icon('ellipsis-v') ?></button>
+                <div class="dropdown-menu" id="actions-dropdown">
+                    <?php if ($panel->user()->permissions()->has('panel.pages.duplicate')) : ?>
+                        <button type="button" class="dropdown-item" data-modal="duplicatePageModal" data-modal-action="<?= $panel->uri('/pages/' . trim($page->route(), '/') . '/duplicate/') ?>" data-duplicate-title="<?= $this->escapeAttr($this->translate('panel.pages.duplicatePage.title', $page->title())) ?>" <?php if (!$page->isDuplicable()) : ?> disabled<?php endif ?>><?= $this->icon('duplicate') ?> <?= $this->translate('panel.pages.duplicatePage') ?></button>
+                    <?php endif ?>
+                    <?php if ($panel->user()->permissions()->has('panel.pages.delete')) : ?>
+                        <button type="button" class="dropdown-item" data-modal="deletePageModal" data-modal-action="<?= $panel->uri('/pages/' . trim($page->route(), '/') . '/delete/' . ($currentLanguage ? 'language/' . $currentLanguage . '/' : '')) ?>" <?php if (!$page->isDeletable()) : ?> disabled<?php endif ?>><?= $this->icon('trash') ?> <?= $this->translate('panel.pages.deletePage') ?></button>
+                    <?php endif ?>
+                </div>
+            </div>
             <?php if ($site->languages()->hasMultiple()) : ?>
                 <div class="dropdown">
                     <button type="button" class="button dropdown-button caret button-accent" data-dropdown="languages-dropdown"><?= $this->icon('translate') ?> <?= $this->translate('panel.pages.languages') ?><?php if ($currentLanguage) : ?> <span class="badge badge-blue"><?= $currentLanguage ?></span><?php endif ?></button>

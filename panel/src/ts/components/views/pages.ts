@@ -18,6 +18,7 @@ export class Pages {
         const searchInput = $(".page-search");
 
         const newPageModal = app.modals["newPageModal"];
+        const deletePageItemModal = app.modals["deletePageItemModal"];
 
         $$(".pages-tree").forEach((element) => {
             if (element.dataset.orderableChildren === "true") {
@@ -158,6 +159,52 @@ export class Pages {
             parentSelect.element.addEventListener("change", () => filterAllowedTemplates());
 
             filterAllowedTemplates();
+        }
+
+        if (deletePageItemModal) {
+            deletePageItemModal.onOpen((modal, trigger) => {
+                if (trigger) {
+                    Object.assign(modal.data, {
+                        action: trigger.dataset.action,
+                        pageItem: trigger.closest(".pages-tree-item"),
+                    });
+                }
+            });
+
+            deletePageItemModal.onCommand("delete-page", (modal) => {
+                const { action, pageItem } = modal.data as { action: string; pageItem: HTMLElement };
+
+                new Request(
+                    {
+                        method: "POST",
+                        url: action as string,
+                        data: {
+                            "csrf-token": app.config.csrfToken as string,
+                        },
+                    },
+                    (response) => {
+                        if (response.status === "success" && pageItem) {
+                            const parentItem = pageItem.parentElement?.closest(".pages-tree-item");
+                            pageItem.remove();
+                            setCommandsState();
+
+                            if (parentItem && $$(".pages-tree-item", parentItem).length === 0) {
+                                parentItem.classList.remove("has-children", "is-expanded");
+
+                                const deleteButton = $("[data-modal=deletePageItemModal]", parentItem) as HTMLButtonElement;
+                                if (deleteButton) {
+                                    deleteButton.disabled = false;
+                                }
+                            }
+                        }
+
+                        const notification = new Notification(response.message, response.status);
+                        notification.show();
+
+                        modal.close();
+                    },
+                );
+            });
         }
 
         if (commandPreview) {

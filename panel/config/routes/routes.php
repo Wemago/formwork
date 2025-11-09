@@ -95,6 +95,7 @@ return [
             'path'    => '/pages/{page:all}/delete/',
             'action'  => 'Formwork\Panel\Controllers\PagesController@delete',
             'methods' => ['POST'],
+            'types'   => ['HTTP', 'XHR'],
         ],
 
         'panel.pages.delete.lang' => [

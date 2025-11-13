@@ -98,7 +98,7 @@ class Field implements Arrayable, Stringable
      */
     public function formName(): string
     {
-        return Str::dotNotationToBrackets($this->name());
+        return $this->get('formName', Str::dotNotationToBrackets($this->name()));
     }
 
     /**

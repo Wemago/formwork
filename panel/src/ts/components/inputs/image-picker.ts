@@ -1,17 +1,27 @@
 import { $, $$ } from "../../utils/selectors";
 export class ImagePicker {
     readonly element: HTMLSelectElement;
-    readonly name: string;
 
     constructor(element: HTMLSelectElement) {
         this.element = element;
-        this.name = this.element.name;
 
         this.initInput();
     }
 
+    get name() {
+        return this.element.name;
+    }
+
+    set name(value: string) {
+        this.element.name = value;
+    }
+
     get value() {
         return this.element.value;
+    }
+
+    set value(value: string) {
+        this.element.value = value;
     }
 
     private initInput() {

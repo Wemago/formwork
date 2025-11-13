@@ -63,6 +63,7 @@ return fn(Site $site, Panel $panel, CsrfToken $csrfToken, Config $config, Transl
             'decreaseIndent' => $translation->translate('panel.editor.decreaseIndent'),
             'edit'           => $translation->translate('panel.modal.action.edit'),
             'delete'         => $translation->translate('panel.modal.action.delete'),
+            'toggleMarkdown' => $translation->translate('panel.editor.toggleMarkdown'),
         ],
     ],
     'SelectInput' => [

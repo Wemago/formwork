@@ -10,7 +10,6 @@ import { TagsInput } from "./tags-input";
 
 export class UploadInput {
     readonly element: HTMLInputElement;
-    readonly name: string;
 
     private readonly form: Form;
     private isSubmitted: boolean = false;
@@ -24,7 +23,6 @@ export class UploadInput {
 
     constructor(element: HTMLInputElement, form: Form) {
         this.element = element;
-        this.name = this.element.name;
 
         this.form = form;
 
@@ -47,6 +45,14 @@ export class UploadInput {
                 }
             });
         }
+    }
+
+    get name() {
+        return this.element.name;
+    }
+
+    set name(value: string) {
+        this.element.name = value;
     }
 
     get value(): string {

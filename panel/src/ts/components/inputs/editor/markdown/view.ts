@@ -48,6 +48,15 @@ export class MarkdownView {
         return defaultMarkdownSerializer.serialize(this.view.state.doc);
     }
 
+    set content(value: string) {
+        this.view.updateState(
+            EditorState.create({
+                doc: defaultMarkdownParser.parse(value) as any,
+                plugins: this.view.state.plugins,
+            }),
+        );
+    }
+
     focus() {
         this.view.focus();
     }

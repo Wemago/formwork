@@ -1,17 +1,18 @@
 import { $, $$ } from "../../utils/selectors";
+import { Form } from "../form";
 import Sortable from "sortablejs";
 
 export class ArrayInput {
-    readonly element: HTMLInputElement;
+    readonly element: HTMLFieldSetElement;
 
-    readonly name: string;
+    readonly form: Form;
 
     readonly isAssociative: boolean;
 
-    constructor(element: HTMLInputElement) {
+    constructor(element: HTMLFieldSetElement, form: Form) {
         this.element = element;
 
-        this.name = element.dataset.name as string;
+        this.form = form;
 
         this.isAssociative = element.classList.contains("form-input-array-associative");
 
@@ -26,6 +27,14 @@ export class ArrayInput {
             swapThreshold: 0.75,
             animation: 150,
         });
+    }
+
+    get name(): string {
+        return this.element.name as string;
+    }
+
+    set name(value: string) {
+        this.element.name = value;
     }
 
     get value(): string {

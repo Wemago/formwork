@@ -72,6 +72,12 @@ export class CodeView {
         return this.view.state.doc.toString();
     }
 
+    set content(value: string) {
+        this.view.dispatch({
+            changes: { from: 0, to: this.view.state.doc.length, insert: value },
+        });
+    }
+
     focus() {
         this.view.focus();
     }

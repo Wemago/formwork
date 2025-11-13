@@ -33,8 +33,6 @@ interface DateInputOptions {
 export class DateInput {
     readonly element: HTMLInputElement;
 
-    readonly name: string;
-
     readonly options: DateInputOptions;
 
     readonly format: string;
@@ -73,8 +71,6 @@ export class DateInput {
 
         this.element = element;
 
-        this.name = element.name;
-
         this.options = { ...defaults, ...options, time: this.element.dataset.time === "true" };
 
         this.format = this.options.time ? this.options.dateTimeFormat : this.options.dateFormat;
@@ -82,6 +78,14 @@ export class DateInput {
         this.calendar = new Calendar(this);
 
         this.initInput();
+    }
+
+    get name() {
+        return this.element.name;
+    }
+
+    set name(value: string) {
+        this.element.name = value;
     }
 
     get value() {

@@ -21,8 +21,6 @@ export class SelectInput {
 
     readonly element: HTMLSelectElement;
 
-    readonly name: string;
-
     private dropdown: HTMLElement;
 
     private labelInput: HTMLInputElement;
@@ -33,8 +31,6 @@ export class SelectInput {
         const defaults: SelectInputOptions = { labels: { empty: "No matching options" } };
 
         this.element = element;
-
-        this.name = element.name;
 
         this.options = { ...defaults, ...options };
 
@@ -47,6 +43,14 @@ export class SelectInput {
 
     get dropdownElement() {
         return this.dropdown;
+    }
+
+    get name() {
+        return this.element.name;
+    }
+
+    set name(value: string) {
+        this.element.name = value;
     }
 
     get value() {

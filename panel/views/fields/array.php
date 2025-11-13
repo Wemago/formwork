@@ -1,10 +1,10 @@
 <?php $this->layout('fields.field') ?>
-<div <?= $this->attr([
-            'class'     => $this->classes(['form-input-array', 'form-input-array-associative' => $field->isAssociative()]),
-            'id'        => $field->name(),
-            'hidden'    => $field->isHidden(),
-            'data-name' => $field->formName(),
-        ]) ?>>
+<fieldset <?= $this->attr([
+                'class'  => $this->classes(['form-input-array', 'form-input-array-associative' => $field->isAssociative()]),
+                'id'     => $field->name(),
+                'name'   => $field->formName(),
+                'hidden' => $field->isHidden(),
+            ]) ?>>
     <?php foreach ($field->value() ?: ['' => ''] as $key => $value) : ?>
         <div class="form-input-array-row">
             <span class="sortable-handle" title="<?= $this->translate('panel.dragToReorder') ?>"><?= $this->icon('grabber') ?></span>
@@ -27,4 +27,4 @@
             <button type="button" class="button button-link form-input-array-add" title="<?= $this->translate('fields.array.add') ?>" aria-label="<?= $this->translate('fields.array.add') ?>"><?= $this->icon('plus-circle') ?></button>
         </div>
     <?php endforeach ?>
-</div>
+</fieldset>

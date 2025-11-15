@@ -322,6 +322,9 @@ final class PagesController extends AbstractController
         $page = $this->site->findPage($routeParams->get('page'));
 
         if ($page === null) {
+            if ($this->request->isXmlHttpRequest()) {
+                return JsonResponse::error($this->translate('panel.pages.page.cannotDelete.pageNotFound'), ResponseStatus::InternalServerError);
+            }
             $this->panel->notify($this->translate('panel.pages.page.cannotDelete.pageNotFound'), 'error');
             return $this->redirectToReferer(default: $this->generateRoute('panel.pages'), base: $this->panel->panelRoot());
         }
@@ -331,12 +334,18 @@ final class PagesController extends AbstractController
             if ($page->languages()->available()->has($language)) {
                 $page->setLanguage($language);
             } else {
+                if ($this->request->isXmlHttpRequest()) {
+                    return JsonResponse::error($this->translate('panel.pages.page.cannotDelete.invalidLanguage', $language), ResponseStatus::InternalServerError);
+                }
                 $this->panel->notify($this->translate('panel.pages.page.cannotDelete.invalidLanguage', $language), 'error');
                 return $this->redirectToReferer(default: $this->generateRoute('panel.pages'), base: $this->panel->panelRoot());
             }
         }
 
         if (!$page->isDeletable()) {
+            if ($this->request->isXmlHttpRequest()) {
+                return JsonResponse::error($this->translate('panel.pages.page.cannotDelete.notDeletable'), ResponseStatus::InternalServerError);
+            }
             $this->panel->notify($this->translate('panel.pages.page.cannotDelete.notDeletable'), 'error');
             return $this->redirectToReferer(default: $this->generateRoute('panel.pages'), base: $this->panel->panelRoot());
         }
@@ -350,6 +359,9 @@ final class PagesController extends AbstractController
             }
         }
 
+        if ($this->request->isXmlHttpRequest()) {
+            return JsonResponse::success($this->translate('panel.pages.page.deleted'));
+        }
         $this->panel->notify($this->translate('panel.pages.page.deleted'), 'success');
 
         // Try to redirect to referer unless it's to Pages@edit

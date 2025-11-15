@@ -65,7 +65,7 @@ export class EditorInput {
 
         this.options = { ...defaults, ...options };
 
-        this.container = (textarea.parentNode as HTMLElement).classList.contains("editor-wrap") ? (textarea.parentNode as HTMLElement) : null;
+        this.container = (textarea.parentNode as HTMLElement)?.classList.contains("editor-wrap") ? (textarea.parentNode as HTMLElement) : null;
 
         if (!this.container) {
             this.container = document.createElement("div");
@@ -80,6 +80,7 @@ export class EditorInput {
             toggleButton.dataset.command = "toggle-markdown";
             toggleButton.title = app.config.EditorInput.labels.toggleMarkdown;
             toggleButton.ariaLabel = app.config.EditorInput.labels.toggleMarkdown;
+            toggleButton.disabled = this.element.disabled;
             insertIcon("markdown", toggleButton);
             toolbar.appendChild(toggleButton);
 
@@ -125,7 +126,11 @@ export class EditorInput {
         }
         this.editor?.destroy();
         this.editor = new MarkdownView(this.name, this.container, addBaseUri(this.element.value, this.options.baseUri), this.options.inputEventHandler, {
-            spellcheck: this.options.spellcheck ? "true" : "false",
+            editable: !(this.element.disabled || this.element.readOnly),
+            placeholder: this.element.placeholder,
+            attributes: {
+                spellcheck: this.options.spellcheck ? "true" : "false",
+            },
         });
         this.editor.view.dom.style.height = `${this.options.height}px`;
     }
@@ -135,7 +140,10 @@ export class EditorInput {
             return;
         }
         this.editor?.destroy();
-        this.editor = new CodeView(this.container, removeBaseUri(this.element.value, this.options.baseUri), this.options.inputEventHandler);
+        this.editor = new CodeView(this.container, removeBaseUri(this.element.value, this.options.baseUri), this.options.inputEventHandler, {
+            editable: !(this.element.disabled || this.element.readOnly),
+            placeholder: this.element.placeholder,
+        });
         this.editor.view.dom.style.height = `${this.options.height}px`;
     }
 
@@ -149,6 +157,17 @@ export class EditorInput {
 
     get value(): string {
         return this.editor.content;
+    }
+
+    get disabled(): boolean {
+        return !this.editor.editable;
+    }
+
+    set disabled(value: boolean) {
+        this.element.disabled = value;
+        this.editor.editable = !value;
+        const toggleButton = $("[data-command=toggle-markdown]", this.container!) as HTMLButtonElement;
+        toggleButton.disabled = value;
     }
 
     set value(value: string) {

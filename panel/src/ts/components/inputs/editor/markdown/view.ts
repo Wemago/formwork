@@ -9,11 +9,18 @@ import { history } from "prosemirror-history";
 import { keymap } from "prosemirror-keymap";
 import { linkTooltip } from "./linktooltip";
 import { menuPlugin } from "./menu";
+import { placeholderPlugin } from "./placeholder";
+
+export interface MarkdownViewOptions {
+    editable?: boolean;
+    placeholder?: string;
+    attributes?: Record<string, string>;
+}
 
 export class MarkdownView {
     view: EditorView;
 
-    constructor(id: string, target: Element, content: string, inputEventHandler: (content: string) => void, attributes: { [key: string]: string } = {}) {
+    constructor(id: string, target: Element, content: string, inputEventHandler: (content: string) => void, options: MarkdownViewOptions = {}) {
         this.view = new EditorView(target, {
             state: EditorState.create({
                 doc: defaultMarkdownParser.parse(content) as any,
@@ -23,6 +30,7 @@ export class MarkdownView {
                     keymap(baseKeymap),
                     history(),
                     menuPlugin(id),
+                    placeholderPlugin(options.placeholder ?? ""),
                     linkTooltip(app.config.siteUri),
                     new Plugin({
                         props: {
@@ -34,7 +42,8 @@ export class MarkdownView {
                     }),
                 ],
             }),
-            attributes,
+            attributes: options.attributes,
+            editable: () => options.editable ?? true,
             dispatchTransaction(this: EditorView, tr: Transaction) {
                 this.updateState(this.state.apply(tr));
                 if (tr.docChanged) {
@@ -55,6 +64,14 @@ export class MarkdownView {
                 plugins: this.view.state.plugins,
             }),
         );
+    }
+
+    get editable() {
+        return this.view.props.editable ? this.view.props.editable(this.view.state) : true;
+    }
+
+    set editable(value: boolean) {
+        this.view.setProps({ editable: () => value });
     }
 
     focus() {

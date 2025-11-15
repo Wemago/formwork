@@ -187,7 +187,16 @@ export class Form {
             }
         }
 
-        newInput.id = `${element.tagName.toLowerCase()}-${Math.random().toString(36).slice(2)}`;
+        // Generate a new unique ID for the duplicated input
+        const previousId = (element as HTMLElement).id;
+        const newId = `${element.tagName.toLowerCase()}-${Math.random().toString(36).slice(2)}`;
+        newInput.id = newId;
+
+        if (wrap && previousId) {
+            $$(`label[for="${previousId}"]`).forEach((label: HTMLLabelElement) => {
+                label.htmlFor = newId;
+            });
+        }
 
         targetElement.appendChild(newNode);
 

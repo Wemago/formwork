@@ -11,6 +11,11 @@
     appearance: none;
     background-color: transparent;
     cursor: pointer;
+
+    &:focus {
+        border-color: var(--color-accent-500);
+        @include focusring;
+    }
 }
 
 .form-input-color-value {

@@ -39,6 +39,7 @@ export class ColorInput {
             updateValueLabel(this.element);
 
             outputElement.addEventListener("click", () => {
+                this.element.focus();
                 this.element.click();
             });
         }

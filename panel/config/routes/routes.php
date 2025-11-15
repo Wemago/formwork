@@ -91,6 +91,12 @@ return [
             'types'   => ['XHR'],
         ],
 
+        'panel.pages.duplicate' => [
+            'path'    => '/pages/{page:all}/duplicate/',
+            'action'  => 'Formwork\Panel\Controllers\PagesController@duplicate',
+            'methods' => ['POST'],
+        ],
+
         'panel.pages.delete' => [
             'path'    => '/pages/{page:all}/delete/',
             'action'  => 'Formwork\Panel\Controllers\PagesController@delete',

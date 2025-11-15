@@ -197,6 +197,8 @@ panel.pages.deleteFile: Datei löschen
 panel.pages.deleteFile.prompt: Möchten Sie diese Datei wirklich löschen? Diese Aktion kann nicht rückgängig gemacht werden.
 panel.pages.deletePage: Seite löschen
 panel.pages.deletePage.prompt: Möchten Sie diese Seite wirklich löschen? Diese Aktion kann nicht rückgängig gemacht werden.
+panel.pages.duplicatePage: Seite duplizieren
+panel.pages.duplicatePage.title: '%s Kopie'
 panel.pages.edit: Seite bearbeiten
 panel.pages.editPage: Seite bearbeiten %s
 panel.pages.history.event.created: Seite erstellt von %s %s.
@@ -219,6 +221,8 @@ panel.pages.page.cannotCreate.varMissing: Seite kann nicht erstellt werden, eine
 panel.pages.page.cannotDelete.invalidLanguage: "Seite kann nicht gelöscht werden, ungültige Sprache: %s"
 panel.pages.page.cannotDelete.notDeletable: Seite kann nicht gelöscht werden, die Seite ist nicht löschbar
 panel.pages.page.cannotDelete.pageNotFound: Seite kann nicht gelöscht werden, Seite nicht gefunden
+panel.pages.page.cannotDuplicate.notDuplicable: Seite kann nicht dupliziert werden, sie ist nicht duplizierbar
+panel.pages.page.cannotDuplicate.pageNotFound: Seite kann nicht dupliziert werden, nicht gefunden
 panel.pages.page.cannotEdit.alreadyExists: Seite kann nicht bearbeitet werden, eine Seite mit demselben URI existiert bereits
 panel.pages.page.cannotEdit.indexOrErrorPageSlug: Slug von Index- und Fehlerseiten kann nicht bearbeitet werden
 panel.pages.page.cannotEdit.invalidLanguage: "Seite kann nicht bearbeitet werden, ungültige Sprache: %s"

@@ -197,6 +197,8 @@ panel.pages.deleteFile: Șterge fișier
 panel.pages.deleteFile.prompt: Ești sigur că vrei să ștergi acest fișier? Această acțiune nu poate fi anulată.
 panel.pages.deletePage: Șterge pagină
 panel.pages.deletePage.prompt: Ești sigur că vrei să ștergi această pagină? Această acțiune nu poate fi anulată.
+panel.pages.duplicatePage: Duplică pagina
+panel.pages.duplicatePage.title: '%s copie'
 panel.pages.edit: Editează pagină
 panel.pages.editPage: Editează pagina %s
 panel.pages.history.event.created: Pagină creată de %s %s.
@@ -219,6 +221,8 @@ panel.pages.page.cannotCreate.varMissing: Nu se poate crea pagina, lipsește o v
 panel.pages.page.cannotDelete.invalidLanguage: 'Nu se poate șterge pagina, limbă invalidă: %s'
 panel.pages.page.cannotDelete.notDeletable: Nu se poate șterge pagina, pagina nu poate fi ștearsă
 panel.pages.page.cannotDelete.pageNotFound: Nu se poate șterge pagina, pagina nu a fost găsită
+panel.pages.page.cannotDuplicate.notDuplicable: Nu se poate duplica pagina, nu este duplicabilă
+panel.pages.page.cannotDuplicate.pageNotFound: Nu se poate duplica pagina, nu a fost găsită
 panel.pages.page.cannotEdit.alreadyExists: Nu se poate edita pagina, o pagină cu aceeași URI există deja
 panel.pages.page.cannotEdit.indexOrErrorPageSlug: Nu se poate edita slug-ul paginii index sau paginilor de eroare
 panel.pages.page.cannotEdit.invalidLanguage: 'Nu se poate edita pagina, limbă invalidă: %s'

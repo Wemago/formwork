@@ -109,11 +109,6 @@ class Page extends Model implements Stringable
     protected ?string $route = null;
 
     /**
-     * Page canonical route
-     */
-    protected ?string $canonicalRoute = null;
-
-    /**
      * Page slug
      */
     protected ?string $slug = null;
@@ -166,11 +161,6 @@ class Page extends Model implements Stringable
      * Reference to the site
      */
     protected Site $site;
-
-    /**
-     * Page icon
-     */
-    protected string $icon;
 
     /**
      * @param array<string, mixed> $data
@@ -315,9 +305,9 @@ class Page extends Model implements Stringable
      */
     public function canonicalRoute(): ?string
     {
-        return $this->canonicalRoute ?? ($this->canonicalRoute = empty($this->data['canonicalRoute'])
+        return empty($this->data['canonicalRoute'])
             ? null
-            : Path::normalize($this->data['canonicalRoute']));
+            : Path::normalize($this->data['canonicalRoute']);
     }
 
     /**
@@ -380,6 +370,22 @@ class Page extends Model implements Stringable
     }
 
     /**
+     * Set page metadata
+     *
+     * @param array<string, mixed>|MetadataCollection $metadata
+     */
+    public function setMetadata(MetadataCollection|array $metadata): void
+    {
+        if ($metadata instanceof MetadataCollection) {
+            $this->metadata = $metadata;
+            $this->data['metadata'] = $metadata->toArray();
+        } else {
+            unset($this->metadata);
+            $this->data['metadata'] = $metadata;
+        }
+    }
+
+    /**
      * Get page files
      */
     public function files(): FileCollection
@@ -432,6 +438,24 @@ class Page extends Model implements Stringable
         }
 
         return $this->responseStatus;
+    }
+
+    /**
+     * Set page HTTP response status
+     */
+    public function setResponseStatus(ResponseStatus|int|null $responseStatus): void
+    {
+        if ($responseStatus === null) {
+            unset($this->responseStatus, $this->data['responseStatus']);
+            return;
+        }
+
+        if (is_int($responseStatus)) {
+            $responseStatus = ResponseStatus::fromCode($responseStatus);
+        }
+
+        $this->responseStatus = $responseStatus;
+        $this->data['responseStatus'] = $responseStatus->code();
     }
 
     /**
@@ -642,6 +666,14 @@ class Page extends Model implements Stringable
     }
 
     /**
+     * Return whether the page is duplicable
+     */
+    public function isDuplicable(): bool
+    {
+        return !$this->hasChildren();
+    }
+
+    /**
      * Return whether the slug is editable
      */
     public function isSlugEditable(): bool
@@ -714,7 +746,7 @@ class Page extends Model implements Stringable
      */
     public function icon(): string
     {
-        return $this->icon ??= $this->data['icon'] ?? $this->scheme()->options()->get('icon', 'page');
+        return $this->data['icon'] ?? $this->scheme()->options()->get('icon', 'page');
     }
 
     /**
@@ -726,6 +758,49 @@ class Page extends Model implements Stringable
      * @throws InvalidValueException    If the language is invalid
      */
     public function save(?string $language = null): void
+    {
+        $this->write($language, copy: false);
+    }
+
+    /**
+     * Duplicate the page
+     *
+     * @param array<string, mixed> $with     Data to override in the duplicated page
+     * @param string|null          $language Language code to duplicate the page in
+     *
+     * @throws UnexpectedValueException If parent or parent content path is missing
+     * @throws InvalidValueException    If the language is invalid
+     */
+    public function duplicate(array $with = [], ?string $language = null): Page
+    {
+        if (!$this->isDuplicable()) {
+            throw new RuntimeException('Cannot duplicate a non-duplicable page');
+        }
+
+        $duplicatePage = clone $this;
+
+        $duplicatePage->setMultiple([
+            'path'           => null,
+            'canonicalRoute' => null,
+            'slug'           => $this->slug() . '-copy',
+            ...$with,
+        ]);
+
+        $duplicatePage->write($language, copy: true);
+
+        return $duplicatePage;
+    }
+
+    /**
+     * Write page contents and move or copy files if needed
+     *
+     * @param string|null $language Language code to save the page in
+     * @param bool        $copy     Whether to copy the page instead of moving it
+     *
+     * @throws UnexpectedValueException If parent or parent content path is missing
+     * @throws InvalidValueException    If the language is invalid
+     */
+    protected function write(?string $language = null, bool $copy = false): void
     {
         if ($this->parent() === null) {
             throw new UnexpectedValueException('Unexpected missing parent');
@@ -763,6 +838,13 @@ class Page extends Model implements Stringable
             }
 
             Arr::set($frontmatter, $field->name(), $field->value());
+        }
+
+        // Remove default values without a corresponding field from frontmatter
+        foreach ($defaults as $key => $defaultValue) {
+            if (Arr::has($frontmatter, $key) && !$fieldCollection->has($key) && $this->get($key) === $defaultValue) {
+                Arr::remove($frontmatter, $key);
+            }
         }
 
         $content = str_replace("\r\n", "\n", $this->data['content']);
@@ -803,7 +885,11 @@ class Page extends Model implements Stringable
                     FileSystem::createDirectory($contentPath, recursive: true);
                 }
                 if ($this->contentPath() !== null) {
-                    FileSystem::moveDirectory($this->contentPath(), $contentPath, overwrite: FileSystem::isEmptyDirectory($contentPath, assertExists: false));
+                    if ($copy) {
+                        FileSystem::copyDirectory($this->contentPath(), $contentPath, overwrite: FileSystem::isEmptyDirectory($contentPath, assertExists: false));
+                    } else {
+                        FileSystem::moveDirectory($this->contentPath(), $contentPath, overwrite: FileSystem::isEmptyDirectory($contentPath, assertExists: false));
+                    }
                 }
             } elseif ($contentTemplate !== $this->template->name() && $this->contentFile() !== null) {
                 FileSystem::delete($this->contentFile()->path());
@@ -931,8 +1017,16 @@ class Page extends Model implements Stringable
      *
      * @throws UnexpectedValueException If site path is missing
      */
-    protected function setPath(string $path): void
+    protected function setPath(?string $path): void
     {
+        if ($path === null) {
+            $this->path = null;
+            $this->relativePath = null;
+            $this->route = null;
+            $this->slug = null;
+            return;
+        }
+
         $this->path = FileSystem::normalizePath($path . '/');
 
         if ($this->site()->contentPath() === null) {

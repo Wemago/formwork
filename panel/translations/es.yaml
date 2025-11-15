@@ -197,6 +197,8 @@ panel.pages.deleteFile: Borrar archivo
 panel.pages.deleteFile.prompt: ¿Estás seguro de que quieres borrar este archivo? Esta acción no se puede deshacer.
 panel.pages.deletePage: Borrar página
 panel.pages.deletePage.prompt: ¿Estás seguro de que quieres borrar esta página? Esta acción no se puede deshacer.
+panel.pages.duplicatePage: Duplicar página
+panel.pages.duplicatePage.title: '%s copia'
 panel.pages.edit: Editar página
 panel.pages.editPage: Editar página %s
 panel.pages.history.event.created: Página creada por %s %s.
@@ -219,6 +221,8 @@ panel.pages.page.cannotCreate.varMissing: No se puede crear la página, falta un
 panel.pages.page.cannotDelete.invalidLanguage: 'No se puede borrar la página, idioma no válido: %s'
 panel.pages.page.cannotDelete.notDeletable: No se puede borrar la página, la página no es eliminable
 panel.pages.page.cannotDelete.pageNotFound: No se puede borrar la página, página no encontrada
+panel.pages.page.cannotDuplicate.notDuplicable: No se puede duplicar la página, no es duplicable
+panel.pages.page.cannotDuplicate.pageNotFound: No se puede duplicar la página, no encontrada
 panel.pages.page.cannotEdit.alreadyExists: No se puede editar la página, ya existe una página con la misma URI
 panel.pages.page.cannotEdit.indexOrErrorPageSlug: No se puede editar el slug de la página de índice y error
 panel.pages.page.cannotEdit.invalidLanguage: 'No se puede editar la página, idioma no válido: %s'

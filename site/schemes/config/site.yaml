@@ -121,3 +121,5 @@ fields:
         placeholderKey: '{{site.advanced.aliases.alias}}'
         placeholderValue: '{{site.advanced.aliases.route}}'
         description: '{{site.advanced.aliases.description}}'
+        items:
+            type: page

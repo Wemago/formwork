@@ -558,7 +558,7 @@ class Site extends Model implements Stringable
     protected function setRouteAliases(array $aliases): void
     {
         foreach ($aliases as $from => $to) {
-            $this->routeAliases[trim((string) $from, '/')] = trim((string) $to, '/');
+            $this->routeAliases[trim((string) $from, '/')] = Str::wrap((string) $to, '/');
         }
         $this->data['routeAliases'] = $this->routeAliases;
     }

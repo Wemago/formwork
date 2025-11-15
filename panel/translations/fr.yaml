@@ -197,6 +197,8 @@ panel.pages.deleteFile: Supprimer le fichier
 panel.pages.deleteFile.prompt: ÊtesVous sûr de vouloir supprimer ce fichier ? Cette action est irréversible.
 panel.pages.deletePage: Supprimer la page
 panel.pages.deletePage.prompt: ÊtesVous sûr de vouloir supprimer cette page ? Cette action est irréversible.
+panel.pages.duplicatePage: Dupliquer la page
+panel.pages.duplicatePage.title: '%s copie'
 panel.pages.edit: Modifier la page
 panel.pages.editPage: Modifier la page %s
 panel.pages.history.event.created: Page créée par %s %s.
@@ -219,6 +221,8 @@ panel.pages.page.cannotCreate.varMissing: Impossible de créer une page, il manq
 panel.pages.page.cannotDelete.invalidLanguage: 'Impossible de supprimer la page, terme non défini : %s'
 panel.pages.page.cannotDelete.notDeletable: Impossible de supprimer la page, la page ne peut être supprimée
 panel.pages.page.cannotDelete.pageNotFound: Impossible de supprimer la page, page introuvable
+panel.pages.page.cannotDuplicate.notDuplicable: Impossible de dupliquer la page, elle n’est pas duplicable
+panel.pages.page.cannotDuplicate.pageNotFound: Impossible de dupliquer la page, introuvable
 panel.pages.page.cannotEdit.alreadyExists: Impossible de modifier la page, une page avec la même url existe déjà
 panel.pages.page.cannotEdit.indexOrErrorPageSlug: Impossible de modifier l’identifiant de la page d’acceuil et celle de la page d’erreur
 panel.pages.page.cannotEdit.invalidLanguage: 'Impossible de modifier la page, terme non défini : %s'

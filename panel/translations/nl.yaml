@@ -197,6 +197,8 @@ panel.pages.deleteFile: Bestand verwijderen
 panel.pages.deleteFile.prompt: Weet je zeker dat je dit bestand wilt verwijderen? Deze actie kan niet ongedaan worden gemaakt.
 panel.pages.deletePage: Pagina verwijderen
 panel.pages.deletePage.prompt: Weet je zeker dat je deze pagina wilt verwijderen? Deze actie kan niet ongedaan worden gemaakt.
+panel.pages.duplicatePage: Pagina dupliceren
+panel.pages.duplicatePage.title: '%s kopie'
 panel.pages.edit: Pagina bewerken
 panel.pages.editPage: Pagina %s bewerken
 panel.pages.history.event.created: Pagina aangemaakt door %s %s.
@@ -219,6 +221,8 @@ panel.pages.page.cannotCreate.varMissing: Kan pagina niet aanmaken, ontbrekende 
 panel.pages.page.cannotDelete.invalidLanguage: 'Kan pagina niet verwijderen, ongeldige taal: %s'
 panel.pages.page.cannotDelete.notDeletable: Kan pagina niet verwijderen, de pagina is niet verwijderbaar
 panel.pages.page.cannotDelete.pageNotFound: Kan pagina niet verwijderen, pagina niet gevonden
+panel.pages.page.cannotDuplicate.notDuplicable: Kan pagina niet dupliceren, niet dupliceerbaar
+panel.pages.page.cannotDuplicate.pageNotFound: Kan pagina niet dupliceren, niet gevonden
 panel.pages.page.cannotEdit.alreadyExists: Kan pagina niet bewerken, een pagina met dezelfde URI bestaat al
 panel.pages.page.cannotEdit.indexOrErrorPageSlug: Kan slug van index- of foutpagina niet bewerken
 panel.pages.page.cannotEdit.invalidLanguage: 'Kan pagina niet bewerken, ongeldige taal: %s'

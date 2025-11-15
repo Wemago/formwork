@@ -197,6 +197,8 @@ panel.pages.deleteFile: Видалити файл
 panel.pages.deleteFile.prompt: Ви впевнені, що хочете видалити цей файл? Цю дію не можна скасувати.
 panel.pages.deletePage: Видалити сторінку
 panel.pages.deletePage.prompt: Ви впевнені, що хочете видалити цю сторінку? Цю дію не можна скасувати.
+panel.pages.duplicatePage: Дублювати сторінку
+panel.pages.duplicatePage.title: '%s копія'
 panel.pages.edit: Редагувати сторінку
 panel.pages.editPage: Редагувати сторінку %s
 panel.pages.history.event.created: Сторінка створена %s %s.
@@ -219,6 +221,8 @@ panel.pages.page.cannotCreate.varMissing: Неможливо створити с
 panel.pages.page.cannotDelete.invalidLanguage: 'Неможливо видалити сторінку, недійсна мова: %s'
 panel.pages.page.cannotDelete.notDeletable: Неможливо видалити сторінку, сторінка не може бути видалена
 panel.pages.page.cannotDelete.pageNotFound: Неможливо видалити сторінку, сторінка не знайдена
+panel.pages.page.cannotDuplicate.notDuplicable: Неможливо дублювати сторінку, вона не дублюється
+panel.pages.page.cannotDuplicate.pageNotFound: Неможливо дублювати сторінку, не знайдено
 panel.pages.page.cannotEdit.alreadyExists: Неможливо редагувати сторінку, сторінка з таким URI вже існує
 panel.pages.page.cannotEdit.indexOrErrorPageSlug: Неможливо редагувати slug сторінки індексу та помилок
 panel.pages.page.cannotEdit.invalidLanguage: 'Неможливо редагувати сторінку, недійсна мова: %s'

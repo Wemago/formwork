@@ -197,6 +197,8 @@ panel.pages.deleteFile: Usuń plik
 panel.pages.deleteFile.prompt: Czy na pewno chcesz usunąć ten plik? Ta akcja jest nieodwracalna.
 panel.pages.deletePage: Usuń stronę
 panel.pages.deletePage.prompt: Czy na pewno chcesz usunąć tę stronę? Ta akcja jest nieodwracalna.
+panel.pages.duplicatePage: Duplikuj stronę
+panel.pages.duplicatePage.title: '%s kopia'
 panel.pages.edit: Edytuj stronę
 panel.pages.editPage: Edytuj stronę %s
 panel.pages.history.event.created: Strona utworzona przez %s %s.
@@ -219,6 +221,8 @@ panel.pages.page.cannotCreate.varMissing: Nie można utworzyć strony, brak zmie
 panel.pages.page.cannotDelete.invalidLanguage: 'Nie można usunąć strony, nieprawidłowy język: %s'
 panel.pages.page.cannotDelete.notDeletable: Nie można usunąć strony, strona nie jest do usunięcia
 panel.pages.page.cannotDelete.pageNotFound: Nie można usunąć strony, strona nie została znaleziona
+panel.pages.page.cannotDuplicate.notDuplicable: Nie można zduplikować strony, nie jest duplikowalna
+panel.pages.page.cannotDuplicate.pageNotFound: Nie można zduplikować strony, nie znaleziono
 panel.pages.page.cannotEdit.alreadyExists: Nie można edytować strony, strona o tym samym URI już istnieje
 panel.pages.page.cannotEdit.indexOrErrorPageSlug: Nie można edytować slug strony dla strony indeksu lub strony błędu
 panel.pages.page.cannotEdit.invalidLanguage: 'Nie można edytować strony, nieprawidłowy język: %s'

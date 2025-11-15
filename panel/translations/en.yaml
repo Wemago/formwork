@@ -197,6 +197,8 @@ panel.pages.deleteFile: Delete file
 panel.pages.deleteFile.prompt: Are you sure you want to delete this file? This action can’t be undone.
 panel.pages.deletePage: Delete page
 panel.pages.deletePage.prompt: Are you sure you want to delete this page? This action can’t be undone.
+panel.pages.duplicatePage: Duplicate page
+panel.pages.duplicatePage.title: '%s copy'
 panel.pages.edit: Edit page
 panel.pages.editPage: Edit page %s
 panel.pages.history.event.created: Page created by %s %s.
@@ -204,8 +206,6 @@ panel.pages.history.event.edited: Page edited by %s %s.
 panel.pages.languages: Languages
 panel.pages.languages.addLanguage: Add %s
 panel.pages.languages.editLanguage: Edit %s
-panel.pages.duplicatePage: Duplicate page
-panel.pages.duplicatePage.title: '%s copy'
 panel.pages.newPage: New page
 panel.pages.newPage.site: Site
 panel.pages.next: Next page
@@ -221,6 +221,8 @@ panel.pages.page.cannotCreate.varMissing: Cannot create page, missing a variable
 panel.pages.page.cannotDelete.invalidLanguage: 'Cannot delete page, invalid language: %s'
 panel.pages.page.cannotDelete.notDeletable: Cannot delete page, the page is not deletable
 panel.pages.page.cannotDelete.pageNotFound: Cannot delete page, page not found
+panel.pages.page.cannotDuplicate.notDuplicable: Cannot duplicate page, the page is not duplicable
+panel.pages.page.cannotDuplicate.pageNotFound: Cannot duplicate page, page not found
 panel.pages.page.cannotEdit.alreadyExists: Cannot edit page, a page with the same uri already exists
 panel.pages.page.cannotEdit.indexOrErrorPageSlug: Cannot edit page slug of index and error pages
 panel.pages.page.cannotEdit.invalidLanguage: 'Cannot edit page, invalid language: %s'

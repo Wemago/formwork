@@ -197,6 +197,8 @@ panel.pages.deleteFile: Elimina file
 panel.pages.deleteFile.prompt: Si è sicuri di eliminare il file? Questa azione non può essere annullata.
 panel.pages.deletePage: Elimina pagina
 panel.pages.deletePage.prompt: Si è sicuri di eliminare la pagina? Questa azione non può essere annullata.
+panel.pages.duplicatePage: Duplica pagina
+panel.pages.duplicatePage.title: '%s copia'
 panel.pages.edit: Modifica pagina
 panel.pages.editPage: Modifica pagina %s
 panel.pages.history.event.created: Pagina creata da %s %s.
@@ -219,6 +221,8 @@ panel.pages.page.cannotCreate.varMissing: Impossibile creare la pagina, manca un
 panel.pages.page.cannotDelete.invalidLanguage: Impossibile eliminare la pagina, lingua %s non valida
 panel.pages.page.cannotDelete.notDeletable: Impossibile eliminare la pagina, la pagina non è eliminabile
 panel.pages.page.cannotDelete.pageNotFound: Impossibile eliminare la pagina, pagina non trovata
+panel.pages.page.cannotDuplicate.notDuplicable: Impossibile duplicare la pagina, non è duplicabile
+panel.pages.page.cannotDuplicate.pageNotFound: Impossibile duplicare la pagina, pagina non trovata
 panel.pages.page.cannotEdit.alreadyExists: Impossibile modificare la pagina, una pagina con lo stesso indirizzo esiste già
 panel.pages.page.cannotEdit.indexOrErrorPageSlug: Impossibile cambiare l’indirizzo della pagina iniziale o di errore
 panel.pages.page.cannotEdit.invalidLanguage: Impossibile modificare la pagina, lingua %s non valida

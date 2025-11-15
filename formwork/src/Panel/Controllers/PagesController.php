@@ -136,12 +136,12 @@ final class PagesController extends AbstractController
         $page = $this->site->findPage($routeParams->get('page'));
 
         if ($page === null) {
-            $this->panel->notify($this->translate('panel.pages.page.cannotEdit.pageNotFound'), 'error');
+            $this->panel->notify($this->translate('panel.pages.page.cannotDuplicate.pageNotFound'), 'error');
             return $this->redirectToReferer(default: $this->generateRoute('panel.pages'), base: $this->panel->panelRoot());
         }
 
-        if ($page->hasChildren()) {
-            $this->panel->notify($this->translate('panel.pages.page.cannotEdit.pageNotFound'), 'error');
+        if (!$page->isDuplicable()) {
+            $this->panel->notify($this->translate('panel.pages.page.cannotDuplicate.notDuplicable'), 'error');
             return $this->redirectToReferer(default: $this->generateRoute('panel.pages'), base: $this->panel->panelRoot());
         }
 

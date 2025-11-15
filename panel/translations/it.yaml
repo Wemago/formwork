@@ -250,6 +250,7 @@ panel.pages.renameFile: Rinomina file
 panel.pages.renameFile.name: Nome
 panel.pages.replaceFile: Sostituisci file
 panel.pages.save: Salva
+panel.pages.saveAndCreateNew: Salva e crea nuova
 panel.pages.saveOnly: Salva senza pubblicare
 panel.pages.toggleChildren: Mostra/nascondi sottopagine
 panel.pages.viewChildren: Visualizza sottopagine

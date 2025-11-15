@@ -165,6 +165,8 @@ final class PagesController extends AbstractController
             return $this->redirect($this->generateRoute('panel.pages.edit.lang', ['page' => trim($page->route(), '/'), 'language' => $page->language()]));
         }
 
+        $createNew = $this->request->query()->has('createNew');
+
         // Load page fields
         $fieldCollection = $page->fields()->deepClone();
 
@@ -208,13 +210,21 @@ final class PagesController extends AbstractController
                     throw new UnexpectedValueException('Unexpected missing page route');
                 }
 
+                $query = [];
+
+                if ($createNew) {
+                    $query[] = 'createNew';
+                }
+
                 // Redirect to avoid ERR_CACHE_MISS
                 if ($routeParams->has('language')) {
-                    return $this->redirect($this->generateRoute('panel.pages.edit.lang', ['page' => $page->route(), 'language' => $routeParams->get('language')]));
+                    return $this->redirect(Uri::make(['query' => implode('&', $query)], $this->generateRoute('panel.pages.edit.lang', ['page' => $page->route(), 'language' => $routeParams->get('language')])));
                 }
-                return $this->redirect($this->generateRoute('panel.pages.edit', ['page' => $page->route()]));
+                return $this->redirect(Uri::make(['query' => implode('&', $query)], $this->generateRoute('panel.pages.edit', ['page' => $page->route()])));
         }
 
+        $this->modal('newPage')->setFieldsModel($page->parent() ?? $this->site);
+        $this->modal('newPage')->open($createNew);
         $this->modal('images')->setFieldsModel($page);
 
         $contentHistory = $page->contentPath()

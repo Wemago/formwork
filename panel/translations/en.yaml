@@ -250,6 +250,7 @@ panel.pages.renameFile: Rename file
 panel.pages.renameFile.name: Name
 panel.pages.replaceFile: Replace file
 panel.pages.save: Save
+panel.pages.saveAndCreateNew: Save and create new
 panel.pages.saveOnly: Save without publishing
 panel.pages.toggleChildren: Toggle children pages
 panel.pages.viewChildren: View children pages

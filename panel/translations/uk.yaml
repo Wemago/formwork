@@ -250,6 +250,7 @@ panel.pages.renameFile: Перейменувати файл
 panel.pages.renameFile.name: Назва
 panel.pages.replaceFile: Замінити файл
 panel.pages.save: Зберегти
+panel.pages.saveAndCreateNew: Зберегти і створити нову
 panel.pages.saveOnly: Зберегти без публікації
 panel.pages.toggleChildren: Перемкнути дочірні сторінки
 panel.pages.viewChildren: Перегляд підсторінок

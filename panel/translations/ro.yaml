@@ -250,6 +250,7 @@ panel.pages.renameFile: Redenumește fișier
 panel.pages.renameFile.name: Nume
 panel.pages.replaceFile: Înlocuiește fișier
 panel.pages.save: Salvează
+panel.pages.saveAndCreateNew: Salvează și creează una nouă
 panel.pages.saveOnly: Salvează fără a publica
 panel.pages.toggleChildren: Comută subpagini
 panel.pages.viewChildren: Vezi subpagini

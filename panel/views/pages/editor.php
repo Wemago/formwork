@@ -41,19 +41,22 @@
                     </div>
                 </div>
             <?php endif ?>
-            <?php if ($history?->isJustCreated()): ?>
-                <div class="dropdown mb-0">
-                    <div class="button-group">
+            <div class="dropdown mb-0">
+                <div class="button-group">
+                    <?php if ($history?->isJustCreated()): ?>
                         <button type="submit" class="button button-accent" formaction="?publish=true"><?= $this->icon('check-circle') ?> <?= $this->translate('panel.pages.publish') ?></button>
-                        <button type="button" class="button button-accent dropdown-button caret" data-dropdown="dropdown-save-options"></button>
-                    </div>
-                    <div class="dropdown-menu" id="dropdown-save-options">
-                        <button type="submit" class="dropdown-item" formaction="?publish=false"><?= $this->translate('panel.pages.saveOnly') ?></button>
-                    </div>
+                    <?php else: ?>
+                        <button type="submit" class="button button-accent mb-0"><?= $this->icon('check-circle') ?> <?= $this->translate('panel.pages.save') ?></button>
+                    <?php endif ?>
+                    <button type="button" class="button button-accent dropdown-button caret" data-dropdown="dropdown-save-options"></button>
                 </div>
-            <?php else: ?>
-                <button type="submit" class="button button-accent mb-0"><?= $this->icon('check-circle') ?> <?= $this->translate('panel.pages.save') ?></button>
-            <?php endif ?>
+                <div class="dropdown-menu" id="dropdown-save-options">
+                    <?php if ($history?->isJustCreated()): ?>
+                        <button type="submit" class="dropdown-item" formaction="?publish=false"><?= $this->translate('panel.pages.saveOnly') ?></button>
+                    <?php endif ?>
+                    <button type="submit" class="dropdown-item" formaction="?createNew"><?= $this->translate('panel.pages.saveAndCreateNew') ?></button>
+                </div>
+            </div>
         </div>
     </div>
     <div>

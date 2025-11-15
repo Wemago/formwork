@@ -485,6 +485,16 @@ abstract class AbstractCollection implements Arrayable, Countable, Iterator
     }
 
     /**
+     * Return a copy of the collection indexed by the given key from each item
+     */
+    public function keyBy(string $key, mixed $default = null): static
+    {
+        $collection = $this->clone();
+        $collection->data = array_combine($this->extract($key, $default), $collection->data);
+        return $collection;
+    }
+
+    /**
      * Return a copy of the collection with the given values
      *
      * If a value is already in the collection, it will not be added

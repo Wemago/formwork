@@ -4,9 +4,13 @@ use Formwork\Cms\App;
 use Formwork\Data\Contracts\Arrayable;
 use Formwork\Fields\Exceptions\ValidationException;
 use Formwork\Fields\Field;
+use Formwork\Fields\FieldCollection;
+use Formwork\Fields\FieldFactory;
+use Formwork\Utils\Arr;
 use Formwork\Utils\Constraint;
+use Formwork\Utils\Str;
 
-return function (App $app) {
+return function (App $app, FieldFactory $fieldFactory): array {
     return [
         'methods' => [
             /**
@@ -17,30 +21,62 @@ return function (App $app) {
             },
 
             /**
+             * Return whether the field allows empty values
+             */
+            'allowEmptyValues' => function (Field $field): bool {
+                return $field->is('allowEmptyValues', false);
+            },
+
+            /**
              * Validate the field value
              */
             'validate' => function (Field $field, $value): array {
-                if (Constraint::isEmpty($value)) {
-                    return [];
-                }
-
                 if ($value instanceof Arrayable) {
                     $value = $value->toArray();
+                }
+
+                if (Constraint::isEmpty($value)) {
+                    return [];
                 }
 
                 if (!is_array($value)) {
                     throw new ValidationException(sprintf('Invalid value for field "%s" of type "%s"', $field->name(), $field->type()));
                 }
 
-                if ($field->isAssociative()) {
-                    foreach (array_keys($value) as $key) {
-                        if (is_int($key)) {
-                            unset($value[$key]);
-                        }
-                    }
+                if (!$field->isAssociative() || !$field->allowEmptyValues()) {
+                    return Arr::reject($value, fn($v) => Constraint::isEmpty($v));
                 }
 
-                return array_filter($value);
+                return $value;
+            },
+
+            /**
+             * Return the fields for each item in the array
+             */
+            'items' => function (Field $field, array $default = []) use ($fieldFactory): FieldCollection {
+                $fields = new FieldCollection();
+                $fields->setModel($field->parent()?->model());
+
+                foreach ($field->value() ?: $default as $key => $value) {
+                    $fieldName = Str::slug("{$field->name()}-{$key}");
+                    $formKey = $field->isAssociative() ? $key : '';
+
+                    $valueField = $fieldFactory->make($fieldName, [
+                        ...$field->get('items', ['type' => 'text']),
+                        'formName'    => "{$field->formName()}[{$formKey}]",
+                        'itemKey'     => $key,
+                        'placeholder' => $field->get('placeholderValue'),
+                        'value'       => $value,
+                    ], $fields);
+
+                    $fields->set($fieldName, $valueField);
+                }
+
+                return $fields->validate();
+            },
+
+            'return' => function (Field $field) {
+                return $field->items()->keyBy('itemKey')->toArray();
             },
         ],
     ];

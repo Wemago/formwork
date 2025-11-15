@@ -21,7 +21,6 @@ interface TagsInputDropdownItem {
 
 export class TagsInput {
     readonly element: HTMLInputElement;
-    readonly name: string;
 
     private options: TagsInputOptions;
     private tags: string[] = [];
@@ -36,7 +35,6 @@ export class TagsInput {
         const defaults = { labels: { remove: "Remove" }, addKeyCodes: ["Comma"], limit: Infinity, accept: "options" as "options" | "any", orderable: true };
 
         this.element = element;
-        this.name = this.element.name;
 
         this.options = { ...defaults, ...options };
 
@@ -50,8 +48,25 @@ export class TagsInput {
         this.registerInputEvents();
     }
 
+    get name() {
+        return this.element.name;
+    }
+
+    set name(value: string) {
+        this.element.name = value;
+    }
+
     get value() {
         return this.element.value;
+    }
+
+    set value(value: string) {
+        this.element.value = value;
+        this.tags = value.split(", ").map((tag) => tag.trim());
+        this.list.innerHTML = "";
+        this.tags.forEach((tag) => this.insertTag(tag, this.list));
+        this.updatePlaceholder();
+        this.updateDropdown();
     }
 
     private createField() {

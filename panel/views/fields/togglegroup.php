@@ -1,8 +1,9 @@
 <?php $this->layout('fields.field') ?>
 <div class="form-input-wrap">
     <fieldset <?= $this->attr([
-                    'id'       => $field->name(),
                     'class'    => 'form-togglegroup',
+                    'id'       => $field->name(),
+                    'name'     => $field->formName(),
                     'disabled' => $field->isDisabled(),
                     'hidden'   => $field->isHidden(),
                 ]) ?>>

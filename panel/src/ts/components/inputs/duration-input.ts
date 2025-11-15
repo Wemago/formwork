@@ -22,7 +22,6 @@ interface DurationInputOptions {
 
 export class DurationInput {
     readonly element: HTMLInputElement;
-    readonly name: string;
 
     readonly options: DurationInputOptions;
 
@@ -47,15 +46,29 @@ export class DurationInput {
         };
 
         this.element = element;
-        this.name = element.name;
 
         this.options = { ...defaults, ...options };
 
         this.createField();
     }
 
+    get name() {
+        return this.element.name;
+    }
+
+    set name(value: string) {
+        this.element.name = value;
+    }
+
     get value() {
         return this.element.value;
+    }
+
+    set value(value: string) {
+        this.element.value = value;
+        this.updateInnerInputs();
+        this.updateInnerInputsLength();
+        this.updateLabels();
     }
 
     private secondsToIntervals(seconds: number, intervalNames: TimeInterval[] = this.options.intervals) {

@@ -2,12 +2,19 @@ import { $ } from "../../utils/selectors";
 
 export class ColorInput {
     readonly element: HTMLInputElement;
-    readonly name: string;
 
     constructor(element: HTMLInputElement) {
         this.element = element;
 
         this.initInput();
+    }
+
+    get name() {
+        return this.element.name;
+    }
+
+    set name(value: string) {
+        this.element.name = value;
     }
 
     get value() {

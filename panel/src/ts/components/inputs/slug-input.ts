@@ -3,17 +3,27 @@ import { $ } from "../../utils/selectors";
 
 export class SlugInput {
     readonly element: HTMLInputElement;
-    readonly name: string;
 
     constructor(element: HTMLInputElement) {
         this.element = element;
-        this.name = this.element.name;
 
         this.initInput();
     }
 
+    get name() {
+        return this.element.name;
+    }
+
+    set name(value: string) {
+        this.element.name = value;
+    }
+
     get value() {
         return this.element.value;
+    }
+
+    set value(value: string) {
+        this.element.value = validateSlug(value);
     }
 
     private initInput() {

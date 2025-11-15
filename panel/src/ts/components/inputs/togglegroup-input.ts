@@ -1,17 +1,24 @@
-import { $ } from "../../utils/selectors";
+import { $, $$ } from "../../utils/selectors";
 
 export class TogglegroupInput {
-    readonly name: string;
-
     readonly element: HTMLFieldSetElement;
 
     constructor(fieldset: HTMLFieldSetElement) {
         this.element = fieldset;
 
-        this.name = fieldset.id;
-
         $(`label[for="${this.name}"]`)?.addEventListener("click", () => {
-            $(`input:checked`, this.element)?.focus();
+            $("input:checked", this.element)?.focus();
+        });
+    }
+
+    get name() {
+        return this.element.name;
+    }
+
+    set name(value: string) {
+        this.element.name = value;
+        $$("input", this.element)?.forEach((input: HTMLInputElement) => {
+            input.name = value;
         });
     }
 

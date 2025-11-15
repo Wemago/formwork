@@ -1,14 +1,28 @@
 # Changelog
 
-# [2.1.3](https://github.com/getformwork/formwork/releases/tag/2.1.3)
+# [2.1.3](https://github.com/getformwork/formwork/releases/tag/2.1.4)
+
+**Enhancements**
+- Display version info of all required packages in the panel info view
+- Add the possibility to remove field icons with `icon: null`
+- Display page info by hovering page icon in the editor
+- Add default icons to email and password fields
+- Add the possibility to initialize modals as open
+- Add the possibility to set modal forms target
 
 **Bug fixes**
-- Fix route aliases not available in panel site options
+- Move symfony/process to non-dev requires to ensure it's available for the `bin/serve` command
+- Fix slug input not being initialized with source input default value
+
+# [2.1.3](https://github.com/getformwork/formwork/releases/tag/2.1.3)
 
 **Enhancements**
 - Add descriptions to advanced site fields
 - Add `--hostname` option to the `bin/formwork backup` command
 - Reduce backup size by ignoring vendor files by default
+
+**Bug fixes**
+- Fix route aliases not available in panel site options
 
 # [2.1.2](https://github.com/getformwork/formwork/releases/tag/2.1.2)
 

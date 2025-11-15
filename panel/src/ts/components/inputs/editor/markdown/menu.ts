@@ -82,10 +82,10 @@ class MenuView {
             }
 
             if (dropdown && name) {
+                const btn = this.dropdowns[dropdown].querySelector(".dropdown-button") as HTMLButtonElement;
+                btn.disabled = !editable;
                 if (!applicable) {
-                    const btn = this.dropdowns[dropdown].querySelector(".dropdown-button") as HTMLButtonElement;
                     btn.textContent = name;
-                    btn.disabled = !editable;
                 }
                 dom.classList.toggle("is-active", !applicable);
             }

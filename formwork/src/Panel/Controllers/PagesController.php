@@ -165,7 +165,7 @@ final class PagesController extends AbstractController
             return $this->redirect($this->generateRoute('panel.pages.edit.lang', ['page' => trim($page->route(), '/'), 'language' => $page->language()]));
         }
 
-        $createNew = !Constraint::isFalsy($this->request->query()->get('createNew', false));
+        $createNew = $this->request->query()->has('createNew');
 
         // Load page fields
         $fieldCollection = $page->fields()->deepClone();

@@ -23,17 +23,17 @@
         "ext-mbstring": "*",
         "ext-openssl": "*",
         "ext-zip": "*",
-        "symfony/polyfill-ctype": "^1.23",
-        "symfony/yaml": "^7.0.3",
+        "jaybizzle/crawler-detect": "^1.2",
         "league/climate": "^3.10",
         "league/commonmark": "^2.4",
-        "jaybizzle/crawler-detect": "^1.2",
         "masterminds/html5": "^2.9",
-        "mobiledetect/mobiledetectlib": "^4.8"
+        "mobiledetect/mobiledetectlib": "^4.8",
+        "symfony/polyfill-ctype": "^1.23",
+        "symfony/process": "^7.3",
+        "symfony/yaml": "^7.0.3"
     },
     "require-dev": {
         "friendsofphp/php-cs-fixer": "^3.0",
-        "symfony/process": "^7.0.4",
         "phpstan/phpstan": "^2.0.3",
         "rector/rector": "^2.0.3"
     },

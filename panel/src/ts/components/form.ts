@@ -8,7 +8,6 @@ import { DurationInput } from "./inputs/duration-input";
 import { EditorInput } from "./inputs/editor-input";
 import { ImagePicker } from "./inputs/image-picker";
 import { Input } from "./inputs/input";
-import { makeSlug } from "../utils/validation";
 import { RangeInput } from "./inputs/range-input";
 import { SelectInput } from "./inputs/select-input";
 import { serializeForm } from "../utils/forms";
@@ -30,6 +29,8 @@ interface FormInput {
     name: string;
     value: string;
 }
+
+export type HTMLInputLike = HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement;
 
 export class Form {
     readonly formInputs: FormInput[] = [];
@@ -152,6 +153,49 @@ export class Form {
         }
 
         return serializeForm(this.element) !== this.originalData;
+    }
+
+    duplicateInput(element: HTMLInputLike, targetElement: HTMLElement) {
+        let newNode: HTMLElement;
+        let newInput: HTMLInputLike | undefined = undefined;
+        const wrap = element.closest(".form-input-wrap");
+
+        if (wrap) {
+            newNode = wrap.cloneNode() as HTMLElement;
+            for (const child of Array.from(wrap.children)) {
+                if (child === element) {
+                    newInput = child.cloneNode(true) as HTMLInputLike;
+                    if (newInput instanceof HTMLInputElement && (newInput.type === "checkbox" || newInput.type === "radio")) {
+                        newInput.checked = false;
+                    } else {
+                        newInput.value = "";
+                    }
+                    newNode.appendChild(newInput);
+                } else if (child.matches(`.form-input-action, .form-input-description, .form-input-icon`)) {
+                    newNode.appendChild(child.cloneNode(true));
+                }
+            }
+            if (newInput === undefined) {
+                throw new Error("Could not replicate input: input element not found in wrapper.");
+            }
+        } else {
+            newInput = newNode = element.cloneNode(true) as HTMLInputLike;
+            if (newInput instanceof HTMLInputElement && (newInput.type === "checkbox" || newInput.type === "radio")) {
+                newInput.checked = false;
+            } else {
+                newInput.value = "";
+            }
+        }
+
+        newInput.id = `${element.tagName.toLowerCase()}-${Math.random().toString(36).slice(2)}`;
+
+        targetElement.appendChild(newNode);
+
+        if (wrap) {
+            this.loadInputs(newNode);
+        } else {
+            this.loadInput(newInput);
+        }
     }
 
     private preventUnloadOnChanges() {

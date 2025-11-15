@@ -56,4 +56,12 @@ class NavigationItem implements Arrayable
     {
         return $this->data['badge'] ?? null;
     }
+
+    /**
+     * Get navigation item icon
+     */
+    public function icon(): ?string
+    {
+        return $this->data['icon'] ?? null;
+    }
 }

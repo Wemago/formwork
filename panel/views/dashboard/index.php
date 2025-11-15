@@ -2,6 +2,7 @@
 
 <div data-view="dashboard">
     <div class="header">
+        <div class="header-icon"><?= $this->icon('home') ?></div>
         <div class="header-title"><?= $this->translate('panel.dashboard.dashboard') ?></div>
     </div>
 

@@ -1,6 +1,7 @@
 <?php $this->layout('panel') ?>
 
 <div class="header">
+    <div class="header-icon"><?= $this->icon('chart-line') ?></div>
     <div class="header-title"><?= $this->translate('panel.statistics.statistics') ?></div>
 </div>
 

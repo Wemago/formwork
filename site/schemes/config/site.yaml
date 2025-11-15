@@ -11,7 +11,7 @@ layout:
         pages:
             label: '{{site.pages}}'
             collapsible: true
-            fields: [defaultTemplate]
+            fields: [defaultTemplate, taxonomies]
 
         languages:
             collapsible: true
@@ -48,6 +48,12 @@ fields:
     defaultTemplate:
         type: template
         label: '{{site.pages.defaultTemplate}}'
+
+    taxonomies:
+        type: tags
+        label: '{{site.pages.taxonomies}}'
+        placeholder: '{{site.pages.taxonomies.noTaxonomies}}'
+        description: '{{site.pages.taxonomies.description}}'
 
     languages.available:
         type: tags

@@ -80,6 +80,9 @@ site.maintenance.enabled.enabled: Enabled
 site.maintenance.page: Maintenance page
 site.pages: Pages
 site.pages.defaultTemplate: Default template
+site.pages.taxonomies: Taxonomies
+site.pages.taxonomies.description: Taxonomies for organizing pages, to be used in template controllers to filter pages
+site.pages.taxonomies.noTaxonomies: No taxonomies
 site.statistics: Statistics
 site.statistics.enabled: Track page visits
 site.statistics.enabled.disabled: Disabled

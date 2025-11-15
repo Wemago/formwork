@@ -80,6 +80,9 @@ site.maintenance.enabled.enabled: Activat
 site.maintenance.page: Pagină de mentenanță
 site.pages: Pagini
 site.pages.defaultTemplate: Șablon implicit
+site.pages.taxonomies: Taxonomii
+site.pages.taxonomies.description: Taxonomii pentru organizarea paginilor, folosite în controllerele șabloanelor pentru a filtra pagini
+site.pages.taxonomies.noTaxonomies: Nicio taxonomie
 site.statistics: Statistici
 site.statistics.enabled: Urmărește vizitele paginilor
 site.statistics.enabled.disabled: Dezactivat

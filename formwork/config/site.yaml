@@ -35,4 +35,4 @@ statistics:
         ttl: 86400
         probability: 5
 
-taxonomies: [tag]
+taxonomies: []

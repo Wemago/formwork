@@ -1,13 +1,13 @@
 import { $, $$ } from "../../utils/selectors";
-import { Form } from "../form";
+import { Form, HTMLInputLike } from "../form";
 import Sortable from "sortablejs";
 
 export class ArrayInput {
     readonly element: HTMLFieldSetElement;
-
     readonly form: Form;
-
     readonly isAssociative: boolean;
+
+    private itemCache = new WeakMap<HTMLElement, { key?: HTMLInputLike; value: HTMLInputLike }>();
 
     constructor(element: HTMLFieldSetElement, form: Form) {
         this.element = element;
@@ -16,9 +16,13 @@ export class ArrayInput {
 
         this.isAssociative = element.classList.contains("form-input-array-associative");
 
-        $$(".form-input-array-row", element).forEach((element) => this.bindRowEvents(element));
+        $$(".form-input-array-row", element).forEach((element) => this.bindItemEvents(element));
 
         $(`label[for="${element.id}"]`)?.addEventListener("click", () => $(".form-input", element)?.focus());
+
+        if (this.isAssociative) {
+            this.form.element.addEventListener("submit", () => this.handleSubmit());
+        }
 
         Sortable.create(element, {
             handle: ".sortable-handle",
@@ -42,12 +46,11 @@ export class ArrayInput {
 
         let i = 0;
 
-        $$(".form-input-array-row", $(`[data-name="${this.name}"]`) as HTMLElement).forEach((row) => {
-            const inputKey = $(".form-input-array-key", row) as HTMLInputElement;
-            const inputValue = $(".form-input-array-value", row) as HTMLInputElement;
+        $$(".form-input-array-row", this.element).forEach((item) => {
+            const { key: keyInput, value: valueInput } = this.getItemInputs(item);
 
-            const key = inputKey.value.trim();
-            const value = inputValue.value.trim();
+            const key = keyInput?.value.trim() ?? "";
+            const value = valueInput.value.trim();
 
             if (this.isAssociative && key) {
                 values[key] = value;
@@ -59,57 +62,130 @@ export class ArrayInput {
         return JSON.stringify(values);
     }
 
-    private addRow(row: HTMLElement) {
-        const clone = row.cloneNode(true) as HTMLElement;
-        const parent = row.parentNode as ParentNode;
-        this.clearRow(clone);
-        this.bindRowEvents(clone);
-        if (row.nextSibling) {
-            parent.insertBefore(clone, row.nextSibling);
-        } else {
-            parent.appendChild(clone);
+    private handleSubmit() {
+        const emptyKeyName = `${this.name}[]`;
+        for (const input of this.form.formInputs) {
+            if (input.element.name === emptyKeyName) {
+                // Prevent items with empty keys from being submitted
+                input.name = "";
+            }
         }
     }
 
-    private removeRow(row: HTMLElement) {
-        const parent = row.parentNode as ParentNode;
+    private getItemInputs(item: HTMLElement): { key?: HTMLInputLike; value: HTMLInputLike } {
+        const cached = this.itemCache.get(item);
+        if (cached) {
+            return cached;
+        }
+
+        const key = this.isAssociative ? ($(".form-input-array-key", item) as HTMLInputLike) : undefined;
+        const value = $(`.form-input-array-value [name^="${this.name}"]`, item) as HTMLInputLike;
+        const entry = { key, value };
+        this.itemCache.set(item, entry);
+        return entry;
+    }
+
+    private addItem(item: HTMLElement) {
+        const { value: valueInput } = this.getItemInputs(item);
+        const newItem = item.cloneNode(true) as HTMLElement;
+
+        $(".form-input-array-value", newItem)?.replaceChildren();
+
+        this.form.duplicateInput(valueInput, $(".form-input-array-value", newItem) as HTMLElement);
+
+        const parent = item.parentNode as ParentNode;
+
+        this.clearItem(newItem);
+        this.bindItemEvents(newItem);
+
+        // Update name attribute based on cloned key input
+        if (this.isAssociative) {
+            const { key: newKeyInput, value: newValueInput } = this.getItemInputs(newItem);
+            this.onKeyInput(newKeyInput as HTMLInputLike, newValueInput);
+        }
+
+        if (item.nextSibling) {
+            parent.insertBefore(newItem, item.nextSibling);
+        } else {
+            parent.appendChild(newItem);
+        }
+
+        // Focus the new input item
+        this.focusItem(newItem);
+    }
+
+    private removeItem(item: HTMLElement) {
+        const parent = item.parentNode as ParentNode;
         if ($$(".form-input-array-row", parent).length > 1) {
-            parent.removeChild(row);
+            parent.removeChild(item);
+            this.itemCache.delete(item);
         } else {
-            this.clearRow(row);
+            this.clearItem(item);
         }
     }
 
-    private clearRow(row: HTMLElement) {
-        if (this.isAssociative) {
-            const inputKey = $(".form-input-array-key", row) as HTMLInputElement;
-            inputKey.value = "";
-            inputKey.removeAttribute("value");
+    private clearItem(item: HTMLElement) {
+        const { key: keyInput, value: valueInput } = this.getItemInputs(item);
+
+        this.updateFormInputValue(valueInput, "");
+
+        if (this.isAssociative && keyInput) {
+            keyInput.value = "";
+            keyInput.required = false;
+            this.onKeyInput(keyInput, valueInput);
         }
-        const inputValue = $(".form-input-array-value", row) as HTMLInputElement;
-        inputValue.value = "";
-        inputValue.removeAttribute("value");
-        inputValue.name = `${this.name}[]`;
     }
 
-    private updateAssociativeRow(row: HTMLElement) {
-        const inputKey = $(".form-input-array-key", row) as HTMLInputElement;
-        const inputValue = $(".form-input-array-value", row) as HTMLInputElement;
-        inputValue.name = `${this.name}[${inputKey.value.trim()}]`;
-    }
+    private bindItemEvents(item: HTMLElement) {
+        const inputAdd = $(".form-input-array-add", item) as HTMLButtonElement;
+        const inputRemove = $(".form-input-array-remove", item) as HTMLButtonElement;
 
-    private bindRowEvents(row: HTMLElement) {
-        const inputAdd = $(".form-input-array-add", row) as HTMLButtonElement;
-        const inputRemove = $(".form-input-array-remove", row) as HTMLButtonElement;
-
-        inputAdd.addEventListener("click", () => this.addRow(row));
-        inputRemove.addEventListener("click", () => this.removeRow(row));
+        inputAdd.addEventListener("click", () => this.addItem(item));
+        inputRemove.addEventListener("click", () => this.removeItem(item));
 
         if (this.isAssociative) {
-            const inputKey = $(".form-input-array-key", row) as HTMLInputElement;
-            const inputValue = $(".form-input-array-value", row) as HTMLInputElement;
-            inputKey.addEventListener("keyup", () => this.updateAssociativeRow(row));
-            inputValue.addEventListener("keyup", () => this.updateAssociativeRow(row));
+            const { key: keyInput, value: valueInput } = this.getItemInputs(item) as { key: HTMLInputLike; value: HTMLInputLike };
+            keyInput.addEventListener("input", () => this.onKeyInput(keyInput, valueInput));
+            valueInput.addEventListener("input", () => this.onValueInput(keyInput, valueInput));
+        }
+    }
+
+    private focusItem(item: HTMLElement) {
+        const { key: keyInput, value: valueInput } = this.getItemInputs(item);
+        const inputToFocus = this.isAssociative && keyInput ? keyInput : valueInput;
+        inputToFocus.focus();
+    }
+
+    private onKeyInput(keyInput: HTMLInputLike, valueInput: HTMLInputLike) {
+        const newName = `${this.name}[${keyInput.value.trim()}]`;
+
+        if (valueInput.name === newName) {
+            return;
+        }
+
+        this.updateFormInputName(valueInput, newName);
+        this.onValueInput(keyInput, valueInput);
+    }
+
+    private onValueInput(keyInput: HTMLInputLike, valueInput: HTMLInputLike) {
+        keyInput.required = valueInput.value.trim() !== "";
+    }
+
+    private updateFormInputName(element: HTMLInputLike, newName: string) {
+        for (const input of this.form.formInputs) {
+            if (input.element === element) {
+                input.name = newName;
+                break;
+            }
+        }
+    }
+
+    private updateFormInputValue(element: HTMLInputLike, newValue: string) {
+        for (const input of this.form.formInputs) {
+            if (input.element === element) {
+                input.value = newValue;
+                break;
+            }
         }
     }
 }

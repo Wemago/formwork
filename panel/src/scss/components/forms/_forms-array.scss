@@ -13,30 +13,47 @@
 
 .form-input-array-row {
     display: flex;
+    align-items: flex-start;
     padding: 0.25rem 0.5rem;
     margin: 0 (-0.5rem);
-    white-space: nowrap;
+    gap: 0.25rem;
 }
 
-.form-input-array-key,
-.form-input-array-value {
-    display: inline-block;
-    margin-bottom: 0;
+.form-input-array-item {
+    display: flex;
+    flex: 1;
+    flex-direction: row;
+    align-items: flex-start;
+    gap: 0.25rem;
 }
 
 .form-input-array-key {
-    width: 30%;
-    margin-right: 0.25rem;
+    max-width: 30%;
+    margin-bottom: 0;
 }
 
 .form-input-array-value {
-    margin-right: 0.25rem;
+    flex: 1;
+
+    & :last-child {
+        margin-bottom: 0;
+    }
+}
+
+.form-input-array-item-type-markdown,
+.form-input-array-item-type-textarea {
+    flex-direction: column;
+    align-items: stretch;
+
+    & .form-input-array-key {
+        max-width: none;
+    }
 }
 
 .form-input-array-add,
 .form-input-array-remove {
     padding: 0;
-    margin-right: 0.25rem;
+    margin-top: 0.25rem;
 }
 
 .form-input-array .sortable-chosen:not(.sortable-drag) {

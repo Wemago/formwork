@@ -250,6 +250,7 @@ panel.pages.renameFile: Renombrar archivo
 panel.pages.renameFile.name: Nombre
 panel.pages.replaceFile: Reemplazar archivo
 panel.pages.save: Guardar
+panel.pages.saveAndCreateNew: Guardar y crear nueva
 panel.pages.saveOnly: Guardar sin publicar
 panel.pages.toggleChildren: Alternar páginas secundarias
 panel.pages.viewChildren: Ver subpáginas

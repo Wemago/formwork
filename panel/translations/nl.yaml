@@ -250,6 +250,7 @@ panel.pages.renameFile: Bestand hernoemen
 panel.pages.renameFile.name: Naam
 panel.pages.replaceFile: Bestand vervangen
 panel.pages.save: Opslaan
+panel.pages.saveAndCreateNew: Opslaan en nieuwe maken
 panel.pages.saveOnly: Opslaan zonder publiceren
 panel.pages.toggleChildren: Kindpagina's tonen/verbergen
 panel.pages.viewChildren: Bekijk subpagina's

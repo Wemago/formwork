@@ -10,7 +10,7 @@
                 'hidden'   => $field->isHidden(),
             ]) ?>>
         <?php foreach ($site->templates() as $template) : ?>
-            <option value="<?= $template->name() ?>" <?php if ($template->name() === (string) $field->value()) : ?> selected<?php endif ?>><?= $this->escape($template->title()) ?></option>
+            <option <?= $this->attr(['value' => $template->name(), 'selected' => $template->name() === (string) $field->value(), 'data-icon' => $template->scheme()->options()->get('icon', 'page')]) ?>><?= $this->escape($template->title()) ?></option>
         <?php endforeach ?>
     </select>
 </div>

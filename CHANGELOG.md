@@ -1,6 +1,12 @@
 # Changelog
 
-# [2.1.3](https://github.com/getformwork/formwork/releases/tag/2.1.4)
+# [2.1.5](https://github.com/getformwork/formwork/releases/tag/2.1.5)
+
+**Bug fixes**
+- Update panel dependencies to fix vulnerabilities
+- Add missing files icon
+
+# [2.1.4](https://github.com/getformwork/formwork/releases/tag/2.1.4)
 
 **Enhancements**
 - Display version info of all required packages in the panel info view

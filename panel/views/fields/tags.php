@@ -1,6 +1,6 @@
 <?php $this->layout('fields.field') ?>
 <div class="form-input-wrap">
-    <?php $this->insert('fields.partials.icon', ['icon' => $field->get('icon', 'tag')]) ?>
+    <?php $this->insert('fields.partials.icon', ['icon' => $field->get('icon', 'tags')]) ?>
     <input <?= $this->attr([
                 'class'          => ['form-input', 'form-input-tags'],
                 'type'           => 'text',

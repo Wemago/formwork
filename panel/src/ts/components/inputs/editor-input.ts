@@ -111,7 +111,7 @@ export class EditorInput {
                 window.localStorage.setItem(`formwork.editorMode[${key}]`, "code");
             } else {
                 this.switchToMarkdown();
-                window.localStorage.setItem(`formwork.editorMode[${key}]`, "mardown");
+                window.localStorage.setItem(`formwork.editorMode[${key}]`, "markdown");
             }
             this.editor.view.focus();
         });

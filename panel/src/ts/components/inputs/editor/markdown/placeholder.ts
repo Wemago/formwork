@@ -2,6 +2,10 @@ import { Decoration, DecorationSet } from "prosemirror-view";
 import { EditorState, Plugin } from "prosemirror-state";
 
 export function placeholderPlugin(text: string) {
+    if (!text) {
+        return new Plugin({});
+    }
+
     return new Plugin({
         props: {
             decorations(state: EditorState) {

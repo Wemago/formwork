@@ -3,14 +3,12 @@ import { app } from "../../app";
 import { Notification } from "../notification";
 import { Request } from "../../utils/request";
 import { StatisticsChart } from "../statistics-chart";
-import { triggerDownload } from "../../utils/forms";
 
 export class Dashboard {
     constructor() {
         const clearCacheCommand = $("[data-view=dashboard] [data-command=clear-cache]");
         const clearPagesCacheCommand = $("[data-view=dashboard] [data-command=clear-pages-cache]");
         const clearImagesCacheCommand = $("[data-view=dashboard] [data-command=clear-images-cache]");
-        const makeBackupCommand = $("[data-view=dashboard] [data-command=make-backup]");
         const chart = $(".dashboard-chart");
 
         const clearCache = (type?: string) => {
@@ -38,36 +36,6 @@ export class Dashboard {
 
         if (clearImagesCacheCommand) {
             clearImagesCacheCommand.addEventListener("click", () => clearCache("images"));
-        }
-
-        if (makeBackupCommand) {
-            makeBackupCommand.addEventListener("click", function () {
-                const button = this as HTMLButtonElement;
-                button.disabled = true;
-
-                new Request(
-                    {
-                        method: "POST",
-                        url: `${app.config.baseUri}backup/make/`,
-                        data: { "csrf-token": app.config.csrfToken as string },
-                    },
-                    (response) => {
-                        const notification = new Notification(response.message, response.status, { icon: "check-circle" });
-                        notification.show();
-
-                        if (response.status === "success") {
-                            window.setTimeout(() => {
-                                button.disabled = false;
-                                triggerDownload(response.data.uri, app.config.csrfToken as string);
-                            }, 1000);
-                        }
-
-                        if (response.status === "error") {
-                            button.disabled = false;
-                        }
-                    },
-                );
-            });
         }
 
         if (chart) {

@@ -31,7 +31,7 @@
                     </div>
                 <?php endif ?>
                 <?php if ($panel->user()->permissions()->has('panel.backup')) : ?>
-                    <button type="button" class="button button-secondary mb-4" data-command="make-backup"><?= $this->icon('clock-rotate-left') ?> <?= $this->translate('panel.backup.backup') ?></button>
+                    <a class="button button-secondary mb-4" role="button" href="<?= $panel->uri('/tools/backups/') ?>"><?= $this->icon('clock-rotate-left') ?> <?= $this->translate('panel.tools.backups') ?></a>
                 <?php endif ?>
                 <?php if ($panel->user()->permissions()->has('panel.options.updates')) : ?>
                     <a class="button button-secondary mb-4" role="button" href="<?= $panel->uri('/tools/updates/') ?>"><?= $this->icon('arrows-rotate-clockwise') ?> <?= $this->translate('panel.updates.check') ?></a>

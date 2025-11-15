@@ -72,8 +72,9 @@ class MenuView {
     update() {
         this.items.forEach(({ command, dom, mark, dropdown, name, node }) => {
             const state = this.editorView.state;
+            const editable = this.editorView.props.editable ? this.editorView.props.editable(state) : true;
 
-            const applicable = command(state, undefined, this.editorView);
+            const applicable = editable && command(state, undefined, this.editorView);
 
             if (dom instanceof HTMLButtonElement) {
                 dom.disabled = !applicable;
@@ -82,7 +83,9 @@ class MenuView {
 
             if (dropdown && name) {
                 if (!applicable) {
-                    this.dropdowns[dropdown].querySelector(".dropdown-button")!.textContent = name;
+                    const btn = this.dropdowns[dropdown].querySelector(".dropdown-button") as HTMLButtonElement;
+                    btn.textContent = name;
+                    btn.disabled = !editable;
                 }
                 dom.classList.toggle("is-active", !applicable);
             }

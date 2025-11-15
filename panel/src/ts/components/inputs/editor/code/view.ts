@@ -1,9 +1,15 @@
 import { defaultKeymap, history, historyKeymap } from "@codemirror/commands";
-import { EditorView, keymap } from "@codemirror/view";
+import { EditorView, keymap, placeholder } from "@codemirror/view";
 import { HighlightStyle, syntaxHighlighting } from "@codemirror/language";
+import { Compartment } from "@codemirror/state";
 import { markdown } from "@codemirror/lang-markdown";
 import { MenuPlugin } from "./menu";
 import { tags } from "@lezer/highlight";
+
+interface CodeViewOptions {
+    editable?: boolean;
+    placeholder?: string;
+}
 
 const theme = EditorView.theme({
     "&": {
@@ -39,10 +45,12 @@ const myHighlightStyle = HighlightStyle.define([
     { tag: [tags.variableName, tags.macroName, tags.propertyName, tags.className], color: "#1d75b3" },
 ]);
 
+const editable = new Compartment();
+
 export class CodeView {
     view: EditorView;
 
-    constructor(target: Element, content: string, inputEventHandler: (content: string) => void) {
+    constructor(target: Element, content: string, inputEventHandler: (content: string) => void, options: CodeViewOptions = {}) {
         this.view = new EditorView({
             doc: content,
             extensions: [
@@ -63,6 +71,8 @@ export class CodeView {
                         inputEventHandler(this.content);
                     }
                 }),
+                editable.of(EditorView.editable.of(options.editable ?? true)),
+                placeholder(options.placeholder ?? ""),
             ],
             parent: target,
         });
@@ -75,6 +85,16 @@ export class CodeView {
     set content(value: string) {
         this.view.dispatch({
             changes: { from: 0, to: this.view.state.doc.length, insert: value },
+        });
+    }
+
+    get editable() {
+        return this.view.state.facet(EditorView.editable);
+    }
+
+    set editable(value: boolean) {
+        this.view.dispatch({
+            effects: editable.reconfigure(EditorView.editable.of(value)),
         });
     }
 

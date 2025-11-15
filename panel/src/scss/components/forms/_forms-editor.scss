@@ -2,6 +2,8 @@
 @use "../variables" as *;
 @use "../colors" as *;
 
+/* stylelint-disable selector-class-pattern */
+
 .editor-toolbar {
     position: relative;
     display: flex;
@@ -52,6 +54,10 @@
 
 .toolbar-button.is-active {
     color: var(--color-accent-500);
+
+    &:disabled {
+        color: var(--color-base-500);
+    }
 }
 
 .form-textarea.editor-textarea {
@@ -63,8 +69,6 @@
     }
 }
 
-/* stylelint-disable selector-class-pattern */
-
 .ProseMirror,
 .cm-editor {
     min-height: 6rem;
@@ -73,6 +77,10 @@
     border-radius: var(--border-radius);
     font-family: var(--font-family-sans);
     font-size: var(--font-size-md);
+}
+
+.cm-content .cm-line {
+    padding: 0;
 }
 
 .ProseMirror {
@@ -85,6 +93,23 @@
 
     &:focus {
         outline: none;
+    }
+
+    & .pm-placeholder {
+        color: var(--color-base-300);
+        font-size: var(--font-size-sm);
+        pointer-events: none;
+    }
+}
+
+.editor-textarea:disabled {
+    & + [contenteditable="false"] {
+        background-color: var(--color-base-700);
+        color: var(--color-base-300);
+
+        & > * {
+            opacity: 0.6;
+        }
     }
 }
 

@@ -670,7 +670,7 @@ class Page extends Model implements Stringable
      */
     public function isDuplicable(): bool
     {
-        return !($this->hasChildren() || $this->isIndexPage() || $this->isErrorPage());
+        return !$this->hasChildren();
     }
 
     /**

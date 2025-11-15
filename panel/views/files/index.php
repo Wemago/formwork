@@ -3,6 +3,7 @@
 
 <div data-view="files">
     <div class="header">
+        <div class="header-icon"><?= $this->icon('files') ?></div>
         <div class="header-title"><?= $this->translate('panel.files.files') ?></div>
         <div>
             <?php if ($panel->user()->permissions()->has('panel.files.upload')) : ?>

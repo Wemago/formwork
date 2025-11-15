@@ -3,6 +3,7 @@
 <div class="header">
     <div class="flex mr-auto overflow-hidden">
         <div class="min-w-0 flex">
+            <div class="header-icon"><?= $this->icon('pages') ?></div>
             <div class="header-title mr-4"><?= $this->translate('panel.pages.pages') ?></div>
             <?php foreach ($parent->ancestors()->reverse()->with($parent) as $page) : ?>
                 <div class="text-color-gray-medium mr-4">/</div>

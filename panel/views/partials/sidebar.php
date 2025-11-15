@@ -18,6 +18,9 @@
             <?php foreach ($panel->navigation() as $item) : ?>
                 <?php if ($item->permissions() === null || $panel->user()->permissions()->has($item->permissions())) : ?>
                     <li class="<?= $this->classes(['active' => $location === $item->id()]) ?>">
+                        <?php if ($item->icon()) : ?>
+                            <?= $this->icon($item->icon()) ?>
+                        <?php endif ?>
                         <a href="<?= $panel->uri($item->uri()) ?>"><?= $this->escape($item->label()) ?></a>
                         <?php if ($item->badge()) : ?>
                             <span class="badge"><?= $item->badge() ?></span>

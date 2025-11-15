@@ -231,6 +231,7 @@ class Page extends Model implements Stringable
             'headers'        => [],
             'responseStatus' => 200,
             'metadata'       => [],
+            'taxonomy'       => [],
             'content'        => '',
         ];
 
@@ -384,6 +385,30 @@ class Page extends Model implements Stringable
     public function files(): FileCollection
     {
         return $this->files;
+    }
+
+    /**
+     * Get page taxonomy
+     *
+     * @return array<string, list<string>>
+     */
+    public function taxonomy(): array
+    {
+        return $this->data['taxonomy'];
+    }
+
+    /**
+     * Set page taxonomy
+     *
+     * @param array<string, list<string>> $taxonomy
+     */
+    public function setTaxonomy(array $taxonomy): void
+    {
+        if (!Arr::every($taxonomy, fn($terms, $taxonomyName) => is_string($taxonomyName)
+            && is_array($terms) && Arr::every($terms, fn($term) => is_string($term)))) {
+            throw new InvalidValueException('Invalid taxonomy format');
+        }
+        $this->data['taxonomy'] = $taxonomy;
     }
 
     /**
@@ -733,11 +758,11 @@ class Page extends Model implements Stringable
                 || in_array($field->name(), self::IGNORED_FIELD_NAMES, true)
                 || in_array($field->type(), self::IGNORED_FIELD_TYPES, true)
             ) {
-                unset($frontmatter[$field->name()]);
+                Arr::remove($frontmatter, $field->name());
                 continue;
             }
 
-            $frontmatter[$field->name()] = $field->value();
+            Arr::set($frontmatter, $field->name(), $field->value());
         }
 
         $content = str_replace("\r\n", "\n", $this->data['content']);

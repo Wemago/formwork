@@ -3,6 +3,7 @@
 namespace Formwork\Schemes;
 
 use Formwork\Services\Container;
+use Formwork\Utils\Str;
 
 final class SchemeFactory
 {
@@ -17,6 +18,10 @@ final class SchemeFactory
      */
     public function make(string $id, array $data = []): Scheme
     {
+        if (Str::startsWith($id, 'pages.') && isset($data['options']['allowTags'])) {
+            trigger_error('The Scheme option "allowTags" is deprecated since Formwork 2.2.0, use "allowTaxonomy"', E_USER_DEPRECATED);
+            $data['options']['allowTaxonomy'] = $data['options']['allowTags'];
+        }
         return $this->container->build(Scheme::class, compact('id', 'data'));
     }
 }

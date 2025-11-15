@@ -82,6 +82,9 @@ site.maintenance.enabled.enabled: Включено
 site.maintenance.page: Страница обслуживания
 site.pages: Страницы
 site.pages.defaultTemplate: Шаблон по умолчанию
+site.pages.taxonomies: Таксономии
+site.pages.taxonomies.description: Таксономии для организации страниц, используются в контроллерах шаблонов для фильтрации страниц
+site.pages.taxonomies.noTaxonomies: Нет таксономий
 site.statistics: Статистика
 site.statistics.enabled: Отслеживать посещения страницы
 site.statistics.enabled.disabled: Отключено

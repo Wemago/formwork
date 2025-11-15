@@ -10,7 +10,7 @@ options:
 layout:
     sections:
         content:
-            fields: [title, coverImage, tags, summary, content]
+            fields: [title, coverImage, taxonomy.tag, summary, content]
 
 fields:
     summary:
@@ -22,7 +22,7 @@ fields:
         type: image
         label: '{{page.image}}'
 
-    tags:
+    taxonomy.tag:
         type: tags
         label: '{{page.tags}}'
         placeholder: '{{page.noTags}}'

@@ -82,6 +82,9 @@ site.maintenance.enabled.enabled: Włączony
 site.maintenance.page: Strona konserwacyjna
 site.pages: Strony
 site.pages.defaultTemplate: Domyślny szablon
+site.pages.taxonomies: Taksonomie
+site.pages.taxonomies.description: Taksonomie do organizowania stron, używane w kontrolerach szablonów do filtrowania stron
+site.pages.taxonomies.noTaxonomies: Brak taksonomii
 site.statistics: Statystyki
 site.statistics.enabled: Śledzenie wizyt na stronie
 site.statistics.enabled.disabled: Wyłączone

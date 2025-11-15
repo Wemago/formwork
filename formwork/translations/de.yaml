@@ -82,6 +82,9 @@ site.maintenance.enabled.enabled: Aktiviert
 site.maintenance.page: Wartungsseite
 site.pages: Seiten
 site.pages.defaultTemplate: Standardvorlage
+site.pages.taxonomies: Taxonomien
+site.pages.taxonomies.description: Taxonomien zur Organisation von Seiten, zu verwenden in Template-Controllern zum Filtern von Seiten
+site.pages.taxonomies.noTaxonomies: Keine Taxonomien
 site.statistics: Statistiken
 site.statistics.enabled: Seitenbesuche verfolgen
 site.statistics.enabled.disabled: Deaktiviert

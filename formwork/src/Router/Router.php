@@ -196,6 +196,9 @@ class Router
             }
         }
 
+        /**
+         * @var Route $route
+         */
         foreach ($this->routes as $route) {
             if (!$this->matchRoute($route)) {
                 continue;
@@ -210,6 +213,18 @@ class Router
                 $this->current = $route;
 
                 $this->params = $this->buildParams($compiledRoute->params(), $matches);
+
+                // Check route constraints
+                foreach ($route->getConstraints() as $param => $constraint) {
+                    $value = $this->params->get($param);
+                    if ($constraint instanceof Closure) {
+                        if (!$this->container->call($constraint, ['value' => $value])) {
+                            continue 2;
+                        }
+                    } elseif (!in_array($value, $constraint, true)) {
+                        continue 2;
+                    }
+                }
 
                 $this->container->define(RouteParams::class, $this->params);
 
@@ -285,6 +300,13 @@ class Router
             foreach ($data['routes'] as $routeName => $route) {
                 $r = $this->addRoute($routeName, $route['path'])
                     ->action($route['action']);
+
+                if (isset($route['where'])) {
+                    foreach ($route['where'] as $param => $constraint) {
+                        $r->where($param, $constraint);
+                    }
+                }
+
                 $setProps($r, $route);
             }
         }

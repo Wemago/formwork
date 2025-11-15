@@ -82,6 +82,9 @@ site.maintenance.enabled.enabled: Ingeschakeld
 site.maintenance.page: Onderhoudspagina
 site.pages: Pagina’s
 site.pages.defaultTemplate: Standaardsjabloon
+site.pages.taxonomies: Taxonomieën
+site.pages.taxonomies.description: Taxonomieën voor het organiseren van pagina’s, te gebruiken in templatecontrollers om pagina’s te filteren
+site.pages.taxonomies.noTaxonomies: Geen taxonomieën
 site.statistics: Statistieken
 site.statistics.enabled: Paginaweergaven bijhouden
 site.statistics.enabled.disabled: Uitgeschakeld

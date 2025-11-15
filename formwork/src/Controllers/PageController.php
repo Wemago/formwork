@@ -66,7 +66,7 @@ final class PageController extends AbstractController
                 return $this->getPageResponse($this->site->errorPage());
             }
 
-            if ($routeParams->has('tagName') && !$page->scheme()->options()->get('allowTags', false)) {
+            if ($routeParams->has('taxonomy') && !$page->scheme()->options()->get('allowTaxonomy', false)) {
                 return $this->getPageResponse($this->site->errorPage());
             }
 

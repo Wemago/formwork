@@ -2,18 +2,16 @@
 
 use Formwork\Http\ResponseStatus;
 use Formwork\Http\Utils\Header;
-use Formwork\Utils\Str;
 
 // Posts are the published children of the blog page
 $posts = $page->children()->published();
 
-// If the route has the param `{tagName}`
-if ($router->params()->has('tagName')) {
-    $posts = $posts->filterBy(
-        'tags',             // Filter posts by tags...
-        fn ($tags) => $tags
-            ->map(fn ($tag) => Str::slug($tag)) // where the collection of their slugs...
-            ->contains($router->params()->get('tagName'))   // contains the value of the `tagName` param.
+// If the route has the param `{taxonomy}`
+if ($router->params()->has('taxonomy')) {
+    // Filter posts by the taxonomy term provided in the `{taxonomyTerm}` param
+    $posts = $posts->havingTaxonomy(
+        [$router->params()->get('taxonomy') => [$router->params()->get('taxonomyTerm')]],
+        slug: true // Use slugs for matching terms
     );
 }
 

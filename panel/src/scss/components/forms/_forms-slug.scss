@@ -1,0 +1,6 @@
+.form-input-slug:disabled,
+.form-input-slug:read-only {
+    & + .form-input-action {
+        display: none;
+    }
+}

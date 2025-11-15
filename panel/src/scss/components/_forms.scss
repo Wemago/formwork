@@ -1,13 +1,14 @@
 @use "forms/forms-base";
 
-@use "forms/forms-color";
 @use "forms/forms-array";
 @use "forms/forms-checkbox";
+@use "forms/forms-color";
 @use "forms/forms-date";
 @use "forms/forms-duration";
 @use "forms/forms-editor";
 @use "forms/forms-image";
 @use "forms/forms-range";
+@use "forms/forms-slug";
 @use "forms/forms-tags";
 @use "forms/forms-togglegroup";
 @use "forms/forms-upload";

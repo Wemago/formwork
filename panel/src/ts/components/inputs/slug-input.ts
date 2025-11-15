@@ -31,13 +31,20 @@ export class SlugInput {
         const autoUpdate = "autoUpdate" in this.element.dataset && this.element.dataset.autoUpdate === "true";
 
         if (source) {
+            const generateSlug = () => {
+                if (this.element.disabled || this.element.readOnly) {
+                    return;
+                }
+                this.element.value = makeSlug(source.value);
+            };
+
             if (autoUpdate) {
-                source.addEventListener("input", () => (this.element.value = makeSlug(source.value)));
+                source.addEventListener("input", generateSlug);
                 this.element.value = makeSlug(source.value);
             } else {
                 const generateButton = $(`[data-generate-slug="${this.element.id}"]`) as HTMLButtonElement | null;
                 if (generateButton) {
-                    generateButton.addEventListener("click", () => (this.element.value = makeSlug(source.value)));
+                    generateButton.addEventListener("click", generateSlug);
                 }
             }
         }

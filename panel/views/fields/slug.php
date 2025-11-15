@@ -19,7 +19,7 @@
                     'data-source'      => $field->source()?->name(),
                     'data-auto-update' => $field->autoUpdate() ? 'true' : 'false',
                 ]) ?>>
-        <?php if (!$field->autoUpdate() && !$field->isReadonly()): ?>
+        <?php if (!$field->autoUpdate()): ?>
             <span class="form-input-action" data-generate-slug="<?= $field->name() ?>" title="<?= $this->translate('panel.pages.changeSlug.generate') ?>"><?= $this->icon('sparks') ?></span>
         <?php endif ?>
     </div>

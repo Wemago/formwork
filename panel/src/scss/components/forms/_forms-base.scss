@@ -135,7 +135,11 @@
         color: var(--color-accent-500);
     }
 
+    .form-input:disabled + &,
+    .form-input:read-only + &,
     .form-input:placeholder-shown + &,
+    .form-input:disabled + &:hover,
+    .form-input:read-only + &:hover,
     .form-input:placeholder-shown + &:hover {
         color: var(--color-base-400);
     }

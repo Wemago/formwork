@@ -448,9 +448,9 @@ class Request
      */
     protected function initialize(array $input, array $query, array $cookies, array $files, array $server): void
     {
-        $this->input = new RequestData($input);
-        $this->query = new RequestData($query);
-        $this->files = $this->prepareFiles($files);
+        $this->input = new RequestData($this->prepareKeys($input));
+        $this->query = new RequestData($this->prepareKeys($query));
+        $this->files = new FilesData($this->prepareFiles($files));
         $this->cookies = new RequestData($cookies);
         $this->server = new ServerData($server);
         $this->headers = new HeadersData($this->server->getHeaders());
@@ -511,15 +511,37 @@ class Request
     }
 
     /**
+     * Prepare data keys by decoding URL-encoded characters
+     *
+     * @param array<mixed> $data
+     *
+     * @return array<mixed>
+     */
+    protected function prepareKeys(array $data): array
+    {
+        $result = [];
+
+        foreach ($data as $key => $value) {
+            $result[is_string($key) ? rawurldecode($key) : $key] = is_array($value) ? $this->prepareKeys($value) : $value;
+        }
+
+        return $result;
+    }
+
+    /**
      * Normalize files data
      *
      * @param array<mixed> $files
+     *
+     * @return array<mixed>
      */
-    protected function prepareFiles(array $files): FilesData
+    protected function prepareFiles(array $files): array
     {
         $result = [];
 
         foreach ($files as $fieldName => $data) {
+            $fieldName = rawurldecode($fieldName);
+
             if (is_array($data['name'])) {
                 foreach (array_keys($data['name']) as $i) {
                     $props = [
@@ -532,7 +554,7 @@ class Request
                     ];
 
                     if (is_array($data['name'][$i])) {
-                        $result[$fieldName] = $this->prepareFiles([$i => $props])->toArray();
+                        $result[$fieldName] = $this->prepareFiles([$i => $props]);
                     } else {
                         /**
                          * @var array<string, list<UploadedFile>> $result
@@ -545,6 +567,6 @@ class Request
             }
         }
 
-        return new FilesData($result);
+        return $result;
     }
 }

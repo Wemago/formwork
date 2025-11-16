@@ -175,11 +175,11 @@ class Page extends Model implements Stringable
         $this->loadFiles();
 
         if ($this->contentFile instanceof ContentFile && !$this->contentFile->isEmpty()) {
-            $this->data = [
-                ...$this->data,
-                ...$this->contentFile->frontmatter(),
-                'content' => $this->contentFile->content(),
-            ];
+            $this->data = array_replace_recursive(
+                $this->data,
+                $this->contentFile->frontmatter(),
+                ['content' => $this->contentFile->content()],
+            );
         }
 
         $this->fields->setValues([...$this->data, 'slug' => $this->slug, 'parent' => $this->parent()?->route(), 'template' => $this->template]);
@@ -249,7 +249,7 @@ class Page extends Model implements Stringable
             $defaults['allowChildren'] = false;
         }
 
-        return $defaults;
+        return Arr::undot($defaults);
     }
 
     /**
@@ -1009,7 +1009,7 @@ class Page extends Model implements Stringable
 
         $this->files ??= (new FileCollection($files))->sort();
 
-        $this->data = [...$this->defaults(), ...$this->data];
+        $this->data = array_replace_recursive($this->defaults(), $this->data);
     }
 
     /**

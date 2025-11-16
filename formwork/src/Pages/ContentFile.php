@@ -4,6 +4,7 @@ namespace Formwork\Pages;
 
 use Formwork\Files\File;
 use Formwork\Parsers\Yaml;
+use Formwork\Utils\Arr;
 use Formwork\Utils\FileSystem;
 use UnexpectedValueException;
 
@@ -67,7 +68,7 @@ class ContentFile extends File
 
         [, $frontmatter, $content] = $matches;
 
-        $this->frontmatter = Yaml::parse($frontmatter);
+        $this->frontmatter = Arr::undot(Yaml::parse($frontmatter));
 
         $this->content = str_replace("\r\n", "\n", $content);
     }

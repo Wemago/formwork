@@ -17,6 +17,6 @@ class SectionCollection extends AbstractCollection
      */
     public function __construct(array $sections, Translation $translation)
     {
-        parent::__construct(Arr::map($sections, fn($section) => new Section($section, $translation)));
+        parent::__construct(Arr::map($sections, fn(array $section, string $name) => new Section($name, $section, $translation)));
     }
 }

@@ -6,6 +6,7 @@ import { Modals } from "./components/modals";
 import { Navigation } from "./components/navigation";
 import { Notifications } from "./components/notifications";
 import { Sections } from "./components/sections";
+import { Tabs } from "./components/tabs";
 import { Tooltips } from "./components/tooltips";
 
 import { Backups } from "./components/views/backups";
@@ -58,6 +59,7 @@ class App {
             globalAlias: "forms",
         });
 
+        this.loadComponent(Tabs);
         this.loadComponent(Dropdowns);
         this.loadComponent(Tooltips);
         this.loadComponent(Navigation);

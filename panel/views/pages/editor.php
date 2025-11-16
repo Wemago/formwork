@@ -67,9 +67,7 @@
             </div>
         </div>
     </div>
-    <div>
-        <?php $this->insert('fields', ['fields' => $fields]) ?>
-    </div>
+    <?php $this->insert('fields', ['fields' => $fields]) ?>
     <input type="hidden" name="csrf-token" value="<?= $csrfToken ?>">
     <?php if ($history !== null && !$history->items()->isEmpty()): ?>
         <div class="text-size-sm text-color-gray-medium"><?= $this->icon('clock-rotate-left') ?>

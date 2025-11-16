@@ -8,7 +8,7 @@ use Formwork\Data\Traits\DataGetter;
 use Formwork\Translations\Translation;
 use Formwork\Utils\Str;
 
-class Section implements Arrayable
+class Tab implements Arrayable
 {
     use DataGetter;
     use DataArrayable;
@@ -25,7 +25,7 @@ class Section implements Arrayable
     }
 
     /**
-     * Get section name
+     * Get tab name
      */
     public function name(): string
     {
@@ -41,7 +41,7 @@ class Section implements Arrayable
     }
 
     /**
-     * Get section label
+     * Get tab label
      */
     public function label(): string
     {

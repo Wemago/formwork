@@ -15,17 +15,42 @@
 .tabs-tab {
     display: inline-block;
     padding: 0.5rem 1.25rem;
+    border: 0;
+    border-radius: var(--border-radius) var(--border-radius) 0 0;
+    margin: var(--focusring-width) var(--focusring-width) 0;
     color: var(--color-base-100);
     cursor: pointer;
+    font: inherit;
+    line-height: inherit;
 
     &:hover {
         color: var(--color-base-100);
+    }
+
+    &:active {
+        outline: none;
+    }
+
+    &:focus {
+        outline: none;
+    }
+
+    &:focus-visible {
+        @include focusring;
     }
 }
 
 .tabs-tab.active {
     border-bottom: 3px solid var(--color-accent-500);
     font-weight: 600;
+}
+
+.tabs-panel {
+    display: none;
+}
+
+.tabs-panel.visible {
+    display: block;
 }
 
 .caption + .tabs {

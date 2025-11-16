@@ -44,6 +44,6 @@ class Section implements Arrayable
      */
     public function order(): int
     {
-        return (int) $this->get('order', PHP_INT_MAX);
+        return (int) ($this->get('order') ?? PHP_INT_MAX);
     }
 }

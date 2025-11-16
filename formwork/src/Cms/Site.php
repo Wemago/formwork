@@ -253,17 +253,11 @@ class Site extends Model implements Stringable
         }
 
         $defaults = [
-            'charset'     => $this->config->get('system.charset'),
-            'author'      => $this->get('author'),
-            'description' => $this->get('description'),
-            'generator'   => 'Formwork',
+            'charset'   => $this->config->get('system.charset'),
+            'generator' => $this->config->get('system.metadata.setGenerator') ? 'Formwork' : null,
         ];
 
         $data = array_filter([...$defaults, ...$this->data['metadata']]);
-
-        if (!$this->config->get('system.metadata.setGenerator')) {
-            unset($data['generator']);
-        }
 
         return $this->metadata = new MetadataCollection($data);
     }

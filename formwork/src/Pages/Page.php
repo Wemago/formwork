@@ -137,7 +137,6 @@ class Page extends Model implements Stringable
     /**
      * Page metadata
      */
-    #[ReadonlyModelProperty]
     protected MetadataCollection $metadata;
 
     /**

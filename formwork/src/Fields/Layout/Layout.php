@@ -19,10 +19,9 @@ class Layout
     /**
      * @param array<string, mixed> $data
      */
-    public function __construct(array $data, Translation $translation)
+    public function __construct(protected array $data, protected Translation $translation)
     {
         $this->type = $data['type'];
-        $this->sections = new SectionCollection($data['sections'] ?? [], $translation);
     }
 
     /** Get layout type
@@ -38,6 +37,10 @@ class Layout
      */
     public function sections(): SectionCollection
     {
-        return $this->sections;
+        return $this->sections ??= (new SectionCollection(
+            $this->data['sections'] ?? [],
+            $this->translation,
+        ))
+            ->sort(sortBy: fn(Section $a, Section $b): int => $a->order() <=> $b->order());
     }
 }

@@ -52,6 +52,7 @@ page.routable: Routbaar
 page.routable.description: Routbare pagina’s zijn bereikbaar via hun adres
 page.slug: Slug
 page.slug.suggestion: alleen letters, cijfers en streepjes
+page.status: Status
 page.status.notPublished: Niet gepubliceerd
 page.status.published: Gepubliceerd
 page.status.published.description: Gepubliceerde pagina’s zijn zichtbaar op de site en bereikbaar via hun adres

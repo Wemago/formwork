@@ -5,7 +5,7 @@
     <div class="pages-tree-headers" aria-hidden="true">
         <div class="pages-tree-headers-cell page-details truncate"><?= $this->translate('page.title') ?></div>
         <div class="pages-tree-headers-cell page-date truncate show-from-lg"><?= $this->translate('panel.pages.page.lastModified') ?></div>
-        <div class="pages-tree-headers-cell page-status truncate show-from-xs"><?= $this->translate('panel.pages.page.status') ?></div>
+        <div class="pages-tree-headers-cell page-status truncate show-from-xs"><?= $this->translate('page.status') ?></div>
         <div class="pages-tree-headers-cell page-actions"><span class="show-from-xs mr-6"><?= $this->translate('panel.pages.page.actions') ?></span></div>
     </div>
 <?php endif ?>

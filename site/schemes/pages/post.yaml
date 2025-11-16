@@ -9,7 +9,7 @@ options:
 
 layout:
     sections:
-        content:
+        page:
             fields: [title, coverImage, taxonomy.tag, summary, content]
 
 fields:

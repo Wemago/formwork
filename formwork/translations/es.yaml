@@ -52,6 +52,7 @@ page.routable: Enrutable
 page.routable.description: Las páginas enrutables son accesibles desde su dirección
 page.slug: Slug
 page.slug.suggestion: solo letras, números y guiones
+page.status: Estado
 page.status.notPublished: No publicado
 page.status.published: Publicado
 page.status.published.description: Las páginas publicadas son visibles en el sitio y accesibles desde su dirección

@@ -21,10 +21,12 @@ options:
     icon: page-listing
 
 layout:
-    type: sections
     sections:
-        options:
-            fields: [postsPerPage, published, publishDate, unpublishDate, routable, listed, cacheable]
+        blog:
+            label: Blog
+            fields: [postsPerPage]
+            tab: options
+            order: 1
 
 fields:
     content:

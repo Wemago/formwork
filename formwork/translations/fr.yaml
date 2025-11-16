@@ -52,6 +52,7 @@ page.routable: Accessible
 page.routable.description: Les pages routables sont accessibles depuis leur adresse
 page.slug: Slug
 page.slug.suggestion: lettres, chiffres et tirets seulement
+page.status: Statut
 page.status.notPublished: Brouillon
 page.status.published: Publié
 page.status.published.description: Les pages publiées sont visibles sur le site et accessibles depuis leur adresse

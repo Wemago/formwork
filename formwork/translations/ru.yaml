@@ -52,6 +52,7 @@ page.routable: Маршрутизируемый
 page.routable.description: Маршрутизируемые страницы доступны по их адресу
 page.slug: Slug
 page.slug.suggestion: буквы, цифры и дефис только
+page.status: Статус
 page.status.notPublished: Не Опубликовано
 page.status.published: Опубликованный
 page.status.published.description: Опубликованные страницы видны на сайте и доступны по их адресу

@@ -52,6 +52,7 @@ page.routable: Raggiungibile
 page.routable.description: Le pagine raggiungibili sono accessibili dal loro indirizzo
 page.slug: Slug
 page.slug.suggestion: solo lettere, numeri e trattini
+page.status: Stato
 page.status.notPublished: Non pubblicato
 page.status.published: Pubblicato
 page.status.published.description: Le pagine pubblicate sono visibili sul sito e accessibili dal loro indirizzo

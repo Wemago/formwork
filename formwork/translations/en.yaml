@@ -61,6 +61,7 @@ page.template: Template
 page.text: Text
 page.title: Title
 page.unpublishDate: Unpublish date
+page.status: Status
 site.advanced: Advanced options
 site.advanced.aliases: Aliases
 site.advanced.aliases.alias: Alias

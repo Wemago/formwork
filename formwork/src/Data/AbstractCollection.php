@@ -315,6 +315,19 @@ abstract class AbstractCollection implements Arrayable, Countable, Iterator
     }
 
     /**
+     * Run a callback for each item in the collection. If the callback returns `false`, iteration is stopped
+     */
+    public function each(callable $callback): static
+    {
+        foreach ($this->data as $key => $value) {
+            if ($callback($value, $key) === false) {
+                break;
+            }
+        }
+        return $this;
+    }
+
+    /**
      * Apply a callback to the collection items
      */
     public function map(callable $callback): static

@@ -355,7 +355,11 @@ abstract class AbstractCollection implements Arrayable, Countable, Iterator
      *
      * Keys are preserved by default in associative collections
      *
-     * @param array<string>|callable|null $sortBy
+     * @param \SORT_ASC|\SORT_DESC                                   $direction     Direction of sorting. Possible values are `SORT_ASC` and `SORT_DESC`.
+     * @param \SORT_NATURAL|\SORT_NUMERIC|\SORT_REGULAR|\SORT_STRING $type          Type of sorting. Possible values are `SORT_NATURAL`, `SORT_NUMERIC`, `SORT_REGULAR` and `SORT_STRING`.
+     * @param array<mixed>|callable|null                             $sortBy        A callback or second array of values used to sort the first
+     * @param                                                        $caseSensitive Whether to perform a case-sensitive sorting
+     * @param                                                        $preserveKeys  Whether to preserve array keys after sorting. If `null`, keys are preserved only in associative collections
      */
     public function sort(
         int $direction = SORT_ASC,
@@ -462,6 +466,11 @@ abstract class AbstractCollection implements Arrayable, Countable, Iterator
 
     /**
      * Sort the collection using the given key from each item
+     *
+     * @param \SORT_ASC|\SORT_DESC                                   $direction     Direction of sorting. Possible values are `SORT_ASC` and `SORT_DESC`.
+     * @param \SORT_NATURAL|\SORT_NUMERIC|\SORT_REGULAR|\SORT_STRING $type          Type of sorting. Possible values are `SORT_NATURAL`, `SORT_NUMERIC`, `SORT_REGULAR` and `SORT_STRING`.
+     * @param                                                        $caseSensitive Whether to perform a case-sensitive sorting
+     * @param                                                        $preserveKeys  Whether to preserve array keys after sorting
      */
     public function sortBy(
         string $key,

@@ -637,12 +637,12 @@ final class Arr
     /**
      * Sort an array with the given options
      *
-     * @param array<TKey, TValue>                            $array
-     * @param                                                $direction     Direction of sorting. Possible values are `SORT_ASC` and `SORT_DESC`.
-     * @param                                                $type          Type of sorting. Possible values are `SORT_REGULAR`, `SORT_NUMERIC`, `SORT_STRING` and `SORT_NATURAL`.
-     * @param                                                $caseSensitive Whether to perform a case-sensitive sorting
-     * @param array<TKey>|callable(TValue, TValue): int|null $sortBy        A callback or second array of values used to sort the first
-     * @param                                                $preserveKeys  Whether to preserve array keys after sorting
+     * @param array<TKey, TValue>                                    $array
+     * @param \SORT_ASC|\SORT_DESC                                   $direction     Direction of sorting. Possible values are `SORT_ASC` and `SORT_DESC`.
+     * @param \SORT_NATURAL|\SORT_NUMERIC|\SORT_REGULAR|\SORT_STRING $type          Type of sorting. Possible values are `SORT_NATURAL`, `SORT_NUMERIC`, `SORT_REGULAR` and `SORT_STRING`.
+     * @param array<TKey, mixed>|callable(TValue, TValue): int|null  $sortBy        A callback or second array of values used to sort the first
+     * @param                                                        $caseSensitive Whether to perform a case-sensitive sorting
+     * @param                                                        $preserveKeys  Whether to preserve array keys after sorting
      *
      * @throws UnexpectedValueException If the direction parameter is not SORT_ASC or SORT_DESC
      * @throws UnexpectedValueException If the type parameter is not one of the supported sorting types
@@ -677,29 +677,39 @@ final class Arr
         if (is_callable($sortBy)) {
             $function = $preserveKeys ? 'uasort' : 'usort';
             $function($array, $sortBy);
-        } else {
-            $keys = $preserveKeys ? array_keys($array) : [];
+            return $array;
+        }
 
-            $arguments = [];
+        if ($sortBy === null) {
+            $function = $direction === SORT_ASC
+                ? ($preserveKeys ? 'asort' : 'sort')
+                : ($preserveKeys ? 'arsort' : 'rsort');
+            $function($array, $flags);
+            return $array;
+        }
 
-            if ($sortBy === null) {
-                $arguments = [&$array, $direction, $flags];
-            } elseif (is_array($sortBy)) {
-                $arguments = [&$sortBy, $direction, $flags, &$array, $direction, $flags];
+        if (count($sortBy) !== count($array)) {
+            throw new UnexpectedValueException('Cannot sort array: the $sortBy array must have the same number of items as the array to sort');
+        }
+
+        $function = $direction === SORT_ASC ? 'asort' : 'arsort';
+        $function($sortBy, $flags);
+
+        $result = [];
+
+        foreach (array_keys($sortBy) as $key) {
+            if (!array_key_exists($key, $array)) {
+                throw new UnexpectedValueException(sprintf('Cannot sort array: key %s from the $sortBy array is not present in the array to sort', is_string($key) ? Str::wrap($key, '"') : $key));
             }
 
             if ($preserveKeys) {
-                $arguments[] = &$keys;
-            }
-
-            array_multisort(...$arguments);
-
-            if ($preserveKeys) {
-                $array = array_combine($keys, $array);
+                $result[$key] = $array[$key];
+            } else {
+                $result[] = $array[$key];
             }
         }
 
-        return $array;
+        return $result;
     }
 
     /**

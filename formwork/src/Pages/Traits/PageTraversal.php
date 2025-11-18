@@ -165,7 +165,7 @@ trait PageTraversal
      */
     public function isDescendantOf(Page|Site $page): bool
     {
-        return $page->descendants()->contains($this);
+        return $this->ancestors()->contains($page);
     }
 
     /**

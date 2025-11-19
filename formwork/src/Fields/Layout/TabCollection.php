@@ -3,7 +3,6 @@
 namespace Formwork\Fields\Layout;
 
 use Formwork\Data\AbstractCollection;
-use Formwork\Translations\Translation;
 use Formwork\Utils\Arr;
 
 class TabCollection extends AbstractCollection
@@ -15,8 +14,8 @@ class TabCollection extends AbstractCollection
     /**
      * @param array<string, array<string, mixed>> $tabs
      */
-    public function __construct(array $tabs, Translation $translation)
+    public function __construct(array $tabs)
     {
-        parent::__construct(Arr::map($tabs, fn(array $tab, string $name) => new Tab($name, $tab, $translation)));
+        parent::__construct(Arr::map($tabs, fn(array $tab, string $name) => new Tab(['name' => $name, ...$tab])));
     }
 }

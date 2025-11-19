@@ -16,6 +16,9 @@ class Layout
      */
     protected SectionCollection $sections;
 
+    /**
+     * Layout tabs collection
+     */
     protected TabCollection $tabs;
 
     /**
@@ -38,11 +41,9 @@ class Layout
      */
     public function sections(): SectionCollection
     {
-        return $this->sections ??= (new SectionCollection(
-            $this->data['sections'] ?? [],
-            $this->translation,
-        ))
-            ->sort(sortBy: fn(Section $a, Section $b): int => $a->order() <=> $b->order());
+        return $this->sections ??= (new SectionCollection($this->data['sections'] ?? []))
+            ->each(fn(Section $section) => $section->setTranslation($this->translation))
+            ->sortBy('order');
     }
 
     /**
@@ -50,7 +51,8 @@ class Layout
      */
     public function tabs(): TabCollection
     {
-        return $this->tabs ??= (new TabCollection($this->data['tabs'] ?? [], $this->translation))
-            ->sort(sortBy: fn(Tab $a, Tab $b): int => $a->order() <=> $b->order());
+        return $this->tabs ??= (new TabCollection($this->data['tabs'] ?? []))
+            ->each(fn(Tab $tab) => $tab->setTranslation($this->translation))
+            ->sortBy('order');
     }
 }

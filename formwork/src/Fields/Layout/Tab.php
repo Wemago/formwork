@@ -5,31 +5,29 @@ namespace Formwork\Fields\Layout;
 use Formwork\Data\Contracts\Arrayable;
 use Formwork\Data\Traits\DataArrayable;
 use Formwork\Data\Traits\DataGetter;
-use Formwork\Translations\Translation;
-use Formwork\Utils\Str;
+use Formwork\Fields\Translations\Translations;
 
 class Tab implements Arrayable
 {
     use DataGetter;
     use DataArrayable;
+    use Translations;
 
     /**
      * @param array<string, mixed> $data
      */
     public function __construct(
-        protected string $name,
-        array $data,
-        protected Translation $translation,
+        array $data
     ) {
-        $this->data = $data;
+        $this->data = ['order' => PHP_INT_MAX, ...$data];
     }
 
     /**
      * Get tab name
      */
-    public function name(): string
+    public function name(): ?string
     {
-        return $this->name;
+        return $this->get('name');
     }
 
     /**
@@ -45,14 +43,14 @@ class Tab implements Arrayable
      */
     public function label(): string
     {
-        return Str::interpolate($this->get('label', ''), fn($key) => $this->translation->translate($key));
+        return $this->translate($this->get('label'));
     }
 
     /**
-     * Get section order
+     * Get tab order
      */
     public function order(): int
     {
-        return (int) ($this->get('order') ?? PHP_INT_MAX);
+        return $this->get('order');
     }
 }

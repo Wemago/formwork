@@ -1,16 +1,12 @@
-<?php if (!$tabs->isEmpty()): ?>
-    <div class="tabs">
-        <?php foreach ($tabs as $tab): ?>
-            <button type="button" class="<?= $this->classes(['button', 'button-link', 'tabs-tab', 'active' => $tab === $tabs->first()]) ?>" data-tab="<?= $tab->name() ?>"><?= $this->escape($tab->label()) ?></button>
-        <?php endforeach ?>
-    </div>
+<?php if (!$layout->tabs()->isEmpty()): ?>
+    <?php $this->layout('fields.section-tabs') ?>
 <?php endif ?>
 
-<?php foreach ($sections->groupBy('tab', 'default') as $tabName => $sections): ?>
+<?php foreach ($layout->sections()->groupBy('tab', $layout->tabs()->first()?->name()) as $tabName => $sections): ?>
     <?php $this->define('sections') ?>
     <div class="sections">
         <?php foreach ($sections as $id => $section) : ?>
-            <section class="<?= $this->classes(['section',  'collapsible' => $section->is('collapsible'), 'collapsed' => $section->is('collapsed')]) ?>" id="section-<?= $id ?>">
+            <section class="<?= $this->classes(['section',  'collapsible' => $section->is('collapsible'), 'collapsed' => $section->is('collapsed')]) ?>" id="section-<?= $this->escapeAttr($id) ?>">
                 <div class="section-header">
                     <?php if ($section->is('collapsible')) : ?>
                         <button type="button" class="button section-toggle mr-2" title="<?= $this->translate('panel.sections.toggle') ?>" aria-label="<?= $this->translate('panel.sections.toggle') ?>"><?= $this->icon('chevron-up') ?></button>
@@ -32,12 +28,9 @@
         <?php endforeach ?>
     </div>
     <?php $this->end() ?>
-
-    <?php if (!$tabs->isEmpty()): ?>
-        <div class="tabs-content">
-            <div class="<?= $this->classes(['tabs-panel', 'visible' => $tabs->first()->name() === $tabName]) ?>" data-tab="<?= $tabName ?>">
-                <?= $this->block('sections') ?>
-            </div>
+    <?php if (!$layout->tabs()->isEmpty()): ?>
+        <div class="<?= $this->classes(['tabs-panel', 'visible' => $layout->tabs()->first()->name() === $tabName]) ?>" role="tabpanel" aria-labelledby="tab-<?= $this->escapeAttr($tabName) ?>" data-tab="<?= $this->escapeAttr($tabName) ?>">
+            <?= $this->block('sections') ?>
         </div>
     <?php else: ?>
         <?= $this->block('sections') ?>

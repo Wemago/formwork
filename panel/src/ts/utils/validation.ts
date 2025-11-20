@@ -109,6 +109,17 @@ const diacriticsMap: Record<string, string> = {
     z: "[zźẑžżẓ]",
 };
 
+const htmlEntityMap: Record<string, string> = {
+    "&": "&amp;",
+    "<": "&lt;",
+    ">": "&gt;",
+    '"': "&quot;",
+    "'": "&#39;",
+    "/": "&#x2F;",
+    "`": "&#x60;",
+    "=": "&#x3D;",
+};
+
 export function escapeRegExp(string: string) {
     return string.replace(/[-[\]/{}()*+?.\\^$|]/g, "\\$&");
 }
@@ -123,6 +134,10 @@ export function makeSlug(string: string) {
         .replace(/./g, (match) => slugMap[match] || match)
         .replace(/\s+|-+/g, "-")
         .replace(/^-+|-+$|[^a-z0-9-]/g, "");
+}
+
+export function escapeHtml(string: string) {
+    return string.replace(/[&<>"'`=/]/g, (match) => htmlEntityMap[match]);
 }
 
 export function validateSlug(slug: string) {

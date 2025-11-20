@@ -12,6 +12,6 @@
                     'disabled'    => $field->isDisabled(),
                     'hidden'      => $field->isHidden(),
                 ]) ?>>
-        <output class="form-input-color-value" for="<?= $field->name() ?>"><?= $this->escape($field->value()) ?></output>
+        <output class="form-input-color-value" for="<?= $field->name() ?>"><?= $this->escape((string) $field->value()) ?></output>
     </div>
 </div>

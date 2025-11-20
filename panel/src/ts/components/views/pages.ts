@@ -1,5 +1,5 @@
 import { $, $$ } from "../../utils/selectors";
-import { escapeRegExp, makeDiacriticsRegExp, makeSlug } from "../../utils/validation";
+import { escapeHtml, escapeRegExp, makeDiacriticsRegExp, makeSlug } from "../../utils/validation";
 import { app } from "../../app";
 import { debounce } from "../../utils/events";
 import { Form } from "../form";
@@ -15,7 +15,7 @@ export class Pages {
         const commandReorderPages = $("[data-command=reorder-pages]") as HTMLButtonElement;
         const commandPreview = $("[data-command=preview]") as HTMLButtonElement;
 
-        const searchInput = $(".page-search");
+        const searchInput = $(".page-search") as HTMLInputElement;
 
         const newPageModal = app.modals["newPageModal"];
         const deletePageItemModal = app.modals["deletePageItemModal"];
@@ -73,14 +73,14 @@ export class Pages {
                 });
             });
 
-            const handleSearch = (event: Event) => {
-                const value = (event.target as HTMLInputElement).value;
+            const handleSearch = () => {
+                const value = escapeHtml(searchInput.value);
                 if (value.length === 0) {
                     ($(".pages-tree-root") as HTMLElement).classList.remove("is-filtered");
 
                     $$(".pages-tree-item").forEach((element) => {
                         const title = $(".page-title a", element) as HTMLElement;
-                        title.innerHTML = title.textContent as string;
+                        title.innerHTML = escapeHtml(title.textContent);
                         ($(".pages-tree-row", element) as HTMLElement).style.display = "";
                         element.classList.toggle("is-expanded", element.dataset.expanded === "true");
                     });
@@ -91,7 +91,7 @@ export class Pages {
 
                     $$(".pages-tree-item").forEach((element) => {
                         const title = $(".page-title a", element) as HTMLElement;
-                        const text = title.textContent as string;
+                        const text = escapeHtml(title.textContent);
                         const pagesItem = $(".pages-tree-row", element) as HTMLElement;
 
                         if (text.match(regexp) !== null) {

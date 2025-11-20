@@ -20,7 +20,7 @@ export class Updates {
             const showNewVersion = (name: string) => {
                 spinner.classList.add("spinner-info");
                 insertIcon("info", spinner);
-                newVersionName.innerHTML = name;
+                newVersionName.innerText = name;
                 newVersion.style.display = "block";
             };
 
@@ -33,7 +33,7 @@ export class Updates {
             const showInstalledVersion = () => {
                 spinner.classList.add("spinner-success");
                 insertIcon("check", spinner);
-                currentVersionName.innerHTML = newVersionName.innerHTML;
+                currentVersionName.innerText = newVersionName.innerText;
                 currentVersion.style.display = "block";
             };
 
@@ -47,7 +47,7 @@ export class Updates {
                         data: data,
                     },
                     (response) => {
-                        updateStatus.innerHTML = response.message;
+                        updateStatus.innerText = response.message;
 
                         if (response.status === "success") {
                             if (response.data.uptodate === false) {
@@ -67,7 +67,7 @@ export class Updates {
                 newVersion.style.display = "none";
                 spinner.classList.remove("spinner-info");
                 $(".icon", spinner)?.remove();
-                updateStatus.innerHTML = updateStatus.dataset.installingText as string;
+                updateStatus.innerText = updateStatus.dataset.installingText as string;
 
                 new Request(
                     {
@@ -79,7 +79,7 @@ export class Updates {
                         const notification = new Notification(response.message, response.status, { icon: "check-circle" });
                         notification.show();
 
-                        updateStatus.innerHTML = response.data.status;
+                        updateStatus.innerText = response.data.status;
 
                         if (response.status === "success") {
                             showInstalledVersion();

@@ -63,7 +63,7 @@ export class TagsInput {
     set value(value: string) {
         this.element.value = value;
         this.tags = value.split(", ").map((tag) => tag.trim());
-        this.list.innerHTML = "";
+        this.list.innerText = "";
         this.tags.forEach((tag) => this.insertTag(tag, this.list));
         this.updatePlaceholder();
         this.updateDropdown();
@@ -170,7 +170,7 @@ export class TagsInput {
         const item = document.createElement("div");
 
         item.className = "dropdown-item";
-        item.innerHTML = option.label;
+        item.innerText = option.label;
         item.dataset.value = option.value;
 
         if (option.thumb) {
@@ -411,7 +411,7 @@ export class TagsInput {
         const tag = document.createElement("span");
         const tagRemove = document.createElement("i");
         tag.className = "tag";
-        tag.innerHTML = value;
+        tag.innerText = value;
         tag.style.marginRight = ".25rem";
         parent.appendChild(tag);
 

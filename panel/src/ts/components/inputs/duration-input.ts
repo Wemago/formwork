@@ -129,7 +129,7 @@ export class DurationInput {
 
     private updateLabels() {
         Object.entries(this.innerInputs).forEach(([i, input]: [TimeInterval, HTMLInputElement]) => {
-            (this.labels[i] as HTMLLabelElement).innerHTML = this.options.labels[i][parseInt(input.value) === 1 ? 0 : 1];
+            (this.labels[i] as HTMLLabelElement).innerText = this.options.labels[i][parseInt(input.value) === 1 ? 0 : 1];
         });
     }
 

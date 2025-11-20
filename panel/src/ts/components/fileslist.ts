@@ -1,5 +1,5 @@
 import { $, $$ } from "../utils/selectors";
-import { escapeRegExp, makeDiacriticsRegExp } from "../utils/validation";
+import { escapeHtml, escapeRegExp, makeDiacriticsRegExp } from "../utils/validation";
 import { app } from "../app";
 import { debounce } from "../utils/events";
 import { Form } from "./form";
@@ -35,7 +35,7 @@ export class FilesList {
 
     private initFileList() {
         const toggle = $(".form-togglegroup.files-list-view-as", this.element);
-        const searchInput = $(".files-search", this.element);
+        const searchInput = $(".files-search", this.element) as HTMLInputElement;
 
         if (toggle) {
             const formName = this.element.closest("form")?.dataset.form;
@@ -120,21 +120,21 @@ export class FilesList {
         });
 
         if (searchInput) {
-            const handleSearch = (event: Event) => {
-                const value = (event.target as HTMLInputElement).value;
+            const handleSearch = () => {
+                const value = escapeHtml(searchInput.value);
                 ($(".files-item") as HTMLElement).classList.toggle("is-filtered", value.length > 0);
 
                 $$(".files-item").forEach((element) => {
                     let matches = 0;
 
-                    for (const selector of [".file-name", ".file-parent-title"]) {
+                    for (const selector of [".file-name a", ".file-parent-title"]) {
                         const item = $(selector, element) as HTMLElement;
 
                         if (!item) {
                             continue;
                         }
 
-                        const text = item.textContent as string;
+                        const text = escapeHtml(item.textContent);
 
                         const regexp = value ? new RegExp(`${makeDiacriticsRegExp(escapeRegExp(value))}`, "gi") : null;
 
@@ -211,7 +211,7 @@ export class FilesList {
                             (item as HTMLElement).dataset.filename = response.data.filename;
 
                             const anchor = $(".file-name a", item as HTMLElement) as HTMLAnchorElement;
-                            anchor.innerHTML = response.data.filename;
+                            anchor.innerText = response.data.filename;
                             anchor.href = response.data.uri;
 
                             ($("[data-command=infoFile]", item as HTMLElement) as HTMLAnchorElement).href = response.data.actions.info;

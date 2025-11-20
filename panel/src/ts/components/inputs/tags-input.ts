@@ -323,6 +323,15 @@ export class TagsInput {
             this.field.classList.remove("focused");
         });
 
+        this.innerInput.addEventListener("input", () => {
+            const value = this.innerInput.value.trim();
+            if (value.length > 0) {
+                this.innerInput.size = this.innerInput.value.length + 2;
+            } else {
+                this.innerInput.size = Math.max(this.innerInput.placeholder.length, 1);
+            }
+        });
+
         this.innerInput.addEventListener("keydown", (event) => {
             this.innerInput.classList.remove("form-input-invalid");
             const value = this.innerInput.value.trim();
@@ -335,8 +344,6 @@ export class TagsInput {
                             this.list.removeChild(lastTag);
                         }
                         event.preventDefault();
-                    } else {
-                        this.innerInput.size = Math.max(this.innerInput.value.length, this.innerInput.placeholder.length, 1);
                     }
                     break;
                 case "Enter":
@@ -366,9 +373,6 @@ export class TagsInput {
                             }
                         }
                         break;
-                    }
-                    if (value.length > 0) {
-                        this.innerInput.size = this.innerInput.value.length + 2;
                     }
                     break;
             }

@@ -1,6 +1,6 @@
 <div class="page-info">
-    <div class="page-info-row"><strong><?= $this->translate('page.template') ?>:</strong> <?= $page->template()->title() ?></div>
-    <div class="page-info-row"><strong><?= $this->translate('page.slug') ?>:</strong> <?= $page->slug() ?></div>
+    <div class="page-info-row"><strong><?= $this->translate('page.template') ?>:</strong> <?= $this->escape($page->template()->title()) ?></div>
+    <div class="page-info-row"><strong><?= $this->translate('page.slug') ?>:</strong> <?= $this->escape($page->slug()) ?></div>
     <div class="page-info-badges">
         <?php if ($page->routable()): ?>
             <span class="badge badge-amber"><?= $this->icon('circle-small-fill') ?> <?= $this->translate('page.routable') ?></span>

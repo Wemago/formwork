@@ -53,7 +53,7 @@
                             </div>
                         </div>
                         <div class="page-route truncate mr-2" aria-hidden="true">
-                            <span><?= $page->canonicalRoute() ?? $page->route() ?></span>
+                            <span><?= $this->escape($page->canonicalRoute() ?? $page->route()) ?></span>
                         </div>
                         <?php $imagePreviewField = $page->scheme()->options()->get('imagePreviewField') ?>
                         <?php if ($imagePreviewField !== null && $page->fields()->get($imagePreviewField)?->type() === 'image' && $page->get($imagePreviewField) != '') : ?>

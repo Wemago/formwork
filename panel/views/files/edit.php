@@ -7,7 +7,7 @@
         <div class="min-w-0 flex-grow-1">
             <div class="flex">
                 <div class="header-icon"><?= $this->icon(is_null($file->type()) ? 'file' : 'file-' . $file->type()) ?></div>
-                <div class="header-title truncate"><?= $file->name() ?></div>
+                <div class="header-title truncate"><?= $this->escape($file->name()) ?></div>
             </div>
             <div class="truncate">
                 <?php if ($model->getModelIdentifier() === 'page'): ?>
@@ -79,7 +79,7 @@
                 </div>
                 <div class="col-sm-1-2 col-md-1-4 mb-4">
                     <div class="file-info-entry-title"><?= $this->translate('panel.files.info.uri') ?>:</div>
-                    <a class="file-info-entry-uri" href="<?= $file->uri() ?>"><?= $file->uri() ?></a>
+                    <a class="file-info-entry-uri" href="<?= $file->uri() ?>"><?= $this->escape($file->uri()) ?></a>
                 </div>
                 <?php if ($file->type() === 'image') : ?>
                     <?php $this->insert('_files/images/info/info', ['file' => $file]) ?>

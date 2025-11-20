@@ -41,9 +41,9 @@ class Tab implements Arrayable
     /**
      * Get tab label
      */
-    public function label(): string
+    public function label(): ?string
     {
-        return $this->translate($this->get('label'));
+        return $this->translate($this->get('label', $this->name()));
     }
 
     /**

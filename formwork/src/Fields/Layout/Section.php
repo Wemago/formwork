@@ -41,9 +41,9 @@ class Section implements Arrayable
     /**
      * Get field label
      */
-    public function label(): string
+    public function label(): ?string
     {
-        return $this->translate($this->get('label'));
+        return $this->translate($this->get('label', $this->name()));
     }
 
     /**

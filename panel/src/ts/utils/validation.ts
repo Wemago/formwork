@@ -132,7 +132,8 @@ export function makeSlug(string: string) {
     return string
         .toLowerCase()
         .replace(/./g, (match) => slugMap[match] || match)
-        .replace(/\s+|-+/g, "-")
+        .replace(/\s+/g, "-")
+        .replace(/-+/g, "-")
         .replace(/^-+|-+$|[^a-z0-9-]/g, "");
 }
 

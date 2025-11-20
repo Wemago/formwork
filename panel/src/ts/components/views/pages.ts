@@ -80,7 +80,7 @@ export class Pages {
 
                     $$(".pages-tree-item").forEach((element) => {
                         const title = $(".page-title a", element) as HTMLElement;
-                        title.innerHTML = escapeHtml(title.textContent);
+                        title.innerText = title.textContent;
                         ($(".pages-tree-row", element) as HTMLElement).style.display = "";
                         element.classList.toggle("is-expanded", element.dataset.expanded === "true");
                     });

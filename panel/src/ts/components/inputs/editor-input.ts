@@ -1,10 +1,10 @@
 import { $ } from "../../utils/selectors";
 import { app } from "../../app";
-import { CodeView } from "./editor/code/view";
+import { type CodeView } from "./editor/code/view";
 import { debounce } from "../../utils/events";
 import { escapeRegExp } from "../../utils/validation";
 import { insertIcon } from "../icons";
-import { MarkdownView } from "./editor/markdown/view";
+import { type MarkdownView } from "./editor/markdown/view";
 
 function addBaseUri(markdown: string, baseUri: string) {
     return markdown.replace(/(!\[.*\])\((?!https?:\/\/)([^)]+)\)/g, `$1(${baseUri}$2)`);
@@ -120,11 +120,12 @@ export class EditorInput {
         $(`label[for="${textarea.id}"]`)?.addEventListener("click", () => this.editor.view.focus());
     }
 
-    switchToMarkdown() {
+    async switchToMarkdown() {
         if (!this.container) {
             return;
         }
         this.editor?.destroy();
+        const { MarkdownView } = await import("./editor/markdown/view");
         this.editor = new MarkdownView(this.name, this.container, addBaseUri(this.element.value, this.options.baseUri), this.options.inputEventHandler, {
             editable: !(this.element.disabled || this.element.readOnly),
             placeholder: this.element.placeholder,
@@ -135,11 +136,12 @@ export class EditorInput {
         this.editor.view.dom.style.height = `${this.options.height}px`;
     }
 
-    switchToCode() {
+    async switchToCode() {
         if (!this.container) {
             return;
         }
         this.editor?.destroy();
+        const { CodeView } = await import("./editor/code/view");
         this.editor = new CodeView(this.container, removeBaseUri(this.element.value, this.options.baseUri), this.options.inputEventHandler, {
             editable: !(this.element.disabled || this.element.readOnly),
             placeholder: this.element.placeholder,

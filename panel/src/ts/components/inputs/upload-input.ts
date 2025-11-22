@@ -1,13 +1,13 @@
 import { $ } from "../../utils/selectors";
 import { app } from "../../app";
+import { escapeHtml } from "../../utils/validation";
 import { FilesList } from "../fileslist";
-import { Form } from "../form";
+import type { Form } from "../form";
 import { insertIcon } from "../icons";
 import { Notification } from "../notification";
 import { Request } from "../../utils/request";
 import { SelectInput } from "./select-input";
 import { TagsInput } from "./tags-input";
-import { escapeHtml } from "../../utils/validation";
 
 export class UploadInput {
     readonly element: HTMLInputElement;

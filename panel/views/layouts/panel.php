@@ -36,7 +36,7 @@
     <?php foreach ($this->modals() as $modal) : ?>
         <?php $this->insert('modals.modal', ['modal' => $modal]) ?>
     <?php endforeach ?>
-    <?php $this->assets()->add('js/app.min.js') ?>
+    <?php $this->assets()->add('js/app.min.js', ['module' => true]) ?>
     <?php $this->insert('partials.scripts') ?>
 </body>
 

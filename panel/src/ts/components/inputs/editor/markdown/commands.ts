@@ -1,6 +1,6 @@
-import { Command, EditorState } from "prosemirror-state";
-import { Mark, MarkType, Node, NodeType } from "prosemirror-model";
-import { EditorView } from "prosemirror-view";
+import type { Command, EditorState } from "prosemirror-state";
+import type { Mark, MarkType, Node, NodeType } from "prosemirror-model";
+import type { EditorView } from "prosemirror-view";
 export { lift, setBlockType, toggleMark, wrapIn } from "prosemirror-commands";
 export { sinkListItem, wrapInList } from "prosemirror-schema-list";
 import { redo as historyRedo, undo as historyUndo, redoDepth, undoDepth } from "prosemirror-history";

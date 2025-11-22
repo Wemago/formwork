@@ -1,5 +1,5 @@
 import { defaultMarkdownParser, defaultMarkdownSerializer, schema } from "prosemirror-markdown";
-import { EditorState, Plugin, Transaction } from "prosemirror-state";
+import { EditorState, Plugin } from "prosemirror-state";
 import { app } from "../../../../app";
 import { baseKeymap } from "prosemirror-commands";
 import { buildInputRules } from "./inputrules";
@@ -10,6 +10,7 @@ import { keymap } from "prosemirror-keymap";
 import { linkTooltip } from "./linktooltip";
 import { menuPlugin } from "./menu";
 import { placeholderPlugin } from "./placeholder";
+import type { Transaction } from "prosemirror-state";
 
 export interface MarkdownViewOptions {
     editable?: boolean;

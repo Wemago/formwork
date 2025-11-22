@@ -2,7 +2,7 @@ import { $, $$ } from "../../utils/selectors";
 import { escapeRegExp, makeDiacriticsRegExp } from "../../utils/validation";
 import { debounce } from "../../utils/events";
 import { insertIcon } from "../icons";
-import Sortable from "sortablejs";
+import type { SortableEvent } from "sortablejs";
 
 interface TagsInputOptions {
     labels: { [key: string]: string };
@@ -69,7 +69,7 @@ export class TagsInput {
         this.updateDropdown();
     }
 
-    private createField() {
+    private async createField() {
         if ("limit" in this.element.dataset) {
             this.options.limit = parseInt(this.element.dataset.limit as string);
         }
@@ -124,6 +124,8 @@ export class TagsInput {
         });
 
         if (this.options.orderable) {
+            const { default: Sortable } = await import("sortablejs");
+
             Sortable.create(this.list, {
                 forceFallback: true,
                 animation: 150,
@@ -139,14 +141,14 @@ export class TagsInput {
                     this.field.classList.add("is-dragging");
                 },
 
-                onFilter: (event: Sortable.SortableEvent) => {
+                onFilter: (event: SortableEvent) => {
                     if (event.target.matches(".tag-remove")) {
                         this.removeTag(event.item.innerText);
                         this.list.removeChild(event.item);
                     }
                 },
 
-                onEnd: (event: Sortable.SortableEvent) => {
+                onEnd: (event: SortableEvent) => {
                     this.field.classList.remove("is-dragging");
                     const newIndex = event.newIndex;
                     const oldIndex = event.oldIndex;
@@ -229,8 +231,8 @@ export class TagsInput {
                 const { value, icon, thumb } = typeof list[key] === "object" ? list[key] : { value: list[key], icon: undefined, thumb: undefined };
 
                 this.addDropdownItem({
-                    label: value as string,
-                    value: isAssociative ? key : (value as string),
+                    label: value,
+                    value: isAssociative ? key : (value),
                     icon,
                     thumb,
                 });
@@ -592,7 +594,7 @@ export class TagsInput {
                 nextItem = nextItem.nextSibling as HTMLElement;
             }
             if (nextItem) {
-                return this.selectDropdownItem(nextItem as HTMLElement);
+                return this.selectDropdownItem(nextItem);
             }
         }
         this.selectFirstDropdownItem();

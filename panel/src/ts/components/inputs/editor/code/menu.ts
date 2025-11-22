@@ -1,7 +1,8 @@
-import { EditorView, ViewPlugin, ViewUpdate } from "@codemirror/view";
+import type { EditorView, ViewUpdate } from "@codemirror/view";
 import { redo, redoDepth, undo, undoDepth } from "@codemirror/commands";
 import { app } from "../../../../app";
 import { passIcon } from "../../../icons";
+import { ViewPlugin } from "@codemirror/view";
 
 function createButton(icon: string, title: string) {
     const btn = document.createElement("button");

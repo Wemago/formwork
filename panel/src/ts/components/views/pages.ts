@@ -1,12 +1,12 @@
 import { $, $$ } from "../../utils/selectors";
 import { escapeHtml, escapeRegExp, makeDiacriticsRegExp, makeSlug } from "../../utils/validation";
+import type { MoveEvent, SortableEvent } from "sortablejs";
 import { app } from "../../app";
 import { debounce } from "../../utils/events";
-import { Form } from "../form";
+import type { Form } from "../form";
 import { Notification } from "../notification";
 import { Request } from "../../utils/request";
-import { SelectInput } from "../inputs/select-input";
-import Sortable from "sortablejs";
+import type { SelectInput } from "../inputs/select-input";
 
 export class Pages {
     constructor() {
@@ -185,7 +185,7 @@ export class Pages {
                 new Request(
                     {
                         method: "POST",
-                        url: action as string,
+                        url: action,
                         data: {
                             "csrf-token": app.config.csrfToken as string,
                         },
@@ -292,7 +292,9 @@ export class Pages {
             }
         }
 
-        function initSortable(element: HTMLElement) {
+        async function initSortable(element: HTMLElement) {
+            const { default: Sortable } = await import("sortablejs");
+
             let originalOrder: string[] = [];
 
             const sortable = Sortable.create(element, {
@@ -319,13 +321,13 @@ export class Pages {
                     element.classList.add("is-dragging");
                 },
 
-                onMove(event: Sortable.MoveEvent) {
+                onMove(event: MoveEvent) {
                     if (event.related.classList.contains("is-not-orderable")) {
                         return false;
                     }
                 },
 
-                onEnd(event: Sortable.SortableEvent) {
+                onEnd(event: SortableEvent) {
                     element.classList.remove("is-dragging");
 
                     document.body.style.height = "";

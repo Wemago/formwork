@@ -128,7 +128,7 @@ export class Modal {
 
     private registerEvents() {
         document.addEventListener("click", (event) => {
-            const target = (event.target as HTMLElement).closest(`[data-modal="${this.element.id}"]`) as HTMLDivElement | null;
+            const target = (event.target as HTMLElement).closest(`[data-modal="${this.element.id}"]`) as HTMLElement;
             if (target) {
                 this.open({ action: target.dataset.modalAction, triggerElement: target });
             }

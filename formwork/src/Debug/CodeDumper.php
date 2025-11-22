@@ -5,6 +5,7 @@ namespace Formwork\Debug;
 use Formwork\Traits\StaticClass;
 use Formwork\Utils\FileSystem;
 use Formwork\Utils\Str;
+use InvalidArgumentException;
 use PhpToken;
 use ReflectionFunction;
 use ReflectionMethod;
@@ -72,7 +73,7 @@ final class CodeDumper
             }
 
             .__formwork-trace-call {
-                margin: 16px 0 8px;
+                margin: 8px 0;
                 padding: 12px 8px;
                 border-radius: 4px;
                 background-color: #f0f0f0;
@@ -156,12 +157,20 @@ final class CodeDumper
     /**
      * Dump a backtrace frame
      *
-     * @param array{function: string, line: int, file: string, class?: string, object?: object, type?: string, args: list<mixed>} $frame Backtrace frame
+     * @param array{file?: string, line?: int, function?: string, class?: string, object?: object, type?: string, args?: list<mixed>} $frame Backtrace frame
      */
     public static function dumpBacktraceFrame(array $frame, int $contextLines = 5): void
     {
+        if (!isset($frame['file'], $frame['line'])) {
+            throw new InvalidArgumentException('Backtrace frame must contain "file" and "line" keys to dump code.');
+        }
+
         self::dumpStyles();
         self::dumpLine($frame['file'], $frame['line'], $contextLines);
+
+        if (!isset($frame['function'])) {
+            return;
+        }
 
         $result = sprintf('<div class="__formwork-trace-call"><span class="__name">%s</span>%s<span class="__name">%s</span>()</div>', $frame['class'] ?? '', $frame['type'] ?? '', $frame['function']);
 
@@ -175,7 +184,7 @@ final class CodeDumper
 
             foreach ($reflection->getParameters() as $i => $reflectionParameter) {
                 $name = ($reflectionParameter->isVariadic() ? '...$' : '$') . $reflectionParameter->getName();
-                $values = array_slice($frame['args'], $i, $reflectionParameter->isVariadic() ? null : 1);
+                $values = array_slice($frame['args'] ?? [], $i, $reflectionParameter->isVariadic() ? null : 1);
                 $default = false;
 
                 if ($values === [] && $reflectionParameter->isDefaultValueAvailable()) {
@@ -204,7 +213,7 @@ final class CodeDumper
             }
         }
 
-        if ($parameterCount < count($frame['args'])) {
+        if (isset($frame['args']) && $parameterCount < count($frame['args'])) {
             foreach (array_slice($frame['args'], $parameterCount) as $i => $value) {
                 $result .= sprintf("<tr class=\"__row\">\n<td class=\"__param-name\"><code>#%d</code></td>\n<td>%s</td></tr>\n", $parameterCount + $i, Debug::dumpToString($value));
             }

@@ -53,7 +53,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="dashboard-chart ct-chart" data-chart-data="<?= $this->escapeAttr($statistics) ?>"></div>
+                <div class="dashboard-chart ct-chart is-loading" data-chart-data="<?= $this->escapeAttr($statistics) ?>"></div>
             </section>
         </div>
     </div>

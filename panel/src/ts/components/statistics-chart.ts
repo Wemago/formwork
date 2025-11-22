@@ -4,6 +4,7 @@ import { Tooltip } from "./tooltip";
 
 export class StatisticsChart {
     constructor(container: HTMLElement, data: LineChartData) {
+        container.classList.add("is-loading");
         this.init(container, data);
     }
 
@@ -39,6 +40,8 @@ export class StatisticsChart {
         const { LineChart } = await import("chartist");
 
         const chart = new LineChart(container, data, options);
+
+        container.classList.remove("is-loading");
 
         chart.on("draw", (event) => {
             if (event.type === "point") {

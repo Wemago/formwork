@@ -19,7 +19,7 @@
             </div>
         </div>
     </div>
-    <div class="statistics-chart ct-chart" data-chart-data="<?= $this->escapeAttr($statistics) ?>"></div>
+    <div class="statistics-chart ct-chart is-loading" data-chart-data="<?= $this->escapeAttr($statistics) ?>"></div>
 </section>
 <section class="section">
     <div class="row text-align-center">

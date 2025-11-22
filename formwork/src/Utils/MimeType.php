@@ -1277,6 +1277,11 @@ final class MimeType
             $mimeType = self::fromExtension($extension);
         }
 
+        // Fix type for JS files with text/x-java MIME type
+        if ($mimeType === 'text/x-java' && $extension === 'js') {
+            $mimeType = self::fromExtension($extension);
+        }
+
         // Fix type for SVG images without XML declaration
         if ($mimeType === 'image/svg') {
             $mimeType = self::fromExtension('svg');

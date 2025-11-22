@@ -88,9 +88,10 @@ export class EditorInput {
 
             this.container.appendChild(toolbar);
             this.container.appendChild(textarea);
-        }
 
-        textarea.style.display = "none";
+            this.options.height -= toolbar.offsetHeight;
+            this.element.style.height = `${this.options.height}px`;
+        }
 
         const formName = this.element.form?.dataset.form;
 
@@ -98,25 +99,29 @@ export class EditorInput {
 
         const mode = window.localStorage.getItem(`formwork.editorMode[${key}]`);
 
-        const codeSwitch = $("[data-command=toggle-markdown]", this.container) as HTMLButtonElement;
+        const toggleButton = $("[data-command=toggle-markdown]", this.container) as HTMLButtonElement;
 
         if (mode === "code") {
             this.editorPromise = this.switchToCode();
-            codeSwitch.classList.add("is-active");
+            toggleButton.classList.add("is-active");
         } else {
             this.editorPromise = this.switchToMarkdown();
-            codeSwitch.classList.remove("is-active");
+            toggleButton.classList.remove("is-active");
         }
 
-        codeSwitch.addEventListener("click", () => {
-            if (codeSwitch.classList.toggle("is-active")) {
+        toggleButton.addEventListener("click", () => {
+            toggleButton.disabled = true;
+            if (toggleButton.classList.toggle("is-active")) {
                 this.editorPromise = this.switchToCode();
                 window.localStorage.setItem(`formwork.editorMode[${key}]`, "code");
             } else {
                 this.editorPromise = this.switchToMarkdown();
                 window.localStorage.setItem(`formwork.editorMode[${key}]`, "markdown");
             }
-            this.editorPromise.then(() => this.editor?.view.focus());
+            this.editorPromise.then(() => {
+                this.editor?.view.focus();
+                toggleButton.disabled = false;
+            });
         });
 
         $(`label[for="${textarea.id}"]`)?.addEventListener("click", () => {
@@ -129,6 +134,8 @@ export class EditorInput {
             return;
         }
         this.editor?.destroy();
+        this.element.classList.add("is-loading");
+        this.element.style.display = "";
         const { MarkdownView } = await import("./editor/markdown/view");
         this.editor = new MarkdownView(this.name, this.container, addBaseUri(this.element.value, this.options.baseUri), this.options.inputEventHandler, {
             editable: !(this.element.disabled || this.element.readOnly),
@@ -137,6 +144,8 @@ export class EditorInput {
                 spellcheck: this.options.spellcheck ? "true" : "false",
             },
         });
+        this.element.style.display = "none";
+        this.element.classList.remove("is-loading");
         this.editor.view.dom.style.height = `${this.options.height}px`;
     }
 
@@ -145,11 +154,15 @@ export class EditorInput {
             return;
         }
         this.editor?.destroy();
+        this.element.classList.add("is-loading");
+        this.element.style.display = "";
         const { CodeView } = await import("./editor/code/view");
         this.editor = new CodeView(this.container, removeBaseUri(this.element.value, this.options.baseUri), this.options.inputEventHandler, {
             editable: !(this.element.disabled || this.element.readOnly),
             placeholder: this.element.placeholder,
         });
+        this.element.style.display = "none";
+        this.element.classList.remove("is-loading");
         this.editor.view.dom.style.height = `${this.options.height}px`;
     }
 

@@ -1,12 +1,14 @@
 @use "../mixins" as *;
 @use "../variables" as *;
 @use "../colors" as *;
+@use "../animations";
 
 /* stylelint-disable selector-class-pattern */
 
 .editor-toolbar {
     position: relative;
     display: flex;
+    min-height: 2.625rem;
     padding: 0.125rem 0.25rem;
     border: 1px solid var(--color-base-500);
     background-color: var(--color-base-800);
@@ -52,6 +54,10 @@
     background-color: var(--color-base-600);
 }
 
+.dropdown-item.is-active:hover {
+    background-color: var(--color-base-600);
+}
+
 .toolbar-button.is-active {
     color: var(--color-accent-500);
 
@@ -61,8 +67,16 @@
 }
 
 .form-textarea.editor-textarea {
-    padding: 1rem;
+    padding: 3.625rem 1rem 1rem;
     margin-bottom: 0;
+    background-color: var(--color-base-800);
+    color: transparent;
+    pointer-events: none;
+    @include user-select-none;
+
+    &::placeholder {
+        color: transparent;
+    }
 
     &:focus {
         outline: none;
@@ -201,6 +215,10 @@ img.ProseMirror-separator {
     border-top-right-radius: 0;
 }
 
+.editor-textarea.is-loading {
+    @extend %animation-shimmer;
+}
+
 .button {
     font-size: 0.875rem;
 }
@@ -250,6 +268,8 @@ img.ProseMirror-separator {
 }
 
 .editor-wrap {
+    display: flex;
+    flex-direction: column;
     border-radius: var(--border-radius);
     margin-bottom: 0.75rem;
 }

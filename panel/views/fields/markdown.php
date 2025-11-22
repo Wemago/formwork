@@ -3,7 +3,7 @@
 <?php $this->modals()->addMultiple(['images', 'link']) ?>
 
 <textarea <?= $this->attr([
-                'class'         => ['form-textarea', 'editor-textarea'],
+                'class'         => ['form-textarea', 'editor-textarea', 'is-loading'],
                 'id'            => $field->name(),
                 'name'          => $field->formName(),
                 'placeholder'   => $field->placeholder(),

@@ -2,10 +2,14 @@
 
 namespace Formwork\Panel\Controllers;
 
+use Error;
+use ErrorException;
+use Formwork\Cms\App;
 use Formwork\Controllers\ErrorsControllerInterface;
 use Formwork\Http\JsonResponse;
 use Formwork\Http\Response;
 use Formwork\Http\ResponseStatus;
+use Formwork\Utils\Str;
 use Throwable;
 
 final class ErrorsController extends AbstractController implements ErrorsControllerInterface
@@ -66,6 +70,7 @@ final class ErrorsController extends AbstractController implements ErrorsControl
 
         if ($this->config->get('system.debug.enabled') || $this->request->isLocalhost()) {
             $data['throwable'] = $throwable;
+            $data['stackTrace'] = $throwable !== null ? $this->getTrace($throwable) : [];
         }
 
         if ($this->request->isXmlHttpRequest()) {
@@ -106,6 +111,41 @@ final class ErrorsController extends AbstractController implements ErrorsControl
             $throwable->getLine(),
             $throwable->getTraceAsString()
         ));
+    }
+
+    /**
+     * Get full trace including the exception origin
+     *
+     * @return array<array{file?: string, line?: int, function?: string, class?: string, object?: object, type?: string, args?: list<mixed>}>
+     */
+    private function getTrace(Throwable $throwable): array
+    {
+
+        $trace = $throwable->getTrace();
+
+        $file = $throwable->getFile();
+        $line = $throwable->getLine();
+
+        if ($throwable instanceof Error || $throwable instanceof ErrorException) {
+            if (
+                isset($trace[0], $trace[0]['class'], $trace[0]['function'])
+                && $trace[0]['class'] === App::class
+                && Str::endsWith($trace[0]['function'], '{closure}')
+            ) {
+                array_shift($trace);
+            }
+
+            if (isset($trace[0], $trace[0]['file'], $trace[0]['line']) && $trace[0]['file'] === $file && $trace[0]['line'] === $line) {
+                return $trace;
+            }
+        }
+
+        array_unshift($trace, [
+            'file' => $file,
+            'line' => $line,
+        ]);
+
+        return $trace;
     }
 
     /**

@@ -9,8 +9,8 @@ options:
     # This allows pagination routes for the page
     allowPagination: true
 
-    # This allows tags for the page
-    allowTags: true
+    # This allows taxonomy for the page
+    allowTaxonomy: true
 
     # This controls which template can have children, their order and other attributes
     children:

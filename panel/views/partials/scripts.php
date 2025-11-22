@@ -1,5 +1,5 @@
 <?php foreach ($this->assets()->scripts() as $script): ?>
-    <script src="<?= $script->uri(includeVersion: true) ?>" integrity="<?= $script->integrityHash() ?>"></script>
+    <script <?= $this->attr(['src' => $script->uri(includeVersion: true), 'integrity' => $script->integrityHash(), 'type' => $script->getMeta('module') ? 'module' : null]) ?>></script>
 <?php endforeach ?>
 
 <script>

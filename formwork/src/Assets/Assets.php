@@ -46,6 +46,14 @@ class Assets
     }
 
     /**
+     * Return whether the collection has an asset with the given key
+     */
+    public function has(string $key): bool
+    {
+        return $this->collection->has($key);
+    }
+
+    /**
      * Get an asset from the collection
      */
     public function get(string $key): Asset

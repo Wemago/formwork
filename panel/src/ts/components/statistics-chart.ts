@@ -1,5 +1,5 @@
+import { circleSmallFill } from "./icons";
 import type { LineChartData } from "chartist";
-import { passIcon } from "./icons";
 import { Tooltip } from "./tooltip";
 
 export class StatisticsChart {
@@ -55,15 +55,13 @@ export class StatisticsChart {
                 const strokeWidth = parseFloat(getComputedStyle(target).strokeWidth);
                 const index = target.getAttribute("ct:index");
                 if (index) {
-                    passIcon("circle-small-fill", (icon) => {
-                        // @ts-expect-error TODO
-                        const text = `<div>${data.labels[index]}<br><span class="text-color-blue">${icon}</span> ${data.series[0][index]} <span class="text-color-amber ml-2">${icon}</span>${data.series[1][index]}</div>`;
-                        const tooltip = new Tooltip(text, {
-                            referenceElement: event.target as HTMLElement,
-                            offset: { x: 0, y: -strokeWidth },
-                        });
-                        tooltip.show();
+                    // @ts-expect-error TODO
+                    const text = `<div>${data.labels[index]}<br><span class="text-color-blue">${circleSmallFill}</span> ${data.series[0][index]} <span class="text-color-amber ml-2">${circleSmallFill}</span>${data.series[1][index]}</div>`;
+                    const tooltip = new Tooltip(text, {
+                        referenceElement: event.target as HTMLElement,
+                        offset: { x: 0, y: -strokeWidth },
                     });
+                    tooltip.show();
                 }
             }
         });

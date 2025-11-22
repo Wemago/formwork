@@ -1,6 +1,6 @@
 import { $, $$ } from "../../utils/selectors";
+import { calendarClock, chevronDown, chevronLeft, chevronRight, chevronUp } from "../icons";
 import { getOuterHeight, getOuterWidth } from "../../utils/dimensions";
-import { insertIcon } from "../icons";
 import { longClick } from "../../utils/events";
 import { mod } from "../../utils/math";
 import { throttle } from "../../utils/events";
@@ -420,17 +420,17 @@ class Calendar {
         if (this.input.options.time) {
             element.innerHTML += `<div class="calendar-separator"></div><table class="calendar-time"><tr><td><button type="button" class="nextHour" aria-label="${this.input.options.labels.nextHour}"></button></td><td></td><td><button type="button" class="nextMinute" aria-label="${this.input.options.labels.nextMinute}"></button></td></tr><tr><td class="calendar-hours"></td><td>:</td><td class="calendar-minutes"></td><td class="calendar-meridiem"></td></tr><tr><td><button type="button" class="prevHour" aria-label="${this.input.options.labels.prevHour}"></button></td><td></td><td><button type="button" class="prevMinute" aria-label="${this.input.options.labels.prevMinute}"></button></td></tr></table></div>`;
 
-            insertIcon("chevron-down", $(".prevHour", element) as HTMLElement);
-            insertIcon("chevron-up", $(".nextHour", element) as HTMLElement);
+            ($(".prevHour", element) as HTMLElement).innerHTML = chevronDown;
+            ($(".nextHour", element) as HTMLElement).innerHTML = chevronUp;
 
-            insertIcon("chevron-down", $(".prevMinute", element) as HTMLElement);
-            insertIcon("chevron-up", $(".nextMinute", element) as HTMLElement);
+            ($(".prevMinute", element) as HTMLElement).innerHTML = chevronDown;
+            ($(".nextMinute", element) as HTMLElement).innerHTML = chevronUp;
         }
 
-        insertIcon("calendar-clock", $(".currentMonth", element) as HTMLElement);
+        ($(".currentMonth", element) as HTMLElement).insertAdjacentHTML("afterbegin", calendarClock);
 
-        insertIcon("chevron-left", $(".prevMonth", element) as HTMLElement);
-        insertIcon("chevron-right", $(".nextMonth", element) as HTMLElement);
+        ($(".prevMonth", element) as HTMLElement).innerHTML = chevronLeft;
+        ($(".nextMonth", element) as HTMLElement).innerHTML = chevronRight;
 
         ($(".currentMonth", element) as HTMLElement).addEventListener("mousedown", (event) => {
             this.now();

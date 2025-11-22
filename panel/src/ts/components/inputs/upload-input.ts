@@ -1,13 +1,14 @@
+import * as icons from "../icons";
 import { $ } from "../../utils/selectors";
 import { app } from "../../app";
 import { escapeHtml } from "../../utils/validation";
 import { FilesList } from "../fileslist";
 import type { Form } from "../form";
-import { insertIcon } from "../icons";
 import { Notification } from "../notification";
 import { Request } from "../../utils/request";
 import { SelectInput } from "./select-input";
 import { TagsInput } from "./tags-input";
+import { toCamelCase } from "../../utils/strings";
 
 export class UploadInput {
     readonly element: HTMLInputElement;
@@ -158,7 +159,7 @@ export class UploadInput {
                                                 label: data.name,
                                                 value: data.name,
                                                 thumb: data.thumbnail,
-                                                icon: `file-${data.type}`,
+                                                icon: toCamelCase(`file-${data.type}`) as keyof typeof icons,
                                             });
                                             input.sortDropdownItems();
                                         }
@@ -223,7 +224,8 @@ export class UploadInput {
             $(".file-thumbnail", filesItem)?.remove();
         }
 
-        insertIcon(info.type ? `file-${info.type}` : "file", $(".file-icon", filesItem) as HTMLElement);
+        const icon = icons[toCamelCase(`file-${info.type}`) as keyof typeof icons] || icons["file"];
+        ($(".file-icon", filesItem) as HTMLElement).innerHTML = icon;
 
         const anchor = $(".file-name a", filesItem) as HTMLAnchorElement;
         anchor.href = info.actions.info;

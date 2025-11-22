@@ -1,6 +1,6 @@
 import { $, $$ } from "../../utils/selectors";
+import { check, exclamation } from "../icons";
 import { app } from "../../app";
-import { insertIcon } from "../icons";
 import { Notification } from "../notification";
 import { Request } from "../../utils/request";
 import { triggerDownload } from "../../utils/forms";
@@ -42,7 +42,7 @@ export class Backups {
                             button.disabled = false;
 
                             spinner.classList.add("spinner-success");
-                            insertIcon("check", spinner);
+                            spinner.innerHTML = check;
 
                             const template = $("#backups-row") as HTMLTemplateElement;
                             if (template) {
@@ -75,11 +75,11 @@ export class Backups {
 
                         if (response.status === "error") {
                             spinner.classList.add("spinner-danger");
-                            insertIcon("exclamation", spinner);
+                            spinner.innerHTML = exclamation;
                             button.disabled = false;
                         }
 
-                        const notification = new Notification(response.message, response.status, { icon: "check-circle" });
+                        const notification = new Notification(response.message, response.status, { icon: "checkCircle" });
                         notification.show();
 
                         if (response.status === "success") {

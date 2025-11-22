@@ -353,7 +353,7 @@ export class Pages {
                         },
                         (response) => {
                             if (response.status) {
-                                const notification = new Notification(response.message, response.status, { icon: "check-circle" });
+                                const notification = new Notification(response.message, response.status, { icon: "checkCircle" });
                                 notification.show();
                             }
                             if (!response.status || response.status === "error") {

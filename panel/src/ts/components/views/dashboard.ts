@@ -19,7 +19,7 @@ export class Dashboard {
                     data: { "csrf-token": app.config.csrfToken as string },
                 },
                 (response) => {
-                    const icon = response.status === "error" ? "exclamation-octagon" : "check-circle";
+                    const icon = response.status === "error" ? "exclamationOctagon" : "checkCircle";
                     const notification = new Notification(response.message, response.status, { icon });
                     notification.show();
                 },

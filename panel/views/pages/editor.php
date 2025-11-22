@@ -17,7 +17,7 @@
             </div>
             <div class="flex">
                 <div class="mr-2"><?= $this->insert('_pages/status', ['page' => $page]) ?></div>
-                <div class="page-route truncate"><?= $this->escape($page->route()) ?></div>
+                <div class="page-route truncate"><?= $this->escape($page->canonicalRoute() ?? $page->route()) ?></div>
             </div>
         </div>
         <?php if ($currentLanguage) : ?>

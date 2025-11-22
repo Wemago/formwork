@@ -935,7 +935,7 @@ class Page extends Model implements Stringable
                 $extension = '.' . FileSystem::extension($file);
 
                 if ($extension === $config->get('system.pages.content.extension')) {
-                    $language = null;
+                    $language = '';
 
                     if (preg_match('/([a-z0-9]+)\.([a-z]+)/', $name, $matches)) {
                         // Parse double extension
@@ -948,7 +948,7 @@ class Page extends Model implements Stringable
                             'filename' => $file,
                             'template' => $name,
                         ];
-                        if ($language !== null && !in_array($language, $languages, true)) {
+                        if ($language !== '' && !in_array($language, $languages, true)) {
                             $languages[] = $language;
                         }
                     }

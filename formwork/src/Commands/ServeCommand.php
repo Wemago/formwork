@@ -148,6 +148,7 @@ final class ServeCommand implements CommandInterface
                     $acceptedTime = microtime(true);
 
                     [, $requestPort, $requestInfo] = $this->splitMessage($message);
+                    $requestPort ??= '';
 
                     $this->requestData[$requestPort] = ['time' => $acceptedTime];
 
@@ -157,6 +158,7 @@ final class ServeCommand implements CommandInterface
                     $closingTime = microtime(true);
 
                     [, $requestPort, $requestInfo] = $this->splitMessage($message);
+                    $requestPort ??= '';
 
                     if (!preg_match(
                         '/^(?:\[(?<status>\d{3})\]: (?<method>[A-Z]+) (?<uri>[^ ]+)(?: -(?<description> .+))?|(?<message>.+))/',
@@ -200,6 +202,7 @@ final class ServeCommand implements CommandInterface
 
                 default:
                     [, $requestPort, $requestInfo] = $this->splitMessage($message);
+                    $requestPort ??= '';
                     $this->requestData[$requestPort]['info'] = $requestInfo;
                     break;
             }

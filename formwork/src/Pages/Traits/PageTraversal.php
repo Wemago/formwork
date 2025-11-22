@@ -182,7 +182,7 @@ trait PageTraversal
         $page = $this;
 
         while (($parent = $page->parent()) !== null) {
-            $ancestors[$parent->route()] = $parent;
+            $ancestors[$parent->route() ?? ''] = $parent;
             $page = $parent;
         }
 
@@ -223,7 +223,7 @@ trait PageTraversal
         }
 
         if ($this->contentPath() === null || $this->parent() === null) {
-            return $this->inclusiveSiblings = $this->pageCollectionFactory->make([$this->route() => $this]);
+            return $this->inclusiveSiblings = $this->pageCollectionFactory->make([$this->route() ?? '' => $this]);
         }
 
         return $this->inclusiveSiblings = $this->parent()->children();

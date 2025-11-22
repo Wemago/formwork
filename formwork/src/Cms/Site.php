@@ -148,7 +148,7 @@ class Site extends Model implements Stringable
 
     public function inclusiveSiblings(): PageCollection
     {
-        return $this->inclusiveSiblings ??= $this->pageCollectionFactory->make([$this->route() => $this]);
+        return $this->inclusiveSiblings ??= $this->pageCollectionFactory->make([$this->route() ?? '' => $this]);
     }
 
     /**
@@ -325,7 +325,7 @@ class Site extends Model implements Stringable
                 $page = $this->retrievePage($pagePath);
 
                 if ($page->hasContentFile()) {
-                    $pages[$page->route()] = $page;
+                    $pages[$page->route() ?? ''] = $page;
                 }
 
                 if ($recursive) {

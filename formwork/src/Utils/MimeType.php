@@ -4,6 +4,7 @@ namespace Formwork\Utils;
 
 use DOMDocument;
 use DOMElement;
+use finfo;
 use Formwork\Traits\StaticClass;
 use RuntimeException;
 
@@ -1263,49 +1264,46 @@ final class MimeType
             throw new RuntimeException(sprintf('%s() requires the extension "fileinfo" to be enabled', __METHOD__));
         }
 
-        if ($finfo = finfo_open(FILEINFO_MIME_TYPE)) {
-            $mimeType = finfo_file($finfo, $file);
-            finfo_close($finfo);
+        $mimeType = (new finfo(FILEINFO_MIME_TYPE))->file($file);
 
-            $extension = FileSystem::extension($file);
+        $extension = FileSystem::extension($file);
 
-            if ($mimeType === 'text/plain' && in_array($extension, self::SAFE_PLAINTEXT_EXTENSIONS, true)) {
-                $mimeType = self::fromExtension($extension);
-            }
+        if ($mimeType === 'text/plain' && in_array($extension, self::SAFE_PLAINTEXT_EXTENSIONS, true)) {
+            $mimeType = self::fromExtension($extension);
+        }
 
-            // Fix type for CSS files with text/x-asm MIME type
-            if ($mimeType === 'text/x-asm' && $extension === 'css') {
-                $mimeType = self::fromExtension($extension);
-            }
+        // Fix type for CSS files with text/x-asm MIME type
+        if ($mimeType === 'text/x-asm' && $extension === 'css') {
+            $mimeType = self::fromExtension($extension);
+        }
 
-            // Fix type for SVG images without XML declaration
-            if ($mimeType === 'image/svg') {
+        // Fix type for SVG images without XML declaration
+        if ($mimeType === 'image/svg') {
+            $mimeType = self::fromExtension('svg');
+        }
+
+        // Fix type for JavaScript files with application/javascript MIME type
+        // as text/javascript intended usage has changed from OBSOLETED to COMMON (see RFC 9239)
+        if ($mimeType === 'application/javascript') {
+            $mimeType = self::fromExtension('js');
+        }
+
+        // Fix wrong type for image/svg+xml
+        if ($mimeType === 'text/html') {
+            $domDocument = new DOMDocument();
+            $domDocument->load($file, LIBXML_NOERROR);
+            $node = $domDocument->documentElement;
+            if ($node instanceof DOMElement && $node->nodeName === 'svg') {
                 $mimeType = self::fromExtension('svg');
             }
+        }
 
-            // Fix type for JavaScript files with application/javascript MIME type
-            // as text/javascript intended usage has changed from OBSOLETED to COMMON (see RFC 9239)
-            if ($mimeType === 'application/javascript') {
-                $mimeType = self::fromExtension('js');
-            }
-
-            // Fix wrong type for image/svg+xml
-            if ($mimeType === 'text/html') {
-                $domDocument = new DOMDocument();
-                $domDocument->load($file, LIBXML_NOERROR);
-                $node = $domDocument->documentElement;
-                if ($node instanceof DOMElement && $node->nodeName === 'svg') {
-                    $mimeType = self::fromExtension('svg');
-                }
-            }
-
-            // Reject invalid SVG images
-            if ($mimeType === 'image/svg+xml') {
-                $domDocument = new DOMDocument();
-                $domDocument->load($file, LIBXML_NOERROR);
-                $node = $domDocument->documentElement;
-                $mimeType = $node instanceof DOMElement ? self::fromExtension('svg') : null;
-            }
+        // Reject invalid SVG images
+        if ($mimeType === 'image/svg+xml') {
+            $domDocument = new DOMDocument();
+            $domDocument->load($file, LIBXML_NOERROR);
+            $node = $domDocument->documentElement;
+            $mimeType = $node instanceof DOMElement ? self::fromExtension('svg') : null;
         }
 
         return $mimeType ?: self::DEFAULT_MIME_TYPE;

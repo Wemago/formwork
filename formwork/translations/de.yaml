@@ -52,6 +52,7 @@ page.routable: Routbar
 page.routable.description: Routbare Seiten sind über ihre Adresse zugänglich
 page.slug: Slug
 page.slug.suggestion: Nur Buchstaben, Zahlen und Bindestriche
+page.status: Status
 page.status.notPublished: Nicht veröffentlicht
 page.status.published: Veröffentlicht
 page.status.published.description: Veröffentliche Seiten sind auf der Website sichtbar und über ihre Adresse zugänglich

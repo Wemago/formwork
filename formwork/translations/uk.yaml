@@ -52,6 +52,7 @@ page.routable: Маршрутизовано
 page.routable.description: Маршрутизовані сторінки доступні за їх адресою
 page.slug: Слаг
 page.slug.suggestion: лише літери, цифри та дефіси
+page.status: Статус
 page.status.notPublished: Не опубліковано
 page.status.published: Опубліковано
 page.status.published.description: Опубліковані сторінки видимі на сайті та доступні за їх адресою

@@ -5,30 +5,36 @@ options:
     icon: page
 
 layout:
-    type: sections
-
-    sections:
+    tabs:
         content:
             label: '{{page.content}}'
-            active: true
-            fields: [title, content]
 
         options:
-            collapsible: true
             label: '{{page.options}}'
-            fields: [published, publishDate, unpublishDate, routable, listed, cacheable]
 
-        attributes:
-            collapsible: true
-            collapsed: true
-            label: '{{page.attributes}}'
-            fields: [slug, parent, template]
+    sections:
+        page:
+            label: '{{page.page}}'
+            active: true
+            fields: [title, content]
+            tab: content
 
         files:
             collapsible: true
-            collapsed: false
             label: '{{page.files}}'
             fields: [files]
+            tab: content
+
+        status:
+            label: '{{page.status}}'
+            fields: [published, publishDate, unpublishDate, routable, listed, cacheable]
+            tab: options
+
+        attributes:
+            collapsible: true
+            label: '{{page.attributes}}'
+            fields: [slug, parent, template]
+            tab: options
 
 fields:
     title:

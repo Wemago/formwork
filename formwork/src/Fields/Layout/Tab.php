@@ -7,7 +7,7 @@ use Formwork\Data\Traits\DataArrayable;
 use Formwork\Data\Traits\DataGetter;
 use Formwork\Fields\Translations\Translations;
 
-class Section implements Arrayable
+class Tab implements Arrayable
 {
     use DataGetter;
     use DataArrayable;
@@ -17,13 +17,13 @@ class Section implements Arrayable
      * @param array<string, mixed> $data
      */
     public function __construct(
-        array $data,
+        array $data
     ) {
         $this->data = ['order' => PHP_INT_MAX, ...$data];
     }
 
     /**
-     * Get section name
+     * Get tab name
      */
     public function name(): ?string
     {
@@ -39,7 +39,7 @@ class Section implements Arrayable
     }
 
     /**
-     * Get field label
+     * Get tab label
      */
     public function label(): ?string
     {
@@ -47,7 +47,7 @@ class Section implements Arrayable
     }
 
     /**
-     * Get section order
+     * Get tab order
      */
     public function order(): int
     {

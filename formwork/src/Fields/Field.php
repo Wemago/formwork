@@ -10,9 +10,8 @@ use Formwork\Data\Traits\DataMultipleSetter;
 use Formwork\Exceptions\RecursionException;
 use Formwork\Fields\Dynamic\DynamicFieldValue;
 use Formwork\Fields\Exceptions\ValidationException;
+use Formwork\Fields\Translations\Translations;
 use Formwork\Traits\Methods;
-use Formwork\Translations\Translation;
-use Formwork\Utils\Arr;
 use Formwork\Utils\Constraint;
 use Formwork\Utils\Str;
 use Stringable;
@@ -29,6 +28,7 @@ class Field implements Arrayable, Stringable
         remove as protected baseRemove;
     }
     use Methods;
+    use Translations;
 
     /**
      * Keys that should not be translated
@@ -46,8 +46,6 @@ class Field implements Arrayable, Stringable
      * Whether the field is being validated
      */
     protected bool $validating = false;
-
-    protected Translation $translation;
 
     /**
      * @param string               $name                  Field name
@@ -317,14 +315,6 @@ class Field implements Arrayable, Stringable
     }
 
     /**
-     * Set field translation
-     */
-    public function setTranslation(Translation $translation): void
-    {
-        $this->translation = $translation;
-    }
-
-    /**
      * Return whether a field key is translatable
      */
     protected function isTranslatable(string $key): bool
@@ -340,34 +330,6 @@ class Field implements Arrayable, Stringable
         }
 
         return $translatable;
-    }
-
-    /**
-     * Translate field value
-     */
-    protected function translate(mixed $value): mixed
-    {
-        if (!isset($this->translation)) {
-            return $value;
-        }
-
-        $language = $this->translation->code();
-
-        if (is_array($value)) {
-            if (isset($value[$language])) {
-                $value = $value[$language];
-            }
-        } elseif (!is_string($value)) {
-            return $value;
-        }
-
-        $interpolate = fn($value) => is_string($value) ? Str::interpolate($value, fn($key) => $this->translation->translate($key)) : $value;
-
-        if (is_array($value)) {
-            return Arr::map($value, $interpolate);
-        }
-
-        return $interpolate($value);
     }
 
     /**

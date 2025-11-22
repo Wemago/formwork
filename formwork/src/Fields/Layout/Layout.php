@@ -9,7 +9,7 @@ class Layout
     /**
      * Layout type
      */
-    protected string $type;
+    protected string $type = 'sections';
 
     /**
      * Layout sections collection
@@ -17,15 +17,19 @@ class Layout
     protected SectionCollection $sections;
 
     /**
+     * Layout tabs collection
+     */
+    protected TabCollection $tabs;
+
+    /**
      * @param array<string, mixed> $data
      */
-    public function __construct(protected array $data, protected Translation $translation)
-    {
-        $this->type = $data['type'];
-    }
+    public function __construct(protected array $data, protected Translation $translation) {}
 
-    /** Get layout type
+    /**
+     * Get layout type
      *
+     * @deprecated Type property is no longer used and will be removed in Formwork 3.0
      */
     public function type(): string
     {
@@ -37,10 +41,18 @@ class Layout
      */
     public function sections(): SectionCollection
     {
-        return $this->sections ??= (new SectionCollection(
-            $this->data['sections'] ?? [],
-            $this->translation,
-        ))
-            ->sort(sortBy: fn(Section $a, Section $b): int => $a->order() <=> $b->order());
+        return $this->sections ??= (new SectionCollection($this->data['sections'] ?? []))
+            ->each(fn(Section $section) => $section->setTranslation($this->translation))
+            ->sortBy('order');
+    }
+
+    /**
+     * Get layout tabs
+     */
+    public function tabs(): TabCollection
+    {
+        return $this->tabs ??= (new TabCollection($this->data['tabs'] ?? []))
+            ->each(fn(Tab $tab) => $tab->setTranslation($this->translation))
+            ->sortBy('order');
     }
 }

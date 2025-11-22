@@ -52,6 +52,7 @@ page.routable: Dostępna
 page.routable.description: Strony dostępne pod adresem URL
 page.slug: Slug
 page.slug.suggestion: tylko litery, cyfry i myślniki
+page.status: Status
 page.status.notPublished: Nieopublikowana
 page.status.published: Opublikowana
 page.status.published.description: Opublikowane strony są widoczne na stronie i dostępne pod adresem

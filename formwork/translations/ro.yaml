@@ -52,6 +52,7 @@ page.routable: Rutabilă
 page.routable.description: Paginile rutabile sunt accesibile de la adresa lor
 page.slug: Slug
 page.slug.suggestion: doar litere, cifre și cratime
+page.status: Stare
 page.status.notPublished: Nepublicată
 page.status.published: Publicată
 page.status.published.description: Paginile publicate sunt vizibile pe site și accesibile de la adresa lor

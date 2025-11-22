@@ -1,9 +1,13 @@
-import { LineChart, LineChartData } from "chartist";
+import type { LineChartData } from "chartist";
 import { passIcon } from "./icons";
 import { Tooltip } from "./tooltip";
 
 export class StatisticsChart {
     constructor(container: HTMLElement, data: LineChartData) {
+        this.init(container, data);
+    }
+
+    private async init(container: HTMLElement, data: LineChartData) {
         const spacing = 100;
 
         const options = {
@@ -31,6 +35,8 @@ export class StatisticsChart {
                 },
             },
         };
+
+        const { LineChart } = await import("chartist");
 
         const chart = new LineChart(container, data, options);
 

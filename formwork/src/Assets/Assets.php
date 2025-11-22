@@ -33,14 +33,24 @@ class Assets
 
     /**
      * Add an asset to the collection
+     *
+     * @param array<string, mixed> $meta Asset metadata
      */
-    public function add(string $key): void
+    public function add(string $key, array $meta = []): void
     {
         if (!$this->collection->has($key)) {
             $path = FileSystem::joinPaths($this->basePath, Path::resolve($key, '/', DIRECTORY_SEPARATOR));
             $uri = Path::join([$this->baseUri, Path::resolve($key, '/')]);
-            $this->collection->set($key, new Asset($path, $uri));
+            $this->collection->set($key, new Asset($path, $uri, $meta));
         }
+    }
+
+    /**
+     * Return whether the collection has an asset with the given key
+     */
+    public function has(string $key): bool
+    {
+        return $this->collection->has($key);
     }
 
     /**

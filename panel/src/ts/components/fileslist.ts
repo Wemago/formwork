@@ -2,7 +2,7 @@ import { $, $$ } from "../utils/selectors";
 import { escapeHtml, escapeRegExp, makeDiacriticsRegExp } from "../utils/validation";
 import { app } from "../app";
 import { debounce } from "../utils/events";
-import { Form } from "./form";
+import type { Form } from "./form";
 import { Notification } from "./notification";
 import { Request } from "../utils/request";
 import { SelectInput } from "./inputs/select-input";

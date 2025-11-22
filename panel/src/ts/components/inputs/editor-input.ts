@@ -1,10 +1,10 @@
 import { $ } from "../../utils/selectors";
 import { app } from "../../app";
-import { CodeView } from "./editor/code/view";
+import { type CodeView } from "./editor/code/view";
 import { debounce } from "../../utils/events";
 import { escapeRegExp } from "../../utils/validation";
 import { insertIcon } from "../icons";
-import { MarkdownView } from "./editor/markdown/view";
+import { type MarkdownView } from "./editor/markdown/view";
 
 function addBaseUri(markdown: string, baseUri: string) {
     return markdown.replace(/(!\[.*\])\((?!https?:\/\/)([^)]+)\)/g, `$1(${baseUri}$2)`);
@@ -40,7 +40,9 @@ export class EditorInput {
 
     private container: HTMLElement | null;
 
-    private editor: MarkdownView | CodeView;
+    private editor: MarkdownView | CodeView | undefined;
+
+    private editorPromise: Promise<void>;
 
     constructor(textarea: HTMLTextAreaElement, options: Partial<EditorInputOptions> = {}) {
         this.element = textarea;
@@ -99,32 +101,35 @@ export class EditorInput {
         const codeSwitch = $("[data-command=toggle-markdown]", this.container) as HTMLButtonElement;
 
         if (mode === "code") {
-            this.switchToCode();
+            this.editorPromise = this.switchToCode();
             codeSwitch.classList.add("is-active");
         } else {
-            this.switchToMarkdown();
+            this.editorPromise = this.switchToMarkdown();
             codeSwitch.classList.remove("is-active");
         }
 
         codeSwitch.addEventListener("click", () => {
             if (codeSwitch.classList.toggle("is-active")) {
-                this.switchToCode();
+                this.editorPromise = this.switchToCode();
                 window.localStorage.setItem(`formwork.editorMode[${key}]`, "code");
             } else {
-                this.switchToMarkdown();
+                this.editorPromise = this.switchToMarkdown();
                 window.localStorage.setItem(`formwork.editorMode[${key}]`, "markdown");
             }
-            this.editor.view.focus();
+            this.editorPromise.then(() => this.editor?.view.focus());
         });
 
-        $(`label[for="${textarea.id}"]`)?.addEventListener("click", () => this.editor.view.focus());
+        $(`label[for="${textarea.id}"]`)?.addEventListener("click", () => {
+            this.editorPromise.then(() => this.editor?.view.focus());
+        });
     }
 
-    switchToMarkdown() {
+    async switchToMarkdown() {
         if (!this.container) {
             return;
         }
         this.editor?.destroy();
+        const { MarkdownView } = await import("./editor/markdown/view");
         this.editor = new MarkdownView(this.name, this.container, addBaseUri(this.element.value, this.options.baseUri), this.options.inputEventHandler, {
             editable: !(this.element.disabled || this.element.readOnly),
             placeholder: this.element.placeholder,
@@ -135,11 +140,12 @@ export class EditorInput {
         this.editor.view.dom.style.height = `${this.options.height}px`;
     }
 
-    switchToCode() {
+    async switchToCode() {
         if (!this.container) {
             return;
         }
         this.editor?.destroy();
+        const { CodeView } = await import("./editor/code/view");
         this.editor = new CodeView(this.container, removeBaseUri(this.element.value, this.options.baseUri), this.options.inputEventHandler, {
             editable: !(this.element.disabled || this.element.readOnly),
             placeholder: this.element.placeholder,
@@ -156,22 +162,30 @@ export class EditorInput {
     }
 
     get value(): string {
-        return this.editor.content;
+        return this.editor?.content ?? this.element.value;
     }
 
     get disabled(): boolean {
-        return !this.editor.editable;
+        return this.editor ? !this.editor.editable : this.element.disabled;
     }
 
     set disabled(value: boolean) {
         this.element.disabled = value;
-        this.editor.editable = !value;
+        this.editorPromise.then(() => {
+            if (this.editor) {
+                this.editor.editable = !value;
+            }
+        });
         const toggleButton = $("[data-command=toggle-markdown]", this.container!) as HTMLButtonElement;
         toggleButton.disabled = value;
     }
 
     set value(value: string) {
-        this.editor.content = value;
         this.element.value = value;
+        this.editorPromise.then(() => {
+            if (this.editor) {
+                this.editor.content = value;
+            }
+        });
     }
 }

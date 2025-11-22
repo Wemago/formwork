@@ -16,9 +16,10 @@
         "directory": "panel"
     },
     "scripts": {
-        "build": "pnpm build:css && pnpm build:js",
+        "build": "pnpm clean && pnpm build:css && pnpm build:js",
         "build:css": "sass ./src/scss/panel.scss:./assets/css/panel.min.css --style=compressed --no-source-map",
-        "build:js": "tsc && esbuild ./src/ts/app.ts --outfile=./assets/js/app.min.js --bundle --format=iife --global-name=Formwork --target=es6 --minify",
+        "build:js": "tsc && node build.js",
+        "clean": "rm -rf ./assets/js/chunks/**/*.js",
         "watch": "pnpm watch:css & pnpm watch:js",
         "watch:css": "pnpm build:css --watch",
         "watch:js": "pnpm build:js --watch",

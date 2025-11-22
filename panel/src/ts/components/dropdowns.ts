@@ -12,7 +12,7 @@ export class Dropdowns {
 
                 if (button) {
                     const dropdown = document.getElementById(button.dataset.dropdown as string) as HTMLElement;
-                    const isVisible = getComputedStyle(dropdown as HTMLElement).display !== "none";
+                    const isVisible = getComputedStyle(dropdown).display !== "none";
                     event.preventDefault();
 
                     const resizeHandler = throttle(() => setDropdownPosition(dropdown), 100);

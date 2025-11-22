@@ -1,17 +1,17 @@
+import { defineConfig } from "eslint/config";
 import eslintConfigPrettier from "eslint-config-prettier";
 import globals from "globals";
 import js from "@eslint/js";
 import tseslint from "typescript-eslint";
 
-export default [
+export default defineConfig([
     js.configs.recommended,
     ...tseslint.configs.recommended,
     {
         languageOptions: {
-            ecmaVersion: 13,
+            ecmaVersion: 2020,
             globals: {
                 ...globals.browser,
-                Formwork: "readonly",
             },
             sourceType: "module",
         },
@@ -36,6 +36,7 @@ export default [
             "prefer-arrow-callback": ["error"],
             "prefer-const": ["error"],
             "prefer-template": ["error"],
+            "require-await": ["error"],
             "sort-imports": [
                 "warn",
                 {
@@ -43,7 +44,12 @@ export default [
                     allowSeparatedGroups: true,
                 },
             ],
+            "@typescript-eslint/consistent-type-exports": ["error"],
+            "@typescript-eslint/consistent-type-imports": ["error"],
             "@typescript-eslint/no-explicit-any": "off",
+            "@typescript-eslint/no-redundant-type-constituents": "error",
+            "@typescript-eslint/no-unnecessary-type-assertion": "error",
+            "@typescript-eslint/no-unnecessary-type-constraint": "error",
             "@typescript-eslint/typedef": [
                 "warn",
                 {
@@ -52,5 +58,14 @@ export default [
             ],
         },
     },
+    {
+        files: ["**/*.ts"],
+        languageOptions: {
+            parserOptions: {
+                projectService: true,
+                tsconfigRootDir: import.meta.dirname,
+            },
+        },
+    },
     eslintConfigPrettier,
-];
+]);

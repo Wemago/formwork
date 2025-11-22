@@ -1,6 +1,5 @@
 import { $, $$ } from "../../utils/selectors";
-import { Form, HTMLInputLike } from "../form";
-import Sortable from "sortablejs";
+import type { Form, HTMLInputLike } from "../form";
 
 export class ArrayInput {
     readonly element: HTMLFieldSetElement;
@@ -16,6 +15,10 @@ export class ArrayInput {
 
         this.isAssociative = element.classList.contains("form-input-array-associative");
 
+        this.init(element);
+    }
+
+    private async init(element: HTMLFieldSetElement) {
         $$(".form-input-array-row", element).forEach((element) => this.bindItemEvents(element));
 
         $(`label[for="${element.id}"]`)?.addEventListener("click", () => $(".form-input", element)?.focus());
@@ -23,6 +26,8 @@ export class ArrayInput {
         if (this.isAssociative) {
             this.form.element.addEventListener("submit", () => this.handleSubmit());
         }
+
+        const { default: Sortable } = await import("sortablejs");
 
         Sortable.create(element, {
             handle: ".sortable-handle",
@@ -34,7 +39,7 @@ export class ArrayInput {
     }
 
     get name(): string {
-        return this.element.name as string;
+        return this.element.name;
     }
 
     set name(value: string) {

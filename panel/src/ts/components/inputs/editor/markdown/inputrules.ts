@@ -1,5 +1,5 @@
 import { ellipsis, emDash, inputRules, smartQuotes, textblockTypeInputRule, wrappingInputRule } from "prosemirror-inputrules";
-import { NodeType, Schema } from "prosemirror-model";
+import type { NodeType, Schema } from "prosemirror-model";
 
 export function blockQuoteRule(nodeType: NodeType) {
     return wrappingInputRule(/^\s*>\s$/, nodeType);

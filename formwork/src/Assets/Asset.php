@@ -34,9 +34,11 @@ class Asset
     private string $mimeType;
 
     /**
+     * @param array<string, mixed> $meta Asset metadata
+     *
      * @throws AssetNotFoundException If the asset file is not found
      */
-    public function __construct(string $path, string $uri)
+    public function __construct(string $path, string $uri, private array $meta = [])
     {
         $this->path = FileSystem::normalizePath($path);
         $this->uri = Uri::normalize($uri);
@@ -104,5 +106,13 @@ class Asset
     public function toBase64(): string
     {
         return 'data:' . $this->mimeType() . ';base64,' . base64_encode($this->content());
+    }
+
+    /**
+     * Get asset metadata value by key
+     */
+    public function getMeta(string $key, mixed $default = null): mixed
+    {
+        return $this->meta[$key] ?? $default;
     }
 }

@@ -1,9 +1,10 @@
-import { Command, NodeSelection, Plugin } from "prosemirror-state";
 import { insertImage, insertLink, isMarkActive, lift, redo, setBlockType, sinkListItem, toggleMark, undo, wrapIn, wrapInList } from "./commands";
-import { MarkType, NodeType } from "prosemirror-model";
+import type { MarkType, NodeType } from "prosemirror-model";
+import { NodeSelection, Plugin } from "prosemirror-state";
 import { $$ } from "../../../../utils/selectors";
 import { app } from "../../../../app";
-import { EditorView } from "prosemirror-view";
+import type { Command } from "prosemirror-state";
+import type { EditorView } from "prosemirror-view";
 import { passIcon } from "../../../icons";
 import { schema } from "prosemirror-markdown";
 

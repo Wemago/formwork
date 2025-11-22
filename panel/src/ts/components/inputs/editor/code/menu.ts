@@ -1,16 +1,16 @@
+import * as icons from "../../../icons";
 import type { EditorView, ViewUpdate } from "@codemirror/view";
 import { redo, redoDepth, undo, undoDepth } from "@codemirror/commands";
 import { app } from "../../../../app";
-import { passIcon } from "../../../icons";
 import { ViewPlugin } from "@codemirror/view";
 
-function createButton(icon: string, title: string) {
+function createButton(icon: keyof typeof icons, title: string) {
     const btn = document.createElement("button");
     btn.type = "button";
     btn.className = `button toolbar-button`;
     btn.title = title;
     btn.ariaLabel = title;
-    passIcon(icon, (data) => (btn.innerHTML = data));
+    btn.innerHTML = icons[icon] || "";
     return btn;
 }
 
@@ -70,8 +70,8 @@ export function MenuPlugin() {
         (view) =>
             new Menu(
                 [
-                    { dom: createButton("rotate-left", app.config.EditorInput.labels.undo), command: (view) => undo(view), enabler: (view) => undoDepth(view.state) > 0 },
-                    { dom: createButton("rotate-right", app.config.EditorInput.labels.redo), command: (view) => redo(view), enabler: (view) => redoDepth(view.state) > 0 },
+                    { dom: createButton("rotateLeft", app.config.EditorInput.labels.undo), command: (view) => undo(view), enabler: (view) => undoDepth(view.state) > 0 },
+                    { dom: createButton("rotateRight", app.config.EditorInput.labels.redo), command: (view) => redo(view), enabler: (view) => redoDepth(view.state) > 0 },
                 ],
                 view,
             ),

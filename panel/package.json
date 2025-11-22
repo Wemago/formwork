@@ -31,7 +31,8 @@
         "lint:ts": "eslint './src/ts/**/*.ts' --fix",
         "check": "pnpm check:css && pnpm check:ts",
         "check:css": "stylelint './src/scss/**/*.scss'",
-        "check:ts": "eslint './src/ts/**/*.ts'"
+        "check:ts": "eslint './src/ts/**/*.ts'",
+        "dump:icons": "node ./src/scripts/dump-icons.js"
     },
     "dependencies": {
         "@codemirror/commands": "^6.10.0",

@@ -1,6 +1,6 @@
+import { check, exclamation, info } from "../icons";
 import { $ } from "../../utils/selectors";
 import { app } from "../../app";
-import { insertIcon } from "../icons";
 import { Notification } from "../notification";
 import { Request } from "../../utils/request";
 
@@ -19,20 +19,20 @@ export class Updates {
 
             const showNewVersion = (name: string) => {
                 spinner.classList.add("spinner-info");
-                insertIcon("info", spinner);
+                spinner.innerHTML = info;
                 newVersionName.innerText = name;
                 newVersion.style.display = "block";
             };
 
             const showCurrentVersion = () => {
                 spinner.classList.add("spinner-success");
-                insertIcon("check", spinner);
+                spinner.innerHTML = check;
                 currentVersion.style.display = "block";
             };
 
             const showInstalledVersion = () => {
                 spinner.classList.add("spinner-success");
-                insertIcon("check", spinner);
+                spinner.innerHTML = check;
                 currentVersionName.innerText = newVersionName.innerText;
                 currentVersion.style.display = "block";
             };
@@ -57,7 +57,7 @@ export class Updates {
                             }
                         } else {
                             spinner.classList.add("spinner-danger");
-                            insertIcon("exclamation", spinner);
+                            spinner.innerHTML = exclamation;
                         }
                     },
                 );
@@ -76,7 +76,7 @@ export class Updates {
                         data: { "csrf-token": app.config.csrfToken as string },
                     },
                     (response) => {
-                        const notification = new Notification(response.message, response.status, { icon: "check-circle" });
+                        const notification = new Notification(response.message, response.status, { icon: "checkCircle" });
                         notification.show();
 
                         updateStatus.innerText = response.data.status;
@@ -85,7 +85,7 @@ export class Updates {
                             showInstalledVersion();
                         } else {
                             spinner.classList.add("spinner-danger");
-                            insertIcon("exclamation", spinner);
+                            spinner.innerHTML = exclamation;
                         }
                     },
                 );

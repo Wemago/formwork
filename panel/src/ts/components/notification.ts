@@ -1,16 +1,16 @@
+import * as icons from "./icons";
 import { $ } from "../utils/selectors";
-import { passIcon } from "./icons";
 
 type NotificationType = "info" | "success" | "warning" | "error";
 
 type NotificationOptions = {
     interval: number;
-    icon?: string;
+    icon?: keyof typeof icons;
     newestOnTop: boolean;
     fadeOutDelay: number;
     mouseleaveDelay: number;
     typeClass: Record<NotificationType, string>;
-    defaultIcons: Record<NotificationType, string>;
+    defaultIcons: Record<NotificationType, keyof typeof icons>;
 };
 
 export class Notification {
@@ -34,10 +34,10 @@ export class Notification {
                 error: "danger",
             },
             defaultIcons: {
-                info: "info-circle",
-                success: "check-circle",
-                warning: "exclamation-triangle",
-                error: "exclamation-octagon",
+                info: "infoCircle",
+                success: "checkCircle",
+                warning: "exclamationTriangle",
+                error: "exclamationOctagon",
             },
         };
 
@@ -83,10 +83,8 @@ export class Notification {
         }
 
         if (this.options.icon) {
-            passIcon(this.options.icon, (icon) => {
-                this.notificationElement = create(this.text, this.type, this.options.interval);
-                this.notificationElement.insertAdjacentHTML("afterbegin", icon);
-            });
+            this.notificationElement = create(this.text, this.type, this.options.interval);
+            this.notificationElement.insertAdjacentHTML("afterbegin", icons[this.options.icon] || "");
         } else {
             this.notificationElement = create(this.text, this.type, this.options.interval);
         }

@@ -1,6 +1,7 @@
+import * as icons from "../icons";
 import { $, $$ } from "../../utils/selectors";
 import { escapeRegExp, makeDiacriticsRegExp } from "../../utils/validation";
-import { insertIcon } from "../icons";
+import { toCamelCase } from "../../utils/strings";
 
 type SelectInputListItem = {
     label: string;
@@ -203,7 +204,8 @@ export class SelectInput {
             img.className = "dropdown-thumb";
             item.insertAdjacentElement("afterbegin", img);
         } else if (option.dataset.icon) {
-            insertIcon(option.dataset.icon, item);
+            const icon = toCamelCase(option.dataset.icon) as keyof typeof icons;
+            item.insertAdjacentHTML("afterbegin", icons[icon]);
         }
 
         for (const key in option.dataset) {

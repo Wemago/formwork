@@ -1,9 +1,9 @@
 import { debounce, throttle } from "../../../../utils/events";
 import { getMarkRange, insertLink, removeLink } from "./commands";
+import { link as linkIcon, pencil, trash } from "../../../icons";
 import { $ } from "../../../../utils/selectors";
 import { app } from "../../../../app";
 import type { EditorView } from "prosemirror-view";
-import { insertIcon } from "../../../icons";
 import type { Mark } from "prosemirror-model";
 import { Plugin } from "prosemirror-state";
 import { schema } from "prosemirror-markdown";
@@ -82,9 +82,9 @@ class LinkTooltipView {
             const tooltipEditLink = $('[data-command="edit-link"]', this.tooltip.element) as HTMLButtonElement;
             const tooltipDeleteLink = $('[data-command="delete-link"]', this.tooltip.element) as HTMLButtonElement;
 
-            insertIcon("link", tooltipLink);
-            insertIcon("pencil", tooltipEditLink);
-            insertIcon("trash", tooltipDeleteLink);
+            tooltipLink.insertAdjacentHTML("afterbegin", linkIcon);
+            tooltipEditLink.insertAdjacentHTML("afterbegin", pencil);
+            tooltipDeleteLink.insertAdjacentHTML("afterbegin", trash);
 
             const { state, dispatch } = this.editorView;
 

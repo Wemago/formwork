@@ -1,8 +1,9 @@
+import * as icons from "../icons";
 import { $, $$ } from "../../utils/selectors";
 import { escapeRegExp, makeDiacriticsRegExp } from "../../utils/validation";
 import { debounce } from "../../utils/events";
-import { insertIcon } from "../icons";
 import type { SortableEvent } from "sortablejs";
+import { toCamelCase } from "../../utils/strings";
 
 interface TagsInputOptions {
     labels: { [key: string]: string };
@@ -15,7 +16,7 @@ interface TagsInputOptions {
 interface TagsInputDropdownItem {
     label: string;
     value: string;
-    icon?: string;
+    icon?: keyof typeof icons;
     thumb?: string;
 }
 
@@ -181,7 +182,7 @@ export class TagsInput {
             img.className = "dropdown-thumb";
             item.insertAdjacentElement("afterbegin", img);
         } else if (option.icon) {
-            insertIcon(option.icon, item);
+            item.insertAdjacentHTML("afterbegin", icons[option.icon]);
         }
 
         item.addEventListener("click", () => {
@@ -232,8 +233,8 @@ export class TagsInput {
 
                 this.addDropdownItem({
                     label: value,
-                    value: isAssociative ? key : (value),
-                    icon,
+                    value: isAssociative ? key : value,
+                    icon: icon ? (toCamelCase(icon) as keyof typeof icons) : undefined,
                     thumb,
                 });
             }

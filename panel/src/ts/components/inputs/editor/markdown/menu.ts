@@ -1,3 +1,4 @@
+import * as icons from "../../../icons";
 import { insertImage, insertLink, isMarkActive, lift, redo, setBlockType, sinkListItem, toggleMark, undo, wrapIn, wrapInList } from "./commands";
 import type { MarkType, NodeType } from "prosemirror-model";
 import { NodeSelection, Plugin } from "prosemirror-state";
@@ -5,7 +6,6 @@ import { $$ } from "../../../../utils/selectors";
 import { app } from "../../../../app";
 import type { Command } from "prosemirror-state";
 import type { EditorView } from "prosemirror-view";
-import { passIcon } from "../../../icons";
 import { schema } from "prosemirror-markdown";
 
 interface MenuItem {
@@ -192,12 +192,12 @@ export function menuPlugin(id: string) {
         },
         {
             command: wrapInList(schema.nodes.bullet_list, schema.nodes.list_item),
-            dom: createButton("list-unordered", app.config.EditorInput.labels.bulletList),
+            dom: createButton("listUnordered", app.config.EditorInput.labels.bulletList),
             group: "blocks",
         },
         {
             command: wrapInList(schema.nodes.ordered_list, schema.nodes.list_item),
-            dom: createButton("list-ordered", app.config.EditorInput.labels.numberedList),
+            dom: createButton("listOrdered", app.config.EditorInput.labels.numberedList),
             group: "blocks",
         },
         {
@@ -208,12 +208,12 @@ export function menuPlugin(id: string) {
         },
         {
             command: sinkListItem(schema.nodes.list_item),
-            dom: createButton("indent-increase", app.config.EditorInput.labels.increaseIndent),
+            dom: createButton("indentIncrease", app.config.EditorInput.labels.increaseIndent),
             group: "blocks",
         },
         {
             command: lift,
-            dom: createButton("indent-decrease", app.config.EditorInput.labels.decreaseIndent),
+            dom: createButton("indentDecrease", app.config.EditorInput.labels.decreaseIndent),
             group: "blocks",
         },
         {
@@ -230,11 +230,11 @@ export function menuPlugin(id: string) {
         },
         {
             command: undo,
-            dom: createButton("rotate-left", app.config.EditorInput.labels.undo),
+            dom: createButton("rotateLeft", app.config.EditorInput.labels.undo),
         },
         {
             command: redo,
-            dom: createButton("rotate-right", app.config.EditorInput.labels.redo),
+            dom: createButton("rotateRight", app.config.EditorInput.labels.redo),
         },
     ];
 
@@ -250,13 +250,13 @@ export function menuPlugin(id: string) {
     });
 }
 
-function createButton(icon: string, title: string) {
+function createButton(icon: keyof typeof icons, title: string) {
     const btn = document.createElement("button");
     btn.type = "button";
     btn.className = `button toolbar-button`;
     btn.title = title;
     btn.ariaLabel = title;
-    passIcon(icon, (data) => (btn.innerHTML = data));
+    btn.innerHTML = icons[icon] || "";
     return btn;
 }
 

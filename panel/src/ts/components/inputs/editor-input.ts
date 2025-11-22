@@ -3,7 +3,7 @@ import { app } from "../../app";
 import { type CodeView } from "./editor/code/view";
 import { debounce } from "../../utils/events";
 import { escapeRegExp } from "../../utils/validation";
-import { insertIcon } from "../icons";
+import { markdown } from "../icons";
 import { type MarkdownView } from "./editor/markdown/view";
 
 function addBaseUri(markdown: string, baseUri: string) {
@@ -83,7 +83,7 @@ export class EditorInput {
             toggleButton.title = app.config.EditorInput.labels.toggleMarkdown;
             toggleButton.ariaLabel = app.config.EditorInput.labels.toggleMarkdown;
             toggleButton.disabled = this.element.disabled;
-            insertIcon("markdown", toggleButton);
+            toggleButton.innerHTML = markdown;
             toolbar.appendChild(toggleButton);
 
             this.container.appendChild(toolbar);

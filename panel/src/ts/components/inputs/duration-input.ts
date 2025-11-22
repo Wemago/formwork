@@ -77,7 +77,7 @@ export class DurationInput {
         Object.keys(TIME_INTERVALS).forEach((t: TimeInterval) => {
             if (intervalNames.includes(t)) {
                 intervals[t] = Math.floor(seconds / TIME_INTERVALS[t]);
-                seconds -= (intervals[t]) * TIME_INTERVALS[t];
+                seconds -= intervals[t] * TIME_INTERVALS[t];
             }
         });
         return intervals;

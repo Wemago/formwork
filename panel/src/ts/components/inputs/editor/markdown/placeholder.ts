@@ -1,5 +1,5 @@
 import { Decoration, DecorationSet } from "prosemirror-view";
-import type { EditorState} from "prosemirror-state";
+import type { EditorState } from "prosemirror-state";
 import { Plugin } from "prosemirror-state";
 
 export function placeholderPlugin(text: string) {

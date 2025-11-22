@@ -120,7 +120,6 @@ final class ErrorsController extends AbstractController implements ErrorsControl
      */
     private function getTrace(Throwable $throwable): array
     {
-
         $trace = $throwable->getTrace();
 
         $file = $throwable->getFile();

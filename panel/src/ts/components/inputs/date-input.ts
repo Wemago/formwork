@@ -591,9 +591,9 @@ class Calendar {
         ($(".calendar-table", this.element) as HTMLElement).innerHTML = this.getInnerHTML();
 
         if (this.input.options.time) {
-            ($(".calendar-hours", this.element) as HTMLElement).innerHTML = `${this.has12HourFormat(this.input.format) ? mod(this.hours, 12) || 12 : this.hours}`.padStart(2, "0");
-            ($(".calendar-minutes", this.element) as HTMLElement).innerHTML = `${this.minutes}`.padStart(2, "0");
-            ($(".calendar-meridiem", this.element) as HTMLElement).innerHTML = this.has12HourFormat(this.input.format) ? (this.hours < 12 ? "AM" : "PM") : "";
+            ($(".calendar-hours", this.element) as HTMLElement).innerText = `${this.has12HourFormat(this.input.format) ? mod(this.hours, 12) || 12 : this.hours}`.padStart(2, "0");
+            ($(".calendar-minutes", this.element) as HTMLElement).innerText = `${this.minutes}`.padStart(2, "0");
+            ($(".calendar-meridiem", this.element) as HTMLElement).innerText = this.has12HourFormat(this.input.format) ? (this.hours < 12 ? "AM" : "PM") : "";
         }
 
         $$(".calendar-day", this.element).forEach((element) => {

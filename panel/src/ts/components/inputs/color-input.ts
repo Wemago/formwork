@@ -30,7 +30,7 @@ export class ColorInput {
 
         if (outputElement) {
             const updateValueLabel = (element: HTMLInputElement) => {
-                outputElement.innerHTML = element.value;
+                outputElement.innerText = element.value;
             };
 
             this.element.addEventListener("change", () => updateValueLabel(this.element));

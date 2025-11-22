@@ -30,7 +30,7 @@ export class RangeInput {
             element.style.setProperty("--progress", `${Math.round((parseInt(element.value) / (parseInt(element.max) - parseInt(element.min))) * 100)}%`);
             const outputElement = $(`output[for="${element.id}"]`);
             if (outputElement) {
-                outputElement.innerHTML = element.value;
+                outputElement.innerText = element.value;
             }
         };
 

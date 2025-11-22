@@ -22,7 +22,7 @@ export class Backups {
                     }
 
                     spinner.className = "spinner";
-                    spinner.innerHTML = "";
+                    spinner.innerText = "";
 
                     return spinner;
                 };
@@ -51,13 +51,13 @@ export class Backups {
                                 const node = template.content.cloneNode(true) as HTMLElement;
 
                                 ($(".backup-uri", node) as HTMLAnchorElement).href = response.data.uri;
-                                ($(".backup-uri", node) as HTMLElement).innerHTML = response.data.filename;
+                                ($(".backup-uri", node) as HTMLElement).innerText = response.data.filename;
 
-                                ($(".backup-date", node) as HTMLElement).innerHTML = response.data.date;
-                                ($(".backup-size", node) as HTMLElement).innerHTML = response.data.size;
+                                ($(".backup-date", node) as HTMLElement).innerText = response.data.date;
+                                ($(".backup-size", node) as HTMLElement).innerText = response.data.size;
                                 ($(".backup-delete", node) as HTMLElement).dataset.modalAction = response.data.deleteUri;
 
-                                ($(".backup-last-time") as HTMLElement).innerHTML = app.config.Backups.labels.now;
+                                ($(".backup-last-time") as HTMLElement).innerText = app.config.Backups.labels.now;
 
                                 ($("tbody", table) as HTMLElement).prepend(node);
 

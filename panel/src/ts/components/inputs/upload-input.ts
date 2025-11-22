@@ -7,6 +7,7 @@ import { Notification } from "../notification";
 import { Request } from "../../utils/request";
 import { SelectInput } from "./select-input";
 import { TagsInput } from "./tags-input";
+import { escapeHtml } from "../../utils/validation";
 
 export class UploadInput {
     readonly element: HTMLInputElement;
@@ -186,7 +187,7 @@ export class UploadInput {
         if (this.element.files && this.element.files.length > 0) {
             const filenames: string[] = [];
             for (const file of Array.from(this.element.files)) {
-                filenames.push(`${file.name} <span class="file-size-inline">(${this.formatFileSize(file.size)})</span>`);
+                filenames.push(`${escapeHtml(file.name)} <span class="file-size-inline">(${this.formatFileSize(file.size)})</span>`);
             }
             this.dropTargetLabel.innerHTML = filenames.join(", ");
 

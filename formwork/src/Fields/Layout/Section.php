@@ -39,7 +39,7 @@ class Section implements Arrayable
     }
 
     /**
-     * Get field label
+     * Get section label
      */
     public function label(): ?string
     {
@@ -48,6 +48,8 @@ class Section implements Arrayable
 
     /**
      * Get section order
+     *
+     * @since 2.2.0
      */
     public function order(): int
     {

@@ -371,6 +371,8 @@ class Page extends Model implements Stringable
     /**
      * Set page metadata
      *
+     * @since 2.2.0
+     *
      * @param array<string, mixed>|MetadataCollection $metadata
      */
     public function setMetadata(MetadataCollection|array $metadata): void
@@ -396,6 +398,8 @@ class Page extends Model implements Stringable
      * Get page taxonomy
      *
      * @return array<string, list<string>>
+     *
+     * @since 2.2.0
      */
     public function taxonomy(): array
     {
@@ -406,6 +410,8 @@ class Page extends Model implements Stringable
      * Set page taxonomy
      *
      * @param array<string, list<string>> $taxonomy
+     *
+     * @since 2.2.0
      */
     public function setTaxonomy(array $taxonomy): void
     {
@@ -441,6 +447,8 @@ class Page extends Model implements Stringable
 
     /**
      * Set page HTTP response status
+     *
+     * @since 2.2.0
      */
     public function setResponseStatus(ResponseStatus|int|null $responseStatus): void
     {
@@ -666,6 +674,8 @@ class Page extends Model implements Stringable
 
     /**
      * Return whether the page is duplicable
+     *
+     * @since 2.2.0
      */
     public function isDuplicable(): bool
     {
@@ -769,6 +779,8 @@ class Page extends Model implements Stringable
      *
      * @throws UnexpectedValueException If parent or parent content path is missing
      * @throws InvalidValueException    If the language is invalid
+     *
+     * @since 2.2.0
      */
     public function duplicate(array $with = [], ?string $language = null): Page
     {
@@ -798,6 +810,8 @@ class Page extends Model implements Stringable
      *
      * @throws UnexpectedValueException If parent or parent content path is missing
      * @throws InvalidValueException    If the language is invalid
+     *
+     * @since 2.2.0
      */
     protected function write(?string $language = null, bool $copy = false): void
     {

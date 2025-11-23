@@ -1,5 +1,47 @@
 # Changelog
 
+# [2.2.0](https://github.com/getformwork/formwork/releases/tag/2.2.0)
+
+**Enhancements**
+- **Add support for taxonomies**
+- **Add the possibility to define item field options in the array fields**
+- **Add the possibility to define field layout tabs**
+- **Add Greek and Turkish translations (🤖 AI generated, reviews are welcome)**
+- Add the possibility to specify field layout section order in page schemes
+- Add the possibility to set markdown editor placeholder and disabled state
+- Add the possibility to pass asset metadata
+- Normalize data structure by removing dots when merging defaults and frontmatter
+- Improve performance traversing the page ancestors instead of the entire page subtree
+- Improve sorting based on a second array with `Arr::sort()`
+- Add the possibility to delete pages in place from the panel tree
+- Add the possibility to save and create a new page in the panel
+- Add the possibility to duplicate pages from the panel
+- Add the possibility to select route alias destinations with page field in the panel
+- Add the possibility to define route params constraints with `Route::where()`
+- Add `PageCollection::havingTaxonomy()` to filter pages by taxonomy
+- Add `AbstractCollection::keyBy()`
+- Add `AbstractCollection::each()`
+- Add icons to panel navigation
+- Build panel app as modules and use async imports for chunk splitting
+- Allow loading scripts as module in the panel with asset meta `module`
+- Remove markdown editor layout shift and add loading animation
+- Add loading animations to statistics charts
+- Display canonical route in the page editor as in other views
+
+**Security**
+- Use `innerHTML` only if needed and on escaped input
+
+**Bug fixes**
+- Fix page handling of fields with dot notation in the frontmatter
+- Fix page setters and default values handling
+- Fix URL-encoded strings in request input keys
+- Remove propagation of site description metadata to all pages
+- Fix color input initalization without default value
+- Avoid PHP 8.5 deprecations
+
+**Deprecations**
+- Deprecate `allowTags` option in page schemes
+
 # [2.1.5](https://github.com/getformwork/formwork/releases/tag/2.1.5)
 
 **Bug fixes**

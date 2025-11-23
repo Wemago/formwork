@@ -110,6 +110,8 @@ class Asset
 
     /**
      * Get asset metadata value by key
+     *
+     * @since 2.2.0
      */
     public function getMeta(string $key, mixed $default = null): mixed
     {

@@ -48,6 +48,8 @@ class Layout
 
     /**
      * Get layout tabs
+     *
+     * @since 2.2.0
      */
     public function tabs(): TabCollection
     {

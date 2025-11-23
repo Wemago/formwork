@@ -160,6 +160,8 @@ class Route
     /**
      * Set route parameter constraint
      *
+     * @since 2.2.0
+     *
      * @param array<mixed>|Closure $constraint
      */
     public function where(string $parameter, Closure|array $constraint): self
@@ -170,6 +172,8 @@ class Route
 
     /**
      * Get route parameter constraints
+     *
+     * @since 2.2.0
      *
      * @return array<string, array<mixed>|Closure>
      */

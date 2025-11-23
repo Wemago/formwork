@@ -122,6 +122,8 @@ final class PagesController extends AbstractController
 
     /**
      * Pages@duplicate action
+     *
+     * @since 2.2.0
      */
     public function duplicate(RouteParams $routeParams): Response
     {

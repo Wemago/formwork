@@ -47,6 +47,8 @@ class Assets
 
     /**
      * Return whether the collection has an asset with the given key
+     *
+     * @since 2.2.0
      */
     public function has(string $key): bool
     {

@@ -86,6 +86,8 @@ class PageCollection extends AbstractCollection implements Paginable
     /**
      * Get all the pages in the collection having the specified taxonomy terms
      *
+     * @since 2.2.0
+     *
      * @param array<string, list<string>> $taxonomy Taxonomy terms to filter by
      * @param bool                        $slug     Whether the provided terms are slugs
      */

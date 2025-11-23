@@ -316,6 +316,8 @@ abstract class AbstractCollection implements Arrayable, Countable, Iterator
 
     /**
      * Run a callback for each item in the collection. If the callback returns `false`, iteration is stopped
+     *
+     * @since 2.2.0
      */
     public function each(callable $callback): static
     {
@@ -508,6 +510,8 @@ abstract class AbstractCollection implements Arrayable, Countable, Iterator
 
     /**
      * Return a copy of the collection indexed by the given key from each item
+     *
+     * @since 2.2.0
      */
     public function keyBy(string $key, mixed $default = null): static
     {

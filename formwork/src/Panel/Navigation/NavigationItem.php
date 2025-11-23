@@ -59,6 +59,8 @@ class NavigationItem implements Arrayable
 
     /**
      * Get navigation item icon
+     *
+     * @since 2.2.0
      */
     public function icon(): ?string
     {

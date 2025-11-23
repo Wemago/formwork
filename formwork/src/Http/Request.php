@@ -513,6 +513,8 @@ class Request
     /**
      * Prepare data keys by decoding URL-encoded characters
      *
+     * @since 2.2.0
+     *
      * @param array<mixed> $data
      *
      * @return array<mixed>

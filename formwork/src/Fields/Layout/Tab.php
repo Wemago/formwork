@@ -7,6 +7,9 @@ use Formwork\Data\Traits\DataArrayable;
 use Formwork\Data\Traits\DataGetter;
 use Formwork\Fields\Translations\Translations;
 
+/**
+ * @since 2.3.0
+ */
 class Tab implements Arrayable
 {
     use DataGetter;

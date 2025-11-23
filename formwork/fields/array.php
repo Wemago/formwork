@@ -22,6 +22,8 @@ return function (App $app, FieldFactory $fieldFactory): array {
 
             /**
              * Return whether the field allows empty values
+             *
+             * @since 2.2.0
              */
             'allowEmptyValues' => function (Field $field): bool {
                 return $field->is('allowEmptyValues', false);
@@ -52,6 +54,8 @@ return function (App $app, FieldFactory $fieldFactory): array {
 
             /**
              * Return the fields for each item in the array
+             *
+             * @since 2.2.0
              */
             'items' => function (Field $field, array $default = []) use ($fieldFactory): FieldCollection {
                 $fields = new FieldCollection();

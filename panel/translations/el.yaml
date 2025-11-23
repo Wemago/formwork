@@ -1,0 +1,344 @@
+panel.backup.backup: Αντίγραφο ασφαλείας
+panel.backup.deleted: Το αντίγραφο ασφαλείας διαγράφηκε
+panel.backup.error.cannotDelete: Δεν είναι δυνατή η διαγραφή του αντιγράφου ασφαλείας. %s.
+panel.backup.error.cannotDelete.invalidFilename: Μη έγκυρο αρχείο αντιγράφου ασφαλείας
+panel.backup.error.cannotDownload: Δεν είναι δυνατή η λήψη του αντιγράφου ασφαλείας. %s.
+panel.backup.error.cannotDownload.invalidFilename: Μη έγκυρο αρχείο αντιγράφου ασφαλείας
+panel.backup.error.cannotMake: Δεν είναι δυνατή η δημιουργία αντιγράφου ασφαλείας. %s.
+panel.backup.ready: Το αντίγραφο ασφαλείας είναι έτοιμο. Ξεκινά η λήψη...
+panel.cache.clear: Εκκαθάριση cache
+panel.cache.clear.images: Εκκαθάριση cache εικόνων
+panel.cache.clear.pages: Εκκαθάριση cache σελίδων
+panel.cache.cleared: Η cache εκκαθαρίστηκε
+panel.cache.cleared.images: Η cache εικόνων εκκαθαρίστηκε
+panel.cache.cleared.pages: Η cache σελίδων εκκαθαρίστηκε
+panel.cache.error: Δεν είναι δυνατή η εκκαθάριση της cache
+panel.dashboard.dashboard: Πίνακας ελέγχου
+panel.dashboard.lastModifiedPages: Πρόσφατα επεξεργασμένες σελίδες
+panel.dashboard.quickActions: Γρήγορες ενέργειες
+panel.dashboard.statistics: Στατιστικά
+panel.dashboard.statistics.uniqueVisitors: Μοναδικοί επισκέπτες
+panel.dashboard.statistics.visits: Επισκέψεις
+panel.dashboard.welcome: Καλώς ήρθες
+panel.dragToReorder: Σύρε για αλλαγή σειράς
+panel.editor.bold: Έντονα
+panel.editor.bulletList: Λίστα κουκκίδων
+panel.editor.code: Κώδικας
+panel.editor.decreaseIndent: Μείωση εσοχής
+panel.editor.heading1: Επικεφαλίδα 1
+panel.editor.heading2: Επικεφαλίδα 2
+panel.editor.heading3: Επικεφαλίδα 3
+panel.editor.heading4: Επικεφαλίδα 4
+panel.editor.heading5: Επικεφαλίδα 5
+panel.editor.heading6: Επικεφαλίδα 6
+panel.editor.image: Εικόνα
+panel.editor.increaseIndent: Αύξηση εσοχής
+panel.editor.italic: Πλάγια
+panel.editor.link: Σύνδεσμος
+panel.editor.numberedList: Αριθμημένη λίστα
+panel.editor.paragraph: Παράγραφος
+panel.editor.quote: Παράθεση
+panel.editor.redo: Επανάληψη
+panel.editor.summary: Περίληψη
+panel.editor.toggleMarkdown: Εναλλαγή Markdown
+panel.editor.undo: Αναίρεση
+panel.errors.action.reportToGithub: Αναφορά προβλήματος στο GitHub
+panel.errors.action.returnToDashboard: Επιστροφή στον πίνακα ελέγχου
+panel.errors.error.forbidden.description: Δεν έχεις δικαιώματα πρόσβασης σε αυτή τη σελίδα.
+panel.errors.error.forbidden.heading: Ωπ, απαιτείται άδεια!
+panel.errors.error.forbidden.status: Απαγορευμένο
+panel.errors.error.internalServerError.description: Το Formwork αντιμετώπισε σφάλμα κατά την επεξεργασία του αιτήματός σου. Έλεγξε τη ρύθμιση του Formwork ή τα logs του διακομιστή.
+panel.errors.error.internalServerError.heading: Ωπ, κάτι πήγε στραβά!
+panel.errors.error.internalServerError.status: Εσωτερικό σφάλμα διακομιστή
+panel.errors.error.notFound.description: Η σελίδα δεν υπάρχει ή το αίτημα δεν είναι έγκυρο.
+panel.errors.error.notFound.heading: Ωπ, η σελίδα δεν βρέθηκε!
+panel.errors.error.notFound.status: Δεν βρέθηκε
+panel.files.actions: Ενέργειες
+panel.files.backToPage: Επιστροφή στη σελίδα
+panel.files.cannotDelete.fileNotFound: Δεν είναι δυνατή η διαγραφή, το αρχείο δεν βρέθηκε
+panel.files.cannotDelete.pageNotFound: Δεν είναι δυνατή η διαγραφή, η σελίδα δεν βρέθηκε
+panel.files.cannotRename.fileAlreadyExists: Δεν είναι δυνατή η μετονομασία, υπάρχει ήδη αρχείο με το ίδιο όνομα
+panel.files.cannotRename.fileNotFound: Δεν είναι δυνατή η μετονομασία, το αρχείο δεν βρέθηκε
+panel.files.cannotRename.pageNotFound: Δεν είναι δυνατή η μετονομασία, η σελίδα δεν βρέθηκε
+panel.files.cannotReplace.fileNotFound: Δεν είναι δυνατή η αντικατάσταση, το αρχείο δεν βρέθηκε
+panel.files.cannotReplace.multipleFiles: Δεν είναι δυνατή η αντικατάσταση, δόθηκαν πολλά αρχεία
+panel.files.cannotReplace.pageNotFound: Δεν είναι δυνατή η αντικατάσταση, η σελίδα δεν βρέθηκε
+panel.files.cannotUpload.pageNotFound: Δεν είναι δυνατή η μεταφόρτωση, η σελίδα δεν βρέθηκε
+panel.files.deleted: Το αρχείο διαγράφηκε
+panel.files.exif: EXIF
+panel.files.fileNotFound: Δεν είναι δυνατή η ανάκτηση πληροφοριών, το αρχείο δεν βρέθηκε
+panel.files.files: Αρχεία
+panel.files.info: Πληροφορίες
+panel.files.info.image.colorDepth: Βάθος χρώματος
+panel.files.info.image.colorNumber: Αριθμός χρωμάτων
+panel.files.info.image.colorProfile: Προφίλ χρώματος
+panel.files.info.image.colorSpace: Χρωματικός χώρος
+panel.files.info.image.dimensions: Διαστάσεις
+panel.files.info.image.dimensions.widthByHeightPixels: '%d × %d pixels'
+panel.files.info.image.exif.aperture: Διάφραγμα
+panel.files.info.image.exif.camera: Κάμερα
+panel.files.info.image.exif.creationDateAndTime: Ημερομηνία και ώρα λήψης
+panel.files.info.image.exif.exposureCompensation: Αντιστάθμιση έκθεσης
+panel.files.info.image.exif.exposureProgram: Πρόγραμμα έκθεσης
+panel.files.info.image.exif.exposureTime: Χρόνος έκθεσης
+panel.files.info.image.exif.flash: Φλας
+panel.files.info.image.exif.focalLength: Εστιακή απόσταση
+panel.files.info.image.exif.lensModel: Μοντέλο φακού
+panel.files.info.image.exif.meteringMode: Μέτρηση φωτός
+panel.files.info.image.exif.sensitivity: Ευαισθησία
+panel.files.info.image.exif.whiteBalance: Ισορροπία λευκού
+panel.files.info.image.frames: '%d καρέ'
+panel.files.info.image.framesCount: Αριθμός καρέ
+panel.files.info.image.repeats: '%d επαναλήψεις'
+panel.files.info.image.repeatsCount: Αριθμός επαναλήψεων
+panel.files.info.image.resolution: Ανάλυση
+panel.files.info.lastModifiedTime: Τελευταία τροποποίηση
+panel.files.info.mimeType: Τύπος MIME
+panel.files.info.name: Όνομα
+panel.files.info.size: Μέγεθος
+panel.files.info.uri: URI
+panel.files.metadata.updated: Τα μεταδεδομένα του αρχείου ενημερώθηκαν
+panel.files.next: Επόμενο αρχείο
+panel.files.pageNotFound: Δεν είναι δυνατή η ανάκτηση πληροφοριών, η σελίδα δεν βρέθηκε
+panel.files.parent: Γονικό στοιχείο
+panel.files.position: Θέση
+panel.files.preview: Προεπισκόπηση
+panel.files.previous: Προηγούμενο αρχείο
+panel.files.renamed: Το αρχείο μετονομάστηκε
+panel.files.search: Αναζήτηση αρχείων...
+panel.files.upload: Μεταφόρτωση αρχείων
+panel.files.uploaded: Τα αρχεία μεταφορτώθηκαν
+panel.files.viewAsList: Προβολή ως λίστα
+panel.files.viewAsThumbnails: Προβολή ως μικρογραφίες
+panel.login.attempt.failed: Η σύνδεση απέτυχε! Προσπάθησε ξανά.
+panel.login.attempt.tooMany: Πάρα πολλές προσπάθειες σύνδεσης. Δοκίμασε ξανά σε %d λεπτά.
+panel.login.loggedOut: Έχεις αποσυνδεθεί
+panel.login.login: Σύνδεση
+panel.login.logout: Αποσύνδεση
+panel.login.password: Κωδικός πρόσβασης
+panel.login.suspiciousRequestDetected: Εντοπίστηκε ύποπτο αίτημα, και για λόγους ασφαλείας αποσυνδέθηκες. Συνδέσου ξανά.
+panel.login.usernameOrEmail: Όνομα χρήστη ή e-mail
+panel.manage: Διαχείριση
+panel.modal.action.cancel: Ακύρωση
+panel.modal.action.continue: Συνέχεια
+panel.modal.action.delete: Διαγραφή
+panel.modal.action.edit: Επεξεργασία
+panel.modal.action.rename: Μετονομασία
+panel.modal.action.save: Αποθήκευση
+panel.modal.action.upload: Μεταφόρτωση
+panel.modal.action.uploadFile: Μεταφόρτωση αρχείου
+panel.modal.images.noImages: Δεν υπάρχουν εικόνες εδώ
+panel.modal.images.noImages.upload: Μεταφόρτωσε εικόνες για να εμφανιστούν εδώ
+panel.modal.images.title: Επιλογή εικόνας
+panel.modal.link.text: Κείμενο
+panel.modal.link.title: Εισαγωγή συνδέσμου
+panel.modal.link.uri: URI
+panel.navigation.toggle: Εναλλαγή πλοήγησης
+panel.options.options: Επιλογές
+panel.options.site: Ιστότοπος
+panel.options.system: Σύστημα
+panel.options.system.adminPanel: Πίνακας διαχείρισης
+panel.options.system.adminPanel.defaultColorScheme: Προεπιλεγμένο χρωματικό θέμα
+panel.options.system.adminPanel.defaultColorScheme.dark: Σκούρο
+panel.options.system.adminPanel.defaultColorScheme.light: Ανοιχτό
+panel.options.system.adminPanel.defaultLanguage: Προεπιλεγμένη γλώσσα
+panel.options.system.adminPanel.logoutRedirectsTo: Μετά την αποσύνδεση, μετάβαση σε
+panel.options.system.adminPanel.logoutRedirectsTo.home: Αρχική
+panel.options.system.adminPanel.logoutRedirectsTo.login: Σύνδεση
+panel.options.system.adminPanel.sessionTimeout: Λήξη συνεδρίας
+panel.options.system.backup: Αντίγραφα ασφαλείας
+panel.options.system.backup.backupFilesToKeep: Αντίγραφα ασφαλείας που θα παραμείνουν στον διακομιστή
+panel.options.system.cache: Cache
+panel.options.system.cache.disabled: Απενεργοποιημένο
+panel.options.system.cache.enabled: Ενεργοποιημένο
+panel.options.system.cache.time: Χρόνος cache
+panel.options.system.content: Περιεχόμενο
+panel.options.system.content.allowHtml: Επιτρέπεται HTML στα πεδία Markdown
+panel.options.system.content.allowHtml.description: Επικίνδυνες ετικέτες όπως `<script>` και `<style>` μετατρέπονται πάντα σε κείμενο
+panel.options.system.content.allowHtml.disabled: Απενεργοποιημένο
+panel.options.system.content.allowHtml.enabled: Ενεργοποιημένο
+panel.options.system.dateAndTime: Ημερομηνία και ώρα
+panel.options.system.dateAndTime.dateFormat: Μορφή ημερομηνίας
+panel.options.system.dateAndTime.firstWeekday: Πρώτη ημέρα εβδομάδας
+panel.options.system.dateAndTime.firstWeekday.monday: Δευτέρα
+panel.options.system.dateAndTime.firstWeekday.sunday: Κυριακή
+panel.options.system.dateAndTime.hourFormat: Μορφή ώρας
+panel.options.system.dateAndTime.timezone: Ζώνη ώρας
+panel.options.system.debug: Εντοπισμός σφαλμάτων
+panel.options.system.debug.editorUri: URI επεξεργαστή
+panel.options.system.debug.editorUri.description: Χρησιμοποίησε `{{filename}}` και `{{line}}` για τη δημιουργία του URI του επεξεργαστή κώδικα
+panel.options.system.debug.mode: Λειτουργία εντοπισμού σφαλμάτων
+panel.options.system.debug.mode.description: Η λειτουργία παρέχει πληροφορίες σφαλμάτων και πρέπει να απενεργοποιείται σε παραγωγή, καθώς μπορεί να εκθέσει ευαίσθητα δεδομένα
+panel.options.system.debug.mode.disabled: Απενεργοποιημένη
+panel.options.system.debug.mode.enabled: Ενεργοποιημένη
+panel.options.system.files: Αρχεία
+panel.options.system.files.allowedExtensions: Επιτρεπόμενες επεκτάσεις
+panel.options.system.files.allowedExtensions.noExtensions: Καμία επέκταση (δεν επιτρέπεται κανένα αρχείο)
+panel.options.system.images: Εικόνες
+panel.options.system.images.clearCacheByDefault: Εκκαθάριση cache εικόνων από προεπιλογή
+panel.options.system.images.clearCacheByDefault.disabled: Απενεργοποιημένο
+panel.options.system.images.clearCacheByDefault.enabled: Ενεργοποιημένο
+panel.options.system.images.jpegQuality: Ποιότητα JPEG
+panel.options.system.images.jpegSaveProgressive: Αποθήκευση JPEG ως progressive
+panel.options.system.images.jpegSaveProgressive.disabled: Απενεργοποιημένο
+panel.options.system.images.jpegSaveProgressive.enabled: Ενεργοποιημένο
+panel.options.system.images.pngCompressionLevel: Επίπεδο συμπίεσης PNG
+panel.options.system.images.webpQuality: Ποιότητα WebP
+panel.options.system.uploads.processImages: Βελτιστοποίηση εικόνων κατά τη μεταφόρτωση
+panel.options.system.uploads.processImages.disabled: Απενεργοποιημένο
+panel.options.system.uploads.processImages.enabled: Ενεργοποιημένο
+panel.options.updated: Οι επιλογές ενημερώθηκαν
+panel.pages.changes.continue: Συνέχεια χωρίς αποθήκευση
+panel.pages.changes.detected: Εντοπίστηκαν αλλαγές
+panel.pages.changes.detected.prompt: Υπάρχουν μη αποθηκευμένες αλλαγές. Είσαι σίγουρος ότι θέλεις να φύγεις από τη σελίδα;
+panel.pages.changeSlug: Επεξεργασία slug
+panel.pages.changeSlug.generate: Δημιουργία από τον τίτλο
+panel.pages.deleteFile: Διαγραφή αρχείου
+panel.pages.deleteFile.prompt: Θέλεις σίγουρα να διαγράψεις αυτό το αρχείο; Η ενέργεια δεν μπορεί να αναιρεθεί.
+panel.pages.deletePage: Διαγραφή σελίδας
+panel.pages.deletePage.prompt: Θέλεις σίγουρα να διαγράψεις αυτή τη σελίδα; Η ενέργεια δεν μπορεί να αναιρεθεί.
+panel.pages.duplicatePage: Διπλασιασμός σελίδας
+panel.pages.duplicatePage.title: '%s αντίγραφο'
+panel.pages.edit: Επεξεργασία σελίδας
+panel.pages.editPage: Επεξεργασία σελίδας %s
+panel.pages.history.event.created: Η σελίδα δημιουργήθηκε από %s %s.
+panel.pages.history.event.edited: Η σελίδα επεξεργάστηκε από %s %s.
+panel.pages.languages: Γλώσσες
+panel.pages.languages.addLanguage: Προσθήκη %s
+panel.pages.languages.editLanguage: Επεξεργασία %s
+panel.pages.newPage: Νέα σελίδα
+panel.pages.newPage.site: Ιστότοπος
+panel.pages.next: Επόμενη σελίδα
+panel.pages.page: Σελίδα
+panel.pages.page.actions: Ενέργειες
+panel.pages.page.cannotChangeNum: Δεν είναι δυνατή η αλλαγή αριθμού σελίδας
+panel.pages.page.cannotCreate: Δεν είναι δυνατή η δημιουργία σελίδας
+panel.pages.page.cannotCreate.alreadyExists: Δεν είναι δυνατή η δημιουργία, υπάρχει ήδη σελίδα με το ίδιο URI
+panel.pages.page.cannotCreate.invalidParent: Δεν είναι δυνατή η δημιουργία, μη έγκυρη γονική σελίδα
+panel.pages.page.cannotCreate.invalidSlug: Δεν είναι δυνατή η δημιουργία, το slug πρέπει να περιέχει μόνο γράμματα και αριθμούς χωρισμένους με παύλες
+panel.pages.page.cannotCreate.invalidTemplate: Δεν είναι δυνατή η δημιουργία, μη έγκυρο πρότυπο
+panel.pages.page.cannotCreate.varMissing: Δεν είναι δυνατή η δημιουργία, λείπει μια μεταβλητή
+panel.pages.page.cannotDelete.invalidLanguage: 'Δεν είναι δυνατή η διαγραφή, μη έγκυρη γλώσσα: %s'
+panel.pages.page.cannotDelete.notDeletable: Δεν είναι δυνατή η διαγραφή, η σελίδα δεν μπορεί να διαγραφεί
+panel.pages.page.cannotDelete.pageNotFound: Δεν είναι δυνατή η διαγραφή, η σελίδα δεν βρέθηκε
+panel.pages.page.cannotDuplicate.notDuplicable: Δεν είναι δυνατός ο διπλασιασμός, η σελίδα δεν μπορεί να αντιγραφεί
+panel.pages.page.cannotDuplicate.pageNotFound: Δεν είναι δυνατός ο διπλασιασμός, η σελίδα δεν βρέθηκε
+panel.pages.page.cannotEdit.alreadyExists: Δεν είναι δυνατή η επεξεργασία, υπάρχει ήδη σελίδα με το ίδιο URI
+panel.pages.page.cannotEdit.indexOrErrorPageSlug: Δεν μπορεί να αλλάξει το slug της index ή error σελίδας
+panel.pages.page.cannotEdit.invalidLanguage: 'Δεν είναι δυνατή η επεξεργασία, μη έγκυρη γλώσσα: %s'
+panel.pages.page.cannotEdit.invalidParent: Δεν είναι δυνατή η επεξεργασία, μη έγκυρη γονική σελίδα
+panel.pages.page.cannotEdit.invalidSlug: Δεν είναι δυνατή η αλλαγή slug, πρέπει να περιέχει μόνο γράμματα και αριθμούς χωρισμένους με παύλες
+panel.pages.page.cannotEdit.invalidTemplate: Δεν είναι δυνατή η επεξεργασία, μη έγκυρο πρότυπο
+panel.pages.page.cannotEdit.pageNotFound: Δεν είναι δυνατή η επεξεργασία, η σελίδα δεν βρέθηκε
+panel.pages.page.cannotEdit.varMissing: Δεν είναι δυνατή η επεξεργασία, λείπει μια μεταβλητή
+panel.pages.page.cannotMove: Δεν είναι δυνατή η μετακίνηση σελίδας
+panel.pages.page.cannotPreview.pageNotFound: Δεν είναι δυνατή η προεπισκόπηση, η σελίδα δεν βρέθηκε
+panel.pages.page.cannotPreview.parentChanged: Δεν είναι δυνατή η προεπισκόπηση, η γονική σελίδα έχει αλλάξει
+panel.pages.page.created: Η σελίδα δημιουργήθηκε!
+panel.pages.page.deleted: Η σελίδα διαγράφηκε
+panel.pages.page.edited: Η σελίδα ενημερώθηκε
+panel.pages.page.lastModified: Τελευταία τροποποίηση
+panel.pages.page.moved: Η σελίδα μετακινήθηκε!
+panel.pages.page.notFound: Η σελίδα δεν βρέθηκε
+panel.pages.pages: Σελίδες
+panel.pages.pages.collapseAll: Σύμπτυξη όλων
+panel.pages.pages.expandAll: Ανάπτυξη όλων
+panel.pages.pages.reorder: Αλλαγή σειράς
+panel.pages.pages.search: Αναζήτηση σελίδων...
+panel.pages.preview: Προεπισκόπηση
+panel.pages.previewFile: Προεπισκόπηση
+panel.pages.previous: Προηγούμενη σελίδα
+panel.pages.publish: Δημοσίευση
+panel.pages.renameFile: Μετονομασία αρχείου
+panel.pages.renameFile.name: Όνομα
+panel.pages.replaceFile: Αντικατάσταση αρχείου
+panel.pages.save: Αποθήκευση
+panel.pages.saveAndCreateNew: Αποθήκευση και δημιουργία νέας
+panel.pages.saveOnly: Αποθήκευση χωρίς δημοσίευση
+panel.pages.toggleChildren: Εναλλαγή υποσελίδων
+panel.pages.viewChildren: Προβολή υποσελίδων
+panel.pages.viewPage: Προβολή σελίδας
+panel.panel: Πίνακας διαχείρισης
+panel.register.createUser: Το Formwork έχει εγκατασταθεί αλλά δεν βρέθηκαν χρήστες. Παρακαλώ δημιούργησε έναν χρήστη τώρα.
+panel.register.register: Εγγραφή νέου χρήστη
+panel.request.error.postMaxSize: Το αίτημα HTTP POST υπερβαίνει το μέγιστο επιτρεπόμενο μέγεθος
+panel.sections.toggle: Εναλλαγή ενότητας
+panel.site.languages: Γλώσσες
+panel.site.languages.availableLanguages: Διαθέσιμες γλώσσες
+panel.site.languages.availableLanguages.noLanguages: Δεν υπάρχουν γλώσσες
+panel.site.languages.preferredLanguage: Χρήση προτιμώμενης γλώσσας του προγράμματος περιήγησης
+panel.site.languages.preferredLanguage.disabled: Απενεργοποιημένο
+panel.site.languages.preferredLanguage.enabled: Ενεργοποιημένο
+panel.statistics.devices: Συσκευές
+panel.statistics.devices.type: Τύπος
+panel.statistics.devices.type.desktop: Υπολογιστής
+panel.statistics.devices.type.mobile: Κινητό
+panel.statistics.devices.type.tablet: Tablet
+panel.statistics.monthlyUniqueVisitors: Μηνιαίοι μοναδικοί επισκέπτες
+panel.statistics.monthlyVisits: Μηνιαίες επισκέψεις
+panel.statistics.sources: Πηγές
+panel.statistics.sources.direct: Άμεση πρόσβαση
+panel.statistics.sources.site: Από τον ιστότοπο
+panel.statistics.statistics: Στατιστικά
+panel.statistics.totalVisits: Συνολικές επισκέψεις
+panel.statistics.totalVisits.percentTotal: '% σύνολο'
+panel.statistics.totalVisits.uri: URI
+panel.statistics.visits: Επισκέψεις
+panel.statistics.weeklyUniqueVisitors: Εβδομαδιαίοι μοναδικοί επισκέπτες
+panel.statistics.weeklyVisits: Εβδομαδιαίες επισκέψεις
+panel.tools.backup.actions: Ενέργειες
+panel.tools.backup.date: Ημερομηνία
+panel.tools.backup.delete: Διαγραφή αντιγράφου ασφαλείας
+panel.tools.backup.file: Αρχείο
+panel.tools.backup.size: Μέγεθος
+panel.tools.backups: Αντίγραφα ασφαλείας
+panel.tools.info: Πληροφορίες
+panel.tools.latestBackup: 'Τελευταίο αντίγραφο ασφαλείας:'
+panel.tools.latestBackups: Πρόσφατα αντίγραφα ασφαλείας
+panel.tools.tools: Εργαλεία
+panel.tools.updates: Ενημερώσεις
+panel.updates.availableForInstall: είναι διαθέσιμη για εγκατάσταση
+panel.updates.check: Έλεγχος ενημερώσεων
+panel.updates.install: Εγκατάσταση
+panel.updates.installed: Η ενημέρωση εγκαταστάθηκε!
+panel.updates.installPrompt: Θέλεις να εγκαταστήσεις την ενημέρωση;
+panel.updates.latestVersionAvailable: είναι η πιο πρόσφατη διαθέσιμη έκδοση
+panel.updates.status.cannotCheck: Δεν είναι δυνατός ο έλεγχος για ενημερώσεις. Προσπάθησε αργότερα.
+panel.updates.status.cannotInstall: Δεν είναι δυνατή η εγκατάσταση της ενημέρωσης
+panel.updates.status.cannotMakeBackup: Δεν είναι δυνατή η δημιουργία αντιγράφου ασφαλείας πριν την ενημέρωση
+panel.updates.status.checking: Έλεγχος για ενημερώσεις...
+panel.updates.status.found: Βρέθηκαν ενημερώσεις
+panel.updates.status.installing: Η εγκατάσταση ενημερώσεων βρίσκεται σε εξέλιξη...
+panel.updates.status.upToDate: Ενημερωμένο!
+panel.uploader.uploaded: Το αρχείο μεταφορτώθηκε
+panel.user.actions: Ενέργειες
+panel.user.image.actions: Ενέργειες
+panel.user.image.cannotDelete.defaultImage: Δεν είναι δυνατή η διαγραφή της προεπιλεγμένης εικόνας χρήστη
+panel.user.image.delete: Διαγραφή εικόνας χρήστη
+panel.user.image.delete.prompt: Θέλεις σίγουρα να διαγράψεις την εικόνα; Η ενέργεια δεν μπορεί να αναιρεθεί.
+panel.user.image.deleted: Η εικόνα χρήστη διαγράφηκε
+panel.user.image.uploaded: Η εικόνα χρήστη μεταφορτώθηκε
+panel.user.lastAccess: Τελευταία πρόσβαση
+panel.users.deleteUser: Διαγραφή χρήστη
+panel.users.deleteUser.prompt: Θέλεις σίγουρα να διαγράψεις αυτόν τον χρήστη; Η ενέργεια δεν μπορεί να αναιρεθεί.
+panel.users.newUser: Νέος χρήστης
+panel.users.newUser.password.suggestion: τουλάχιστον 8 χαρακτήρες
+panel.users.newUser.username.suggestion: 3–20 γράμματα, αριθμοί και - . _
+panel.users.nextUser: Επόμενος χρήστης
+panel.users.options: Επιλογές
+panel.users.previousUser: Προηγούμενος χρήστης
+panel.users.user.cannotChangeEmail.alreadyUsed: Δεν είναι δυνατή η αλλαγή email, η διεύθυνση χρησιμοποιείται ήδη
+panel.users.user.cannotChangePassword: Δεν μπορείς να αλλάξεις τον κωδικό άλλου χρήστη. Η ενέργεια δεν επιτρέπεται.
+panel.users.user.cannotChangeRole: Δεν είναι δυνατή η αλλαγή ρόλου του %s. Η ενέργεια δεν επιτρέπεται.
+panel.users.user.cannotCreate.alreadyExists: Δεν είναι δυνατή η δημιουργία χρήστη, υπάρχει ήδη χρήστης με το ίδιο όνομα
+panel.users.user.cannotCreate.emailAlreadyUsed: Δεν είναι δυνατή η δημιουργία χρήστη, το email χρησιμοποιείται ήδη
+panel.users.user.cannotCreate.varMissing: Δεν είναι δυνατή η δημιουργία χρήστη, λείπει μια μεταβλητή
+panel.users.user.cannotDelete: Δεν είναι δυνατή η διαγραφή χρήστη. Πρέπει να είσαι διαχειριστής και ο χρήστης να μην είναι συνδεδεμένος.
+panel.users.user.cannotEdit: Δεν είναι δυνατή η επεξεργασία του χρήστη %s. Η ενέργεια δεν επιτρέπεται.
+panel.users.user.created: Ο χρήστης δημιουργήθηκε
+panel.users.user.deleted: Ο χρήστης διαγράφηκε
+panel.users.user.edited: Τα στοιχεία του χρήστη ενημερώθηκαν
+panel.users.user.notFound: Ο χρήστης δεν βρέθηκε
+panel.users.userProfile: 'Προφίλ χρήστη %s'
+panel.users.users: Χρήστες
+panel.viewSite: Προβολή ιστοτόπου

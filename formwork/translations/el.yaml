@@ -1,0 +1,136 @@
+date.distance.ago: 'πριν από %s'
+date.distance.in: 'σε %s'
+date.duration.days: ['ημέρα', 'ημέρες']
+date.duration.hours: ['ώρα', 'ώρες']
+date.duration.minutes: ['λεπτό', 'λεπτά']
+date.duration.months: ['μήνας', 'μήνες']
+date.duration.seconds: ['δευτερόλεπτο', 'δευτερόλεπτα']
+date.duration.weeks: ['εβδομάδα', 'εβδομάδες']
+date.duration.years: ['έτος', 'έτη']
+date.months.long: ['Ιανουάριος', 'Φεβρουάριος', 'Μάρτιος', 'Απρίλιος', 'Μάιος', 'Ιούνιος', 'Ιούλιος', 'Αύγουστος', 'Σεπτέμβριος', 'Οκτώβριος', 'Νοέμβριος', 'Δεκέμβριος']
+date.months.short: ['Ιαν', 'Φεβ', 'Μαρ', 'Απρ', 'Μάι', 'Ιουν', 'Ιουλ', 'Αυγ', 'Σεπ', 'Οκτ', 'Νοε', 'Δεκ']
+date.never: ποτέ
+date.noDate: Χωρίς ημερομηνία
+date.now: τώρα
+date.today: Σήμερα
+date.weekdays.long: ['Κυριακή', 'Δευτέρα', 'Τρίτη', 'Τετάρτη', 'Πέμπτη', 'Παρασκευή', 'Σάββατο']
+date.weekdays.short: ['Κυρ', 'Δευ', 'Τρι', 'Τετ', 'Πεμ', 'Παρ', 'Σαβ']
+fields.array.add: Προσθήκη
+fields.array.remove: Αφαίρεση
+fields.date.nextHour: Επόμενη ώρα
+fields.date.nextMinute: Επόμενο λεπτό
+fields.date.nextMonth: Επόμενος μήνας
+fields.date.previousHour: Προηγούμενη ώρα
+fields.date.previousMinute: Προηγούμενο λεπτό
+fields.date.previousMonth: Προηγούμενος μήνας
+fields.file.none: (Κανένα)
+fields.file.uploadLabel: <strong>Κάντε κλικ</strong> για να επιλέξετε ένα αρχείο ή <strong>σύρετέ</strong> το εδώ
+fields.image.none: (Καμία)
+fields.select.empty: Δεν βρέθηκαν επιλογές
+fields.tags.remove: Αφαίρεση
+file.metadata: Μεταδεδομένα
+file.metadata.alternativeText: Εναλλακτικό κείμενο
+page.attributes: Ιδιότητες
+page.cacheable: Μπορεί να αποθηκευτεί στην cache
+page.content: Περιεχόμενο
+page.files: Αρχεία
+page.image: Εικόνα
+page.listed: Εμφανίζεται
+page.listed.description: Οι εμφανιζόμενες σελίδες φαίνονται στο μενού
+page.noFiles: Χωρίς αρχεία
+page.noImage: Χωρίς εικόνα
+page.none: (Κανένα)
+page.noTags: Χωρίς ετικέτες
+page.notListed: Δεν εμφανίζεται
+page.notRoutable: Μη προσβάσιμη
+page.options: Επιλογές
+page.page: Σελίδα
+page.parent: Γονική σελίδα
+page.postsPerPage: Δημοσιεύσεις ανά σελίδα
+page.publishDate: Ημερομηνία δημοσίευσης
+page.routable: Προσβάσιμη
+page.routable.description: Οι προσβάσιμες σελίδες ανοίγουν από τη διεύθυνσή τους
+page.slug: Slug
+page.slug.suggestion: μόνο γράμματα, αριθμοί και παύλες
+page.status.notPublished: Μη δημοσιευμένη
+page.status.published: Δημοσιευμένη
+page.status.published.description: Οι δημοσιευμένες σελίδες φαίνονται στον ιστότοπο και είναι προσβάσιμες από τη διεύθυνσή τους
+page.summary: Περίληψη
+page.tags: Ετικέτες
+page.template: Πρότυπο
+page.text: Κείμενο
+page.title: Τίτλος
+page.unpublishDate: Ημερομηνία απόσυρσης
+page.status: Κατάσταση
+site.advanced: Προηγμένες επιλογές
+site.advanced.aliases: Ψευδώνυμα
+site.advanced.aliases.alias: Ψευδώνυμο
+site.advanced.aliases.description: Ψευδώνυμα διαδρομών ιστότοπου για αντιστοίχιση προσαρμοσμένων URI σε συγκεκριμένες σελίδες
+site.advanced.aliases.route: Διαδρομή
+site.advanced.metadata: HTML μεταδεδομένα
+site.advanced.metadata.content: Περιεχόμενο
+site.advanced.metadata.description: HTML μεταδεδομένα που θα προστεθούν ως `<meta>` tags στο `<head>` των σελίδων, όπως ιδιότητες OpenGraph για προεπισκοπήσεις κοινωνικών δικτύων
+site.advanced.metadata.name: Όνομα
+site.info: Πληροφορίες
+site.info.author: Συντάκτης
+site.info.description: Περιγραφή
+site.info.language: Γλώσσα
+site.info.title: Τίτλος
+site.maintenance: Συντήρηση
+site.maintenance.enabled: Λειτουργία συντήρησης
+site.maintenance.enabled.disabled: Απενεργοποιημένη
+site.maintenance.enabled.enabled: Ενεργή
+site.maintenance.page: Σελίδα συντήρησης
+site.pages: Σελίδες
+site.pages.defaultTemplate: Προεπιλεγμένο πρότυπο
+site.pages.taxonomies: Ταξινομίες
+site.pages.taxonomies.description: Ταξινομίες για οργάνωση σελίδων, χρήσιμες σε controllers για φιλτράρισμα
+site.pages.taxonomies.noTaxonomies: Δεν υπάρχουν ταξινομίες
+site.statistics: Στατιστικά
+site.statistics.enabled: Παρακολούθηση επισκέψεων
+site.statistics.enabled.disabled: Απενεργοποιημένη
+site.statistics.enabled.enabled: Ενεργή
+site.statistics.trackLocalhost: Παρακολούθηση επισκέψεων από localhost
+site.statistics.trackLocalhost.disabled: Απενεργοποιημένη
+site.statistics.trackLocalhost.enabled: Ενεργή
+site.statistics.visitsDelay: Χρονικό όριο επισκέψεων
+site.statistics.visitsDelay.description: Χρονική καθυστέρηση μεταξύ επισκέψεων του ίδιου χρήστη στην ίδια σελίδα για να υπολογιστούν ως διαφορετικές
+upload.error: Αδυναμία μεταφόρτωσης αρχείου. %s.
+upload.error.alreadyExists: Υπάρχει ήδη αρχείο με το ίδιο όνομα
+upload.error.cannotMoveToDestination: Αποτυχία μετακίνησης αρχείου στον προορισμό
+upload.error.cannotWrite: Αποτυχία εγγραφής αρχείου στον δίσκο
+upload.error.destinationTooLong: Η διαδρομή προορισμού είναι πολύ μεγάλη
+upload.error.fileName: Μη έγκυρο όνομα αρχείου
+upload.error.fileNameTooLong: Το όνομα του αρχείου είναι πολύ μεγάλο
+upload.error.hiddenFiles: Δεν επιτρέπεται η μεταφόρτωση κρυφών αρχείων που ξεκινούν με τελεία
+upload.error.mimeType: Μη επιτρεπόμενος τύπος αρχείου
+upload.error.noFile: Δεν απεστάλη αρχείο
+upload.error.noTemp: Λείπει προσωρινός φάκελος
+upload.error.partial: Το αρχείο μεταφορτώθηκε μερικώς
+upload.error.phpExtension: Η μεταφόρτωση σταμάτησε από επέκταση PHP
+upload.error.size: Το αρχείο ξεπερνά το μέγιστο επιτρεπόμενο μέγεθος
+user.colorScheme: Χρωματικό θέμα
+user.colorScheme.auto: Αυτόματο
+user.colorScheme.dark: Σκούρο
+user.colorScheme.light: Ανοιχτό
+user.email: Email
+user.fullname: Πλήρες όνομα
+user.image: Εικόνα
+user.language: Γλώσσα
+user.password: Κωδικός πρόσβασης
+user.password.placeholder: Πληκτρολογήστε νέο κωδικό για αλλαγή...
+user.role: Ρόλος
+user.role.admin: Διαχειριστής
+user.role.editor: Συντάκτης
+user.role.user: Χρήστης
+user.user: Χρήστης
+user.username: Όνομα χρήστη
+zip.error.alreadyExists: Το αρχείο υπάρχει ήδη
+zip.error.cannotOpen: Δεν είναι δυνατή η ανοίξη του αρχείου
+zip.error.cannotRead: Δεν είναι δυνατή η ανάγνωση του αρχείου
+zip.error.inconsistentArchive: Μη συνεπές αρχείο
+zip.error.invalidArgument: Μη έγκυρη παράμετρος
+zip.error.memoryFailure: Σφάλμα μνήμης
+zip.error.notFound: Το αρχείο δεν βρέθηκε
+zip.error.notZipArchive: Δεν είναι αρχείο ZIP
+zip.error.unspecified: Απροσδιόριστο σφάλμα

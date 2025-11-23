@@ -1,0 +1,136 @@
+date.distance.ago: '%s önce'
+date.distance.in: '%s içinde'
+date.duration.days: ['gün', 'gün']
+date.duration.hours: ['saat', 'saat']
+date.duration.minutes: ['dakika', 'dakika']
+date.duration.months: ['ay', 'ay']
+date.duration.seconds: ['saniye', 'saniye']
+date.duration.weeks: ['hafta', 'hafta']
+date.duration.years: ['yıl', 'yıl']
+date.months.long: ['Ocak', 'Şubat', 'Mart', 'Nisan', 'Mayıs', 'Haziran', 'Temmuz', 'Ağustos', 'Eylül', 'Ekim', 'Kasım', 'Aralık']
+date.months.short: ['Oca', 'Şub', 'Mar', 'Nis', 'May', 'Haz', 'Tem', 'Ağu', 'Eyl', 'Eki', 'Kas', 'Ara']
+date.never: asla
+date.noDate: Tarih yok
+date.now: şimdi
+date.today: Bugün
+date.weekdays.long: ['Pazar', 'Pazartesi', 'Salı', 'Çarşamba', 'Perşembe', 'Cuma', 'Cumartesi']
+date.weekdays.short: ['Paz', 'Pts', 'Sal', 'Çar', 'Per', 'Cum', 'Cts']
+fields.array.add: Ekle
+fields.array.remove: Kaldır
+fields.date.nextHour: Sonraki saat
+fields.date.nextMinute: Sonraki dakika
+fields.date.nextMonth: Sonraki ay
+fields.date.previousHour: Önceki saat
+fields.date.previousMinute: Önceki dakika
+fields.date.previousMonth: Önceki ay
+fields.file.none: (Yok)
+fields.file.uploadLabel: Bir dosya seçmek için <strong>tıklayın</strong> veya buraya <strong>sürükleyin</strong>
+fields.image.none: (Yok)
+fields.select.empty: Eşleşen seçenek yok
+fields.tags.remove: Kaldır
+file.metadata: Meta veriler
+file.metadata.alternativeText: Alternatif metin
+page.attributes: Özellikler
+page.cacheable: Önbelleğe alınabilir
+page.content: İçerik
+page.files: Dosyalar
+page.image: Görsel
+page.listed: Listelenmiş
+page.listed.description: Listelenmiş sayfalar menüde görünür
+page.noFiles: Dosya yok
+page.noImage: Görsel yok
+page.none: (Yok)
+page.noTags: Etiket yok
+page.notListed: Listelenmemiş
+page.notRoutable: Yönlendirilemez
+page.options: Seçenekler
+page.page: Sayfa
+page.parent: Üst sayfa
+page.postsPerPage: Sayfa başına gönderi
+page.publishDate: Yayın tarihi
+page.routable: Yönlendirilebilir
+page.routable.description: Yönlendirilebilir sayfalar adreslerinden erişilebilir
+page.slug: Slug
+page.slug.suggestion: yalnızca harfler, sayılar ve tireler
+page.status.notPublished: Yayınlanmamış
+page.status.published: Yayınlanmış
+page.status.published.description: Yayınlanmış sayfalar sitede görünür ve adreslerinden erişilebilir
+page.summary: Özet
+page.tags: Etiketler
+page.template: Şablon
+page.text: Metin
+page.title: Başlık
+page.unpublishDate: Yayından kaldırma tarihi
+page.status: Durum
+site.advanced: Gelişmiş ayarlar
+site.advanced.aliases: Takma adlar
+site.advanced.aliases.alias: Takma ad
+site.advanced.aliases.description: Belirli sayfalara özel URI'leri yönlendirmek için site yolu takma adları
+site.advanced.aliases.route: Yol
+site.advanced.metadata: HTML meta verileri
+site.advanced.metadata.content: İçerik
+site.advanced.metadata.description: Sayfaların `<head>` bölümüne eklenecek HTML meta verileri, sosyal medya önizlemeleri için OpenGraph gibi özellikler dahil
+site.advanced.metadata.name: Ad
+site.info: Bilgi
+site.info.author: Yazar
+site.info.description: Açıklama
+site.info.language: Dil
+site.info.title: Başlık
+site.maintenance: Bakım
+site.maintenance.enabled: Bakım modu
+site.maintenance.enabled.disabled: Devre dışı
+site.maintenance.enabled.enabled: Etkin
+site.maintenance.page: Bakım sayfası
+site.pages: Sayfalar
+site.pages.defaultTemplate: Varsayılan şablon
+site.pages.taxonomies: Sınıflandırmalar
+site.pages.taxonomies.description: Sayfaları düzenlemek için sınıflandırmalar, controller'larda filtreleme için kullanılabilir
+site.pages.taxonomies.noTaxonomies: Sınıflandırma yok
+site.statistics: İstatistikler
+site.statistics.enabled: Sayfa ziyaretlerini takip et
+site.statistics.enabled.disabled: Devre dışı
+site.statistics.enabled.enabled: Etkin
+site.statistics.trackLocalhost: Localhost ziyaretlerini takip et
+site.statistics.trackLocalhost.disabled: Devre dışı
+site.statistics.trackLocalhost.enabled: Etkin
+site.statistics.visitsDelay: Ziyaret gecikmesi
+site.statistics.visitsDelay.description: Aynı kullanıcının aynı sayfayı ziyaret etmesinin farklı ziyaret olarak sayılması için gereken zaman
+upload.error: Dosya yüklenemedi. %s.
+upload.error.alreadyExists: Aynı isimde bir dosya zaten mevcut
+upload.error.cannotMoveToDestination: Dosya hedef klasöre taşınamadı
+upload.error.cannotWrite: Dosya diske yazılamadı
+upload.error.destinationTooLong: Hedef yol çok uzun
+upload.error.fileName: Geçersiz dosya adı
+upload.error.fileNameTooLong: Dosya adı çok uzun
+upload.error.hiddenFiles: Nokta ile başlayan gizli dosyalar yüklenemez
+upload.error.mimeType: Dosya türüne izin verilmiyor
+upload.error.noFile: Dosya yüklenmedi
+upload.error.noTemp: Geçici klasör eksik
+upload.error.partial: Dosya yalnızca kısmen yüklendi
+upload.error.phpExtension: PHP uzantısı yüklemeyi durdurdu
+upload.error.size: Dosya izin verilen maksimum boyutu aşıyor
+user.colorScheme: Renk şeması
+user.colorScheme.auto: Otomatik
+user.colorScheme.dark: Koyu
+user.colorScheme.light: Açık
+user.email: E-posta
+user.fullname: Tam ad
+user.image: Görsel
+user.language: Dil
+user.password: Şifre
+user.password.placeholder: Değiştirmek için yeni bir şifre yazın...
+user.role: Rol
+user.role.admin: Yönetici
+user.role.editor: Editör
+user.role.user: Kullanıcı
+user.user: Kullanıcı
+user.username: Kullanıcı adı
+zip.error.alreadyExists: Arşiv zaten mevcut
+zip.error.cannotOpen: Arşiv açılamıyor
+zip.error.cannotRead: Arşiv okunamıyor
+zip.error.inconsistentArchive: Tutarsız arşiv
+zip.error.invalidArgument: Geçersiz argüman
+zip.error.memoryFailure: Bellek hatası
+zip.error.notFound: Arşiv bulunamadı
+zip.error.notZipArchive: ZIP arşivi değil
+zip.error.unspecified: Belirtilmemiş hata

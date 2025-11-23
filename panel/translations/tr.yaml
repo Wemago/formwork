@@ -1,0 +1,344 @@
+panel.backup.backup: Yedek
+panel.backup.deleted: Yedek silindi
+panel.backup.error.cannotDelete: Yedek silinemiyor. %s.
+panel.backup.error.cannotDelete.invalidFilename: Geçersiz yedek dosyası
+panel.backup.error.cannotDownload: Yedek indirilemiyor. %s.
+panel.backup.error.cannotDownload.invalidFilename: Geçersiz yedek dosyası
+panel.backup.error.cannotMake: Yedek oluşturulamıyor. %s.
+panel.backup.ready: Yedek hazır. İndirme başlatılıyor...
+panel.cache.clear: Önbelleği temizle
+panel.cache.clear.images: Görsellerin önbelleğini temizle
+panel.cache.clear.pages: Sayfa önbelleğini temizle
+panel.cache.cleared: Önbellek temizlendi
+panel.cache.cleared.images: Görsel önbelleği temizlendi
+panel.cache.cleared.pages: Sayfa önbelleği temizlendi
+panel.cache.error: Önbellek temizlenemiyor
+panel.dashboard.dashboard: Kontrol paneli
+panel.dashboard.lastModifiedPages: Son düzenlenen sayfalar
+panel.dashboard.quickActions: Hızlı işlemler
+panel.dashboard.statistics: İstatistikler
+panel.dashboard.statistics.uniqueVisitors: Tekil ziyaretçiler
+panel.dashboard.statistics.visits: Ziyaretler
+panel.dashboard.welcome: Hoş geldiniz
+panel.dragToReorder: Yeniden sıralamak için sürükleyin
+panel.editor.bold: Kalın
+panel.editor.bulletList: Madde işaretli liste
+panel.editor.code: Kod
+panel.editor.decreaseIndent: Girintiyi azalt
+panel.editor.heading1: Başlık 1
+panel.editor.heading2: Başlık 2
+panel.editor.heading3: Başlık 3
+panel.editor.heading4: Başlık 4
+panel.editor.heading5: Başlık 5
+panel.editor.heading6: Başlık 6
+panel.editor.image: Görsel
+panel.editor.increaseIndent: Girintiyi artır
+panel.editor.italic: İtalik
+panel.editor.link: Bağlantı
+panel.editor.numberedList: Numaralı liste
+panel.editor.paragraph: Paragraf
+panel.editor.quote: Alıntı
+panel.editor.redo: Yeniden yap
+panel.editor.summary: Özet
+panel.editor.toggleMarkdown: Markdown’ı aç/kapat
+panel.editor.undo: Geri al
+panel.errors.action.reportToGithub: GitHub’da sorun bildir
+panel.errors.action.returnToDashboard: Kontrol paneline dön
+panel.errors.error.forbidden.description: Bu sayfaya erişim izniniz yok.
+panel.errors.error.forbidden.heading: Oops, izin gerekli!
+panel.errors.error.forbidden.status: Yasaklandı
+panel.errors.error.internalServerError.description: Formwork isteğinizi işlerken bir hata oluştu. Lütfen Formwork yapılandırmasını veya sunucu günlüklerini kontrol edin.
+panel.errors.error.internalServerError.heading: Oops, bir şeyler ters gitti!
+panel.errors.error.internalServerError.status: Sunucu hatası
+panel.errors.error.notFound.description: Sayfa mevcut değil veya istek geçersiz.
+panel.errors.error.notFound.heading: Oops, sayfa bulunamadı!
+panel.errors.error.notFound.status: Bulunamadı
+panel.files.actions: İşlemler
+panel.files.backToPage: Sayfaya dön
+panel.files.cannotDelete.fileNotFound: Dosya silinemiyor, dosya bulunamadı
+panel.files.cannotDelete.pageNotFound: Dosya silinemiyor, sayfa bulunamadı
+panel.files.cannotRename.fileAlreadyExists: Dosya yeniden adlandırılamıyor, aynı isimde bir dosya zaten mevcut
+panel.files.cannotRename.fileNotFound: Dosya yeniden adlandırılamıyor, dosya bulunamadı
+panel.files.cannotRename.pageNotFound: Dosya yeniden adlandırılamıyor, sayfa bulunamadı
+panel.files.cannotReplace.fileNotFound: Dosya değiştirilemiyor, dosya bulunamadı
+panel.files.cannotReplace.multipleFiles: Dosya değiştirilemiyor, birden fazla dosya verildi
+panel.files.cannotReplace.pageNotFound: Dosya değiştirilemiyor, sayfa bulunamadı
+panel.files.cannotUpload.pageNotFound: Dosya yüklenemiyor, sayfa bulunamadı
+panel.files.deleted: Dosya silindi
+panel.files.exif: EXIF
+panel.files.fileNotFound: Dosya bilgisi alınamıyor, dosya bulunamadı
+panel.files.files: Dosyalar
+panel.files.info: Bilgi
+panel.files.info.image.colorDepth: Renk derinliği
+panel.files.info.image.colorNumber: Renk sayısı
+panel.files.info.image.colorProfile: Renk profili
+panel.files.info.image.colorSpace: Renk alanı
+panel.files.info.image.dimensions: Boyutlar
+panel.files.info.image.dimensions.widthByHeightPixels: '%d × %d piksel'
+panel.files.info.image.exif.aperture: Diyafram
+panel.files.info.image.exif.camera: Kamera
+panel.files.info.image.exif.creationDateAndTime: Oluşturulma tarihi ve saati
+panel.files.info.image.exif.exposureCompensation: Pozlama telafisi
+panel.files.info.image.exif.exposureProgram: Pozlama programı
+panel.files.info.image.exif.exposureTime: Pozlama süresi
+panel.files.info.image.exif.flash: Flaş
+panel.files.info.image.exif.focalLength: Odak uzaklığı
+panel.files.info.image.exif.lensModel: Lens modeli
+panel.files.info.image.exif.meteringMode: Ölçüm modu
+panel.files.info.image.exif.sensitivity: Hassasiyet
+panel.files.info.image.exif.whiteBalance: Beyaz dengesi
+panel.files.info.image.frames: '%d kare'
+panel.files.info.image.framesCount: Kare sayısı
+panel.files.info.image.repeats: '%d tekrar'
+panel.files.info.image.repeatsCount: Tekrar sayısı
+panel.files.info.image.resolution: Çözünürlük
+panel.files.info.lastModifiedTime: Son değiştirilme zamanı
+panel.files.info.mimeType: MIME türü
+panel.files.info.name: Ad
+panel.files.info.size: Boyut
+panel.files.info.uri: URI
+panel.files.metadata.updated: Dosya meta verileri güncellendi
+panel.files.next: Sonraki dosya
+panel.files.pageNotFound: Dosya bilgisi alınamıyor, sayfa bulunamadı
+panel.files.parent: Üst
+panel.files.position: Konum
+panel.files.preview: Önizleme
+panel.files.previous: Önceki dosya
+panel.files.renamed: Dosya yeniden adlandırıldı
+panel.files.search: Dosya ara...
+panel.files.upload: Dosya yükle
+panel.files.uploaded: Dosyalar yüklendi
+panel.files.viewAsList: Liste görünümü
+panel.files.viewAsThumbnails: Küçük resimler görünümü
+panel.login.attempt.failed: Giriş başarısız! Tekrar deneyin.
+panel.login.attempt.tooMany: Çok fazla giriş denemesi. Lütfen %d dakika sonra tekrar deneyin.
+panel.login.loggedOut: Oturumunuz kapatıldı
+panel.login.login: Giriş yap
+panel.login.logout: Çıkış yap
+panel.login.password: Şifre
+panel.login.suspiciousRequestDetected: Şüpheli bir istek algılandı ve güvenlik nedeniyle oturum kapatıldı. Lütfen tekrar giriş yapın.
+panel.login.usernameOrEmail: Kullanıcı adı veya e-posta
+panel.manage: Yönet
+panel.modal.action.cancel: İptal
+panel.modal.action.continue: Devam et
+panel.modal.action.delete: Sil
+panel.modal.action.edit: Düzenle
+panel.modal.action.rename: Yeniden adlandır
+panel.modal.action.save: Kaydet
+panel.modal.action.upload: Yükle
+panel.modal.action.uploadFile: Dosya yükle
+panel.modal.images.noImages: Burada hiç görsel yok
+panel.modal.images.noImages.upload: Lütfen görsel yükleyin
+panel.modal.images.title: Görsel seçin
+panel.modal.link.text: Metin
+panel.modal.link.title: Bağlantı ekle
+panel.modal.link.uri: URI
+panel.navigation.toggle: Navigasyonu aç/kapat
+panel.options.options: Seçenekler
+panel.options.site: Site
+panel.options.system: Sistem
+panel.options.system.adminPanel: Yönetim paneli
+panel.options.system.adminPanel.defaultColorScheme: Varsayılan renk şeması
+panel.options.system.adminPanel.defaultColorScheme.dark: Koyu
+panel.options.system.adminPanel.defaultColorScheme.light: Açık
+panel.options.system.adminPanel.defaultLanguage: Varsayılan dil
+panel.options.system.adminPanel.logoutRedirectsTo: Çıkış sonrası yönlendirme
+panel.options.system.adminPanel.logoutRedirectsTo.home: Ana sayfa
+panel.options.system.adminPanel.logoutRedirectsTo.login: Giriş sayfası
+panel.options.system.adminPanel.sessionTimeout: Oturum zaman aşımı
+panel.options.system.backup: Yedekleme
+panel.options.system.backup.backupFilesToKeep: Sunucuda tutulacak yedek sayısı
+panel.options.system.cache: Önbellek
+panel.options.system.cache.disabled: Devre dışı
+panel.options.system.cache.enabled: Etkin
+panel.options.system.cache.time: Önbellek süresi
+panel.options.system.content: İçerik
+panel.options.system.content.allowHtml: Markdown alanlarında HTML’e izin ver
+panel.options.system.content.allowHtml.description: '`<script>` ve `<style>` gibi potansiyel olarak tehlikeli etiketler her zaman metne dönüştürülür'
+panel.options.system.content.allowHtml.disabled: Devre dışı
+panel.options.system.content.allowHtml.enabled: Etkin
+panel.options.system.dateAndTime: Tarih ve saat
+panel.options.system.dateAndTime.dateFormat: Tarih formatı
+panel.options.system.dateAndTime.firstWeekday: Haftanın ilk günü
+panel.options.system.dateAndTime.firstWeekday.monday: Pazartesi
+panel.options.system.dateAndTime.firstWeekday.sunday: Pazar
+panel.options.system.dateAndTime.hourFormat: Saat formatı
+panel.options.system.dateAndTime.timezone: Saat dilimi
+panel.options.system.debug: Hata ayıklama
+panel.options.system.debug.editorUri: Editör URI'si
+panel.options.system.debug.editorUri.description: Kod editörünü açmak için `{{filename}}` ve `{{line}}` kullanın
+panel.options.system.debug.mode: Hata ayıklama modu
+panel.options.system.debug.mode.description: Hata ayıklama modu hata bilgilerini gösterir ve hassas verileri açığa çıkarabileceğinden üretimde devre dışı bırakılmalıdır
+panel.options.system.debug.mode.disabled: Devre dışı
+panel.options.system.debug.mode.enabled: Etkin
+panel.options.system.files: Dosyalar
+panel.options.system.files.allowedExtensions: İzin verilen uzantılar
+panel.options.system.files.allowedExtensions.noExtensions: Uzantı yok (dosya yükleme yok)
+panel.options.system.images: Görseller
+panel.options.system.images.clearCacheByDefault: Varsayılan olarak görsel önbelleğini temizle
+panel.options.system.images.clearCacheByDefault.disabled: Devre dışı
+panel.options.system.images.clearCacheByDefault.enabled: Etkin
+panel.options.system.images.jpegQuality: JPEG kalitesi
+panel.options.system.images.jpegSaveProgressive: JPEG görselleri aşamalı kaydet
+panel.options.system.images.jpegSaveProgressive.disabled: Devre dışı
+panel.options.system.images.jpegSaveProgressive.enabled: Etkin
+panel.options.system.images.pngCompressionLevel: PNG sıkıştırma seviyesi
+panel.options.system.images.webpQuality: WebP kalitesi
+panel.options.system.uploads.processImages: Yüklenen görselleri işle (optimize et)
+panel.options.system.uploads.processImages.disabled: Devre dışı
+panel.options.system.uploads.processImages.enabled: Etkin
+panel.options.updated: Seçenekler güncellendi
+panel.pages.changes.continue: Kaydetmeden devam et
+panel.pages.changes.detected: Değişiklik algılandı
+panel.pages.changes.detected.prompt: Kaydedilmemiş değişiklikleriniz var. Bu sayfadan ayrılmak istediğinize emin misiniz?
+panel.pages.changeSlug: Slug’ı düzenle
+panel.pages.changeSlug.generate: Başlıktan oluştur
+panel.pages.deleteFile: Dosyayı sil
+panel.pages.deleteFile.prompt: Bu dosyayı silmek istediğinize emin misiniz? Bu işlem geri alınamaz.
+panel.pages.deletePage: Sayfayı sil
+panel.pages.deletePage.prompt: Bu sayfayı silmek istediğinize emin misiniz? Bu işlem geri alınamaz.
+panel.pages.duplicatePage: Sayfayı çoğalt
+panel.pages.duplicatePage.title: '%s kopyası'
+panel.pages.edit: Sayfayı düzenle
+panel.pages.editPage: '%s sayfasını düzenle'
+panel.pages.history.event.created: Sayfa %s tarafından %s tarihinde oluşturuldu.
+panel.pages.history.event.edited: Sayfa %s tarafından %s tarihinde düzenlendi.
+panel.pages.languages: Diller
+panel.pages.languages.addLanguage: '%s ekle'
+panel.pages.languages.editLanguage: '%s düzenle'
+panel.pages.newPage: Yeni sayfa
+panel.pages.newPage.site: Site
+panel.pages.next: Sonraki sayfa
+panel.pages.page: Sayfa
+panel.pages.page.actions: İşlemler
+panel.pages.page.cannotChangeNum: Sayfa numarası değiştirilemiyor
+panel.pages.page.cannotCreate: Sayfa oluşturulamıyor
+panel.pages.page.cannotCreate.alreadyExists: Sayfa oluşturulamıyor, aynı URI’ye sahip bir sayfa zaten mevcut
+panel.pages.page.cannotCreate.invalidParent: Sayfa oluşturulamıyor, geçersiz üst sayfa
+panel.pages.page.cannotCreate.invalidSlug: Sayfa slug’ı yalnızca harf, rakam ve tire içermelidir
+panel.pages.page.cannotCreate.invalidTemplate: Sayfa oluşturulamıyor, geçersiz şablon
+panel.pages.page.cannotCreate.varMissing: Sayfa oluşturulamıyor, eksik bir değişken var
+panel.pages.page.cannotDelete.invalidLanguage: 'Sayfa silinemiyor, geçersiz dil: %s'
+panel.pages.page.cannotDelete.notDeletable: Sayfa silinemiyor, sayfa silinebilir değil
+panel.pages.page.cannotDelete.pageNotFound: Sayfa silinemiyor, sayfa bulunamadı
+panel.pages.page.cannotDuplicate.notDuplicable: Sayfa çoğaltılamıyor, sayfa çoğaltılabilir değil
+panel.pages.page.cannotDuplicate.pageNotFound: Sayfa çoğaltılamıyor, sayfa bulunamadı
+panel.pages.page.cannotEdit.alreadyExists: Sayfa düzenlenemiyor, aynı URI’ye sahip bir sayfa zaten mevcut
+panel.pages.page.cannotEdit.indexOrErrorPageSlug: Ana ve hata sayfalarının slug’ı düzenlenemez
+panel.pages.page.cannotEdit.invalidLanguage: 'Sayfa düzenlenemiyor, geçersiz dil: %s'
+panel.pages.page.cannotEdit.invalidParent: Sayfa düzenlenemiyor, geçersiz üst sayfa
+panel.pages.page.cannotEdit.invalidSlug: Sayfa slug’ı yalnızca harf, rakam ve tire içermelidir
+panel.pages.page.cannotEdit.invalidTemplate: Sayfa düzenlenemiyor, geçersiz şablon
+panel.pages.page.cannotEdit.pageNotFound: Sayfa düzenlenemiyor, sayfa bulunamadı
+panel.pages.page.cannotEdit.varMissing: Sayfa düzenlenemiyor, eksik bir değişken var
+panel.pages.page.cannotMove: Sayfa taşınamıyor
+panel.pages.page.cannotPreview.pageNotFound: Sayfa önizlenemiyor, sayfa bulunamadı
+panel.pages.page.cannotPreview.parentChanged: Sayfa önizlenemiyor, üst sayfa değişti
+panel.pages.page.created: Sayfa oluşturuldu!
+panel.pages.page.deleted: Sayfa silindi
+panel.pages.page.edited: Sayfa düzenlendi
+panel.pages.page.lastModified: Son düzenleme
+panel.pages.page.moved: Sayfa taşındı!
+panel.pages.page.notFound: Sayfa bulunamadı
+panel.pages.pages: Sayfalar
+panel.pages.pages.collapseAll: Tümünü daralt
+panel.pages.pages.expandAll: Tümünü genişlet
+panel.pages.pages.reorder: Yeniden sırala
+panel.pages.pages.search: Sayfa ara...
+panel.pages.preview: Önizleme
+panel.pages.previewFile: Önizleme
+panel.pages.previous: Önceki sayfa
+panel.pages.publish: Yayınla
+panel.pages.renameFile: Dosyayı yeniden adlandır
+panel.pages.renameFile.name: Ad
+panel.pages.replaceFile: Dosyayı değiştir
+panel.pages.save: Kaydet
+panel.pages.saveAndCreateNew: Kaydet ve yeni oluştur
+panel.pages.saveOnly: Yayınlamadan kaydet
+panel.pages.toggleChildren: Alt sayfaları aç/kapat
+panel.pages.viewChildren: Alt sayfaları görüntüle
+panel.pages.viewPage: Sayfayı görüntüle
+panel.panel: Yönetim paneli
+panel.register.createUser: Formwork kuruldu fakat kullanıcı bulunamadı. Lütfen şimdi bir kullanıcı oluşturun.
+panel.register.register: Yeni kullanıcı kaydı
+panel.request.error.postMaxSize: HTTP POST isteği izin verilen maksimum boyutu aşıyor
+panel.sections.toggle: Bölümü aç/kapat
+panel.site.languages: Diller
+panel.site.languages.availableLanguages: Mevcut diller
+panel.site.languages.availableLanguages.noLanguages: Dil yok
+panel.site.languages.preferredLanguage: Tarayıcı tercih edilen dili kullan
+panel.site.languages.preferredLanguage.disabled: Devre dışı
+panel.site.languages.preferredLanguage.enabled: Etkin
+panel.statistics.devices: Cihazlar
+panel.statistics.devices.type: Tür
+panel.statistics.devices.type.desktop: Masaüstü
+panel.statistics.devices.type.mobile: Mobil
+panel.statistics.devices.type.tablet: Tablet
+panel.statistics.monthlyUniqueVisitors: Aylık tekil ziyaretçiler
+panel.statistics.monthlyVisits: Aylık ziyaretler
+panel.statistics.sources: Kaynaklar
+panel.statistics.sources.direct: Doğrudan
+panel.statistics.sources.site: Site içi
+panel.statistics.statistics: İstatistikler
+panel.statistics.totalVisits: Toplam ziyaret
+panel.statistics.totalVisits.percentTotal: '% toplam'
+panel.statistics.totalVisits.uri: URI
+panel.statistics.visits: Ziyaretler
+panel.statistics.weeklyUniqueVisitors: Haftalık tekil ziyaretçiler
+panel.statistics.weeklyVisits: Haftalık ziyaretler
+panel.tools.backup.actions: İşlemler
+panel.tools.backup.date: Tarih
+panel.tools.backup.delete: Yedeği sil
+panel.tools.backup.file: Dosya
+panel.tools.backup.size: Boyut
+panel.tools.backups: Yedekler
+panel.tools.info: Bilgi
+panel.tools.latestBackup: 'Son yedek:'
+panel.tools.latestBackups: Son yedekler
+panel.tools.tools: Araçlar
+panel.tools.updates: Güncellemeler
+panel.updates.availableForInstall: yüklenebilir
+panel.updates.check: Güncellemeleri kontrol et
+panel.updates.install: Yükle
+panel.updates.installed: Güncelleme yüklendi!
+panel.updates.installPrompt: Güncellemeyi yüklemek ister misiniz?
+panel.updates.latestVersionAvailable: en son sürüm mevcut
+panel.updates.status.cannotCheck: Güncellemeler kontrol edilemiyor. Daha sonra tekrar deneyin.
+panel.updates.status.cannotInstall: Güncelleme yüklenemiyor
+panel.updates.status.cannotMakeBackup: Güncelleme öncesi yedek oluşturulamadı
+panel.updates.status.checking: Güncellemeler kontrol ediliyor...
+panel.updates.status.found: Güncellemeler bulundu
+panel.updates.status.installing: Güncellemeler yükleniyor...
+panel.updates.status.upToDate: Güncel!
+panel.uploader.uploaded: Dosya yüklendi
+panel.user.actions: İşlemler
+panel.user.image.actions: İşlemler
+panel.user.image.cannotDelete.defaultImage: Varsayılan kullanıcı görseli silinemez
+panel.user.image.delete: Kullanıcı görselini sil
+panel.user.image.delete.prompt: Kullanıcı görselini silmek istediğinize emin misiniz? Bu işlem geri alınamaz.
+panel.user.image.deleted: Kullanıcı görseli silindi
+panel.user.image.uploaded: Kullanıcı görseli yüklendi
+panel.user.lastAccess: Son erişim
+panel.users.deleteUser: Kullanıcıyı sil
+panel.users.deleteUser.prompt: Bu kullanıcıyı silmek istediğinize emin misiniz? Bu işlem geri alınamaz.
+panel.users.newUser: Yeni kullanıcı
+panel.users.newUser.password.suggestion: en az 8 karakter
+panel.users.newUser.username.suggestion: 3-20 harf, rakam ve - . _
+panel.users.nextUser: Sonraki kullanıcı
+panel.users.options: Seçenekler
+panel.users.previousUser: Önceki kullanıcı
+panel.users.user.cannotChangeEmail.alreadyUsed: Kullanıcının e-postası değiştirilemiyor, adres başka bir hesapta kullanılıyor
+panel.users.user.cannotChangePassword: Başka bir kullanıcının şifresi değiştirilemez. Bu işlem izin verilmemektedir.
+panel.users.user.cannotChangeRole: '%s rolü değiştirilemiyor. Bu işlem izin verilmemektedir.'
+panel.users.user.cannotCreate.alreadyExists: Kullanıcı oluşturulamıyor, aynı isimde bir kullanıcı zaten mevcut
+panel.users.user.cannotCreate.emailAlreadyUsed: Kullanıcı oluşturulamıyor, e-posta zaten mevcut
+panel.users.user.cannotCreate.varMissing: Kullanıcı oluşturulamıyor, eksik bir değişken var
+panel.users.user.cannotDelete: Kullanıcı silinemiyor. Yönetici olmanız ve kullanıcının giriş yapmamış olması gerekir.
+panel.users.user.cannotEdit: '%s kullanıcısı düzenlenemiyor. Bu işlem izin verilmemektedir.'
+panel.users.user.created: Kullanıcı oluşturuldu
+panel.users.user.deleted: Kullanıcı silindi
+panel.users.user.edited: Kullanıcı verileri güncellendi
+panel.users.user.notFound: Kullanıcı bulunamadı
+panel.users.userProfile: '%s kullanıcı profili'
+panel.users.users: Kullanıcılar
+panel.viewSite: Siteyi görüntüle

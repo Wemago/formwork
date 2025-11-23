@@ -154,9 +154,9 @@ final class Uri
     /**
      * Make a URI based on the current or a given one using an array with parts
      *
-     * @param array{scheme?: string, host?: string, port?: int, path?: string, query?: array<string>|string, fragment?: string} $parts     Array of URI parts to override
-     * @param string                                                                                                            $uri       The base URI to use
-     * @param bool                                                                                                              $forcePort Whether to always include port in the output even if it's default
+     * @param array{scheme?: string, host?: string, port?: int, path?: string, query?: array<string>|string|null, fragment?: string|null} $parts     Array of URI parts to override
+     * @param string                                                                                                                      $uri       The base URI to use
+     * @param bool                                                                                                                        $forcePort Whether to always include port in the output even if it's default
      *
      * @throws InvalidArgumentException If the URI is invalid or contains malformed data
      * @throws InvalidArgumentException If the scheme is unknown
@@ -237,12 +237,19 @@ final class Uri
         if (Str::startsWith($uri, '#')) {
             return self::make(['fragment' => $uri], $base);
         }
-        $uriPath = (string) self::path($uri);
+        $parts = self::parse($uri);
         $basePath = (string) self::path($base);
         if (!Str::endsWith($basePath, '/')) {
             $basePath = dirname($basePath);
         }
-        return self::make(['path' => Path::resolve($uriPath, $basePath)], $base);
+        return self::make(
+            [
+                'path'     => Path::resolve((string) $parts['path'], $basePath),
+                'query'    => $parts['query'],
+                'fragment' => $parts['fragment'],
+            ],
+            $base
+        );
     }
 
     /**

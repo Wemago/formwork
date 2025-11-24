@@ -203,6 +203,11 @@ export class Pages {
                                 if (deleteButton) {
                                     deleteButton.disabled = false;
                                 }
+
+                                const duplicateButton = $("[data-modal=duplicatePageModal]", parentItem) as HTMLButtonElement;
+                                if (duplicateButton) {
+                                    duplicateButton.disabled = false;
+                                }
                             }
                         }
 

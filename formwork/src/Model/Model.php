@@ -136,15 +136,18 @@ class Model implements Arrayable
             return;
         }
 
-        Arr::set($this->data, $key, $value);
-
         // Set value in the corresponding field if exists
         if (isset($this->fields) && $this->fields->has($key)) {
             /** @var Field */
             $field = $this->fields->get($key);
             $field->set('value', $value);
             $field->validate();
+
+            // Update value according to field validation
+            $value = $field->value();
         }
+
+        Arr::set($this->data, $key, $value);
     }
 
     /**

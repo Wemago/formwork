@@ -41,6 +41,7 @@
 
 @mixin focusring {
     outline: var(--focusring-width) solid var(--color-focusring);
+    outline-offset: 0; // Fix for Safari
 }
 
 @mixin make-columns-globals($columns-count, $breakpoints) {

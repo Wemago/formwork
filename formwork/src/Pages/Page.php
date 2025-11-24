@@ -56,20 +56,6 @@ class Page extends Model implements Stringable
     protected const string MODEL_IDENTIFIER = 'page';
 
     /**
-     * Ignored field names on frontmatter generation
-     *
-     * @var list<string>
-     */
-    protected const array IGNORED_FIELD_NAMES = ['content', 'slug', 'template', 'parent'];
-
-    /**
-     * Ignored field types on frontmatter generation
-     *
-     * @var list<string>
-     */
-    protected const array IGNORED_FIELD_TYPES = ['upload'];
-
-    /**
      * Slug regex
      */
     protected const string SLUG_REGEX = '/^[a-z0-9]+(?:-[a-z0-9]+)*$/i';
@@ -171,19 +157,9 @@ class Page extends Model implements Stringable
     ) {
         $this->setMultiple($data);
 
-        $this->loadFiles();
-
-        if ($this->contentFile instanceof ContentFile && !$this->contentFile->isEmpty()) {
-            $this->data = array_replace_recursive(
-                $this->data,
-                $this->contentFile->frontmatter(),
-                ['content' => $this->contentFile->content()],
-            );
-        }
+        $this->load();
 
         $this->fields->setValues([...$this->data, 'slug' => $this->slug, 'parent' => $this->parent()?->route(), 'template' => $this->template]);
-
-        $this->loaded = true;
     }
 
     public function __toString(): string
@@ -856,31 +832,14 @@ class Page extends Model implements Stringable
             throw new InvalidValueException('Invalid page language', 'invalidLanguage');
         }
 
-        $frontmatter = $this->contentFile()?->frontmatter() ?? [];
+        $frontmatter = array_replace_recursive($this->contentFile()?->frontmatter() ?? [], Arr::undot($this->data));
+        unset($frontmatter['content']);
 
         $defaults = $this->defaults();
 
-        $fieldCollection = $this->fields
-            ->setValues([...$this->data, 'slug' => $this->slug, 'parent' => $this->parent()->route(), 'template' => $this->template])
-            ->validate();
-
-        foreach ($fieldCollection as $field) {
-            if (
-                $field->isEmpty()
-                || (Arr::has($defaults, $field->name()) && Arr::get($defaults, $field->name()) === $field->value())
-                || in_array($field->name(), self::IGNORED_FIELD_NAMES, true)
-                || in_array($field->type(), self::IGNORED_FIELD_TYPES, true)
-            ) {
-                Arr::remove($frontmatter, $field->name());
-                continue;
-            }
-
-            Arr::set($frontmatter, $field->name(), $field->value());
-        }
-
-        // Remove default values without a corresponding field from frontmatter
-        foreach ($defaults as $key => $defaultValue) {
-            if (Arr::has($frontmatter, $key) && !$fieldCollection->has($key) && $this->get($key) === $defaultValue) {
+        // Remove default values
+        foreach (Arr::dot($defaults) as $key => $defaultValue) {
+            if (Arr::has($frontmatter, $key) && Arr::get($frontmatter, $key) === $defaultValue) {
                 Arr::remove($frontmatter, $key);
             }
         }
@@ -944,9 +903,9 @@ class Page extends Model implements Stringable
     }
 
     /**
-     * Load files related to page
+     * Load page properties
      */
-    protected function loadFiles(): void
+    protected function load(): void
     {
         /**
          * @var array<string, array{path: string, filename: string, template: string}>
@@ -1047,7 +1006,17 @@ class Page extends Model implements Stringable
 
         $this->files ??= (new FileCollection($files))->sort();
 
-        $this->data = array_replace_recursive($this->defaults(), $this->data);
+        $this->data = array_replace_recursive(
+            $this->defaults(),
+            $this->data,
+            $this->contentFile()?->frontmatter() ?? []
+        );
+
+        if ($content = $this->contentFile?->content()) {
+            $this->data['content'] = $content;
+        }
+
+        $this->loaded = true;
     }
 
     /**

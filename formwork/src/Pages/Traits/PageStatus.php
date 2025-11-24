@@ -3,6 +3,7 @@
 namespace Formwork\Pages\Traits;
 
 use Formwork\Cms\App;
+use Formwork\Model\Attributes\ReadonlyModelProperty;
 use Formwork\Pages\Page;
 use Formwork\Utils\Date;
 use UnexpectedValueException;
@@ -19,11 +20,13 @@ trait PageStatus
      *
      * @var array<string, mixed>
      */
+    #[ReadonlyModelProperty]
     protected array $data = [];
 
     /**
      * Page status
      */
+    #[ReadonlyModelProperty]
     protected string $status;
 
     /**

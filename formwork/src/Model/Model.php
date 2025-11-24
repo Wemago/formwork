@@ -25,13 +25,23 @@ class Model implements Arrayable
     protected const string MODEL_IDENTIFIER = 'model';
 
     /**
+     * Model data
+     *
+     * @var array<string, mixed>
+     */
+    #[ReadonlyModelProperty]
+    protected array $data = [];
+
+    /**
      * Model scheme
      */
+    #[ReadonlyModelProperty]
     protected Scheme $scheme;
 
     /**
      * Model fields
      */
+    #[ReadonlyModelProperty]
     protected FieldCollection $fields;
 
     /**

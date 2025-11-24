@@ -4,11 +4,13 @@ namespace Formwork\Pages\Traits;
 
 use Formwork\Cms\App;
 use Formwork\Cms\Site;
+use Formwork\Model\Attributes\ReadonlyModelProperty;
 use Formwork\Utils\Path;
 use Formwork\Utils\Uri;
 
 trait PageUri
 {
+    #[ReadonlyModelProperty]
     protected App $app;
 
     /**

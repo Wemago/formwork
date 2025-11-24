@@ -8,6 +8,7 @@ use Formwork\Files\FileFactory;
 use Formwork\Languages\Languages;
 use Formwork\Languages\LanguagesFactory;
 use Formwork\Metadata\MetadataCollection;
+use Formwork\Model\Attributes\ReadonlyModelProperty;
 use Formwork\Model\Model;
 use Formwork\Pages\ContentFile;
 use Formwork\Pages\Exceptions\PageNotFoundException;
@@ -46,27 +47,32 @@ class Site extends Model implements Stringable
     /**
      * Site content file
      */
+    #[ReadonlyModelProperty]
     protected ?ContentFile $contentFile = null;
 
     /**
      * Site last modified time
      */
+    #[ReadonlyModelProperty]
     protected int $lastModifiedTime;
 
     /**
      * Site route
      */
-    protected ?string $route = null;
+    #[ReadonlyModelProperty]
+    protected ?string $route = '/';
 
     /**
      * Site canonical route
      */
+    #[ReadonlyModelProperty]
     protected ?string $canonicalRoute = null;
 
     /**
      * Site slug
      */
-    protected ?string $slug = null;
+    #[ReadonlyModelProperty]
+    protected ?string $slug = '';
 
     /**
      * Site languages
@@ -76,11 +82,13 @@ class Site extends Model implements Stringable
     /**
      * Site templates
      */
+    #[ReadonlyModelProperty]
     protected Templates $templates;
 
     /**
      * Site users
      */
+    #[ReadonlyModelProperty]
     protected Users $users;
 
     /**
@@ -93,6 +101,7 @@ class Site extends Model implements Stringable
      *
      * @var array<string, Page>
      */
+    #[ReadonlyModelProperty]
     protected array $storage = [];
 
     /**
@@ -110,6 +119,7 @@ class Site extends Model implements Stringable
     /**
      * Site files
      */
+    #[ReadonlyModelProperty]
     protected FileCollection $files;
 
     /**
@@ -538,10 +548,6 @@ class Site extends Model implements Stringable
     protected function setContentPath(string $path): void
     {
         $this->contentPath = FileSystem::normalizePath($path . '/');
-
-        $this->route = '/';
-
-        $this->slug = '';
     }
 
     /**

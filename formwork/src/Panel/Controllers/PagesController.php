@@ -204,7 +204,7 @@ final class PagesController extends AbstractController
             }
 
             if ($page->languages()->available()->has($language)) {
-                $page->setLanguage($language);
+                $page->set('language', $language);
             }
         } elseif ($this->site->languages()->hasMultiple() && $page->language() !== null) {
             if ($page->route() === null) {
@@ -404,7 +404,7 @@ final class PagesController extends AbstractController
         if ($routeParams->has('language')) {
             $language = $routeParams->get('language');
             if ($page->languages()->available()->has($language)) {
-                $page->setLanguage($language);
+                $page->set('language', $language);
             } else {
                 if ($this->request->isXmlHttpRequest()) {
                     return JsonResponse::error($this->translate('panel.pages.page.cannotDelete.invalidLanguage', $language), ResponseStatus::InternalServerError);

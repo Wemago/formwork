@@ -158,8 +158,6 @@ class Page extends Model implements Stringable
         $this->setMultiple($data);
 
         $this->load();
-
-        $this->fields->setValues([...$this->data, 'slug' => $this->slug, 'parent' => $this->parent()?->route(), 'template' => $this->template]);
     }
 
     public function __toString(): string
@@ -1015,6 +1013,9 @@ class Page extends Model implements Stringable
         if ($content = $this->contentFile?->content()) {
             $this->data['content'] = $content;
         }
+
+        $this->fields->setValues([...$this->data, 'slug' => $this->slug, 'parent' => $this->parent()?->route(), 'template' => $this->template])
+            ->validate();
 
         $this->loaded = true;
     }

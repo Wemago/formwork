@@ -854,7 +854,7 @@ class Page extends Model implements Stringable
             $this->contentFile()?->frontmatter() ?? []
         );
 
-        if ($content = $this->contentFile?->content()) {
+        if (($content = $this->contentFile?->content()) !== null) {
             $this->data['content'] = $content;
         }
 

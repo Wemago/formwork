@@ -311,8 +311,11 @@ final class PagesController extends AbstractController
         // Load data from POST variables
         $requestData = $this->request->input();
 
+        // Store original page values
+        $originalValues = $page->getMultiple(['published', 'cacheable']);
+
         // Validate fields against data
-        $page->fields()->setValues($requestData)->validate();
+        $page->fields()->setValues($requestData, null)->validate();
 
         if ($page->template()->name() !== ($template = $requestData->get('template'))) {
             $page->reload(['template' => $this->site->templates()->get($template)]);
@@ -323,7 +326,17 @@ final class PagesController extends AbstractController
             return $this->redirectToReferer(default: $this->generateRoute('panel.pages'), base: $this->panel->panelRoot());
         }
 
-        return new Response($page->render(), $page->responseStatus(), $page->headers());
+        // Set page as published and non-cacheable for preview
+        $page->setMultiple(['published' => true, 'cacheable' => false]);
+
+        try {
+            $response = new Response($page->render(), $page->responseStatus(), $page->headers());
+        } finally {
+            // Restore original page values to avoid side effects
+            $page->setMultiple($originalValues);
+        }
+
+        return $response;
     }
 
     /**

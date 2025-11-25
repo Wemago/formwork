@@ -803,6 +803,29 @@ class Page extends Model implements Stringable
     }
 
     /**
+     * Delete the page
+     *
+     * @param bool $allLanguages Whether to delete all language versions of the page
+     *
+     * @throws RuntimeException If the page is not deletable
+     */
+    public function delete(bool $allLanguages = false): void
+    {
+        if (!$this->isDeletable()) {
+            throw new RuntimeException('Cannot delete a non-deletable page');
+        }
+
+        if ($this->contentPath() !== null) {
+            // Delete just the content file only if there are more than one language
+            if ($this->contentFile() !== null && !$allLanguages && count($this->languages()->available()) > 1) {
+                FileSystem::delete($this->contentFile()->path());
+            } else {
+                FileSystem::delete($this->contentPath(), recursive: true);
+            }
+        }
+    }
+
+    /**
      * Write page contents and move or copy files if needed
      *
      * @param string|null $language Language code to save the page in

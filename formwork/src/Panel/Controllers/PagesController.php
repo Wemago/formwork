@@ -422,14 +422,7 @@ final class PagesController extends AbstractController
             return $this->redirectToReferer(default: $this->generateRoute('panel.pages'), base: $this->panel->panelRoot());
         }
 
-        if ($page->contentPath() !== null) {
-            // Delete just the content file only if there are more than one language
-            if ($page->contentFile() !== null && $routeParams->has('language') && count($page->languages()->available()) > 1) {
-                FileSystem::delete($page->contentFile()->path());
-            } else {
-                FileSystem::delete($page->contentPath(), recursive: true);
-            }
-        }
+        $page->delete(allLanguages: !$routeParams->has('language'));
 
         if ($this->request->isXmlHttpRequest()) {
             return JsonResponse::success($this->translate('panel.pages.page.deleted'));

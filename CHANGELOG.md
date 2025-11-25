@@ -1,5 +1,18 @@
 # Changelog
 
+# [2.2.1](https://github.com/getformwork/formwork/releases/tag/2.1.3)
+
+**Enhancements**
+- **Add `PageCollection::routable()` to filter routable pages**
+- **Add `Page::delete()`**
+- Preview pages as published regardless of their actual status
+- Allow preview of non-routable pages
+- Store tabs state in localStorage to persist between panel views loads
+
+**Bug fixes**
+- Fix query and fragment being removed by `Uri::resolveRelative()`
+- Fix duplicate page button in the panel remaining disabled even if all children pages were removed
+
 # [2.2.0](https://github.com/getformwork/formwork/releases/tag/2.2.0)
 
 **Enhancements**

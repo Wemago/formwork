@@ -805,6 +805,8 @@ class Page extends Model implements Stringable
     /**
      * Delete the page
      *
+     * @since 2.2.1
+     *
      * @param bool $allLanguages Whether to delete all language versions of the page
      *
      * @throws RuntimeException If the page is not deletable

@@ -77,6 +77,8 @@ class PageCollection extends AbstractCollection implements Paginable
 
     /**
      * Get all the routable pages in the collection
+     *
+     * @since 2.2.1
      */
     public function routable(): static
     {

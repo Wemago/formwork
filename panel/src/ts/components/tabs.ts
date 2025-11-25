@@ -4,7 +4,7 @@ export class Tabs {
     constructor() {
         $$(".tabs").forEach((tabs) => {
             const formName = tabs.closest("form")?.dataset.form;
-            const tabButtons = $$(".tabs-tab", tabs);
+            const tabButtons = $$(".tabs-tab[data-tab]", tabs);
 
             const selectTab = (name: string) => {
                 tabButtons.forEach((button) => {

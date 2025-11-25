@@ -76,6 +76,14 @@ class PageCollection extends AbstractCollection implements Paginable
     }
 
     /**
+     * Get all the routable pages in the collection
+     */
+    public function routable(): static
+    {
+        return $this->filterBy('routable');
+    }
+
+    /**
      * Get all the pages in the collection which allow children
      */
     public function allowingChildren(): static

@@ -148,7 +148,7 @@ export class UploadInput {
                                             input.addOption({
                                                 label: data.name,
                                                 value: data.name,
-                                                thumb: data.thumbnail,
+                                                thumb: data.type === "image" ? data.thumbnail : undefined,
                                                 icon: `file-${data.type}`,
                                             });
                                             input.sortDropdownItems();
@@ -158,7 +158,7 @@ export class UploadInput {
                                             input.addDropdownItem({
                                                 label: data.name,
                                                 value: data.name,
-                                                thumb: data.thumbnail,
+                                                thumb: data.type === "image" ? data.thumbnail : undefined,
                                                 icon: toCamelCase(`file-${data.type}`) as keyof typeof icons,
                                             });
                                             input.sortDropdownItems();

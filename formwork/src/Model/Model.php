@@ -3,6 +3,7 @@
 namespace Formwork\Model;
 
 use BadMethodCallException;
+use Formwork\Cms\App;
 use Formwork\Data\Contracts\Arrayable;
 use Formwork\Data\Traits\DataMultipleGetter;
 use Formwork\Data\Traits\DataMultipleSetter;
@@ -31,6 +32,12 @@ class Model implements Arrayable
      */
     #[ReadonlyModelProperty]
     protected array $data = [];
+
+    /**
+     * Application instance
+     */
+    #[ReadonlyModelProperty]
+    protected App $app;
 
     /**
      * Model scheme
@@ -185,6 +192,14 @@ class Model implements Arrayable
     public function data(): array
     {
         return $this->data;
+    }
+
+    /**
+     * Get the application instance
+     */
+    protected function app(): App
+    {
+        return $this->app ?? App::instance();
     }
 
     /**

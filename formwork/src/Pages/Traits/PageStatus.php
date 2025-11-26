@@ -11,11 +11,6 @@ use UnexpectedValueException;
 trait PageStatus
 {
     /**
-     * App instance
-     */
-    protected App $app;
-
-    /**
      * Page data
      *
      * @var array<string, mixed>
@@ -46,8 +41,8 @@ trait PageStatus
         $now = time();
 
         $formats = [
-            $this->app->config()->get('system.date.dateFormat'),
-            $this->app->config()->get('system.date.datetimeFormat'),
+            $this->app()->config()->get('system.date.dateFormat'),
+            $this->app()->config()->get('system.date.datetimeFormat'),
         ];
 
         if ($publishDate = ($this->data['publishDate'] ?? null)) {
@@ -73,4 +68,9 @@ trait PageStatus
 
         return $this->status;
     }
+
+    /**
+     * Get the application instance
+     */
+    abstract protected function app(): App;
 }

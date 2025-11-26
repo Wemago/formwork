@@ -4,15 +4,11 @@ namespace Formwork\Pages\Traits;
 
 use Formwork\Cms\App;
 use Formwork\Cms\Site;
-use Formwork\Model\Attributes\ReadonlyModelProperty;
 use Formwork\Utils\Path;
 use Formwork\Utils\Uri;
 
 trait PageUri
 {
-    #[ReadonlyModelProperty]
-    protected App $app;
-
     /**
      * Get page or site route
      */
@@ -33,7 +29,7 @@ trait PageUri
      */
     public function uri(string $path = '', bool|string $includeLanguage = true): string
     {
-        $base = $this->app->request()->root();
+        $base = $this->app()->request()->root();
 
         $route = $this->canonicalRoute() ?? $this->route();
 
@@ -56,6 +52,11 @@ trait PageUri
      */
     public function absoluteUri(string $path = '', bool|string $includeLanguage = true): string
     {
-        return Uri::resolveRelative($this->uri($path, $includeLanguage), $this->app->request()->absoluteUri());
+        return Uri::resolveRelative($this->uri($path, $includeLanguage), $this->app()->request()->absoluteUri());
     }
+
+    /**
+     * Get the application instance
+     */
+    abstract protected function app(): App;
 }

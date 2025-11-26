@@ -152,9 +152,12 @@ class Page extends Model implements Stringable
      */
     public function __construct(
         array $data,
-        protected App $app,
-        protected PageCollectionFactory $pageCollectionFactory,
+        ?App $app = null,
     ) {
+        if ($app !== null) {
+            $this->app = $app;
+        }
+
         $this->setMultiple($data);
 
         $this->load();
@@ -179,7 +182,7 @@ class Page extends Model implements Stringable
      */
     public function site(): Site
     {
-        return $this->site;
+        return $this->site ??= $this->app()->site();
     }
 
     /**
@@ -539,17 +542,16 @@ class Page extends Model implements Stringable
             throw new RuntimeException('Unable to reload, the page has not been loaded yet');
         }
 
-        $app = $this->app;
-        $pageCollectionFactory = $this->pageCollectionFactory;
+        $app = $this->app ?? null;
 
         $path = $this->path;
-        $site = $this->site;
+        $site = $this->site ?? null;
 
         $data = [...compact('site', 'path'), ...$data];
 
         $this->resetProperties();
 
-        $this->__construct($data, $app, $pageCollectionFactory);
+        $this->__construct($data, $app);
     }
 
     /**
@@ -666,11 +668,11 @@ class Page extends Model implements Stringable
             throw new UnexpectedValueException('Unexpected missing parent content path');
         }
 
-        $config = $this->app->config();
+        $config = $this->app()->config();
 
         $language ??= $this->language();
 
-        if ($language !== null && !$this->site->languages()->available()->has($language)) {
+        if ($language !== null && !$this->site()->languages()->available()->has($language)) {
             throw new InvalidValueException('Invalid page language', 'invalidLanguage');
         }
 
@@ -738,8 +740,8 @@ class Page extends Model implements Stringable
 
             $this->reload(['path' => $contentPath]);
 
-            if ($this->site->contentPath() !== null) {
-                FileSystem::touch($this->site->contentPath());
+            if ($this->site()->contentPath() !== null) {
+                FileSystem::touch($this->site()->contentPath());
             }
         }
     }
@@ -764,9 +766,9 @@ class Page extends Model implements Stringable
          */
         $languages = [];
 
-        $config = $this->app->config();
+        $config = $this->app()->config();
 
-        $site = $this->site;
+        $site = $this->site();
 
         if ($this->path !== null && FileSystem::isDirectory($this->path, assertExists: false)) {
             foreach (FileSystem::listFiles($this->path) as $file) {
@@ -797,7 +799,7 @@ class Page extends Model implements Stringable
                         continue;
                     }
                     if (in_array($extension, $config->get('system.files.allowedExtensions'), true)) {
-                        $files[] = $this->app->getService(FileFactory::class)->make(FileSystem::joinPaths($this->path, $file));
+                        $files[] = $this->app()->getService(FileFactory::class)->make(FileSystem::joinPaths($this->path, $file));
                     }
                 }
             }
@@ -858,8 +860,13 @@ class Page extends Model implements Stringable
             $this->data['content'] = $content;
         }
 
-        $this->fields->setValues([...$this->data, 'slug' => $this->slug, 'parent' => $this->parent()?->route(), 'template' => $this->template])
-            ->validate();
+        // Always provide slug and parent to allow validation if the scheme define them as required fields
+        $this->fields->setValues([
+            ...$this->data,
+            'slug'     => $this->slug ?? Str::slug($this->data['title'] ?? 'page'),
+            'parent'   => $this->parent() ?? $site,
+            'template' => $this->template,
+        ])->validate();
 
         $this->loaded = true;
     }
@@ -987,9 +994,9 @@ class Page extends Model implements Stringable
         if ($parent instanceof Page || $parent instanceof Site) {
             $this->parent = $parent;
         } elseif ($parent === '.') {
-            $this->parent = $this->site;
+            $this->parent = $this->site();
         } else {
-            $this->parent = $this->site->findPage($parent) ?? throw new InvalidValueException('Invalid parent', 'invalidParent');
+            $this->parent = $this->site()->findPage($parent) ?? throw new InvalidValueException('Invalid parent', 'invalidParent');
         }
     }
 
@@ -1003,12 +1010,12 @@ class Page extends Model implements Stringable
         if ($template instanceof Template) {
             $this->template = $template;
         } else {
-            if (!$this->site->templates()->has($template)) {
+            if (!$this->site()->templates()->has($template)) {
                 throw new InvalidValueException('Invalid page template', 'invalidTemplate');
             }
-            $this->template = $this->site->templates()->get($template);
+            $this->template = $this->site()->templates()->get($template);
         }
-        $this->scheme = $this->site->schemes()->get('pages.' . $template);
+        $this->scheme = $this->site()->schemes()->get('pages.' . $template);
     }
 
     /**
@@ -1027,7 +1034,7 @@ class Page extends Model implements Stringable
         if ($this->isIndexPage() || $this->isErrorPage()) {
             throw new InvalidValueException('Cannot change slug of index or error pages', 'indexOrErrorPageSlug');
         }
-        if ($this->site->findPage($this->parent()?->route() . $slug . '/') !== null) {
+        if ($this->site()->findPage($this->parent()?->route() . $slug . '/') !== null) {
             throw new InvalidValueException('A page with the same route already exists', 'alreadyExists');
         }
         $this->slug = $slug;
@@ -1047,7 +1054,7 @@ class Page extends Model implements Stringable
 
             if ($mode === 'date') {
                 $timestamp = isset($this->data['publishDate'])
-                    ? Date::toTimestamp($this->data['publishDate'], [$this->app->config()->get('system.date.dateFormat'), $this->app->config()->get('system.date.datetimeFormat')])
+                    ? Date::toTimestamp($this->data['publishDate'], [$this->app()->config()->get('system.date.dateFormat'), $this->app()->config()->get('system.date.datetimeFormat')])
                     : ($this->contentFile()?->lastModifiedTime() ?? time());
                 $num = (int) date(self::DATE_NUM_FORMAT, $timestamp);
             } elseif ($this->parent() === null) {

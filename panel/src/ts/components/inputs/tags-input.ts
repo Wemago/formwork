@@ -478,7 +478,7 @@ export class TagsInput {
             }
             element.classList.remove("selected");
         });
-        if (visibleItems > 0) {
+        if (visibleItems > 0 && this.innerInput === document.activeElement) {
             this.dropdown.style.display = "block";
         } else {
             this.dropdown.style.display = "none";

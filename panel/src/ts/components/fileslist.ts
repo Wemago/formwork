@@ -247,6 +247,7 @@ export class FilesList {
                     Object.assign(modal.data, {
                         action: trigger.dataset.action,
                         item: trigger.closest(".files-item"),
+                        filename: (trigger.closest(".files-item") as HTMLElement)?.dataset.filename,
                     });
                 }
             });
@@ -274,7 +275,7 @@ export class FilesList {
                             if (this.form) {
                                 for (const name in this.form.inputs) {
                                     const input = this.form.inputs[name];
-                                    if (input instanceof SelectInput && !input.element.classList.contains("form-file") && !input.element.classList.contains("form-image")) {
+                                    if (input instanceof SelectInput && (input.element.classList.contains("form-file") || input.element.classList.contains("form-image"))) {
                                         input.removeOption(filename as string);
                                     }
 

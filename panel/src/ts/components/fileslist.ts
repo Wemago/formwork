@@ -1,3 +1,4 @@
+import type * as icons from "./icons";
 import { $, $$ } from "../utils/selectors";
 import { escapeHtml, escapeRegExp, makeDiacriticsRegExp } from "../utils/validation";
 import { app } from "../app";
@@ -7,6 +8,7 @@ import { Notification } from "./notification";
 import { Request } from "../utils/request";
 import { SelectInput } from "./inputs/select-input";
 import { TagsInput } from "./inputs/tags-input";
+import { toCamelCase } from "../utils/strings";
 
 export class FilesList {
     readonly element: HTMLElement;
@@ -188,6 +190,7 @@ export class FilesList {
                     Object.assign(modal.data, {
                         action: trigger.dataset.action,
                         item: trigger.closest(".files-item"),
+                        filename: (trigger.closest(".files-item") as HTMLElement)?.dataset.filename,
                         input,
                     });
                 }
@@ -208,21 +211,51 @@ export class FilesList {
                     },
                     (response) => {
                         if (response.status === "success") {
-                            (item as HTMLElement).dataset.filename = response.data.filename;
+                            const data = response.data;
+
+                            (item as HTMLElement).dataset.filename = data.filename;
 
                             const anchor = $(".file-name a", item as HTMLElement) as HTMLAnchorElement;
-                            anchor.innerText = response.data.filename;
-                            anchor.href = response.data.uri;
+                            anchor.innerText = data.filename;
+                            anchor.href = data.uri;
 
-                            ($("[data-command=infoFile]", item as HTMLElement) as HTMLAnchorElement).href = response.data.actions.info;
-                            ($("[data-command=previewFile]", item as HTMLElement) as HTMLAnchorElement).href = response.data.uri;
-                            ($("[data-command=renameFile]", item as HTMLElement) as HTMLElement).dataset.action = response.data.actions.rename;
-                            ($("[data-command=replaceFile]", item as HTMLElement) as HTMLElement).dataset.action = response.data.actions.replace;
-                            ($("[data-command=deleteFile]", item as HTMLElement) as HTMLElement).dataset.action = response.data.actions.delete;
+                            ($("[data-command=infoFile]", item as HTMLElement) as HTMLAnchorElement).href = data.actions.info;
+                            ($("[data-command=previewFile]", item as HTMLElement) as HTMLAnchorElement).href = data.uri;
+                            ($("[data-command=renameFile]", item as HTMLElement) as HTMLElement).dataset.action = data.actions.rename;
+                            ($("[data-command=replaceFile]", item as HTMLElement) as HTMLElement).dataset.action = data.actions.replace;
+                            ($("[data-command=deleteFile]", item as HTMLElement) as HTMLElement).dataset.action = data.actions.delete;
 
-                            if (response.data.thumbnail) {
+                            if (data.thumbnail) {
                                 const thumbnail = $(".file-thumbnail", item as HTMLElement) as HTMLImageElement | HTMLVideoElement;
-                                thumbnail.src = response.data.thumbnail;
+                                thumbnail.src = data.thumbnail;
+                            }
+
+                            if (this.form) {
+                                for (const name in this.form.inputs) {
+                                    const input = this.form.inputs[name];
+
+                                    if (input instanceof SelectInput && (input.element.classList.contains("form-file") || input.element.classList.contains("form-image"))) {
+                                        input.removeOption(filename as string);
+                                        input.addOption({
+                                            label: data.filename,
+                                            value: data.filename,
+                                            thumb: data.type === "image" ? data.thumbnail : undefined,
+                                            icon: `file-${data.type}`,
+                                        });
+                                        input.sortDropdownItems();
+                                    }
+
+                                    if (input instanceof TagsInput && (input.element.classList.contains("form-files") || input.element.classList.contains("form-images"))) {
+                                        input.removeDropdownItem(filename as string);
+                                        input.addDropdownItem({
+                                            label: data.filename,
+                                            value: data.filename,
+                                            thumb: data.type === "image" ? data.thumbnail : undefined,
+                                            icon: toCamelCase(`file-${data.type}`) as keyof typeof icons,
+                                        });
+                                        input.sortDropdownItems();
+                                    }
+                                }
                             }
 
                             this.sort(".file-name");

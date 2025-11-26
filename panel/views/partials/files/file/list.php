@@ -40,14 +40,14 @@
         <div class="file-thumbnail"></div>
         <div class="files-item-cell file-icon"></div>
         <div class="files-item-cell file-name truncate"><a></a></div>
-        <?php if (in_array('date', $columns, true)) : ?>
-            <div class="files-item-cell file-date truncate"></div>
-        <?php endif ?>
         <?php if (in_array('parent', $columns, true)) : ?>
-            <div class="files-item-cell file-parent truncate"></div>
+            <div class="files-item-cell file-parent truncate show-from-lg"></div>
+        <?php endif ?>
+        <?php if (in_array('date', $columns, true)) : ?>
+            <div class="files-item-cell file-date truncate show-from-lg"></div>
         <?php endif ?>
         <?php if (in_array('size', $columns, true)) : ?>
-            <div class="files-item-cell file-size truncate"></div>
+            <div class="files-item-cell file-size truncate show-from-lg"></div>
         <?php endif ?>
         <div class="files-item-cell file-actions">
             <div class="dropdown">

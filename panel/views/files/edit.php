@@ -59,6 +59,28 @@
             </div>
         </section>
     <?php endif ?>
+    <?php if ($file->type() === 'audio') : ?>
+        <section class="section">
+            <div class="section-header">
+                <span class="caption"><?= $this->translate('panel.files.preview') ?></span>
+            </div>
+            <div class="section-content file-preview-container">
+                <audio class="file-preview-audio" controls>
+                    <source src="<?= $file->uri() ?>" type="<?= $file->mimeType() ?>" />
+                </audio>
+            </div>
+        </section>
+    <?php endif ?>
+    <?php if ($file->type() === 'pdf') : ?>
+        <section class="section">
+            <div class="section-header">
+                <span class="caption"><?= $this->translate('panel.files.preview') ?></span>
+            </div>
+            <div class="section-content file-preview-container">
+                <embed class="file-preview-pdf" src="<?= $file->uri() ?>" type="<?= $file->mimeType() ?>" />
+            </div>
+        </section>
+    <?php endif ?>
     <section class="section">
         <div class="section-header">
             <span class="caption"><?= $this->translate('panel.files.info') ?></span>

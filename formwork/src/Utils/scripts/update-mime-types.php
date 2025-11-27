@@ -59,7 +59,7 @@ foreach ($mimeTypes as $ext => $mimeType) {
     $lines[] = sprintf("        '%s'%s => '%s',", $ext, str_repeat(' ', $maxlen - strlen($ext)), $mimeType);
 }
 
-$file = '../MimeType.php';
+$file = dirname(__DIR__) . '/MimeType.php';
 
 $content = file_get_contents($file);
 

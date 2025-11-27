@@ -66,17 +66,20 @@ final class FilesController extends AbstractController
                 ? $this->config->get('system.files.paths.site')
                 : $parent->contentPath();
 
-            foreach ($files as $file) {
-                $this->fileUploader->upload(
-                    $file,
-                    $destination,
-                    $filesField->filename(),
-                    $filesField->acceptMimeTypes(),
-                    $filesField->overwrite(),
-                );
+            try {
+                foreach ($files as $file) {
+                    $this->fileUploader->upload(
+                        $file,
+                        $destination,
+                        $filesField->filename(),
+                        $filesField->acceptMimeTypes(),
+                        $filesField->overwrite(),
+                    );
+                }
+                $this->panel->notify($this->translate('panel.files.uploaded'), 'success');
+            } catch (TranslatedException $e) {
+                $this->panel->notify($this->translate('upload.error', $this->translate($e->getLanguageString())), 'error');
             }
-
-            $this->panel->notify($this->translate('panel.files.uploaded'), 'success');
         }
 
         return $this->redirect($this->generateRoute('panel.files.index'));

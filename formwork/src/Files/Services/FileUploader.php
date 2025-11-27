@@ -66,7 +66,13 @@ class FileUploader
             throw new TranslatedException('Invalid destination path', 'upload.error.cannotMoveToDestination');
         }
 
-        $filename = Str::slug($name ?? pathinfo($uploadedFile->clientName(), PATHINFO_FILENAME)) . '.' . MimeType::toExtension($mimeType);
+        $clientExtension = FileSystem::extension($uploadedFile->clientName());
+
+        $extension = in_array($clientExtension, MimeType::getAssociatedExtensions($mimeType), true)
+            ? $clientExtension
+            : MimeType::toExtension($mimeType);
+
+        $filename = Str::slug($name ?? pathinfo($uploadedFile->clientName(), PATHINFO_FILENAME)) . '.' . $extension;
 
         $uploadedFile->move($destinationPath, $filename, $overwrite);
 

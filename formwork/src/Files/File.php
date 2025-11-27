@@ -45,6 +45,8 @@ class File extends Model implements Arrayable, Stringable
 
     /**
      * File type in a human-readable format
+     *
+     * @var 'archive'|'audio'|'document'|'image'|'pdf'|'presentation'|'spreadsheet'|'text'|'video'|null
      */
     #[ReadonlyModelProperty]
     protected ?string $type = null;
@@ -123,26 +125,30 @@ class File extends Model implements Arrayable, Stringable
     }
 
     /**
-     * Get file type in a human-readable format
+     * Get file type in a human-readable format (`archive`, `audio`, `document`, `image`, `pdf`, `presentation`, `spreadsheet`, `text`, `video` or `null` if unknown)
+     *
+     * Image, audio and video types are restricted to the supported formats
+     *
+     * @return 'archive'|'audio'|'document'|'image'|'pdf'|'presentation'|'spreadsheet'|'text'|'video'|null
      */
     public function type(): ?string
     {
         if ($this->type !== null) {
             return $this->type;
         }
-        if (Str::startsWith($this->mimeType(), 'image')) {
-            return $this->type = 'image';
-        }
         if (Str::startsWith($this->mimeType(), 'text')) {
             return $this->type = 'text';
         }
-        if (Str::startsWith($this->mimeType(), 'audio')) {
+        if (Str::startsWith($this->mimeType(), 'image') && $this->matchExtensions(['gif', 'jpg', 'jpeg', 'jpe', 'png', 'svg', 'webp'])) {
+            return $this->type = 'image';
+        }
+        if (Str::startsWith($this->mimeType(), 'audio') && $this->matchExtensions(['mp3', 'mpga', 'mp2', 'm2a', 'mp2a', 'm3a', 'm4a', 'mp4a', 'aac', 'wav', 'oga', 'ogg', 'spx', 'opus', 'flac'])) {
             return $this->type = 'audio';
         }
-        if (Str::startsWith($this->mimeType(), 'video')) {
+        if (Str::startsWith($this->mimeType(), 'video') && $this->matchExtensions(['mp4', 'mpg4', 'mp4v', 'webm', 'ogg', 'mov'])) {
             return $this->type = 'video';
         }
-        if ($this->mimeType() === MimeType::fromExtension('pdf')) {
+        if ($this->matchExtensions(['pdf'])) {
             return $this->type = 'pdf';
         }
         if ($this->matchExtensions(['doc', 'docx', 'odt', 'odm', 'ott'])) {

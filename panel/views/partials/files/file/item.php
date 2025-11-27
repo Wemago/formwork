@@ -1,9 +1,9 @@
 <div class="files-item" data-filename="<?= $file->name() ?>">
     <?php if ($file->type() === 'image') : ?>
-        <img class="file-thumbnail" src="<?= $file->square(300, 'contain')->uri() ?>" loading="lazy">
+        <img class="file-thumbnail" data-src="<?= $file->square(300, 'contain')->uri() ?>" loading="lazy">
     <?php endif ?>
     <?php if ($file->type() === 'video') : ?>
-        <video class="file-thumbnail" src="<?= $file->uri() ?>" preload="metadata"></video>
+        <video class="file-thumbnail" data-src="<?= $file->uri() ?>" preload="metadata"></video>
     <?php endif ?>
     <div class="files-item-cell file-icon"><?= $this->icon(is_null($file->type()) ? 'file' : 'file-' . $file->type()) ?></div>
     <div class="files-item-cell file-name truncate"><a href="<?= $this->uri($app->router()->generate('panel.files.edit', ['model' => $model->getModelIdentifier(), 'id' => $model->route(), 'filename' => $file->name()])) ?>"><?= $this->escape($file->name()) ?></a></div>

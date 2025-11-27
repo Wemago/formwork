@@ -122,6 +122,10 @@
     pointer-events: none;
 }
 
+.file-thumbnail:not([src]) {
+    display: none;
+}
+
 .is-thumbnails .files-list-headers {
     display: none;
 }

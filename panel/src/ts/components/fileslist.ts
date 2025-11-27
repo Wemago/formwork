@@ -39,6 +39,11 @@ export class FilesList {
         const toggle = $(".form-togglegroup.files-list-view-as", this.element);
         const searchInput = $(".files-search", this.element) as HTMLInputElement;
 
+        $$(".file-thumbnail[data-src]", this.element).forEach((thumbnail: HTMLImageElement | HTMLVideoElement) => {
+            thumbnail.addEventListener("error", () => thumbnail.removeAttribute("src"));
+            thumbnail.src = thumbnail.dataset.src as string;
+        });
+
         if (toggle) {
             const formName = this.element.closest("form")?.dataset.form;
 

@@ -11,14 +11,6 @@ use UnexpectedValueException;
 trait PageStatus
 {
     /**
-     * Page data
-     *
-     * @var array<string, mixed>
-     */
-    #[ReadonlyModelProperty]
-    protected array $data = [];
-
-    /**
      * Page status
      */
     #[ReadonlyModelProperty]

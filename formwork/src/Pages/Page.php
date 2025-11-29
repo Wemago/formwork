@@ -790,10 +790,23 @@ class Page extends Model implements Stringable
 
         $duplicatePage = clone $this;
 
+        // Generate a unique slug by checking for existing copies
+        $baseSlug = $this->slug();
+        $newSlug = $baseSlug . '-copy';
+        $counter = 1;
+
+        if ($this->parent() !== null) {
+            $slugs = $this->parent()->children()->everyItem()->slug();
+            while ($slugs->contains($newSlug)) {
+                $counter++;
+                $newSlug = $baseSlug . '-copy-' . $counter;
+            }
+        }
+
         $duplicatePage->setMultiple([
             'path'           => null,
             'canonicalRoute' => null,
-            'slug'           => $this->slug() . '-copy',
+            'slug'           => $newSlug,
             ...$with,
         ]);
 

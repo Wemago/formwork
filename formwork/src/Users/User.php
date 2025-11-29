@@ -13,6 +13,7 @@ use Formwork\Schemes\Schemes;
 use Formwork\Users\Exceptions\AuthenticationFailedException;
 use Formwork\Users\Exceptions\UserImageNotFoundException;
 use Formwork\Users\Exceptions\UserNotLoggedException;
+use Formwork\Utils\Arr;
 use Formwork\Utils\FileSystem;
 use SensitiveParameter;
 
@@ -64,7 +65,7 @@ class User extends Model
         $this->fields = $this->scheme->fields();
         $this->fields->setModel($this);
 
-        $this->data = [...$this->defaults, ...$data];
+        $this->data = array_replace_recursive($this->defaults, Arr::undot($data));
 
         $this->fields->setValues($this->data);
     }

@@ -83,8 +83,9 @@ class FileUploader
                 case 'image/jpeg':
                 case 'image/png':
                 case 'image/webp':
-                    // Process JPEG, PNG and WebP images according to system options (e.g. quality)
-                    if ($this->config->get('system.uploads.processImages')) {
+                case 'image/avif':
+                    // Process JPEG, PNG, WebP and AVIF images according to system options (e.g. quality)
+                    if ($this->config->get('system.uploads.processImages') && !$file->info()->isAnimation()) {
                         $file->save();
                     }
                     break;

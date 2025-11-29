@@ -216,7 +216,11 @@ final class PagesController extends AbstractController
 
         $createNew = $this->request->query()->has('createNew');
 
-        // Load page fields
+        // Clone the page fields to work with a separate copy
+        // This allows us to:
+        // 1. Remove upload fields after processing (they shouldn't be saved to page data)
+        // 2. Validate user input without modifying the original page fields
+        // 3. Keep the original page fields intact for rendering the form on validation errors
         $fieldCollection = $page->fields()->deepClone();
 
         switch ($this->request->method()) {
@@ -553,6 +557,7 @@ final class PagesController extends AbstractController
      */
     private function updatePage(Page $page, RequestData $requestData, FieldCollection $fieldCollection, bool $force = false): Page
     {
+        // Process upload fields first
         foreach ($fieldCollection as $field) {
             if ($field->type() === 'upload') {
                 if (!$field->isEmpty()) {
@@ -567,14 +572,20 @@ final class PagesController extends AbstractController
                         );
                     }
                     $this->updateLastModifiedTime($page);
+                    // Reload the page to refresh its internal state after file upload
+                    // Note: This reloads $page->fields() but doesn't affect our $fieldCollection
                     $page->reload();
                 }
+                // Remove upload field from the collection - upload fields should not be saved to page data
+                // They are only used for file uploads, not for storing values in the frontmatter
                 $fieldCollection->remove($field->name());
             }
         }
 
         $previousData = $page->data();
 
+        // Extract validated values from remaining fields (upload fields have been removed)
+        // These are the user's submitted values that were validated earlier
         /** @var array<string, mixed> */
         $data = [...$fieldCollection->everyItem()->value()->toArray(), 'slug' => $requestData->get('slug')];
 

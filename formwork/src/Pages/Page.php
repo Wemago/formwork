@@ -536,6 +536,20 @@ class Page extends Model implements Stringable
      *
      * @internal
      */
+    /**
+     * Reload the page from disk
+     *
+     * This method completely resets all page properties and reconstructs
+     * the page by re-reading from disk. This ensures the page state matches
+     * the file system after external changes (e.g., file uploads).
+     *
+     * After calling reload(), the page's internal fields ($this->fields) are
+     * recreated and populated with fresh data from disk.
+     *
+     * @param array<string, mixed> $data Additional data to merge during reconstruction
+     *
+     * @throws RuntimeException If the page has not been loaded yet
+     */
     public function reload(array $data = []): void
     {
         if (!$this->hasLoaded()) {
@@ -747,7 +761,17 @@ class Page extends Model implements Stringable
     }
 
     /**
-     * Load page properties
+     * Load page from disk and initialize fields
+     *
+     * Data loading order (later sources override earlier ones):
+     * 1. Page defaults from scheme
+     * 2. Data passed to constructor ($this->data)
+     * 3. Content file frontmatter
+     * 4. Content file body (sets 'content' key)
+     *
+     * After data is loaded, fields are initialized and validated against
+     * the merged data. This ensures field values are consistent with the
+     * page's actual state.
      */
     protected function load(): void
     {

@@ -135,6 +135,10 @@ class Model implements Arrayable
 
     /**
      * Set a data value by key
+     *
+     * This method updates both the data array and the corresponding field
+     * (if it exists). The field's validation may transform the value before
+     * it's stored in the data array.
      */
     public function set(string $key, mixed $value): void
     {
@@ -154,6 +158,8 @@ class Model implements Arrayable
         }
 
         // Set value in the corresponding field if exists
+        // Note: This updates the field in $this->fields, which may not be
+        // the same instance as a cloned field collection used elsewhere
         if (isset($this->fields) && $this->fields->has($key)) {
             /** @var Field */
             $field = $this->fields->get($key);

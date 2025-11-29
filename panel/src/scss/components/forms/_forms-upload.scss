@@ -40,3 +40,9 @@
 .file-size-inline {
     color: var(--color-base-300);
 }
+
+.form-upload-drop-target .spinner::before {
+    border-color: var(--color-base-500);
+    border-top-color: var(--color-accent-500);
+    border-right-color: var(--color-accent-500);
+}

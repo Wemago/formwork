@@ -93,6 +93,7 @@ export class UploadInput {
 
         this.dropTarget.addEventListener("drop", (event) => {
             event.preventDefault();
+            this.dropTarget.classList.remove("drag");
             if (this.isSubmitted) {
                 return;
             }

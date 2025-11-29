@@ -119,60 +119,66 @@ export class UploadInput {
     private initFilesList() {
         if (this.element.dataset.autoUpload === "true") {
             this.element.addEventListener("change", () => {
-                if (this.element.files?.length) {
-                    for (const file of Array.from(this.element.files)) {
-                        const formData = new FormData();
-                        formData.append("csrf-token", app.config.csrfToken as string);
-                        formData.append(this.element.name, file);
+                if (!this.element.files) {
+                    return;
+                }
 
-                        this.dropTargetLabel.innerHTML += ' <span class="spinner"></span>';
+                let files = Array.from(this.element.files);
 
-                        new Request(
-                            {
-                                method: "POST",
-                                data: formData,
-                            },
-                            (response) => {
-                                const notification = new Notification(response.message, response.status);
+                this.updateDropTargetLabel(files, true);
 
-                                if (response.status === "success") {
-                                    const data = response.data[0];
-                                    const template = $("template[id=files-item]") as HTMLTemplateElement;
-                                    this.addFilesItem(data, template);
-                                    this.filesList.sort(".file-name");
-                                    this.filesList.element.hidden = false;
+                for (const file of files) {
+                    const formData = new FormData();
+                    formData.append("csrf-token", app.config.csrfToken as string);
+                    formData.append(this.element.name, file);
 
-                                    for (const name in this.form.inputs) {
-                                        const input = this.form.inputs[name];
-                                        if (input instanceof SelectInput && (input.element.classList.contains("form-file") || (input.element.classList.contains("form-image") && data.type === "image"))) {
-                                            input.addOption({
-                                                label: data.name,
-                                                value: data.name,
-                                                thumb: data.type === "image" ? data.thumbnail : undefined,
-                                                icon: `file-${data.type}`,
-                                            });
-                                            input.sortDropdownItems();
-                                        }
+                    new Request(
+                        {
+                            method: "POST",
+                            data: formData,
+                        },
+                        (response) => {
+                            const notification = new Notification(response.message, response.status);
 
-                                        if (input instanceof TagsInput && (input.element.classList.contains("form-files") || (input.element.classList.contains("form-images") && data.type === "image"))) {
-                                            input.addDropdownItem({
-                                                label: data.name,
-                                                value: data.name,
-                                                thumb: data.type === "image" ? data.thumbnail : undefined,
-                                                icon: toCamelCase(`file-${data.type}`) as keyof typeof icons,
-                                            });
-                                            input.sortDropdownItems();
-                                        }
+                            if (response.status === "success") {
+                                const data = response.data[0];
+                                const template = $("template[id=files-item]") as HTMLTemplateElement;
+                                this.addFilesItem(data, template);
+                                this.filesList.sort(".file-name");
+                                this.filesList.element.hidden = false;
+
+                                for (const name in this.form.inputs) {
+                                    const input = this.form.inputs[name];
+                                    if (input instanceof SelectInput && (input.element.classList.contains("form-file") || (input.element.classList.contains("form-image") && data.type === "image"))) {
+                                        input.addOption({
+                                            label: data.name,
+                                            value: data.name,
+                                            thumb: data.type === "image" ? data.thumbnail : undefined,
+                                            icon: `file-${data.type}`,
+                                        });
+                                        input.sortDropdownItems();
+                                    }
+
+                                    if (input instanceof TagsInput && (input.element.classList.contains("form-files") || (input.element.classList.contains("form-images") && data.type === "image"))) {
+                                        input.addDropdownItem({
+                                            label: data.name,
+                                            value: data.name,
+                                            thumb: data.type === "image" ? data.thumbnail : undefined,
+                                            icon: toCamelCase(`file-${data.type}`) as keyof typeof icons,
+                                        });
+                                        input.sortDropdownItems();
                                     }
                                 }
+                            }
 
-                                this.element.value = "";
-                                this.updateDropTargetLabel();
+                            this.element.value = "";
 
-                                notification.show();
-                            },
-                        );
-                    }
+                            files = files.filter((f) => f !== file);
+                            this.updateDropTargetLabel(files, true);
+
+                            notification.show();
+                        },
+                    );
                 }
             });
         }
@@ -184,15 +190,15 @@ export class UploadInput {
         return `${(size / 1024 ** exp).toFixed(2)} ${units[exp]}`;
     }
 
-    private updateDropTargetLabel() {
-        if (this.element.files && this.element.files.length > 0) {
+    private updateDropTargetLabel(files: File[] = Array.from(this.element.files ?? []), uploading: boolean = this.isSubmitted) {
+        if (files.length) {
             const filenames: string[] = [];
-            for (const file of Array.from(this.element.files)) {
+            for (const file of files) {
                 filenames.push(`${escapeHtml(file.name)} <span class="file-size-inline">(${this.formatFileSize(file.size)})</span>`);
             }
             this.dropTargetLabel.innerHTML = filenames.join(", ");
 
-            if (this.isSubmitted && !$(".spinner", this.dropTargetLabel)) {
+            if (uploading && !$(".spinner", this.dropTargetLabel)) {
                 const spinner = document.createElement("span");
                 spinner.classList.add("spinner", "ml-3");
                 this.dropTargetLabel.appendChild(spinner);

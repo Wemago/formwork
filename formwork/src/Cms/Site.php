@@ -127,7 +127,6 @@ class Site extends Model implements Stringable
      */
     public function __construct(
         array $data,
-        protected App $app,
         protected Config $config,
         protected LanguagesFactory $languagesFactory,
         protected PageFactory $pageFactory,
@@ -457,7 +456,7 @@ class Site extends Model implements Stringable
      */
     public function schemes(): Schemes
     {
-        return $this->app->schemes();
+        return $this->app()->schemes();
     }
 
     /**
@@ -465,9 +464,9 @@ class Site extends Model implements Stringable
      */
     public function load(): void
     {
-        $this->scheme = $this->app->schemes()->get('config.site');
-        $this->templates = $this->app->getService(Templates::class);
-        $this->users = $this->app->getService(Users::class);
+        $this->scheme = $this->app()->schemes()->get('config.site');
+        $this->templates = $this->app()->getService(Templates::class);
+        $this->users = $this->app()->getService(Users::class);
 
         $this->fields = $this->scheme->fields();
         $this->fields->setModel($this);
@@ -494,7 +493,7 @@ class Site extends Model implements Stringable
                 continue;
             }
             if (in_array($extension, $this->config->get('system.files.allowedExtensions'), true)) {
-                $files[] = $this->app->getService(FileFactory::class)->make(FileSystem::joinPaths($path, $file));
+                $files[] = $this->app()->getService(FileFactory::class)->make(FileSystem::joinPaths($path, $file));
             }
         }
 
@@ -512,7 +511,7 @@ class Site extends Model implements Stringable
         $this->languages = $this->languagesFactory->make($config);
 
         if (($currentTranslation = $this->languages->current() ?? $this->languages->default()) !== null) {
-            $this->app->translations()->setCurrent($currentTranslation->code());
+            $this->app()->translations()->setCurrent($currentTranslation->code());
         }
     }
 

@@ -4,6 +4,7 @@ namespace Formwork\Plugins;
 
 use Formwork\Config\Config;
 use Formwork\Events\EventDispatcher;
+use Formwork\Plugins\Events\PluginsInitializedEvent;
 use Formwork\Utils\FileSystem;
 use Formwork\Utils\Str;
 use InvalidArgumentException;
@@ -69,13 +70,13 @@ class Plugins
 
         $plugin->autoload()?->register();
 
-        $plugin->initialize();
-
         foreach ($plugin->getEventListeners() as $eventName => $method) {
             $this->eventDispatcher->on($eventName, $plugin->{$method}(...));
         }
 
         $this->storage[$id] = $plugin;
+
+        $plugin->initialize();
     }
 
     /**
@@ -90,6 +91,8 @@ class Plugins
 
             $this->initialize($id);
         }
+
+        $this->eventDispatcher->dispatch(new PluginsInitializedEvent($this));
     }
 
     /**

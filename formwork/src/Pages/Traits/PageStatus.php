@@ -3,6 +3,7 @@
 namespace Formwork\Pages\Traits;
 
 use Formwork\Cms\App;
+use Formwork\Model\Attributes\ReadonlyModelProperty;
 use Formwork\Pages\Page;
 use Formwork\Utils\Date;
 use UnexpectedValueException;
@@ -10,20 +11,9 @@ use UnexpectedValueException;
 trait PageStatus
 {
     /**
-     * App instance
-     */
-    protected App $app;
-
-    /**
-     * Page data
-     *
-     * @var array<string, mixed>
-     */
-    protected array $data = [];
-
-    /**
      * Page status
      */
+    #[ReadonlyModelProperty]
     protected string $status;
 
     /**
@@ -43,8 +33,8 @@ trait PageStatus
         $now = time();
 
         $formats = [
-            $this->app->config()->get('system.date.dateFormat'),
-            $this->app->config()->get('system.date.datetimeFormat'),
+            $this->app()->config()->get('system.date.dateFormat'),
+            $this->app()->config()->get('system.date.datetimeFormat'),
         ];
 
         if ($publishDate = ($this->data['publishDate'] ?? null)) {
@@ -70,4 +60,9 @@ trait PageStatus
 
         return $this->status;
     }
+
+    /**
+     * Get the application instance
+     */
+    abstract protected function app(): App;
 }

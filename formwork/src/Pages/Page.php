@@ -56,20 +56,6 @@ class Page extends Model implements Stringable
     protected const string MODEL_IDENTIFIER = 'page';
 
     /**
-     * Ignored field names on frontmatter generation
-     *
-     * @var list<string>
-     */
-    protected const array IGNORED_FIELD_NAMES = ['content', 'slug', 'template', 'parent'];
-
-    /**
-     * Ignored field types on frontmatter generation
-     *
-     * @var list<string>
-     */
-    protected const array IGNORED_FIELD_TYPES = ['upload'];
-
-    /**
      * Slug regex
      */
     protected const string SLUG_REGEX = '/^[a-z0-9]+(?:-[a-z0-9]+)*$/i';
@@ -166,24 +152,15 @@ class Page extends Model implements Stringable
      */
     public function __construct(
         array $data,
-        protected App $app,
-        protected PageCollectionFactory $pageCollectionFactory,
+        ?App $app = null,
     ) {
-        $this->setMultiple($data);
-
-        $this->loadFiles();
-
-        if ($this->contentFile instanceof ContentFile && !$this->contentFile->isEmpty()) {
-            $this->data = array_replace_recursive(
-                $this->data,
-                $this->contentFile->frontmatter(),
-                ['content' => $this->contentFile->content()],
-            );
+        if ($app !== null) {
+            $this->app = $app;
         }
 
-        $this->fields->setValues([...$this->data, 'slug' => $this->slug, 'parent' => $this->parent()?->route(), 'template' => $this->template]);
+        $this->setMultiple($data);
 
-        $this->loaded = true;
+        $this->load();
     }
 
     public function __toString(): string
@@ -191,12 +168,21 @@ class Page extends Model implements Stringable
         return (string) ($this->title() ?? $this->slug());
     }
 
+    public function __call(string $name, array $arguments): mixed
+    {
+        if (method_exists($this, $name) && Str::startsWith($name, 'set')) {
+            trigger_error(sprintf('Calling page setter methods directly is deprecated since Formwork 2.3.0. Use $page->set(\'%s\', $value) instead of $page->%s($value)', strtolower(Str::after($name, 'set')), $name), E_USER_DEPRECATED);
+            return $this->{$name}(...$arguments);
+        }
+        return parent::__call($name, $arguments);
+    }
+
     /**
      * Return site
      */
     public function site(): Site
     {
-        return $this->site;
+        return $this->site ??= $this->app()->site();
     }
 
     /**
@@ -369,24 +355,6 @@ class Page extends Model implements Stringable
     }
 
     /**
-     * Set page metadata
-     *
-     * @since 2.2.0
-     *
-     * @param array<string, mixed>|MetadataCollection $metadata
-     */
-    public function setMetadata(MetadataCollection|array $metadata): void
-    {
-        if ($metadata instanceof MetadataCollection) {
-            $this->metadata = $metadata;
-            $this->data['metadata'] = $metadata->toArray();
-        } else {
-            unset($this->metadata);
-            $this->data['metadata'] = $metadata;
-        }
-    }
-
-    /**
      * Get page files
      */
     public function files(): FileCollection
@@ -404,22 +372,6 @@ class Page extends Model implements Stringable
     public function taxonomy(): array
     {
         return $this->data['taxonomy'];
-    }
-
-    /**
-     * Set page taxonomy
-     *
-     * @param array<string, list<string>> $taxonomy
-     *
-     * @since 2.2.0
-     */
-    public function setTaxonomy(array $taxonomy): void
-    {
-        if (!Arr::every($taxonomy, fn($terms, $taxonomyName) => is_string($taxonomyName)
-            && is_array($terms) && Arr::every($terms, fn($term) => is_string($term)))) {
-            throw new InvalidValueException('Invalid taxonomy format');
-        }
-        $this->data['taxonomy'] = $taxonomy;
     }
 
     /**
@@ -443,137 +395,6 @@ class Page extends Model implements Stringable
         }
 
         return $this->responseStatus;
-    }
-
-    /**
-     * Set page HTTP response status
-     *
-     * @since 2.2.0
-     */
-    public function setResponseStatus(ResponseStatus|int|null $responseStatus): void
-    {
-        if ($responseStatus === null) {
-            unset($this->responseStatus, $this->data['responseStatus']);
-            return;
-        }
-
-        if (is_int($responseStatus)) {
-            $responseStatus = ResponseStatus::fromCode($responseStatus);
-        }
-
-        $this->responseStatus = $responseStatus;
-        $this->data['responseStatus'] = $responseStatus->code();
-    }
-
-    /**
-     * Set page language
-     *
-     * @throws InvalidValueException If the language is invalid
-     */
-    public function setLanguage(Language|string|null $language): void
-    {
-        if ($language === null) {
-            $this->language = null;
-        }
-
-        if (is_string($language)) {
-            $language = new Language($language);
-        }
-
-        if (!$this->hasLoaded()) {
-            $this->language = $language;
-            return;
-        }
-
-        if ($this->languages()->current()?->code() !== ($code = $language?->code())) {
-            if ($code !== null && !$this->languages()->available()->has($code)) {
-                throw new InvalidValueException(sprintf('Invalid page language "%s"', $code), 'invalidLanguage');
-            }
-            $this->reload(['language' => $language]);
-        }
-    }
-
-    /**
-     * Set page parent
-     *
-     * @throws InvalidValueException If the parent is invalid
-     */
-    public function setParent(Page|Site|string $parent): void
-    {
-        if ($parent instanceof Page || $parent instanceof Site) {
-            $this->parent = $parent;
-        } elseif ($parent === '.') {
-            $this->parent = $this->site;
-        } else {
-            $this->parent = $this->site->findPage($parent) ?? throw new InvalidValueException('Invalid parent', 'invalidParent');
-        }
-    }
-
-    /**
-     * Set page template
-     *
-     * @throws InvalidValueException If the template is invalid
-     */
-    public function setTemplate(Template|string $template): void
-    {
-        if ($template instanceof Template) {
-            $this->template = $template;
-        } else {
-            if (!$this->site->templates()->has($template)) {
-                throw new InvalidValueException('Invalid page template', 'invalidTemplate');
-            }
-            $this->template = $this->site->templates()->get($template);
-        }
-        $this->scheme = $this->site->schemes()->get('pages.' . $template);
-    }
-
-    /**
-     * Set page slug
-     *
-     * @throws InvalidValueException If the slug is invalid, for index or error pages, or if a page with the same route already exists
-     */
-    public function setSlug(string $slug): void
-    {
-        if (!$this->validateSlug($slug)) {
-            throw new InvalidValueException('Invalid page slug', 'invalidSlug');
-        }
-        if ($slug === $this->slug) {
-            return;
-        }
-        if ($this->isIndexPage() || $this->isErrorPage()) {
-            throw new InvalidValueException('Cannot change slug of index or error pages', 'indexOrErrorPageSlug');
-        }
-        if ($this->site->findPage($this->parent()?->route() . $slug . '/') !== null) {
-            throw new InvalidValueException('A page with the same route already exists', 'alreadyExists');
-        }
-        $this->slug = $slug;
-    }
-
-    /**
-     * Set page num
-     *
-     * If no arguments are passed, the num is set based on the current mode
-     */
-    public function setNum(?int $num = null): void
-    {
-        if (func_num_args() === 0) {
-            $num = $this->num();
-
-            $mode = $this->scheme()->options()->get('num');
-
-            if ($mode === 'date') {
-                $timestamp = isset($this->data['publishDate'])
-                    ? Date::toTimestamp($this->data['publishDate'], [$this->app->config()->get('system.date.dateFormat'), $this->app->config()->get('system.date.datetimeFormat')])
-                    : ($this->contentFile()?->lastModifiedTime() ?? time());
-                $num = (int) date(self::DATE_NUM_FORMAT, $timestamp);
-            } elseif ($this->parent() === null) {
-                $num = null;
-            } elseif ($this->contentPath() === null && $num === null) {
-                $num = 1 + (int) max([0, ...$this->parent()->children()->everyItem()->num()->values()]);
-            }
-        }
-
-        $this->num = $num;
     }
 
     /**
@@ -715,23 +536,36 @@ class Page extends Model implements Stringable
      *
      * @internal
      */
+    /**
+     * Reload the page from disk
+     *
+     * This method completely resets all page properties and reconstructs
+     * the page by re-reading from disk. This ensures the page state matches
+     * the file system after external changes (e.g., file uploads).
+     *
+     * After calling reload(), the page's internal fields ($this->fields) are
+     * recreated and populated with fresh data from disk.
+     *
+     * @param array<string, mixed> $data Additional data to merge during reconstruction
+     *
+     * @throws RuntimeException If the page has not been loaded yet
+     */
     public function reload(array $data = []): void
     {
         if (!$this->hasLoaded()) {
             throw new RuntimeException('Unable to reload, the page has not been loaded yet');
         }
 
-        $app = $this->app;
-        $pageCollectionFactory = $this->pageCollectionFactory;
+        $app = $this->app ?? null;
 
         $path = $this->path;
-        $site = $this->site;
+        $site = $this->site ?? null;
 
         $data = [...compact('site', 'path'), ...$data];
 
         $this->resetProperties();
 
-        $this->__construct($data, $app, $pageCollectionFactory);
+        $this->__construct($data, $app);
     }
 
     /**
@@ -861,39 +695,22 @@ class Page extends Model implements Stringable
             throw new UnexpectedValueException('Unexpected missing parent content path');
         }
 
-        $config = $this->app->config();
+        $config = $this->app()->config();
 
         $language ??= $this->language();
 
-        if ($language !== null && !$this->site->languages()->available()->has($language)) {
+        if ($language !== null && !$this->site()->languages()->available()->has($language)) {
             throw new InvalidValueException('Invalid page language', 'invalidLanguage');
         }
 
-        $frontmatter = $this->contentFile()?->frontmatter() ?? [];
+        $frontmatter = array_replace_recursive($this->contentFile()?->frontmatter() ?? [], Arr::undot($this->data));
+        unset($frontmatter['content']);
 
         $defaults = $this->defaults();
 
-        $fieldCollection = $this->fields
-            ->setValues([...$this->data, 'slug' => $this->slug, 'parent' => $this->parent()->route(), 'template' => $this->template])
-            ->validate();
-
-        foreach ($fieldCollection as $field) {
-            if (
-                $field->isEmpty()
-                || (Arr::has($defaults, $field->name()) && Arr::get($defaults, $field->name()) === $field->value())
-                || in_array($field->name(), self::IGNORED_FIELD_NAMES, true)
-                || in_array($field->type(), self::IGNORED_FIELD_TYPES, true)
-            ) {
-                Arr::remove($frontmatter, $field->name());
-                continue;
-            }
-
-            Arr::set($frontmatter, $field->name(), $field->value());
-        }
-
-        // Remove default values without a corresponding field from frontmatter
-        foreach ($defaults as $key => $defaultValue) {
-            if (Arr::has($frontmatter, $key) && !$fieldCollection->has($key) && $this->get($key) === $defaultValue) {
+        // Remove default values
+        foreach (Arr::dot($defaults) as $key => $defaultValue) {
+            if (Arr::has($frontmatter, $key) && Arr::get($frontmatter, $key) === $defaultValue) {
                 Arr::remove($frontmatter, $key);
             }
         }
@@ -950,16 +767,26 @@ class Page extends Model implements Stringable
 
             $this->reload(['path' => $contentPath]);
 
-            if ($this->site->contentPath() !== null) {
-                FileSystem::touch($this->site->contentPath());
+            if ($this->site()->contentPath() !== null) {
+                FileSystem::touch($this->site()->contentPath());
             }
         }
     }
 
     /**
-     * Load files related to page
+     * Load page from disk and initialize fields
+     *
+     * Data loading order (later sources override earlier ones):
+     * 1. Page defaults from scheme
+     * 2. Data passed to constructor ($this->data)
+     * 3. Content file frontmatter
+     * 4. Content file body (sets 'content' key)
+     *
+     * After data is loaded, fields are initialized and validated against
+     * the merged data. This ensures field values are consistent with the
+     * page's actual state.
      */
-    protected function loadFiles(): void
+    protected function load(): void
     {
         /**
          * @var array<string, array{path: string, filename: string, template: string}>
@@ -976,9 +803,9 @@ class Page extends Model implements Stringable
          */
         $languages = [];
 
-        $config = $this->app->config();
+        $config = $this->app()->config();
 
-        $site = $this->site;
+        $site = $this->site();
 
         if ($this->path !== null && FileSystem::isDirectory($this->path, assertExists: false)) {
             foreach (FileSystem::listFiles($this->path) as $file) {
@@ -1009,7 +836,7 @@ class Page extends Model implements Stringable
                         continue;
                     }
                     if (in_array($extension, $config->get('system.files.allowedExtensions'), true)) {
-                        $files[] = $this->app->getService(FileFactory::class)->make(FileSystem::joinPaths($this->path, $file));
+                        $files[] = $this->app()->getService(FileFactory::class)->make(FileSystem::joinPaths($this->path, $file));
                     }
                 }
             }
@@ -1060,7 +887,25 @@ class Page extends Model implements Stringable
 
         $this->files ??= (new FileCollection($files))->sort();
 
-        $this->data = array_replace_recursive($this->defaults(), $this->data);
+        $this->data = array_replace_recursive(
+            $this->defaults(),
+            $this->data,
+            $this->contentFile()?->frontmatter() ?? []
+        );
+
+        if (($content = $this->contentFile?->content()) !== null) {
+            $this->data['content'] = $content;
+        }
+
+        // Always provide slug and parent to allow validation if the scheme define them as required fields
+        $this->fields->setValues([
+            ...$this->data,
+            'slug'     => $this->slug ?? Str::slug($this->data['title'] ?? 'page'),
+            'parent'   => $this->parent() ?? $site,
+            'template' => $this->template,
+        ])->validate();
+
+        $this->loaded = true;
     }
 
     /**
@@ -1092,6 +937,171 @@ class Page extends Model implements Stringable
         $this->route ??= Uri::normalize(Str::append($routePath, '/'));
 
         $this->slug ??= basename($this->route);
+    }
+
+    /**
+     * Set page metadata
+     *
+     * @since 2.2.0
+     *
+     * @param array<string, mixed>|MetadataCollection $metadata
+     */
+    protected function setMetadata(MetadataCollection|array $metadata): void
+    {
+        if ($metadata instanceof MetadataCollection) {
+            $this->metadata = $metadata;
+            $this->data['metadata'] = $metadata->toArray();
+        } else {
+            unset($this->metadata);
+            $this->data['metadata'] = $metadata;
+        }
+    }
+
+    /**
+     * Set page taxonomy
+     *
+     * @param array<string, list<string>> $taxonomy
+     *
+     * @since 2.2.0
+     */
+    protected function setTaxonomy(array $taxonomy): void
+    {
+        if (!Arr::every($taxonomy, fn($terms, $taxonomyName) => is_string($taxonomyName)
+            && is_array($terms) && Arr::every($terms, fn($term) => is_string($term)))) {
+            throw new InvalidValueException('Invalid taxonomy format');
+        }
+        $this->data['taxonomy'] = $taxonomy;
+    }
+
+    /**
+     * Set page HTTP response status
+     *
+     * @since 2.2.0
+     */
+    protected function setResponseStatus(ResponseStatus|int|null $responseStatus): void
+    {
+        if ($responseStatus === null) {
+            unset($this->responseStatus, $this->data['responseStatus']);
+            return;
+        }
+
+        if (is_int($responseStatus)) {
+            $responseStatus = ResponseStatus::fromCode($responseStatus);
+        }
+
+        $this->responseStatus = $responseStatus;
+        $this->data['responseStatus'] = $responseStatus->code();
+    }
+
+    /**
+     * Set page language
+     *
+     * @throws InvalidValueException If the language is invalid
+     */
+    protected function setLanguage(Language|string|null $language): void
+    {
+        if ($language === null) {
+            $this->language = null;
+        }
+
+        if (is_string($language)) {
+            $language = new Language($language);
+        }
+
+        if (!$this->hasLoaded()) {
+            $this->language = $language;
+            return;
+        }
+
+        if ($this->languages()->current()?->code() !== ($code = $language?->code())) {
+            if ($code !== null && !$this->languages()->available()->has($code)) {
+                throw new InvalidValueException(sprintf('Invalid page language "%s"', $code), 'invalidLanguage');
+            }
+            $this->reload(['language' => $language]);
+        }
+    }
+
+    /**
+     * Set page parent
+     *
+     * @throws InvalidValueException If the parent is invalid
+     */
+    protected function setParent(Page|Site|string $parent): void
+    {
+        if ($parent instanceof Page || $parent instanceof Site) {
+            $this->parent = $parent;
+        } elseif ($parent === '.') {
+            $this->parent = $this->site();
+        } else {
+            $this->parent = $this->site()->findPage($parent) ?? throw new InvalidValueException('Invalid parent', 'invalidParent');
+        }
+    }
+
+    /**
+     * Set page template
+     *
+     * @throws InvalidValueException If the template is invalid
+     */
+    protected function setTemplate(Template|string $template): void
+    {
+        if ($template instanceof Template) {
+            $this->template = $template;
+        } else {
+            if (!$this->site()->templates()->has($template)) {
+                throw new InvalidValueException('Invalid page template', 'invalidTemplate');
+            }
+            $this->template = $this->site()->templates()->get($template);
+        }
+        $this->scheme = $this->site()->schemes()->get('pages.' . $template);
+    }
+
+    /**
+     * Set page slug
+     *
+     * @throws InvalidValueException If the slug is invalid, for index or error pages, or if a page with the same route already exists
+     */
+    protected function setSlug(string $slug): void
+    {
+        if (!$this->validateSlug($slug)) {
+            throw new InvalidValueException('Invalid page slug', 'invalidSlug');
+        }
+        if ($slug === $this->slug) {
+            return;
+        }
+        if ($this->isIndexPage() || $this->isErrorPage()) {
+            throw new InvalidValueException('Cannot change slug of index or error pages', 'indexOrErrorPageSlug');
+        }
+        if ($this->site()->findPage($this->parent()?->route() . $slug . '/') !== null) {
+            throw new InvalidValueException('A page with the same route already exists', 'alreadyExists');
+        }
+        $this->slug = $slug;
+    }
+
+    /**
+     * Set page num
+     *
+     * If no arguments are passed, the num is set based on the current mode
+     */
+    protected function setNum(?int $num = null): void
+    {
+        if (func_num_args() === 0) {
+            $num = $this->num();
+
+            $mode = $this->scheme()->options()->get('num');
+
+            if ($mode === 'date') {
+                $timestamp = isset($this->data['publishDate'])
+                    ? Date::toTimestamp($this->data['publishDate'], [$this->app()->config()->get('system.date.dateFormat'), $this->app()->config()->get('system.date.datetimeFormat')])
+                    : ($this->contentFile()?->lastModifiedTime() ?? time());
+                $num = (int) date(self::DATE_NUM_FORMAT, $timestamp);
+            } elseif ($this->parent() === null) {
+                $num = null;
+            } elseif ($this->contentPath() === null && $num === null) {
+                $num = 1 + (int) max([0, ...$this->parent()->children()->everyItem()->num()->values()]);
+            }
+        }
+
+        $this->num = $num;
     }
 
     /**

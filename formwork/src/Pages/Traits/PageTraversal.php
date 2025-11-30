@@ -2,6 +2,7 @@
 
 namespace Formwork\Pages\Traits;
 
+use Formwork\Cms\App;
 use Formwork\Cms\Site;
 use Formwork\Pages\Page;
 use Formwork\Pages\PageCollection;
@@ -15,11 +16,6 @@ trait PageTraversal
      * Parent page
      */
     protected Page|Site|null $parent;
-
-    /**
-     * Page collection factory
-     */
-    protected PageCollectionFactory $pageCollectionFactory;
 
     /**
      * Collection of page children
@@ -114,7 +110,7 @@ trait PageTraversal
         }
 
         if ($this->contentPath() === null) {
-            return $this->children = $this->pageCollectionFactory->make([]);
+            return $this->children = $this->app()->getService(PageCollectionFactory::class)->make([]);
         }
 
         return $this->children = $this->site()->retrievePages($this->contentPath());
@@ -146,7 +142,7 @@ trait PageTraversal
         }
 
         if ($this->contentPath() === null) {
-            return $this->descendants = $this->pageCollectionFactory->make([]);
+            return $this->descendants = $this->app()->getService(PageCollectionFactory::class)->make([]);
         }
 
         return $this->descendants = $this->site()->retrievePages($this->contentPath(), recursive: true);
@@ -186,7 +182,7 @@ trait PageTraversal
             $page = $parent;
         }
 
-        return $this->ancestors = $this->pageCollectionFactory->make($ancestors);
+        return $this->ancestors = $this->app()->getService(PageCollectionFactory::class)->make($ancestors);
     }
 
     /**
@@ -223,7 +219,7 @@ trait PageTraversal
         }
 
         if ($this->contentPath() === null || $this->parent() === null) {
-            return $this->inclusiveSiblings = $this->pageCollectionFactory->make([$this->route() ?? '' => $this]);
+            return $this->inclusiveSiblings = $this->app()->getService(PageCollectionFactory::class)->make([$this->route() ?? '' => $this]);
         }
 
         return $this->inclusiveSiblings = $this->parent()->children();
@@ -277,4 +273,9 @@ trait PageTraversal
     {
         return $this->ancestors()->count();
     }
+
+    /**
+     * Get the application instance
+     */
+    abstract protected function app(): App;
 }

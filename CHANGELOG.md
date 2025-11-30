@@ -1,6 +1,25 @@
 # Changelog
 
-# [2.2.1](https://github.com/getformwork/formwork/releases/tag/2.1.3)
+# [2.2.2](https://github.com/getformwork/formwork/releases/tag/2.2.2)
+
+**Enhancements**
+- Generate a unique slug by checking for existing copies in `Page::duplicate()`
+- Add browser previews for audio and pdf files
+- Hide panel file thumbnails on image load error
+
+**Bug fixes**
+- Fix file item template for uploaded files
+- Fix file(s) and image(s) field options not updated on file deletion
+- Fix unsupported video thumbnails added to file(s) input on upload
+- Avoid changing uploaded file extension if correctly associated to the MIME type
+- Fix missing file-audio icon preventing file items rendering in panel views
+- Handle upload errors in `FilesController::upload()`
+- Correctly update drop target label when uploading multiple files
+
+**Security**
+- Restrict media MIME types to determine the result of `File::type()` based on supported formats
+
+# [2.2.1](https://github.com/getformwork/formwork/releases/tag/2.2.1)
 
 **Enhancements**
 - **Add `PageCollection::routable()` to filter routable pages**

@@ -49,7 +49,7 @@ class InitialsImageGenerator
     private static function generateSvg(string $initials, string $backgroundColor, string $textColor): string
     {
         return sprintf(
-            '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><circle cx="50%%" cy="50%%" r="50%%" fill="%s"/><text fill="%s" x="50%%" y="50%%" text-anchor="middle" style="font-size: 224px; font-family: ui-rounded, system-ui, sans-serif; dominant-baseline: central;">%s</text></svg>',
+            '<svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 512 512"><circle cx="50%%" cy="50%%" r="50%%" fill="%s"/><text fill="%s" x="50%%" y="50%%" text-anchor="middle" style="font-size: 224px; font-family: ui-rounded, system-ui, sans-serif; dominant-baseline: central;">%s</text></svg>',
             $backgroundColor,
             $textColor,
             $initials

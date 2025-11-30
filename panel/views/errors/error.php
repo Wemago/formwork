@@ -7,7 +7,8 @@
     <meta name="robots" content="noindex, nofollow">
     <link rel="icon" type="image/svg+xml" href="<?= $this->assets()->get('images/icon.svg')->uri() ?>">
     <link rel="alternate icon" href="<?= $this->assets()->get('images/icon.png')->uri() ?>">
-    <link rel="stylesheet" href="<?= $this->assets()->get('css/panel.min.css')->uri(includeVersion: true) ?>">
+    <?php $this->assets()->add('css/panel.min.css') ?>
+    <?php $this->insert('partials.stylesheets') ?>
 </head>
 
 <body>

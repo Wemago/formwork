@@ -9,9 +9,7 @@
     <link rel="icon" type="image/svg+xml" href="<?= $this->assets()->get('images/icon.svg')->uri() ?>">
     <link rel="alternate icon" href="<?= $this->assets()->get('images/icon.png')->uri() ?>">
     <?php $this->assets()->add('css/panel.min.css') ?>
-    <?php foreach ($this->assets()->stylesheets() as $stylesheet): ?>
-        <link rel="stylesheet" href="<?= $stylesheet->uri(includeVersion: true) ?>">
-    <?php endforeach ?>
+    <?php $this->insert('partials.stylesheets') ?>
 </head>
 
 <body>

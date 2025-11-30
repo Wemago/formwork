@@ -4,6 +4,7 @@ namespace Formwork\Cms;
 
 use BadMethodCallException;
 use ErrorException;
+use Formwork\Assets\Assets;
 use Formwork\Cache\AbstractCache;
 use Formwork\Cache\FilesCache;
 use Formwork\Cms\Events\RoutesAfterLoadEvent;
@@ -28,6 +29,7 @@ use Formwork\Router\Router;
 use Formwork\Schemes\Schemes;
 use Formwork\Security\CsrfToken;
 use Formwork\Services\Container;
+use Formwork\Services\Loaders\AssetsServiceLoader;
 use Formwork\Services\Loaders\ConfigServiceLoader;
 use Formwork\Services\Loaders\PanelServiceLoader;
 use Formwork\Services\Loaders\PluginsServiceLoader;
@@ -132,6 +134,14 @@ final class App
     public function translations(): Translations
     {
         return $this->container->get(Translations::class);
+    }
+
+    /**
+     * Get Assets instance
+     */
+    public function assets(): Assets
+    {
+        return $this->container->get(Assets::class);
     }
 
     /**
@@ -291,6 +301,10 @@ final class App
         $container->define(Users::class)
             ->loader(UsersServiceLoader::class)
             ->alias('users');
+
+        $container->define(Assets::class)
+            ->loader(AssetsServiceLoader::class)
+            ->alias('assets');
 
         $container->define(Panel::class)
             ->loader(PanelServiceLoader::class)

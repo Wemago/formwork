@@ -16,7 +16,11 @@ class Plugin
      */
     protected bool $initialized = false;
 
-    public function __construct(protected string $path, protected App $app, protected ViewFactory $viewFactory) {}
+    public function __construct(
+        protected string $path,
+        protected App $app,
+        protected ViewFactory $viewFactory
+    ) {}
 
     /**
      * Get the plugin path
@@ -45,25 +49,16 @@ class Plugin
     /**
      * Method called when the plugin is initialized
      */
-    public function initialize(): void
+    final public function initialize(): void
     {
-        if (FileSystem::isDirectory($viewsPath = FileSystem::joinPaths($this->path(), 'views'), assertExists: false)) {
-            $this->viewFactory->setResolutionPaths([$this->namespace() => $viewsPath]);
+        if ($this->initialized) {
+            return;
         }
 
-        if (FileSystem::isDirectory($assetsPath = FileSystem::joinPaths($this->path(), 'assets'), assertExists: false)) {
-            $this->app->assets()->setResolutionPaths([
-                $this->namespace() => [
-                    'path' => $assetsPath,
-                    'uri'  => $this->app->site()->uri("/plugins/{$this->name()}/assets", includeLanguage: false),
-                ],
-            ]);
-
-            $this->app->router()->addRoute("{$this->namespace()}.assets", "/plugins/{$this->name()}/assets/{type:alpha}/{file:all}")
-                ->methods('GET')
-                ->action(AssetsController::class . '@asset')
-                ->actionParameters(['plugin' => $this]);
-        }
+        $this->loadSchemes();
+        $this->loadTranslations();
+        $this->loadViews();
+        $this->loadAssets();
 
         $this->initialized = true;
     }
@@ -101,5 +96,59 @@ class Plugin
         }
 
         return $handlers;
+    }
+
+    /**
+     * Load plugin schemes
+     */
+    protected function loadSchemes(): void
+    {
+        $schemesPath = FileSystem::joinPaths($this->path(), 'schemes');
+        if (FileSystem::isDirectory($schemesPath, assertExists: false)) {
+            $this->app->schemes()->loadFromPath($schemesPath);
+        }
+    }
+
+    /**
+     * Load plugin translations
+     */
+    protected function loadTranslations(): void
+    {
+        $translationsPath = FileSystem::joinPaths($this->path(), 'translations');
+        if (FileSystem::isDirectory($translationsPath, assertExists: false)) {
+            $this->app->translations()->loadFromPath($translationsPath);
+        }
+    }
+
+    /**
+     * Load plugin views
+     */
+    protected function loadViews(): void
+    {
+        $viewsPath = FileSystem::joinPaths($this->path(), 'views');
+        if (FileSystem::isDirectory($viewsPath, assertExists: false)) {
+            $this->viewFactory->setResolutionPaths([$this->namespace() => $viewsPath]);
+        }
+    }
+
+    /**
+     * Load plugin assets
+     */
+    protected function loadAssets(): void
+    {
+        $assetsPath = FileSystem::joinPaths($this->path(), 'assets');
+        if (FileSystem::isDirectory($assetsPath, assertExists: false)) {
+            $this->app->assets()->setResolutionPaths([
+                $this->namespace() => [
+                    'path' => $assetsPath,
+                    'uri'  => $this->app->site()->uri("/plugins/{$this->name()}/assets", includeLanguage: false),
+                ],
+            ]);
+
+            $this->app->router()->addRoute("{$this->namespace()}.assets", "/plugins/{$this->name()}/assets/{type:alpha}/{file:all}")
+                ->methods('GET')
+                ->action(AssetsController::class . '@asset')
+                ->actionParameters(['plugin' => $this]);
+        }
     }
 }

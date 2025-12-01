@@ -7,6 +7,8 @@ use ErrorException;
 use Formwork\Assets\Assets;
 use Formwork\Cache\AbstractCache;
 use Formwork\Cache\FilesCache;
+use Formwork\Cms\Events\ExceptionThrownEvent;
+use Formwork\Cms\Events\ResponseBeforeSendEvent;
 use Formwork\Cms\Events\RoutesAfterLoadEvent;
 use Formwork\Cms\Events\RoutesBeforeLoadEvent;
 use Formwork\Config\Config;
@@ -211,6 +213,8 @@ final class App
             $this->load();
             $response = $this->router()->dispatch();
         } catch (Throwable $throwable) {
+            $this->events()->dispatch(new ExceptionThrownEvent($throwable, $this->request()));
+
             try {
                 $controller = $this->container->get(ErrorsControllerInterface::class);
                 $response = $controller->error(throwable: $throwable);
@@ -222,7 +226,11 @@ final class App
 
         $this->request()->session()->save();
 
-        $response->prepare($this->request())->send();
+        $response->prepare($this->request());
+
+        $this->events()->dispatch(new ResponseBeforeSendEvent($response, $this->request()));
+
+        $response->send();
 
         return $response;
     }

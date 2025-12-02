@@ -5,6 +5,7 @@ use Formwork\Fields\Exceptions\ValidationException;
 use Formwork\Fields\Field;
 use Formwork\Pages\Page;
 use Formwork\Pages\PageCollection;
+use Formwork\Utils\Constraint;
 
 return function (Site $site) {
     return [
@@ -46,7 +47,7 @@ return function (Site $site) {
              * Validate the field value
              */
             'validate' => function (Field $field, $value) {
-                if ($value === '') {
+                if (Constraint::isEmpty($value)) {
                     return null;
                 }
 

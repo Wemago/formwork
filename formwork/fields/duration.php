@@ -3,6 +3,7 @@
 use Formwork\Cms\App;
 use Formwork\Fields\Exceptions\ValidationException;
 use Formwork\Fields\Field;
+use Formwork\Utils\Constraint;
 
 return function (App $app) {
     return [
@@ -32,7 +33,11 @@ return function (App $app) {
             /**
              * Validate the field value
              */
-            'validate' => function (Field $field, $value): int|float {
+            'validate' => function (Field $field, $value): int|float|null {
+                if (Constraint::isEmpty($value)) {
+                    return null;
+                }
+
                 if (!is_numeric($value)) {
                     throw new ValidationException(sprintf('Invalid value for field "%s" of type "%s"', $field->name(), $field->type()));
                 }

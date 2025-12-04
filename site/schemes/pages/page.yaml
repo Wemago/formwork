@@ -87,7 +87,7 @@ fields:
         label: '{{page.slug}}'
         suggestion: '{{page.slug.suggestion}}'
         required: true
-        readonly@: page.isSlugReadonly
+        readonly@: page.isIndexOrErrorPage
         source: title
         autoUpdate: false
 

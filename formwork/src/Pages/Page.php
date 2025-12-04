@@ -513,18 +513,24 @@ class Page extends Model implements Stringable
 
     /**
      * Return whether the slug is editable
+     *
+     * @deprecated since 2.3.0 Use `!$this->isIndexOrErrorPage()` instead
      */
     public function isSlugEditable(): bool
     {
-        return !$this->isIndexPage() && !$this->isErrorPage();
+        trigger_error(sprintf('%s() is deprecated since Formwork 2.3.0. Use !$page->isIndexOrErrorPage() instead.', __METHOD__), E_USER_DEPRECATED);
+        return !$this->isIndexOrErrorPage();
     }
 
     /**
      * Return whether the slug is readonly
+     *
+     * @deprecated since 2.3.0 Use `$this->isIndexOrErrorPage()` instead
      */
     public function isSlugReadonly(): bool
     {
-        return !$this->isSlugEditable();
+        trigger_error(sprintf('%s() is deprecated since Formwork 2.3.0. Use $page->isIndexOrErrorPage() instead.', __METHOD__), E_USER_DEPRECATED);
+        return $this->isIndexOrErrorPage();
     }
 
     /**

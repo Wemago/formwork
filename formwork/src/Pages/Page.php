@@ -498,7 +498,7 @@ class Page extends Model implements Stringable
      */
     public function isDeletable(): bool
     {
-        return !($this->hasChildren() || $this->isIndexPage() || $this->isErrorPage());
+        return !$this->hasChildren() && !$this->isIndexOrErrorPage();
     }
 
     /**
@@ -1042,12 +1042,16 @@ class Page extends Model implements Stringable
      */
     protected function setParent(Page|Site|string $parent): void
     {
+        $previousParent = $this->parent();
         if ($parent instanceof Page || $parent instanceof Site) {
             $this->parent = $parent;
         } elseif ($parent === '.') {
             $this->parent = $this->site();
         } else {
             $this->parent = $this->site()->findPage($parent) ?? throw new InvalidValueException('Invalid parent', 'invalidParent');
+        }
+        if ($this->parent !== $previousParent && $this->isIndexOrErrorPage()) {
+            throw new InvalidValueException('Cannot change parent of index or error pages', 'invalidParent');
         }
     }
 

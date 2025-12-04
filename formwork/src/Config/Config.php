@@ -47,6 +47,24 @@ class Config implements ArraySerializable
     }
 
     /**
+     * Get multiple values from the config
+     *
+     * @param list<string> $keys
+     *
+     * @throws UnresolvedConfigException If the config has not been resolved
+     *
+     * @return array<string, mixed>
+     */
+    public function getMultiple(array $keys, mixed $default = null): array
+    {
+        $values = [];
+        foreach ($keys as $key) {
+            $values[$key] = $this->get($key, $default);
+        }
+        return $values;
+    }
+
+    /**
      * Load config from a path
      */
     public function loadFromPath(string $path): void

@@ -35,10 +35,7 @@ return function (App $app): array {
              * Return the field value as a timestamp
              */
             'toTimestamp' => function (Field $field) use ($app): ?int {
-                $formats = [
-                    $app->config()->get('system.date.dateFormat'),
-                    $app->config()->get('system.date.datetimeFormat'),
-                ];
+                $formats = $app->config()->getMultiple(['system.date.dateFormat', 'system.date.datetimeFormat']);
                 return $field->isEmpty() ? null : Date::toTimestamp($field->value(), $formats);
             },
 

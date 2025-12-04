@@ -486,6 +486,14 @@ class Page extends Model implements Stringable
     }
 
     /**
+     * Return whether the page is index or error page
+     */
+    public function isIndexOrErrorPage(): bool
+    {
+        return $this->isIndexPage() || $this->isErrorPage();
+    }
+
+    /**
      * Return whether the page is deletable
      */
     public function isDeletable(): bool

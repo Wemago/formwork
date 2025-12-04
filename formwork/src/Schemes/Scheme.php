@@ -116,13 +116,31 @@ class Scheme implements Arrayable
      *
      * @throws InvalidArgumentException If the scheme tries to extend itself
      */
-    protected function extend(Scheme $scheme): void
+    public function extend(Scheme $scheme): void
     {
         if ($scheme->id === $this->id) {
             throw new InvalidArgumentException(sprintf('Scheme "%s" cannot be extended by itself', $this->id));
         }
 
         $this->data = array_replace_recursive($scheme->data, $this->data);
+    }
+
+    /**
+     * Extend the scheme with an array of data
+     *
+     * @param array<string, mixed> $data
+     */
+    public function extendWith(array $data): void
+    {
+        $this->data = array_replace_recursive($data, $this->data);
+    }
+
+    /**
+     * Get the extended scheme, if any
+     */
+    public function getExtendedScheme(): ?Scheme
+    {
+        return isset($this->data['extend']) ? $this->schemes->get($this->data['extend']) : null;
     }
 
     /**

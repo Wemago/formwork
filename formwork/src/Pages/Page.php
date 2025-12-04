@@ -791,14 +791,13 @@ class Page extends Model implements Stringable
      * Load page from disk and initialize fields
      *
      * Data loading order (later sources override earlier ones):
-     * 1. Page defaults from scheme
-     * 2. Data passed to constructor ($this->data)
+     * 1. Page defaults (includes field defaults)
+     * 2. Data passed to constructor
      * 3. Content file frontmatter
-     * 4. Content file body (sets 'content' key)
+     * 4. Transient runtime keys (content, slug, template, parent)
      *
-     * After data is loaded, fields are initialized and validated against
-     * the merged data. This ensures field values are consistent with the
-     * page's actual state.
+     * No validation occurs during load to allow loading pages with invalid data.
+     * Validation happens when saving through `Page::write()` or setting fields
      */
     protected function load(): void
     {
@@ -904,20 +903,16 @@ class Page extends Model implements Stringable
         $this->data = array_replace_recursive(
             $this->defaults(),
             $this->data,
-            $this->contentFile()?->frontmatter() ?? []
+            $this->contentFile()?->frontmatter() ?? [],
+            [
+                'content'  => $this->contentFile?->content() ?? '',
+                'slug'     => $this->slug ?? Str::slug($this->data['title'] ?? 'page'),
+                'template' => $this->template,
+                'parent'   => $this->parent() ?? $site,
+            ],
         );
 
-        if (($content = $this->contentFile?->content()) !== null) {
-            $this->data['content'] = $content;
-        }
-
-        // Always provide slug and parent to allow validation if the scheme define them as required fields
-        $this->fields->setValues([
-            ...$this->data,
-            'slug'     => $this->slug ?? Str::slug($this->data['title'] ?? 'page'),
-            'parent'   => $this->parent() ?? $site,
-            'template' => $this->template,
-        ])->validate();
+        $this->fields->setValues($this->data);
 
         $this->loaded = true;
     }

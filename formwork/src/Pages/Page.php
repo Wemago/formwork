@@ -56,6 +56,20 @@ class Page extends Model implements Stringable
     protected const string MODEL_IDENTIFIER = 'page';
 
     /**
+     * Ignored field names on frontmatter generation
+     *
+     * @var list<string>
+     */
+    protected const array IGNORED_FIELD_NAMES = ['content', 'slug', 'template', 'parent'];
+
+    /**
+     * Ignored field types on frontmatter generation
+     *
+     * @var list<string>
+     */
+    protected const array IGNORED_FIELD_TYPES = ['upload'];
+
+    /**
      * Slug regex
      */
     protected const string SLUG_REGEX = '/^[a-z0-9]+(?:-[a-z0-9]+)*$/i';
@@ -211,7 +225,7 @@ class Page extends Model implements Stringable
         ];
 
         // Merge with scheme default field values
-        $defaults = [...$defaults, ...Arr::reject($this->fields()->extract('default'), fn($value) => $value === null)];
+        $defaults = [...$defaults, ...$this->fields()->extract('default')];
 
         // If the page doesn't have a route, by default it won't be routable nor cacheable
         if ($this->route() === null) {
@@ -542,15 +556,6 @@ class Page extends Model implements Stringable
     }
 
     /**
-     * Reload page
-     *
-     * @param array<string, mixed> $data
-     *
-     * @throws RuntimeException If the page has not been loaded yet
-     *
-     * @internal
-     */
-    /**
      * Reload the page from disk
      *
      * This method completely resets all page properties and reconstructs
@@ -563,6 +568,8 @@ class Page extends Model implements Stringable
      * @param array<string, mixed> $data Additional data to merge during reconstruction
      *
      * @throws RuntimeException If the page has not been loaded yet
+     *
+     * @internal
      */
     public function reload(array $data = []): void
     {
@@ -717,17 +724,7 @@ class Page extends Model implements Stringable
             throw new InvalidValueException('Invalid page language', 'invalidLanguage');
         }
 
-        $frontmatter = array_replace_recursive($this->contentFile()?->frontmatter() ?? [], Arr::undot($this->data));
-        unset($frontmatter['content']);
-
-        $defaults = $this->defaults();
-
-        // Remove default values
-        foreach (Arr::dot($defaults) as $key => $defaultValue) {
-            if (Arr::has($frontmatter, $key) && Arr::get($frontmatter, $key) === $defaultValue) {
-                Arr::remove($frontmatter, $key);
-            }
-        }
+        $frontmatter = $this->getFrontmatterData();
 
         $content = str_replace("\r\n", "\n", $this->data['content']);
 
@@ -785,6 +782,36 @@ class Page extends Model implements Stringable
                 FileSystem::touch($this->site()->contentPath());
             }
         }
+    }
+
+    /**
+     * Get frontmatter data for saving
+     *
+     * @return array<string, mixed>
+     */
+    protected function getFrontmatterData(): array
+    {
+        $frontmatter = array_replace_recursive($this->contentFile()?->frontmatter() ?? [], Arr::undot($this->data));
+
+        // Remove ignored fields
+        foreach ($this->fields() as $fieldCollection) {
+            if (in_array($fieldCollection->name(), self::IGNORED_FIELD_NAMES, true)) {
+                Arr::remove($frontmatter, $fieldCollection->name());
+            }
+
+            if (in_array($fieldCollection->type(), self::IGNORED_FIELD_TYPES, true)) {
+                Arr::remove($frontmatter, $fieldCollection->name());
+            }
+        }
+
+        // Remove default values
+        foreach (Arr::dot($this->defaults()) as $key => $defaultValue) {
+            if (Arr::has($frontmatter, $key) && Arr::get($frontmatter, $key) === $defaultValue) {
+                Arr::remove($frontmatter, $key);
+            }
+        }
+
+        return $frontmatter;
     }
 
     /**

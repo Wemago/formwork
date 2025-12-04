@@ -39,11 +39,6 @@ class Page extends Model implements Stringable
     use PageUri;
 
     /**
-     * Page num regex
-     */
-    public const string NUM_REGEX = '/^(\d+)-/';
-
-    /**
      * Page `published` status
      */
     public const string PAGE_STATUS_PUBLISHED = 'published';
@@ -52,6 +47,11 @@ class Page extends Model implements Stringable
      * Page `not published` status
      */
     public const string PAGE_STATUS_NOT_PUBLISHED = 'notPublished';
+
+    /**
+     * Page num regex
+     */
+    public const string NUM_REGEX = '/^(\d+)-/';
 
     protected const string MODEL_IDENTIFIER = 'page';
 
@@ -91,18 +91,6 @@ class Page extends Model implements Stringable
     protected ?string $relativePath = null;
 
     /**
-     * Page content file
-     */
-    #[ReadonlyModelProperty]
-    protected ?ContentFile $contentFile = null;
-
-    /**
-     * Page last modified time
-     */
-    #[ReadonlyModelProperty]
-    protected int $lastModifiedTime;
-
-    /**
      * Page route
      */
     #[ReadonlyModelProperty]
@@ -119,6 +107,23 @@ class Page extends Model implements Stringable
     protected ?int $num = null;
 
     /**
+     * Page content file
+     */
+    #[ReadonlyModelProperty]
+    protected ?ContentFile $contentFile = null;
+
+    /**
+     * Page last modified time
+     */
+    #[ReadonlyModelProperty]
+    protected int $lastModifiedTime;
+
+    /**
+     * Page template
+     */
+    protected Template $template;
+
+    /**
      * Available page languages
      */
     #[ReadonlyModelProperty]
@@ -128,11 +133,6 @@ class Page extends Model implements Stringable
      * Current page language
      */
     protected ?Language $language = null;
-
-    /**
-     * Page template
-     */
-    protected Template $template;
 
     /**
      * Page metadata
@@ -252,368 +252,6 @@ class Page extends Model implements Stringable
     }
 
     /**
-     * Get page path
-     */
-    public function path(): ?string
-    {
-        return $this->path;
-    }
-
-    /**
-     * Get page relative path
-     */
-    public function relativePath(): ?string
-    {
-        return $this->relativePath;
-    }
-
-    /**
-     * Get page filename
-     */
-    public function contentFile(): ?ContentFile
-    {
-        return $this->contentFile;
-    }
-
-    /**
-     * Get page last modified time
-     */
-    public function lastModifiedTime(): ?int
-    {
-        if ($this->path === null) {
-            return null;
-        }
-
-        $lastModifiedTime = $this->contentFile() !== null
-            ? $this->contentFile()->lastModifiedTime()
-            : FileSystem::lastModifiedTime($this->path);
-
-        return $this->lastModifiedTime ??= $lastModifiedTime;
-    }
-
-    /**
-     * Get page route
-     */
-    public function route(): ?string
-    {
-        return $this->route;
-    }
-
-    /**
-     * Get the canonical page URI, or `null` if not available
-     */
-    public function canonicalRoute(): ?string
-    {
-        return empty($this->data['canonicalRoute'])
-            ? null
-            : Path::normalize($this->data['canonicalRoute']);
-    }
-
-    /**
-     * Get page slug
-     */
-    public function slug(): ?string
-    {
-        return $this->slug;
-    }
-
-    /**
-     * Get page num
-     */
-    public function num(): ?int
-    {
-        if ($this->num !== null) {
-            return $this->num;
-        }
-
-        preg_match(self::NUM_REGEX, basename($this->relativePath() ?? ''), $matches);
-        return $this->num = isset($matches[1]) ? (int) $matches[1] : null;
-    }
-
-    /**
-     * Get page languages
-     */
-    public function languages(): Languages
-    {
-        return $this->languages;
-    }
-
-    /**
-     * Get page language
-     */
-    public function language(): ?Language
-    {
-        return $this->language;
-    }
-
-    /**
-     * Get page template
-     */
-    public function template(): Template
-    {
-        return $this->template;
-    }
-
-    /**
-     * Get page metadata
-     */
-    public function metadata(): MetadataCollection
-    {
-        if (isset($this->metadata)) {
-            return $this->metadata;
-        }
-
-        $metadata = $this->site()->metadata()->clone();
-        $metadata->setMultiple($this->data['metadata']);
-        return $this->metadata = $metadata;
-    }
-
-    /**
-     * Get page files
-     */
-    public function files(): FileCollection
-    {
-        return $this->files;
-    }
-
-    /**
-     * Get page taxonomy
-     *
-     * @return array<string, list<string>>
-     *
-     * @since 2.2.0
-     */
-    public function taxonomy(): array
-    {
-        return $this->data['taxonomy'];
-    }
-
-    /**
-     * Get page HTTP response status
-     */
-    public function responseStatus(): ResponseStatus
-    {
-        if (isset($this->responseStatus)) {
-            return $this->responseStatus;
-        }
-
-        // Normalize response status
-        $this->responseStatus = ResponseStatus::fromCode((int) $this->data['responseStatus']);
-
-        // Get a default 404 Not Found status for the error page
-        if (
-            $this->isErrorPage() && $this->responseStatus() === ResponseStatus::OK
-            && $this->contentFile === null
-        ) {
-            $this->responseStatus = ResponseStatus::NotFound;
-        }
-
-        return $this->responseStatus;
-    }
-
-    /**
-     * Return all page images
-     */
-    public function images(): FileCollection
-    {
-        return $this->files()->filterBy('type', 'image');
-    }
-
-    /**
-     * Return all page videos
-     */
-    public function videos(): FileCollection
-    {
-        return $this->files()->filterBy('type', 'video');
-    }
-
-    /**
-     * Return all page media files (images and videos)
-     */
-    public function media(): FileCollection
-    {
-        return $this->files()->filterBy('type', fn(string $type) => in_array($type, ['image', 'video'], true));
-    }
-
-    /**
-     * Render page to string
-     */
-    public function render(): string
-    {
-        return $this->template()->render(['page' => $this]);
-    }
-
-    /**
-     * Return whether the page has a content file
-     */
-    public function hasContentFile(): bool
-    {
-        return $this->contentFile !== null;
-    }
-
-    /**
-     * Return whether the page content data is empty
-     */
-    public function isEmpty(): bool
-    {
-        return $this->contentFile?->frontmatter() !== [];
-    }
-
-    /**
-     * Return whether the page is published
-     */
-    public function isPublished(): bool
-    {
-        return $this->status() === self::PAGE_STATUS_PUBLISHED;
-    }
-
-    /**
-     * Return whether this is the currently active page
-     */
-    public function isCurrent(): bool
-    {
-        return $this->site()->currentPage() === $this;
-    }
-
-    /**
-     * Return whether the page is site
-     */
-    public function isSite(): bool
-    {
-        return false;
-    }
-
-    /**
-     * Return whether the page is the index page
-     */
-    public function isIndexPage(): bool
-    {
-        return $this === $this->site()->indexPage();
-    }
-
-    /**
-     * Return whether the page is the error page
-     */
-    public function isErrorPage(): bool
-    {
-        return $this === $this->site()->errorPage();
-    }
-
-    /**
-     * Return whether the page is index or error page
-     */
-    public function isIndexOrErrorPage(): bool
-    {
-        return $this->isIndexPage() || $this->isErrorPage();
-    }
-
-    /**
-     * Return whether the page is deletable
-     */
-    public function isDeletable(): bool
-    {
-        return !$this->hasChildren() && !$this->isIndexOrErrorPage();
-    }
-
-    /**
-     * Return whether the page is duplicable
-     *
-     * @since 2.2.0
-     */
-    public function isDuplicable(): bool
-    {
-        return !$this->hasChildren();
-    }
-
-    /**
-     * Return whether the slug is editable
-     *
-     * @deprecated since 2.3.0 Use `!$this->isIndexOrErrorPage()` instead
-     */
-    public function isSlugEditable(): bool
-    {
-        trigger_error(sprintf('%s() is deprecated since Formwork 2.3.0. Use !$page->isIndexOrErrorPage() instead.', __METHOD__), E_USER_DEPRECATED);
-        return !$this->isIndexOrErrorPage();
-    }
-
-    /**
-     * Return whether the slug is readonly
-     *
-     * @deprecated since 2.3.0 Use `$this->isIndexOrErrorPage()` instead
-     */
-    public function isSlugReadonly(): bool
-    {
-        trigger_error(sprintf('%s() is deprecated since Formwork 2.3.0. Use $page->isIndexOrErrorPage() instead.', __METHOD__), E_USER_DEPRECATED);
-        return $this->isIndexOrErrorPage();
-    }
-
-    /**
-     * Return whether the page has loaded
-     */
-    public function hasLoaded(): bool
-    {
-        return $this->loaded;
-    }
-
-    /**
-     * Reload the page from disk
-     *
-     * This method completely resets all page properties and reconstructs
-     * the page by re-reading from disk. This ensures the page state matches
-     * the file system after external changes (e.g., file uploads).
-     *
-     * After calling reload(), the page's internal fields ($this->fields) are
-     * recreated and populated with fresh data from disk.
-     *
-     * @param array<string, mixed> $data Additional data to merge during reconstruction
-     *
-     * @throws RuntimeException If the page has not been loaded yet
-     *
-     * @internal
-     */
-    public function reload(array $data = []): void
-    {
-        if (!$this->hasLoaded()) {
-            throw new RuntimeException('Unable to reload, the page has not been loaded yet');
-        }
-
-        $app = $this->app ?? null;
-
-        $path = $this->path;
-        $site = $this->site ?? null;
-
-        $data = [...compact('site', 'path'), ...$data];
-
-        $this->resetProperties();
-
-        $this->__construct($data, $app);
-    }
-
-    /**
-     * Return page content path
-     */
-    public function contentPath(): ?string
-    {
-        return $this->path;
-    }
-
-    /**
-     * Return page content relative path
-     */
-    public function contentRelativePath(): ?string
-    {
-        return $this->relativePath;
-    }
-
-    /**
-     * Return page icon
-     */
-    public function icon(): string
-    {
-        return $this->data['icon'] ?? $this->scheme()->options()->get('icon', 'page');
-    }
-
-    /**
      * Save page contents and move files if needed
      *
      * @param string|null $language Language code to save the page in
@@ -696,122 +334,365 @@ class Page extends Model implements Stringable
     }
 
     /**
-     * Write page contents and move or copy files if needed
-     *
-     * @param string|null $language Language code to save the page in
-     * @param bool        $copy     Whether to copy the page instead of moving it
-     *
-     * @throws UnexpectedValueException If parent or parent content path is missing
-     * @throws InvalidValueException    If the language is invalid
-     *
-     * @since 2.2.0
+     * Render page to string
      */
-    protected function write(?string $language = null, bool $copy = false): void
+    public function render(): string
     {
-        if ($this->parent() === null) {
-            throw new UnexpectedValueException('Unexpected missing parent');
-        }
-
-        if ($this->parent()->contentPath() === null) {
-            throw new UnexpectedValueException('Unexpected missing parent content path');
-        }
-
-        $config = $this->app()->config();
-
-        $language ??= $this->language();
-
-        if ($language !== null && !$this->site()->languages()->available()->has($language)) {
-            throw new InvalidValueException('Invalid page language', 'invalidLanguage');
-        }
-
-        $frontmatter = $this->getFrontmatterData();
-
-        $content = str_replace("\r\n", "\n", $this->data['content']);
-
-        $contentTemplate = $this->contentFile() !== null
-            ? Str::before(basename($this->contentFile()->path()), '.')
-            : $this->template()->name();
-
-        $this->setNum();
-
-        $contentDir = $this->num()
-            ? $this->num() . '-' . $this->slug()
-            : $this->slug();
-
-        $contentPath = FileSystem::joinPaths(
-            (string) $this->parent()?->contentPath(),
-            $contentDir . '/'
-        );
-
-        $differ = $contentPath !== $this->contentPath()
-            || $contentTemplate !== $this->template->name()
-            || $frontmatter !== $this->contentFile()?->frontmatter()
-            || $content !== $this->contentFile()->content();
-
-        if ($differ) {
-            $filename = $this->template->name();
-
-            if ($language !== null) {
-                $filename .= '.' . $language;
-            }
-
-            $filename .= $config->get('system.pages.content.extension');
-
-            $fileContent = Str::wrap(Yaml::encode($frontmatter), '---' . PHP_EOL) . $content;
-
-            if ($contentPath !== $this->contentPath()) {
-                if (!FileSystem::isDirectory($contentPath, assertExists: false)) {
-                    FileSystem::createDirectory($contentPath, recursive: true);
-                }
-                if ($this->contentPath() !== null) {
-                    if ($copy) {
-                        FileSystem::copyDirectory($this->contentPath(), $contentPath, overwrite: FileSystem::isEmptyDirectory($contentPath, assertExists: false));
-                    } else {
-                        FileSystem::moveDirectory($this->contentPath(), $contentPath, overwrite: FileSystem::isEmptyDirectory($contentPath, assertExists: false));
-                    }
-                }
-            } elseif ($contentTemplate !== $this->template->name() && $this->contentFile() !== null) {
-                FileSystem::delete($this->contentFile()->path());
-            }
-
-            FileSystem::write($contentPath . $filename, $fileContent);
-
-            $this->reload(['path' => $contentPath]);
-
-            if ($this->site()->contentPath() !== null) {
-                FileSystem::touch($this->site()->contentPath());
-            }
-        }
+        return $this->template()->render(['page' => $this]);
     }
 
     /**
-     * Get frontmatter data for saving
+     * Reload the page from disk
      *
-     * @return array<string, mixed>
+     * This method completely resets all page properties and reconstructs
+     * the page by re-reading from disk. This ensures the page state matches
+     * the file system after external changes (e.g., file uploads).
+     *
+     * After calling reload(), the page's internal fields ($this->fields) are
+     * recreated and populated with fresh data from disk.
+     *
+     * @param array<string, mixed> $data Additional data to merge during reconstruction
+     *
+     * @throws RuntimeException If the page has not been loaded yet
+     *
+     * @internal
      */
-    protected function getFrontmatterData(): array
+    public function reload(array $data = []): void
     {
-        $frontmatter = array_replace_recursive($this->contentFile()?->frontmatter() ?? [], Arr::undot($this->data));
-
-        // Remove ignored fields
-        foreach ($this->fields() as $fieldCollection) {
-            if (in_array($fieldCollection->name(), self::IGNORED_FIELD_NAMES, true)) {
-                Arr::remove($frontmatter, $fieldCollection->name());
-            }
-
-            if (in_array($fieldCollection->type(), self::IGNORED_FIELD_TYPES, true)) {
-                Arr::remove($frontmatter, $fieldCollection->name());
-            }
+        if (!$this->hasLoaded()) {
+            throw new RuntimeException('Unable to reload, the page has not been loaded yet');
         }
 
-        // Remove default values
-        foreach (Arr::dot($this->defaults()) as $key => $defaultValue) {
-            if (Arr::has($frontmatter, $key) && Arr::get($frontmatter, $key) === $defaultValue) {
-                Arr::remove($frontmatter, $key);
-            }
+        $app = $this->app ?? null;
+
+        $path = $this->path;
+        $site = $this->site ?? null;
+
+        $data = [...compact('site', 'path'), ...$data];
+
+        $this->resetProperties();
+
+        $this->__construct($data, $app);
+    }
+
+    /**
+     * Get page path
+     */
+    public function path(): ?string
+    {
+        return $this->path;
+    }
+
+    /**
+     * Get page relative path
+     */
+    public function relativePath(): ?string
+    {
+        return $this->relativePath;
+    }
+
+    /**
+     * Return page content path
+     */
+    public function contentPath(): ?string
+    {
+        return $this->path;
+    }
+
+    /**
+     * Return page content relative path
+     */
+    public function contentRelativePath(): ?string
+    {
+        return $this->relativePath;
+    }
+
+    /**
+     * Get page route
+     */
+    public function route(): ?string
+    {
+        return $this->route;
+    }
+
+    /**
+     * Get the canonical page URI, or `null` if not available
+     */
+    public function canonicalRoute(): ?string
+    {
+        return empty($this->data['canonicalRoute'])
+            ? null
+            : Path::normalize($this->data['canonicalRoute']);
+    }
+
+    /**
+     * Get page slug
+     */
+    public function slug(): ?string
+    {
+        return $this->slug;
+    }
+
+    /**
+     * Get page num
+     */
+    public function num(): ?int
+    {
+        if ($this->num !== null) {
+            return $this->num;
         }
 
-        return $frontmatter;
+        preg_match(self::NUM_REGEX, basename($this->relativePath() ?? ''), $matches);
+        return $this->num = isset($matches[1]) ? (int) $matches[1] : null;
+    }
+
+    /**
+     * Return page icon
+     */
+    public function icon(): string
+    {
+        return $this->data['icon'] ?? $this->scheme()->options()->get('icon', 'page');
+    }
+
+    /**
+     * Get page filename
+     */
+    public function contentFile(): ?ContentFile
+    {
+        return $this->contentFile;
+    }
+
+    /**
+     * Get page template
+     */
+    public function template(): Template
+    {
+        return $this->template;
+    }
+
+    /**
+     * Get page last modified time
+     */
+    public function lastModifiedTime(): ?int
+    {
+        if ($this->path === null) {
+            return null;
+        }
+
+        $lastModifiedTime = $this->contentFile() !== null
+            ? $this->contentFile()->lastModifiedTime()
+            : FileSystem::lastModifiedTime($this->path);
+
+        return $this->lastModifiedTime ??= $lastModifiedTime;
+    }
+
+    /**
+     * Get page language
+     */
+    public function language(): ?Language
+    {
+        return $this->language;
+    }
+
+    /**
+     * Get page languages
+     */
+    public function languages(): Languages
+    {
+        return $this->languages;
+    }
+
+    /**
+     * Get page metadata
+     */
+    public function metadata(): MetadataCollection
+    {
+        if (isset($this->metadata)) {
+            return $this->metadata;
+        }
+
+        $metadata = $this->site()->metadata()->clone();
+        $metadata->setMultiple($this->data['metadata']);
+        return $this->metadata = $metadata;
+    }
+
+    /**
+     * Get page taxonomy
+     *
+     * @return array<string, list<string>>
+     *
+     * @since 2.2.0
+     */
+    public function taxonomy(): array
+    {
+        return $this->data['taxonomy'];
+    }
+
+    /**
+     * Get page HTTP response status
+     */
+    public function responseStatus(): ResponseStatus
+    {
+        if (isset($this->responseStatus)) {
+            return $this->responseStatus;
+        }
+
+        // Normalize response status
+        $this->responseStatus = ResponseStatus::fromCode((int) $this->data['responseStatus']);
+
+        // Get a default 404 Not Found status for the error page
+        if (
+            $this->isErrorPage() && $this->responseStatus() === ResponseStatus::OK
+            && $this->contentFile === null
+        ) {
+            $this->responseStatus = ResponseStatus::NotFound;
+        }
+
+        return $this->responseStatus;
+    }
+
+    /**
+     * Get page files
+     */
+    public function files(): FileCollection
+    {
+        return $this->files;
+    }
+
+    /**
+     * Return all page images
+     */
+    public function images(): FileCollection
+    {
+        return $this->files()->filterBy('type', 'image');
+    }
+
+    /**
+     * Return all page videos
+     */
+    public function videos(): FileCollection
+    {
+        return $this->files()->filterBy('type', 'video');
+    }
+
+    /**
+     * Return all page media files (images and videos)
+     */
+    public function media(): FileCollection
+    {
+        return $this->files()->filterBy('type', fn(string $type) => in_array($type, ['image', 'video'], true));
+    }
+
+    /**
+     * Return whether the page has loaded
+     */
+    public function hasLoaded(): bool
+    {
+        return $this->loaded;
+    }
+
+    /**
+     * Return whether the page has a content file
+     */
+    public function hasContentFile(): bool
+    {
+        return $this->contentFile !== null;
+    }
+
+    /**
+     * Return whether the page content data is empty
+     */
+    public function isEmpty(): bool
+    {
+        return $this->contentFile?->frontmatter() !== [];
+    }
+
+    /**
+     * Return whether the page is published
+     */
+    public function isPublished(): bool
+    {
+        return $this->status() === self::PAGE_STATUS_PUBLISHED;
+    }
+
+    /**
+     * Return whether the page is site
+     */
+    public function isSite(): bool
+    {
+        return false;
+    }
+
+    /**
+     * Return whether the page is the index page
+     */
+    public function isIndexPage(): bool
+    {
+        return $this === $this->site()->indexPage();
+    }
+
+    /**
+     * Return whether the page is the error page
+     */
+    public function isErrorPage(): bool
+    {
+        return $this === $this->site()->errorPage();
+    }
+
+    /**
+     * Return whether the page is index or error page
+     */
+    public function isIndexOrErrorPage(): bool
+    {
+        return $this->isIndexPage() || $this->isErrorPage();
+    }
+
+    /**
+     * Return whether this is the currently active page
+     */
+    public function isCurrent(): bool
+    {
+        return $this->site()->currentPage() === $this;
+    }
+
+    /**
+     * Return whether the page is deletable
+     */
+    public function isDeletable(): bool
+    {
+        return !$this->hasChildren() && !$this->isIndexOrErrorPage();
+    }
+
+    /**
+     * Return whether the page is duplicable
+     *
+     * @since 2.2.0
+     */
+    public function isDuplicable(): bool
+    {
+        return !$this->hasChildren();
+    }
+
+    /**
+     * Return whether the slug is editable
+     *
+     * @deprecated since 2.3.0 Use `!$this->isIndexOrErrorPage()` instead
+     */
+    public function isSlugEditable(): bool
+    {
+        trigger_error(sprintf('%s() is deprecated since Formwork 2.3.0. Use !$page->isIndexOrErrorPage() instead.', __METHOD__), E_USER_DEPRECATED);
+        return !$this->isIndexOrErrorPage();
+    }
+
+    /**
+     * Return whether the slug is readonly
+     *
+     * @deprecated since 2.3.0 Use `$this->isIndexOrErrorPage()` instead
+     */
+    public function isSlugReadonly(): bool
+    {
+        trigger_error(sprintf('%s() is deprecated since Formwork 2.3.0. Use $page->isIndexOrErrorPage() instead.', __METHOD__), E_USER_DEPRECATED);
+        return $this->isIndexOrErrorPage();
     }
 
     /**
@@ -945,6 +826,125 @@ class Page extends Model implements Stringable
     }
 
     /**
+     * Write page contents and move or copy files if needed
+     *
+     * @param string|null $language Language code to save the page in
+     * @param bool        $copy     Whether to copy the page instead of moving it
+     *
+     * @throws UnexpectedValueException If parent or parent content path is missing
+     * @throws InvalidValueException    If the language is invalid
+     *
+     * @since 2.2.0
+     */
+    protected function write(?string $language = null, bool $copy = false): void
+    {
+        if ($this->parent() === null) {
+            throw new UnexpectedValueException('Unexpected missing parent');
+        }
+
+        if ($this->parent()->contentPath() === null) {
+            throw new UnexpectedValueException('Unexpected missing parent content path');
+        }
+
+        $config = $this->app()->config();
+
+        $language ??= $this->language();
+
+        if ($language !== null && !$this->site()->languages()->available()->has($language)) {
+            throw new InvalidValueException('Invalid page language', 'invalidLanguage');
+        }
+
+        $frontmatter = $this->getFrontmatterData();
+
+        $content = str_replace("\r\n", "\n", $this->data['content']);
+
+        $contentTemplate = $this->contentFile() !== null
+            ? Str::before(basename($this->contentFile()->path()), '.')
+            : $this->template()->name();
+
+        $this->setNum();
+
+        $contentDir = $this->num()
+            ? $this->num() . '-' . $this->slug()
+            : $this->slug();
+
+        $contentPath = FileSystem::joinPaths(
+            (string) $this->parent()?->contentPath(),
+            $contentDir . '/'
+        );
+
+        $differ = $contentPath !== $this->contentPath()
+            || $contentTemplate !== $this->template->name()
+            || $frontmatter !== $this->contentFile()?->frontmatter()
+            || $content !== $this->contentFile()->content();
+
+        if ($differ) {
+            $filename = $this->template->name();
+
+            if ($language !== null) {
+                $filename .= '.' . $language;
+            }
+
+            $filename .= $config->get('system.pages.content.extension');
+
+            $fileContent = Str::wrap(Yaml::encode($frontmatter), '---' . PHP_EOL) . $content;
+
+            if ($contentPath !== $this->contentPath()) {
+                if (!FileSystem::isDirectory($contentPath, assertExists: false)) {
+                    FileSystem::createDirectory($contentPath, recursive: true);
+                }
+                if ($this->contentPath() !== null) {
+                    if ($copy) {
+                        FileSystem::copyDirectory($this->contentPath(), $contentPath, overwrite: FileSystem::isEmptyDirectory($contentPath, assertExists: false));
+                    } else {
+                        FileSystem::moveDirectory($this->contentPath(), $contentPath, overwrite: FileSystem::isEmptyDirectory($contentPath, assertExists: false));
+                    }
+                }
+            } elseif ($contentTemplate !== $this->template->name() && $this->contentFile() !== null) {
+                FileSystem::delete($this->contentFile()->path());
+            }
+
+            FileSystem::write($contentPath . $filename, $fileContent);
+
+            $this->reload(['path' => $contentPath]);
+
+            if ($this->site()->contentPath() !== null) {
+                FileSystem::touch($this->site()->contentPath());
+            }
+        }
+    }
+
+    /**
+     * Get frontmatter data for saving
+     *
+     * @return array<string, mixed>
+     */
+    protected function getFrontmatterData(): array
+    {
+        $frontmatter = array_replace_recursive($this->contentFile()?->frontmatter() ?? [], Arr::undot($this->data));
+
+        // Remove ignored fields
+        foreach ($this->fields() as $fieldCollection) {
+            if (in_array($fieldCollection->name(), self::IGNORED_FIELD_NAMES, true)) {
+                Arr::remove($frontmatter, $fieldCollection->name());
+            }
+
+            if (in_array($fieldCollection->type(), self::IGNORED_FIELD_TYPES, true)) {
+                Arr::remove($frontmatter, $fieldCollection->name());
+            }
+        }
+
+        // Remove default values
+        foreach (Arr::dot($this->defaults()) as $key => $defaultValue) {
+            if (Arr::has($frontmatter, $key) && Arr::get($frontmatter, $key) === $defaultValue) {
+                Arr::remove($frontmatter, $key);
+            }
+        }
+
+        return $frontmatter;
+    }
+
+    /**
      * Set page path
      *
      * @throws UnexpectedValueException If site path is missing
@@ -973,6 +973,121 @@ class Page extends Model implements Stringable
         $this->route ??= Uri::normalize(Str::append($routePath, '/'));
 
         $this->slug ??= basename($this->route);
+    }
+
+    /**
+     * Set page slug
+     *
+     * @throws InvalidValueException If the slug is invalid, for index or error pages, or if a page with the same route already exists
+     */
+    protected function setSlug(string $slug): void
+    {
+        if (!$this->validateSlug($slug)) {
+            throw new InvalidValueException('Invalid page slug', 'invalidSlug');
+        }
+        if ($slug === $this->slug) {
+            return;
+        }
+        if ($this->isIndexPage() || $this->isErrorPage()) {
+            throw new InvalidValueException('Cannot change slug of index or error pages', 'indexOrErrorPageSlug');
+        }
+        if ($this->site()->findPage($this->parent()?->route() . $slug . '/') !== null) {
+            throw new InvalidValueException('A page with the same route already exists', 'alreadyExists');
+        }
+        $this->slug = $slug;
+    }
+
+    /**
+     * Set page num
+     *
+     * If no arguments are passed, the num is set based on the current mode
+     */
+    protected function setNum(?int $num = null): void
+    {
+        if (func_num_args() === 0) {
+            $num = $this->num();
+
+            $mode = $this->scheme()->options()->get('num');
+
+            if ($mode === 'date') {
+                $timestamp = isset($this->data['publishDate'])
+                    ? Date::toTimestamp($this->data['publishDate'], [$this->app()->config()->get('system.date.dateFormat'), $this->app()->config()->get('system.date.datetimeFormat')])
+                    : ($this->contentFile()?->lastModifiedTime() ?? time());
+                $num = (int) date(self::DATE_NUM_FORMAT, $timestamp);
+            } elseif ($this->parent() === null) {
+                $num = null;
+            } elseif ($this->contentPath() === null && $num === null) {
+                $num = 1 + (int) max([0, ...$this->parent()->children()->everyItem()->num()->values()]);
+            }
+        }
+
+        $this->num = $num;
+    }
+
+    /**
+     * Set page parent
+     *
+     * @throws InvalidValueException If the parent is invalid
+     */
+    protected function setParent(Page|Site|string $parent): void
+    {
+        $previousParent = $this->parent();
+        if ($parent instanceof Page || $parent instanceof Site) {
+            $this->parent = $parent;
+        } elseif ($parent === '.') {
+            $this->parent = $this->site();
+        } else {
+            $this->parent = $this->site()->findPage($parent) ?? throw new InvalidValueException('Invalid parent', 'invalidParent');
+        }
+        if ($this->parent !== $previousParent && $this->isIndexOrErrorPage()) {
+            throw new InvalidValueException('Cannot change parent of index or error pages', 'invalidParent');
+        }
+    }
+
+    /**
+     * Set page template
+     *
+     * @throws InvalidValueException If the template is invalid
+     */
+    protected function setTemplate(Template|string $template): void
+    {
+        if ($template instanceof Template) {
+            $this->template = $template;
+        } else {
+            if (!$this->site()->templates()->has($template)) {
+                throw new InvalidValueException('Invalid page template', 'invalidTemplate');
+            }
+            $this->template = $this->site()->templates()->get($template);
+        }
+        $this->scheme = $this->site()->schemes()->get('pages.' . $template);
+    }
+
+    /**
+     * Set page language
+     *
+     * @throws InvalidValueException If the language is invalid
+     */
+    protected function setLanguage(Language|string|null $language): void
+    {
+        if ($language === null) {
+            $this->language = null;
+        }
+
+        if (is_string($language)) {
+            $language = new Language($language);
+        }
+
+        if (!$this->hasLoaded()) {
+            $this->language = $language;
+            return;
+        }
+
+        if ($this->languages()->current()?->code() !== ($code = $language?->code())) {
+            if ($code !== null && !$this->languages()->available()->has($code)) {
+                throw new InvalidValueException(sprintf('Invalid page language "%s"', $code), 'invalidLanguage');
+            }
+            $this->reload(['language' => $language]);
+        }
     }
 
     /**
@@ -1027,121 +1142,6 @@ class Page extends Model implements Stringable
 
         $this->responseStatus = $responseStatus;
         $this->data['responseStatus'] = $responseStatus->code();
-    }
-
-    /**
-     * Set page language
-     *
-     * @throws InvalidValueException If the language is invalid
-     */
-    protected function setLanguage(Language|string|null $language): void
-    {
-        if ($language === null) {
-            $this->language = null;
-        }
-
-        if (is_string($language)) {
-            $language = new Language($language);
-        }
-
-        if (!$this->hasLoaded()) {
-            $this->language = $language;
-            return;
-        }
-
-        if ($this->languages()->current()?->code() !== ($code = $language?->code())) {
-            if ($code !== null && !$this->languages()->available()->has($code)) {
-                throw new InvalidValueException(sprintf('Invalid page language "%s"', $code), 'invalidLanguage');
-            }
-            $this->reload(['language' => $language]);
-        }
-    }
-
-    /**
-     * Set page parent
-     *
-     * @throws InvalidValueException If the parent is invalid
-     */
-    protected function setParent(Page|Site|string $parent): void
-    {
-        $previousParent = $this->parent();
-        if ($parent instanceof Page || $parent instanceof Site) {
-            $this->parent = $parent;
-        } elseif ($parent === '.') {
-            $this->parent = $this->site();
-        } else {
-            $this->parent = $this->site()->findPage($parent) ?? throw new InvalidValueException('Invalid parent', 'invalidParent');
-        }
-        if ($this->parent !== $previousParent && $this->isIndexOrErrorPage()) {
-            throw new InvalidValueException('Cannot change parent of index or error pages', 'invalidParent');
-        }
-    }
-
-    /**
-     * Set page template
-     *
-     * @throws InvalidValueException If the template is invalid
-     */
-    protected function setTemplate(Template|string $template): void
-    {
-        if ($template instanceof Template) {
-            $this->template = $template;
-        } else {
-            if (!$this->site()->templates()->has($template)) {
-                throw new InvalidValueException('Invalid page template', 'invalidTemplate');
-            }
-            $this->template = $this->site()->templates()->get($template);
-        }
-        $this->scheme = $this->site()->schemes()->get('pages.' . $template);
-    }
-
-    /**
-     * Set page slug
-     *
-     * @throws InvalidValueException If the slug is invalid, for index or error pages, or if a page with the same route already exists
-     */
-    protected function setSlug(string $slug): void
-    {
-        if (!$this->validateSlug($slug)) {
-            throw new InvalidValueException('Invalid page slug', 'invalidSlug');
-        }
-        if ($slug === $this->slug) {
-            return;
-        }
-        if ($this->isIndexPage() || $this->isErrorPage()) {
-            throw new InvalidValueException('Cannot change slug of index or error pages', 'indexOrErrorPageSlug');
-        }
-        if ($this->site()->findPage($this->parent()?->route() . $slug . '/') !== null) {
-            throw new InvalidValueException('A page with the same route already exists', 'alreadyExists');
-        }
-        $this->slug = $slug;
-    }
-
-    /**
-     * Set page num
-     *
-     * If no arguments are passed, the num is set based on the current mode
-     */
-    protected function setNum(?int $num = null): void
-    {
-        if (func_num_args() === 0) {
-            $num = $this->num();
-
-            $mode = $this->scheme()->options()->get('num');
-
-            if ($mode === 'date') {
-                $timestamp = isset($this->data['publishDate'])
-                    ? Date::toTimestamp($this->data['publishDate'], [$this->app()->config()->get('system.date.dateFormat'), $this->app()->config()->get('system.date.datetimeFormat')])
-                    : ($this->contentFile()?->lastModifiedTime() ?? time());
-                $num = (int) date(self::DATE_NUM_FORMAT, $timestamp);
-            } elseif ($this->parent() === null) {
-                $num = null;
-            } elseif ($this->contentPath() === null && $num === null) {
-                $num = 1 + (int) max([0, ...$this->parent()->children()->everyItem()->num()->values()]);
-            }
-        }
-
-        $this->num = $num;
     }
 
     /**

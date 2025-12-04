@@ -51,12 +51,6 @@ class Site extends Model implements Stringable
     protected ?ContentFile $contentFile = null;
 
     /**
-     * Site last modified time
-     */
-    #[ReadonlyModelProperty]
-    protected int $lastModifiedTime;
-
-    /**
      * Site route
      */
     #[ReadonlyModelProperty]
@@ -90,6 +84,12 @@ class Site extends Model implements Stringable
      */
     #[ReadonlyModelProperty]
     protected Users $users;
+
+    /**
+     * Site last modified time
+     */
+    #[ReadonlyModelProperty]
+    protected int $lastModifiedTime;
 
     /**
      * Site metadata
@@ -235,6 +235,14 @@ class Site extends Model implements Stringable
     }
 
     /**
+     * Return defined schemes
+     */
+    public function schemes(): Schemes
+    {
+        return $this->app()->schemes();
+    }
+
+    /**
      * Get the current page of the site
      */
     public function currentPage(): ?Page
@@ -291,6 +299,46 @@ class Site extends Model implements Stringable
             return false;
         }
         return FileSystem::directoryModifiedSince($this->contentPath, $time);
+    }
+
+    /**
+     * Return whether the page is site
+     */
+    public function isSite(): bool
+    {
+        return true;
+    }
+
+    /**
+     * Return whether the page is the index page
+     */
+    public function isIndexPage(): bool
+    {
+        return false;
+    }
+
+    /**
+     * Return whether the page is the error page
+     */
+    public function isErrorPage(): bool
+    {
+        return false;
+    }
+
+    /**
+     * Return whether the page is index or error page
+     */
+    public function isIndexOrErrorPage(): bool
+    {
+        return $this->isIndexPage() || $this->isErrorPage();
+    }
+
+    /**
+     * Return whether the page is deletable
+     */
+    public function isDeletable(): bool
+    {
+        return false;
     }
 
     /**
@@ -382,22 +430,6 @@ class Site extends Model implements Stringable
     }
 
     /**
-     * Set and return site current page
-     */
-    public function setCurrentPage(Page $page): Page
-    {
-        return $this->currentPage = $page;
-    }
-
-    /**
-     * Return alias of a given route
-     */
-    public function resolveRouteAlias(string $route): ?string
-    {
-        return $this->routeAliases[$route] ?? null;
-    }
-
-    /**
      * Get site index page
      *
      * @throws PageNotFoundException If the site index page cannot be found
@@ -420,58 +452,19 @@ class Site extends Model implements Stringable
     }
 
     /**
-     * Return whether the page is site
+     * Return alias of a given route
      */
-    public function isSite(): bool
+    public function resolveRouteAlias(string $route): ?string
     {
-        return true;
+        return $this->routeAliases[$route] ?? null;
     }
 
     /**
-     * Return whether the page is the index page
+     * Set and return site current page
      */
-    public function isIndexPage(): bool
+    public function setCurrentPage(Page $page): Page
     {
-        return false;
-    }
-
-    /**
-     * Return whether the page is the error page
-     */
-    public function isErrorPage(): bool
-    {
-        return false;
-    }
-
-    /**
-     * Return whether the page is deletable
-     */
-    public function isDeletable(): bool
-    {
-        return false;
-    }
-
-    /**
-     * Return defined schemes
-     */
-    public function schemes(): Schemes
-    {
-        return $this->app()->schemes();
-    }
-
-    /**
-     * Load site dependencies
-     */
-    public function load(): void
-    {
-        $this->scheme = $this->app()->schemes()->get('config.site');
-        $this->templates = $this->app()->getService(Templates::class);
-        $this->users = $this->app()->getService(Users::class);
-
-        $this->fields = $this->scheme->fields();
-        $this->fields->setModel($this);
-
-        $this->fields->setValues($this->data);
+        return $this->currentPage = $page;
     }
 
     /**
@@ -501,6 +494,23 @@ class Site extends Model implements Stringable
     }
 
     /**
+     * Load site dependencies
+     *
+     * @internal
+     */
+    public function load(): void
+    {
+        $this->scheme = $this->app()->schemes()->get('config.site');
+        $this->templates = $this->app()->getService(Templates::class);
+        $this->users = $this->app()->getService(Users::class);
+
+        $this->fields = $this->scheme->fields();
+        $this->fields->setModel($this);
+
+        $this->fields->setValues($this->data);
+    }
+
+    /**
      * Set languages
      *
      * @param array{available: list<string>, httpPreferred: bool, default?: string} $config
@@ -521,16 +531,6 @@ class Site extends Model implements Stringable
     protected function setMetadata(array $metadata): void
     {
         $this->data['metadata'] = $metadata;
-    }
-
-    /**
-     * Site storage
-     *
-     * @return array<string, Page>
-     */
-    protected function storage(): array
-    {
-        return $this->storage;
     }
 
     /**
@@ -560,5 +560,15 @@ class Site extends Model implements Stringable
             $this->routeAliases[trim((string) $from, '/')] = Str::wrap((string) $to, '/');
         }
         $this->data['routeAliases'] = $this->routeAliases;
+    }
+
+    /**
+     * Site storage
+     *
+     * @return array<string, Page>
+     */
+    protected function storage(): array
+    {
+        return $this->storage;
     }
 }

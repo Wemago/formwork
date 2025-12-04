@@ -155,6 +155,8 @@ final class App
      * Load Formwork app
      *
      * @since 2.1.0
+     *
+     * @internal
      */
     public function load(): void
     {

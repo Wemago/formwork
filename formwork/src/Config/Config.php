@@ -34,6 +34,21 @@ class Config implements ArraySerializable
     }
 
     /**
+     * Check if multiple keys exist in the config
+     *
+     * @param list<string> $keys
+     */
+    public function hasMultiple(array $keys): bool
+    {
+        foreach ($keys as $key) {
+            if (!$this->has($key)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /**
      * Get a value from the config
      *
      * @throws UnresolvedConfigException If the config has not been resolved

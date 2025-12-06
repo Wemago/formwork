@@ -28,7 +28,7 @@ class Assets
     }
 
     /**
-     * Set assert resolution paths
+     * Set assets resolution paths
      *
      * @param array<string, array{path: string, uri: string}> $paths
      */

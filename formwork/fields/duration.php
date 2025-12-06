@@ -54,7 +54,7 @@ return function (App $app) {
                 }
 
                 if ($field->has('step') && ($value - $field->get('min', 0)) % $field->get('step') !== 0) {
-                    throw new ValidationException(sprintf('The value of field "%s" of type "%s" does not conform to the step value %d', $field->name(), $field->value(), $field->get('step')));
+                    throw new ValidationException(sprintf('The value of field "%s" of type "%s" does not conform to the step value %d', $field->name(), $field->type(), $field->get('step')));
                 }
 
                 if (!in_array($field->unit(), ['seconds', 'minutes', 'hours', 'days', 'weeks', 'months', 'years'])) {

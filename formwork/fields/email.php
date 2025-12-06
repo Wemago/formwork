@@ -18,7 +18,7 @@ return function (App $app) {
                 }
 
                 if (!filter_var($value, FILTER_VALIDATE_EMAIL)) {
-                    throw new ValidationException(sprintf('The value of field "%s" of type "%s" is not a valid e-mail address', $field->name(), $field->value()));
+                    throw new ValidationException(sprintf('The value of field "%s" of type "%s" is not a valid e-mail address', $field->name(), $field->type()));
                 }
 
                 if (!is_string($value)) {
@@ -26,15 +26,15 @@ return function (App $app) {
                 }
 
                 if ($field->has('minLength') && strlen($value) < $field->minLength()) {
-                    throw new ValidationException(sprintf('The minimum allowed length for field "%s" of type "%s" is %d', $field->name(), $field->value(), $field->minLength()));
+                    throw new ValidationException(sprintf('The minimum allowed length for field "%s" of type "%s" is %d', $field->name(), $field->type(), $field->minLength()));
                 }
 
                 if ($field->has('maxLength') && strlen($value) > $field->maxLength()) {
-                    throw new ValidationException(sprintf('The maximum allowed length for field "%s" of type "%s" is %d', $field->name(), $field->value(), $field->maxLength()));
+                    throw new ValidationException(sprintf('The maximum allowed length for field "%s" of type "%s" is %d', $field->name(), $field->type(), $field->maxLength()));
                 }
 
                 if ($field->has('pattern') && !Constraint::matchesRegex($value, $field->pattern())) {
-                    throw new ValidationException(sprintf('The value of field "%s" of type "%s" does not match the required pattern', $field->name(), $field->value()));
+                    throw new ValidationException(sprintf('The value of field "%s" of type "%s" does not match the required pattern', $field->name(), $field->type()));
                 }
 
                 return $value;

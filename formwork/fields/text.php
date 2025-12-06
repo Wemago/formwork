@@ -60,15 +60,15 @@ return function (App $app) {
                 }
 
                 if ($field->has('minLength') && strlen((string) $value) < $field->minLength()) {
-                    throw new ValidationException(sprintf('The minimum allowed length for field "%s" of type "%s" is %d', $field->name(), $field->value(), $field->minLength()));
+                    throw new ValidationException(sprintf('The minimum allowed length for field "%s" of type "%s" is %d', $field->name(), $field->type(), $field->minLength()));
                 }
 
                 if ($field->has('maxLength') && strlen((string) $value) > $field->maxLength()) {
-                    throw new ValidationException(sprintf('The maximum allowed length for field "%s" of type "%s" is %d', $field->name(), $field->value(), $field->maxLength()));
+                    throw new ValidationException(sprintf('The maximum allowed length for field "%s" of type "%s" is %d', $field->name(), $field->type(), $field->maxLength()));
                 }
 
                 if ($field->has('pattern') && !Constraint::matchesRegex((string) $value, $field->pattern())) {
-                    throw new ValidationException(sprintf('The value of field "%s" of type "%s" does not match the required pattern', $field->name(), $field->value()));
+                    throw new ValidationException(sprintf('The value of field "%s" of type "%s" does not match the required pattern', $field->name(), $field->type()));
                 }
 
                 return (string) $value;

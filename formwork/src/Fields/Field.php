@@ -246,6 +246,19 @@ class Field implements Arrayable, Stringable
     }
 
     /**
+     * Get validation error message
+     */
+    public function getValidationError(): ?string
+    {
+        try {
+            $this->validate();
+            return null;
+        } catch (ValidationException $e) {
+            return $this->translation->translate('fields.error.' . ($e->getIdentifier() ?? 'invalidValue'), ...array_values($e->getContext() ?? []));
+        }
+    }
+
+    /**
      * Return whether the field has been validated
      */
     public function isValidated(): bool

@@ -341,10 +341,10 @@ final class Str
      */
     public static function toDashCase(string $string): string
     {
-        if (($parts = preg_split('/(?=[A-Z_])/', $string)) === false) {
+        if (($parts = preg_split('/(?=[A-Z])/', $string)) === false) {
             throw new RuntimeException(sprintf('String split failed with error: %s', preg_last_error_msg()));
         }
-        return strtolower(implode('-', $parts));
+        return strtolower(implode('-', array_filter($parts)));
     }
 
     /**
@@ -352,10 +352,10 @@ final class Str
      */
     public static function toSnakeCase(string $string): string
     {
-        if (($parts = preg_split('/(?=[A-Z-])/', $string)) === false) {
+        if (($parts = preg_split('/(?=[A-Z])/', $string)) === false) {
             throw new RuntimeException(sprintf('String split failed with error: %s', preg_last_error_msg()));
         }
-        return strtolower(implode('_', $parts));
+        return strtolower(implode('_', array_filter($parts)));
     }
 
     /**
@@ -363,6 +363,6 @@ final class Str
      */
     public static function toCamelCase(string $string): string
     {
-        return str_replace(['-', '_'], '', ucwords($string, '-_'));
+        return lcfirst(str_replace(['-', '_'], '', ucwords($string, '-_')));
     }
 }

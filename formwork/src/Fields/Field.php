@@ -209,23 +209,25 @@ class Field implements Arrayable, Stringable
             $value = $value->value();
         }
 
-        if ($this->isRequired() && Constraint::isEmpty($value)) {
-            throw new ValidationException(sprintf('Required field "%s" of type "%s" cannot be empty', $this->name(), $this->type()));
-        }
-
-        if ($this->hasMethod('validate')) {
-            $value = $this->callMethod('validate', [$value]);
-
-            if ($dynamic !== null) {
-                $value = DynamicFieldValue::withComputed($value, $dynamic);
+        try {
+            if ($this->isRequired() && Constraint::isEmpty($value)) {
+                throw new ValidationException(sprintf('Required field "%s" of type "%s" cannot be empty', $this->name(), $this->type()), 'requiredValue');
             }
 
-            $this->set('value', $value);
+            if ($this->hasMethod('validate')) {
+                $value = $this->callMethod('validate', [$value]);
+
+                if ($dynamic !== null) {
+                    $value = DynamicFieldValue::withComputed($value, $dynamic);
+                }
+
+                $this->set('value', $value);
+            }
+        } finally {
+            $this->validated = true;
+
+            $this->validating = false;
         }
-
-        $this->validated = true;
-
-        $this->validating = false;
 
         return $this;
     }

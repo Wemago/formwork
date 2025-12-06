@@ -51,15 +51,15 @@ return function (App $app) {
                 $value += 0;
 
                 if ($field->has('min') && $value < $field->min()) {
-                    throw new ValidationException(sprintf('The value of field "%s" of type "%s" must be greater than or equal to %d', $field->name(), $field->type(), $field->get('min')));
+                    throw new ValidationException(sprintf('The value of field "%s" of type "%s" must be greater than or equal to %d', $field->name(), $field->type(), $field->get('min')), 'valueTooSmall', ['min' => $field->get('min')]);
                 }
 
                 if ($field->has('max') && $value > $field->max()) {
-                    throw new ValidationException(sprintf('The value of field "%s" of type "%s" must be less than or equal to %d', $field->name(), $field->type(), $field->get('max')));
+                    throw new ValidationException(sprintf('The value of field "%s" of type "%s" must be less than or equal to %d', $field->name(), $field->type(), $field->get('max')), 'valueTooLarge', ['max' => $field->get('max')]);
                 }
 
                 if ($field->has('step') && ($value - $field->get('min', 0)) % $field->step() !== 0) {
-                    throw new ValidationException(sprintf('The value of field "%s" of type "%s" does not conform to the step value %d', $field->name(), $field->type(), $field->get('step')));
+                    throw new ValidationException(sprintf('The value of field "%s" of type "%s" does not conform to the step value %d', $field->name(), $field->type(), $field->get('step')), 'stepMismatch', ['step' => $field->get('step')]);
                 }
 
                 return $value;

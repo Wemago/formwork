@@ -21,19 +21,19 @@ return function (App $app) {
                 }
 
                 if ($field->has('min') && strlen((string) $value) < $field->get('min')) {
-                    throw new ValidationException(sprintf('The minimum allowed length for field "%s" of type "%s" is %d', $field->name(), $field->type(), $field->get('min')));
+                    throw new ValidationException(sprintf('The minimum allowed length for field "%s" of type "%s" is %d', $field->name(), $field->type(), $field->get('min')), 'valueTooShort', ['min' => $field->get('min')]);
                 }
 
                 if ($field->has('max') && strlen((string) $value) > $field->get('max')) {
-                    throw new ValidationException(sprintf('The maximum allowed length for field "%s" of type "%s" is %d', $field->name(), $field->type(), $field->get('max')));
+                    throw new ValidationException(sprintf('The maximum allowed length for field "%s" of type "%s" is %d', $field->name(), $field->type(), $field->get('max')), 'valueTooLong', ['max' => $field->get('max')]);
                 }
 
                 if ($field->has('pattern') && !Constraint::matchesRegex((string) $value, $field->get('pattern'))) {
-                    throw new ValidationException(sprintf('The value of field "%s" of type "%s" does not match the required pattern', $field->name(), $field->type()));
+                    throw new ValidationException(sprintf('The value of field "%s" of type "%s" does not match the required pattern', $field->name(), $field->type()), 'patternMismatch');
                 }
 
                 if (!$field->hasUniqueValue()) {
-                    throw new ValidationException(sprintf('The value of field "%s" of type "%s" must be unique', $field->name(), $field->type()), 'alreadyExists');
+                    throw new ValidationException(sprintf('The value of field "%s" of type "%s" must be unique', $field->name(), $field->type()), 'valueAlreadyExists');
                 }
 
                 return (string) $value;

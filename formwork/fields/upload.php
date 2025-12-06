@@ -92,7 +92,7 @@ return function (App $app) {
 
                     if ($value->isEmpty()) {
                         if ($field->isRequired()) {
-                            throw new ValidationException(sprintf('Required field "%s" of type "%s" cannot be empty', $field->name(), $field->type()));
+                            throw new ValidationException(sprintf('Required field "%s" of type "%s" cannot be empty', $field->name(), $field->type()), 'requiredValue');
                         }
                         return null;
                     }
@@ -118,7 +118,7 @@ return function (App $app) {
 
                 if ($value === []) {
                     if ($field->isRequired()) {
-                        throw new ValidationException(sprintf('Required field "%s" of type "%s" cannot be empty', $field->name(), $field->type()));
+                        throw new ValidationException(sprintf('Required field "%s" of type "%s" cannot be empty', $field->name(), $field->type()), 'requiredValue');
                     }
                     return null;
                 }

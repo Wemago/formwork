@@ -87,6 +87,7 @@ export class SelectInput {
 
         this.labelInput.type = "text";
 
+        this.labelInput.className = this.element.className;
         this.labelInput.classList.add("form-select");
         this.labelInput.id = selectId;
 

@@ -2,7 +2,7 @@
     <label class="form-label form-checkbox-label">
         <input <?= $this->attr([
                     'type'     => 'checkbox',
-                    'class'    => ['form-input', 'form-checkbox'],
+                    'class'    => $this->classes(['form-input', 'form-checkbox', 'is-invalid' => ($field->isValidated() && !$field->isValid()), $field->get('class')]),
                     'id'       => $field->name(),
                     'name'     => $field->formName(),
                     'checked'  => $field->value() == true,

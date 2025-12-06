@@ -8,7 +8,7 @@
 <label class="form-upload-drop-target" tabindex="0">
     <input <?= $this->attr([
                 'type'             => 'file',
-                'class'            => ['form-input', 'form-input-upload'],
+                'class'            => $this->classes(['form-input', 'form-input-upload', 'is-invalid' => ($field->isValidated() && !$field->isValid()), $field->get('class')]),
                 'id'               => $field->name(),
                 'name'             => $field->formName() . ($field->get('multiple') ? '[]' : ''),
                 'accept'           => $field->get('accept', implode(', ', $app->config()->get('system.files.allowedExtensions'))),

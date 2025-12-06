@@ -1,7 +1,7 @@
 <?php $this->layout('fields.field') ?>
 <div class="form-input-wrap">
     <fieldset <?= $this->attr([
-                    'class'    => 'form-togglegroup',
+                    'class'    => $this->classes(['form-togglegroup', 'is-invalid' => ($field->isValidated() && !$field->isValid()), $field->get('class')]),
                     'id'       => $field->name(),
                     'name'     => $field->formName(),
                     'disabled' => $field->isDisabled(),

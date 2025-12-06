@@ -2,7 +2,7 @@
 <div class="flex">
     <div class="form-input-range">
         <input <?= $this->attr([
-                    'class'       => 'form-input',
+                    'class'       => $this->classes(['form-input', 'is-invalid' => ($field->isValidated() && !$field->isValid()), $field->get('class')]),
                     'type'       => 'range',
                     'id'         => $field->name(),
                     'name'       => $field->formName(),

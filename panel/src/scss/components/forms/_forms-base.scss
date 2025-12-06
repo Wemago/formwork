@@ -93,20 +93,38 @@
     font-size: calc(var(--font-size-sm) * 0.875);
 }
 
-.form-input-accent {
+.form-input-accent,
+.form-select-accent {
     border-color: var(--color-accent-500);
 }
 
-.form-input-success {
+.form-input-success,
+.form-select-success {
     border-color: var(--color-success-500);
+
+    &:focus {
+        @include focusring($color-focusring-success);
+    }
 }
 
-.form-input-warning {
+.form-input-warning,
+.form-select-warning {
     border-color: var(--color-warning-500);
+
+    &:focus {
+        @include focusring($color-focusring-warning);
+    }
 }
 
-.form-input-danger {
+.form-input-danger,
+.form-input.is-invalid,
+.form-select-danger,
+.form-select.is-invalid {
     border-color: var(--color-danger-500);
+
+    &:focus {
+        @include focusring($color-focusring-danger);
+    }
 }
 
 .form-input-invalid {

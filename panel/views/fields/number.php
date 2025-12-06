@@ -2,7 +2,7 @@
 <div class="form-input-wrap">
     <?= $this->insert('fields.partials.icon', ['icon' => $field->get('icon')]) ?>
     <input <?= $this->attr([
-                'class'       => 'form-input',
+                'class'       => $this->classes(['form-input', 'is-invalid' => ($field->isValidated() && !$field->isValid()), $field->get('class')]),
                 'type'        => 'number',
                 'id'          => $field->name(),
                 'name'        => $field->formName(),

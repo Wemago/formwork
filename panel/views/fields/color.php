@@ -2,7 +2,7 @@
 <div class="form-input-wrap">
     <div class="flex">
         <input <?= $this->attr([
-                    'class'       => ['form-input-color', $field->get('class')],
+                    'class'       => $this->classes(['form-input-color', 'is-invalid' => ($field->isValidated() && !$field->isValid()), $field->get('class')]),
                     'type'        => 'color',
                     'id'          => $field->name(),
                     'name'        => $field->formName(),

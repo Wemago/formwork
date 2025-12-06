@@ -302,7 +302,7 @@ class Router
             foreach ($data['routes'] as $routeName => $route) {
                 $r = $this->addRoute($routeName, $route['path'])
                     ->action($route['action'])
-                    ->actionParameters($route['actionParameters'] ?? [] + $actionParameters);
+                    ->actionParameters(($route['actionParameters'] ?? []) + $actionParameters);
 
                 if (isset($route['where'])) {
                     foreach ($route['where'] as $param => $constraint) {

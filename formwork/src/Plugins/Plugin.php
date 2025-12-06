@@ -4,6 +4,7 @@ namespace Formwork\Plugins;
 
 use Composer\Autoload\ClassLoader;
 use Formwork\Cms\App;
+use Formwork\Parsers\Yaml;
 use Formwork\Plugins\Controllers\AssetsController;
 use Formwork\Utils\FileSystem;
 use Formwork\Utils\Str;
@@ -15,6 +16,11 @@ class Plugin
      * Whether the plugin has been initialized
      */
     protected bool $initialized = false;
+
+    /**
+     * Plugin manifest
+     */
+    protected PluginManifest $manifest;
 
     public function __construct(
         protected string $path,
@@ -47,6 +53,14 @@ class Plugin
     }
 
     /**
+     * Get the plugin manifest
+     */
+    final public function manifest(): PluginManifest
+    {
+        return $this->manifest;
+    }
+
+    /**
      * Method called when the plugin is initialized
      */
     final public function initialize(): void
@@ -55,6 +69,7 @@ class Plugin
             return;
         }
 
+        $this->loadManifest();
         $this->loadSchemes();
         $this->loadTranslations();
         $this->loadViews();
@@ -96,6 +111,26 @@ class Plugin
         }
 
         return $handlers;
+    }
+
+    /**
+     * Load plugin manifest
+     */
+    protected function loadManifest(): void
+    {
+        $manifestPath = FileSystem::joinPaths($this->path, 'plugin.yaml');
+
+        $data = FileSystem::isFile($manifestPath, assertExists: false)
+            ? Yaml::parseFile($manifestPath)
+            : [];
+
+        $this->manifest = new PluginManifest($data);
+
+        foreach ($this->manifest()->config() as $key => $value) {
+            if (!$this->app->config()->has("plugins.{$this->name()}.{$key}")) {
+                $this->app->config()->set("plugins.{$this->name()}.{$key}", $value);
+            }
+        }
     }
 
     /**

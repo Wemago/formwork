@@ -20,4 +20,5 @@
             ]) ?>>
     <span><?= $this->icon('cloud-upload') ?> <?= $this->translate('fields.file.uploadLabel') ?></span>
 </label>
+<?php $this->insert('fields.partials.errors') ?>
 <?php $this->insert('fields.partials.description') ?>

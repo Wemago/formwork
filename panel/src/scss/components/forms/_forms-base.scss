@@ -168,6 +168,13 @@
     font-size: var(--font-size-sm);
 }
 
+.form-input-errors {
+    margin-top: -0.5rem;
+    margin-bottom: 0.75rem;
+    color: var(--color-danger-500);
+    font-size: var(--font-size-sm);
+}
+
 .form-label {
     display: inline-block;
     margin-bottom: 0.25rem;

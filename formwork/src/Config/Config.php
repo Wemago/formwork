@@ -80,6 +80,26 @@ class Config implements ArraySerializable
     }
 
     /**
+     * Set a value in the config
+     */
+    public function set(string $key, mixed $value): void
+    {
+        Arr::set($this->config, $key, $value);
+    }
+
+    /**
+     * Set multiple values in the config
+     *
+     * @param array<string, mixed> $values
+     */
+    public function setMultiple(array $values): void
+    {
+        foreach ($values as $key => $value) {
+            $this->set($key, $value);
+        }
+    }
+
+    /**
      * Load config from a path
      */
     public function loadFromPath(string $path): void

@@ -101,7 +101,7 @@ class Config implements ArraySerializable
                 throw new ConfigLoadingException(sprintf('Unsupported config file type "%s"', $extension));
         }
 
-        $this->config[$name] = isset($this->config[$name]) ? array_replace_recursive($this->config[$name], $data) : $data;
+        $this->config = array_replace_recursive($this->config, Arr::undot([$name => $data]));
     }
 
     /**

@@ -3,7 +3,7 @@
     <?= $this->insert('fields.partials.icon', ['icon' => $field->get('icon', 'calendar-clock')]) ?>
     <input <?= $this->attr([
                 'type'        => 'text',
-                'class'       => ['form-input', 'form-input-date'],
+                'class'       => $this->classes(['form-input', 'form-input-date', 'is-invalid' => ($field->isValidated() && !$field->isValid()), $field->get('class')]),
                 'id'          => $field->name(),
                 'name'        => $field->formName(),
                 'value'       => $field->toDateTimeString(),

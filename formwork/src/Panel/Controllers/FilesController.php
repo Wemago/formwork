@@ -107,18 +107,27 @@ final class FilesController extends AbstractController
             return $this->redirectToReferer(base: $this->panel->panelRoot());
         }
 
+        $valid = false;
+
         switch ($this->request->method()) {
             case RequestMethod::GET:
                 $data = $file->data();
 
                 $file->fields()->setValues($data);
 
+                $valid = $file->fields()->isValid();
+
                 break;
 
             case RequestMethod::POST:
                 $data = $this->request->input();
 
-                $file->fields()->setValues($data)->validate();
+                $file->fields()->setValues($data);
+
+                if (!($valid = $file->fields()->isValid())) {
+                    $this->panel->notify($this->translate('panel.files.metadata.cannotUpdate.invalidFields'), 'error');
+                    break;
+                }
 
                 $this->updateFileMetadata($file, $file->fields());
 
@@ -129,12 +138,14 @@ final class FilesController extends AbstractController
                 return $this->redirect($this->generateRoute('panel.files.edit', $routeParams->toArray()));
         }
 
+        $responseStatus = ($valid || $this->request->method() === RequestMethod::GET) ? ResponseStatus::OK : ResponseStatus::UnprocessableEntity;
+
         return new Response($this->view('files.edit', [
             'title' => $file->name(),
             'model' => $model,
             'file'  => $file,
             ...$this->getPreviousAndNextFile($files, $file),
-        ]));
+        ]), $responseStatus);
     }
 
     /**

@@ -9,6 +9,7 @@ use Formwork\Fields\FieldCollection;
 use Formwork\Http\FileResponse;
 use Formwork\Http\RequestMethod;
 use Formwork\Http\Response;
+use Formwork\Http\ResponseStatus;
 use Formwork\Images\Image;
 use Formwork\Log\Registry;
 use Formwork\Panel\Security\Password;
@@ -188,32 +189,46 @@ final class UsersController extends AbstractController
         // Disable role field if it cannot be changed
         $fields->get('role')->set('disabled', !$this->panel->user()->canChangeRoleOf($user));
 
-        if ($this->request->method() === RequestMethod::POST) {
-            // Ensure that options can be changed
-            if ($this->panel->user()->canChangeOptionsOf($user)) {
-                $fields->setValuesFromRequest($this->request, null)->validate();
+        $valid = false;
 
-                try {
-                    $this->updateUser($user, $fields);
-                    $this->panel->notify($this->translate('panel.users.user.edited'), 'success');
-                } catch (TranslatedException $e) {
-                    $this->panel->notify($this->translate($e->getLanguageString(), $user->username()), 'error');
+        switch ($this->request->method()) {
+            case RequestMethod::GET:
+                $fields = $fields->setValues($user);
+
+                $valid = $fields->isValid();
+
+                break;
+            case RequestMethod::POST:
+                // Ensure that options can be changed
+                if ($this->panel->user()->canChangeOptionsOf($user)) {
+                    $fields->setValuesFromRequest($this->request, null);
+
+                    if (!($valid = $fields->isValid())) {
+                        $this->panel->notify($this->translate('panel.users.user.cannotEdit.invalidFields'), 'error');
+                        break;
+                    }
+
+                    try {
+                        $this->updateUser($user, $fields);
+                        $this->panel->notify($this->translate('panel.users.user.edited'), 'success');
+                    } catch (TranslatedException $e) {
+                        $this->panel->notify($this->translate($e->getLanguageString(), $user->username()), 'error');
+                    }
+                } else {
+                    $this->panel->notify($this->translate('panel.users.user.cannotEdit', $user->username()), 'error');
                 }
-            } else {
-                $this->panel->notify($this->translate('panel.users.user.cannotEdit', $user->username()), 'error');
-            }
 
-            return $this->redirect($this->generateRoute('panel.users.profile', ['user' => $user->username()]));
+                return $this->redirect($this->generateRoute('panel.users.profile', ['user' => $user->username()]));
         }
 
-        $fields = $fields->setValues($user);
+        $responseStatus = ($valid || $this->request->method() === RequestMethod::GET) ? ResponseStatus::OK : ResponseStatus::UnprocessableEntity;
 
         return new Response($this->view('users.profile', [
             'title'  => $this->translate('panel.users.userProfile', $user->username()),
             'user'   => $user,
             'fields' => $fields,
             ...$this->getPreviousAndNextUser($user),
-        ]));
+        ]), $responseStatus);
     }
 
     /**

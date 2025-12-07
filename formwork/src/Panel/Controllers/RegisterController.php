@@ -2,9 +2,9 @@
 
 namespace Formwork\Panel\Controllers;
 
-use Formwork\Fields\Exceptions\ValidationException;
 use Formwork\Http\RequestMethod;
 use Formwork\Http\Response;
+use Formwork\Http\ResponseStatus;
 use Formwork\Log\Log;
 use Formwork\Log\Registry;
 use Formwork\Panel\Security\Password;
@@ -37,11 +37,13 @@ final class RegisterController extends AbstractController
                 ]));
 
             case RequestMethod::POST:
-                try {
-                    $fields->setValues($this->request->input())->validate();
-                } catch (ValidationException) {
-                    $this->panel->notify($this->translate('panel.users.user.cannotCreate.varMissing'), 'error');
-                    return $this->redirect($this->generateRoute('panel.index'));
+                $fields->setValues($this->request->input());
+
+                if (!$fields->isValid()) {
+                    return new Response($this->view('register.register', [
+                        'title'  => $this->translate('panel.register.register'),
+                        'fields' => $fields,
+                    ]), ResponseStatus::UnprocessableEntity);
                 }
 
                 $username = $fields->get('username')->value();

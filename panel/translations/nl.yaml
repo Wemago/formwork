@@ -97,6 +97,7 @@ panel.files.info.mimeType: MIME-type
 panel.files.info.name: Naam
 panel.files.info.size: Grootte
 panel.files.info.uri: URI
+panel.files.metadata.cannotUpdate.invalidFields: Bestandmetadata kan niet worden bijgewerkt, sommige velden zijn ongeldig
 panel.files.metadata.updated: Bestandmetadata bijgewerkt
 panel.files.next: Volgend bestand
 panel.files.pageNotFound: Kan bestandgegevens niet ophalen, pagina niet gevonden
@@ -134,6 +135,7 @@ panel.modal.link.text: Tekst
 panel.modal.link.title: Link invoegen
 panel.modal.link.uri: Uri
 panel.navigation.toggle: Navigatie wisselen
+panel.options.cannotUpdate.invalidFields: Opties kunnen niet worden bijgewerkt, sommige velden zijn ongeldig
 panel.options.options: Opties
 panel.options.site: Site
 panel.options.system: Systeem
@@ -226,6 +228,7 @@ panel.pages.page.cannotDuplicate.notDuplicable: Kan pagina niet dupliceren, niet
 panel.pages.page.cannotDuplicate.pageNotFound: Kan pagina niet dupliceren, niet gevonden
 panel.pages.page.cannotEdit.alreadyExists: Kan pagina niet bewerken, een pagina met dezelfde URI bestaat al
 panel.pages.page.cannotEdit.indexOrErrorPageSlug: Kan slug van index- of foutpagina niet bewerken
+panel.pages.page.cannotEdit.invalidFields: Pagina kan niet worden bewerkt, sommige velden zijn ongeldig
 panel.pages.page.cannotEdit.invalidLanguage: 'Kan pagina niet bewerken, ongeldige taal: %s'
 panel.pages.page.cannotEdit.invalidParent: Kan pagina niet bewerken, ongeldige bovenliggende pagina
 panel.pages.page.cannotEdit.invalidSlug: Kan slug van de pagina niet bewerken, deze mag alleen letters en cijfers bevatten gescheiden door streepjes
@@ -336,6 +339,7 @@ panel.users.user.cannotCreate.emailAlreadyUsed: Kan gebruiker niet aanmaken, het
 panel.users.user.cannotCreate.varMissing: Kan gebruiker niet aanmaken, ontbrekende variabele
 panel.users.user.cannotDelete: Kan gebruiker niet verwijderen. Je moet beheerder zijn en de gebruiker mag niet ingelogd zijn.
 panel.users.user.cannotEdit: Kan gebruiker %s niet bewerken. Deze actie is niet toegestaan.
+panel.users.user.cannotEdit.invalidFields: Gebruiker kan niet worden bewerkt, sommige velden zijn ongeldig
 panel.users.user.created: Gebruiker aangemaakt
 panel.users.user.deleted: Gebruiker verwijderd
 panel.users.user.edited: Gebruikersgegevens bijgewerkt

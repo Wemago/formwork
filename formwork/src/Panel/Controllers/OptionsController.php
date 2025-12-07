@@ -6,6 +6,7 @@ use Formwork\Config\Config;
 use Formwork\Fields\FieldCollection;
 use Formwork\Http\RequestMethod;
 use Formwork\Http\Response;
+use Formwork\Http\ResponseStatus;
 use Formwork\Parsers\Yaml;
 use Formwork\Schemes\Schemes;
 use Formwork\Utils\Arr;
@@ -45,26 +46,42 @@ final class OptionsController extends AbstractController
         $scheme = $schemes->get('config.system');
         $fields = $scheme->fields();
 
-        if ($this->request->method() === RequestMethod::POST) {
-            $options = $this->getConfigOverrides()->get('system', []);
-            $defaults = $this->getConfigDefaults()->get('system');
-            $fields->setValuesFromRequest($this->request, null)->validate();
+        $valid = false;
 
-            $differ = $this->updateOptions('system', $fields, $options, $defaults);
+        switch ($this->request->method()) {
+            case RequestMethod::GET:
+                $fields->setValues($this->config->get('system'));
 
-            // Touch content folder to invalidate cache
-            if ($differ) {
-                if ($this->site->contentPath() === null) {
-                    throw new UnexpectedValueException('Unexpected missing site path');
+                $valid = $fields->isValid();
+
+                break;
+
+            case RequestMethod::POST:
+                $fields->setValuesFromRequest($this->request, null);
+
+                if (!($valid = $fields->isValid())) {
+                    $this->panel->notify($this->translate('panel.options.cannotUpdate.invalidFields'), 'error');
+                    break;
                 }
-                FileSystem::touch($this->site->contentPath());
-            }
 
-            $this->panel->notify($this->translate('panel.options.updated'), 'success');
-            return $this->redirect($this->generateRoute('panel.options.system'));
+                $options = $this->getConfigOverrides()->get('system', []);
+                $defaults = $this->getConfigDefaults()->get('system');
+
+                $differ = $this->updateOptions('system', $fields, $options, $defaults);
+
+                // Touch content folder to invalidate cache
+                if ($differ) {
+                    if ($this->site->contentPath() === null) {
+                        throw new UnexpectedValueException('Unexpected missing site path');
+                    }
+                    FileSystem::touch($this->site->contentPath());
+                }
+
+                $this->panel->notify($this->translate('panel.options.updated'), 'success');
+                return $this->redirect($this->generateRoute('panel.options.system'));
         }
 
-        $fields->setValues($this->config->get('system'));
+        $responseStatus = ($valid || $this->request->method() === RequestMethod::GET) ? ResponseStatus::OK : ResponseStatus::UnprocessableEntity;
 
         return new Response($this->view('options.system', [
             'title' => $this->translate('panel.options.options'),
@@ -73,7 +90,7 @@ final class OptionsController extends AbstractController
                 'current' => 'system',
             ]),
             'fields' => $fields,
-        ]));
+        ]), $responseStatus);
     }
 
     /**
@@ -88,25 +105,40 @@ final class OptionsController extends AbstractController
         $scheme = $schemes->get('config.site');
         $fields = $scheme->fields();
 
-        if ($this->request->method() === RequestMethod::POST) {
-            $options = $this->getConfigOverrides()->get('site', []);
-            $defaults = $this->getConfigDefaults()->get('site');
-            $fields->setValuesFromRequest($this->request, null)->validate();
-            $differ = $this->updateOptions('site', $fields, $options, $defaults);
+        $valid = false;
 
-            // Touch content folder to invalidate cache
-            if ($differ) {
-                if ($this->site->contentPath() === null) {
-                    throw new UnexpectedValueException('Unexpected missing site path');
+        switch ($this->request->method()) {
+            case RequestMethod::GET:
+                $fields->setValues($this->site->data());
+
+                $valid = $fields->isValid();
+                break;
+
+            case RequestMethod::POST:
+                $fields->setValuesFromRequest($this->request, null);
+
+                if (!($valid = $fields->isValid())) {
+                    $this->panel->notify($this->translate('panel.options.cannotUpdate.invalidFields'), 'error');
+                    break;
                 }
-                FileSystem::touch($this->site->contentPath());
-            }
 
-            $this->panel->notify($this->translate('panel.options.updated'), 'success');
-            return $this->redirect($this->generateRoute('panel.options.site'));
+                $options = $this->getConfigOverrides()->get('site', []);
+                $defaults = $this->getConfigDefaults()->get('site');
+                $differ = $this->updateOptions('site', $fields, $options, $defaults);
+
+                // Touch content folder to invalidate cache
+                if ($differ) {
+                    if ($this->site->contentPath() === null) {
+                        throw new UnexpectedValueException('Unexpected missing site path');
+                    }
+                    FileSystem::touch($this->site->contentPath());
+                }
+
+                $this->panel->notify($this->translate('panel.options.updated'), 'success');
+                return $this->redirect($this->generateRoute('panel.options.site'));
         }
 
-        $fields->setValues($this->site->data());
+        $responseStatus = ($valid || $this->request->method() === RequestMethod::GET) ? ResponseStatus::OK : ResponseStatus::UnprocessableEntity;
 
         return new Response($this->view('options.site', [
             'title' => $this->translate('panel.options.options'),
@@ -115,7 +147,7 @@ final class OptionsController extends AbstractController
                 'current' => 'site',
             ]),
             'fields' => $fields,
-        ]));
+        ]), $responseStatus);
     }
 
     /**

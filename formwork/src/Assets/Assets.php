@@ -109,6 +109,10 @@ class Assets
     protected function resolve(string $key): array
     {
         if (Str::startsWith($key, '@')) {
+            if (!Str::contains($key, '/')) {
+                throw new AssetResolutionException(sprintf('Cannot resolve asset with key "%s": invalid namespaced syntax', $key));
+            }
+
             [$namespace, $relativePath] = explode('/', Str::after($key, '@'), 2);
         } else {
             $namespace = 'template';

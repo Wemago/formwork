@@ -96,15 +96,10 @@ class Plugins
     }
 
     /**
-     * Get a plugin from id
+     * Get a plugin from id, or null if it is not initialized
      */
-    public function get(string $id): Plugin
+    public function get(string $id): ?Plugin
     {
-        if (isset($this->storage[$id])) {
-            return $this->storage[$id];
-        }
-
-        $this->initialize($id);
-        return $this->storage[$id];
+        return $this->storage[$id] ?? null;
     }
 }

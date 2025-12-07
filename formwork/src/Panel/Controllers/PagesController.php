@@ -223,13 +223,16 @@ final class PagesController extends AbstractController
         // 3. Keep the original page fields intact for rendering the form on validation errors
         $fieldCollection = $page->fields()->deepClone();
 
+        $valid = false;
+
         switch ($this->request->method()) {
             case RequestMethod::GET:
                 // Load data from the page itself
                 $data = $page->data();
 
-                // Validate fields against data
                 $fieldCollection->setValues($data);
+
+                $valid = $fieldCollection->isValid();
 
                 break;
 
@@ -237,10 +240,14 @@ final class PagesController extends AbstractController
                 // Load data from POST variables
                 $data = $this->request->input();
 
-                try {
-                    // Validate fields against data
-                    $fieldCollection->setValuesFromRequest($this->request, null)->validate();
+                $fieldCollection->setValuesFromRequest($this->request, null);
 
+                if (!($valid = $fieldCollection->isValid())) {
+                    $this->panel->notify($this->translate('panel.pages.page.cannotEdit.invalidFields'), 'error');
+                    break;
+                }
+
+                try {
                     $forceUpdate = false;
 
                     if ($this->request->query()->has('publish')) {
@@ -284,14 +291,16 @@ final class PagesController extends AbstractController
             ? new ContentHistory($page->contentPath())
             : null;
 
+        $responseStatus = ($valid || $this->request->method() === RequestMethod::GET) ? ResponseStatus::OK : ResponseStatus::UnprocessableEntity;
+
         return new Response($this->view('pages.editor', [
             'title'           => $this->translate('panel.pages.editPage', (string) $page->title()),
             'page'            => $page,
-            'fields'          => $page->fields(),
+            'fields'          => $fieldCollection,
             'currentLanguage' => $routeParams->get('language', $page->language()?->code()),
             'history'         => $contentHistory,
             ...$this->getPreviousAndNextPage($page),
-        ]));
+        ]), $responseStatus);
     }
 
     /**

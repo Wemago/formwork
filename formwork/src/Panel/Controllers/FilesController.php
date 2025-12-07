@@ -125,7 +125,7 @@ final class FilesController extends AbstractController
                 $file->fields()->setValues($data);
 
                 if (!($valid = $file->fields()->isValid())) {
-                    $this->panel->notify($this->translate('panel.files.medatata.cannotUpdate.invalidFields'), 'error');
+                    $this->panel->notify($this->translate('panel.files.metadata.cannotUpdate.invalidFields'), 'error');
                     break;
                 }
 

@@ -97,7 +97,7 @@ panel.files.info.mimeType: Tip MIME
 panel.files.info.name: Nume
 panel.files.info.size: Dimensiune
 panel.files.info.uri: URI
-panel.files.medatata.cannotUpdate.invalidFields: Nu se pot actualiza metadatele fișierului, unele câmpuri sunt nevalide
+panel.files.metadata.cannotUpdate.invalidFields: Nu se pot actualiza metadatele fișierului, unele câmpuri sunt nevalide
 panel.files.metadata.updated: Metadatele fișierului au fost actualizate
 panel.files.next: Fișierul următor
 panel.files.pageNotFound: Nu se pot obține informații despre fișier, pagina nu a fost găsită

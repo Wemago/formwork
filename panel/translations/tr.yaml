@@ -97,7 +97,7 @@ panel.files.info.mimeType: MIME türü
 panel.files.info.name: Ad
 panel.files.info.size: Boyut
 panel.files.info.uri: URI
-panel.files.medatata.cannotUpdate.invalidFields: Dosya meta verileri güncellenemiyor, bazı alanlar geçersiz
+panel.files.metadata.cannotUpdate.invalidFields: Dosya meta verileri güncellenemiyor, bazı alanlar geçersiz
 panel.files.metadata.updated: Dosya meta verileri güncellendi
 panel.files.next: Sonraki dosya
 panel.files.pageNotFound: Dosya bilgisi alınamıyor, sayfa bulunamadı

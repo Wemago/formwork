@@ -97,7 +97,7 @@ panel.files.info.mimeType: MIME-type
 panel.files.info.name: Naam
 panel.files.info.size: Grootte
 panel.files.info.uri: URI
-panel.files.medatata.cannotUpdate.invalidFields: Bestandmetadata kan niet worden bijgewerkt, sommige velden zijn ongeldig
+panel.files.metadata.cannotUpdate.invalidFields: Bestandmetadata kan niet worden bijgewerkt, sommige velden zijn ongeldig
 panel.files.metadata.updated: Bestandmetadata bijgewerkt
 panel.files.next: Volgend bestand
 panel.files.pageNotFound: Kan bestandgegevens niet ophalen, pagina niet gevonden

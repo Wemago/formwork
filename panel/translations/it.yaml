@@ -97,7 +97,7 @@ panel.files.info.mimeType: Tipo MIME
 panel.files.info.name: Nome
 panel.files.info.size: Dimensioni file
 panel.files.info.uri: URI
-panel.files.medatata.cannotUpdate.invalidFields: Impossibile aggiornare i metadati del file, alcuni campi non sono validi
+panel.files.metadata.cannotUpdate.invalidFields: Impossibile aggiornare i metadati del file, alcuni campi non sono validi
 panel.files.metadata.updated: Metadati del file aggiornati
 panel.files.next: File successivo
 panel.files.pageNotFound: Impossibile ottenere le informazioni sul file, pagina non trovata

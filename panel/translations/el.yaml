@@ -97,7 +97,7 @@ panel.files.info.mimeType: Τύπος MIME
 panel.files.info.name: Όνομα
 panel.files.info.size: Μέγεθος
 panel.files.info.uri: URI
-panel.files.medatata.cannotUpdate.invalidFields: Δεν είναι δυνατή η ενημέρωση των μεταδεδομένων του αρχείου, ορισμένα πεδία δεν είναι έγκυρα
+panel.files.metadata.cannotUpdate.invalidFields: Δεν είναι δυνατή η ενημέρωση των μεταδεδομένων του αρχείου, ορισμένα πεδία δεν είναι έγκυρα
 panel.files.metadata.updated: Τα μεταδεδομένα του αρχείου ενημερώθηκαν
 panel.files.next: Επόμενο αρχείο
 panel.files.pageNotFound: Δεν είναι δυνατή η ανάκτηση πληροφοριών, η σελίδα δεν βρέθηκε

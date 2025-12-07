@@ -4,6 +4,7 @@ namespace Formwork\Plugins;
 
 use Formwork\Services\Container;
 use Formwork\Utils\FileSystem;
+use Formwork\Utils\Path;
 use Formwork\Utils\Str;
 use RuntimeException;
 
@@ -20,7 +21,7 @@ class PluginFactory
     {
         $name = basename($path);
 
-        $classFile = FileSystem::joinPaths($path, $name . '.php');
+        $classFile = FileSystem::joinPaths($path, Path::resolve($name, '/', DIRECTORY_SEPARATOR) . '.php');
 
         if (!is_file($classFile)) {
             throw new RuntimeException(sprintf('Plugin class file "%s" not found', $classFile));

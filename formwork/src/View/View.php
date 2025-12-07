@@ -242,7 +242,7 @@ class View
     /**
      * Get the view file
      *
-     * @param array<string> $resolutionPaths
+     * @param array<string, string>|string $resolutionPaths
      *
      * @throws ViewResolutionException If the view file is not found
      *

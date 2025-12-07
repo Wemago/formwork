@@ -9,6 +9,7 @@ use Formwork\Plugins\Controllers\AssetsController;
 use Formwork\Utils\FileSystem;
 use Formwork\Utils\Str;
 use Formwork\View\ViewFactory;
+use ReflectionMethod;
 
 class Plugin
 {
@@ -104,7 +105,8 @@ class Plugin
         $handlers = [];
 
         foreach (get_class_methods($this) as $method) {
-            if (Str::startsWith($method, 'on')) {
+            $reflection = new ReflectionMethod($this, $method);
+            if ($reflection->isPublic() && Str::startsWith($method, 'on')) {
                 $eventName = lcfirst(Str::after($method, 'on'));
                 $handlers[$eventName] = $method;
             }

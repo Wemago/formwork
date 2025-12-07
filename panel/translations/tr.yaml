@@ -175,6 +175,7 @@ panel.options.system.files: Dosyalar
 panel.options.system.files.allowedExtensions: İzin verilen uzantılar
 panel.options.system.files.allowedExtensions.noExtensions: Uzantı yok (dosya yükleme yok)
 panel.options.system.images: Görseller
+panel.options.system.images.avifQuality: AVIF kalitesi
 panel.options.system.images.clearCacheByDefault: Varsayılan olarak görsel önbelleğini temizle
 panel.options.system.images.clearCacheByDefault.disabled: Devre dışı
 panel.options.system.images.clearCacheByDefault.enabled: Etkin

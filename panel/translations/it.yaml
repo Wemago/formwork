@@ -175,6 +175,7 @@ panel.options.system.files: File
 panel.options.system.files.allowedExtensions: Estensioni consentite
 panel.options.system.files.allowedExtensions.noExtensions: Nessuna estensione (nessun file consentito)
 panel.options.system.images: Immagini
+panel.options.system.images.avifQuality: Qualità AVIF
 panel.options.system.images.clearCacheByDefault: Cancella la cache delle immagini per impostazione predefinita
 panel.options.system.images.clearCacheByDefault.disabled: Disabilitato
 panel.options.system.images.clearCacheByDefault.enabled: Abilitato

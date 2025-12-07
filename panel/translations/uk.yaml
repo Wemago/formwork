@@ -175,6 +175,7 @@ panel.options.system.files: Файли
 panel.options.system.files.allowedExtensions: Дозволені розширення
 panel.options.system.files.allowedExtensions.noExtensions: Без розширень (файли не дозволені)
 panel.options.system.images: Зображення
+panel.options.system.images.avifQuality: Якість AVIF
 panel.options.system.images.clearCacheByDefault: Очистити кеш зображень за замовчуванням
 panel.options.system.images.clearCacheByDefault.disabled: Вимкнено
 panel.options.system.images.clearCacheByDefault.enabled: Увімкнено

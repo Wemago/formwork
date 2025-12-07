@@ -256,8 +256,6 @@ class View
             $name = 'partials/' . Str::removeStart($name, '_');
         }
 
-        $name = str_replace('.', '/', $name);
-
         $path = is_string($resolutionPaths)
             ? $resolutionPaths
             : $resolutionPaths[$namespace] ?? null;
@@ -339,9 +337,10 @@ class View
      */
     private function parseViewName(string $name): array
     {
+        $name = str_replace('.', '/', $name);
+
         if (Str::startsWith($name, '@')) {
-            $parts = preg_split('/[.\/]/', $name, 2)
-                ?: throw new ViewResolutionException(sprintf('Cannot parse %s name "%s"', static::TYPE, $name));
+            $parts = explode('/', $name, 2);
             return [substr($parts[0], 1), $parts[1] ?? ''];
         }
         return ['', $name];

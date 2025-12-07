@@ -280,7 +280,7 @@ final class AvifHandler extends AbstractHandler
 
         ob_start();
 
-        if (imageavif($gdImage, null, $this->options['avifQuality'] ?? 100) === false) {
+        if (imageavif($gdImage, null, $this->options['avifQuality']) === false) {
             throw new RuntimeException('Cannot set data from GdImage');
         }
         $this->data = ob_get_clean() ?: throw new UnexpectedValueException('Unexpected empty image data');

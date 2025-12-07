@@ -64,6 +64,7 @@ abstract class AbstractHandler implements HandlerInterface
             'jpegProgressive'      => false,
             'pngCompression'       => -1,
             'webpQuality'          => -1,
+            'avifQuality'          => -1,
             'gifColors'            => 256,
             'preserveColorProfile' => true,
             'preserveExifData'     => true,

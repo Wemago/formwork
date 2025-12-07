@@ -30,7 +30,7 @@ return function (App $app) {
                 }
 
                 if ($field->has('pattern') && !Constraint::matchesRegex((string) $value, $field->get('pattern'))) {
-                    throw new ValidationException(sprintf('The value of field "%s" of type "%s" does not match the required pattern', $field->name(), $field->type()), 'patternMismatch');
+                    throw new ValidationException(sprintf('The value of field "%s" of type "%s" does not match the required pattern', $field->name(), $field->type()), 'patternMismatch', ['pattern' => $field->get('pattern')]);
                 }
 
                 if (!$field->hasUniqueValue()) {

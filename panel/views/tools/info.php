@@ -1,4 +1,4 @@
-<?php $this->layout('panel') ?>
+<?php $this->layout('@panel.panel') ?>
 
 <div class="header">
     <div class="header-icon"><?= $this->icon('toolbox') ?></div>

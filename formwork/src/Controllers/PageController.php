@@ -8,6 +8,7 @@ use Formwork\Http\FileResponse;
 use Formwork\Http\RequestMethod;
 use Formwork\Http\Response;
 use Formwork\Http\ResponseStatus;
+use Formwork\Pages\Events\PageOutputEvent;
 use Formwork\Pages\Page;
 use Formwork\Router\RouteParams;
 use Formwork\Router\Router;
@@ -40,7 +41,7 @@ final class PageController extends AbstractController
                 $route = $maintenancePage->route();
             } else {
                 $status = ResponseStatus::ServiceUnavailable;
-                return new Response($this->view('errors.maintenance', ['status' => $status->code(), 'message' => $status->message()]), $status);
+                return new Response($this->view('@system.errors.maintenance', ['status' => $status->code(), 'message' => $status->message()]), $status);
             }
         }
 
@@ -146,18 +147,20 @@ final class PageController extends AbstractController
             $this->filesCache->delete($cacheKey);
         }
 
-        $content = $page->render();
+        $output = $page->render();
         $headers = [];
 
         if ($cacheable) {
             $lastModifiedTime = max($page->lastModifiedTime(), $this->site->lastModifiedTime());
             $headers = [
-                'ETag'          => hash('sha256', $content . ':' . $lastModifiedTime),
+                'ETag'          => hash('sha256', $output . ':' . $lastModifiedTime),
                 'Last-Modified' => gmdate('D, d M Y H:i:s T', $lastModifiedTime),
             ];
         }
 
-        $response = new Response($content, $page->responseStatus(), $page->headers() + $headers);
+        $this->events->dispatch(new PageOutputEvent($page, $output));
+
+        $response = new Response($output, $page->responseStatus(), $page->headers() + $headers);
 
         if ($cacheable) {
             $this->filesCache->save($cacheKey, $response, $page->get('cache.time', null));

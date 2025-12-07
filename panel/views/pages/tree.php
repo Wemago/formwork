@@ -39,7 +39,7 @@
                     <?php endif ?>
                     <div class="page-icon mr-3">
                         <?= $this->icon($page->icon()) ?>
-                        <?= $this->insert('_pages/info', ['page' => $page]) ?>
+                        <?= $this->insert('@panel._pages.info', ['page' => $page]) ?>
                     </div>
                     <div class="min-w-0">
                         <div class="flex">
@@ -67,7 +67,7 @@
                 </div>
                 <div class="pages-tree-item-cell page-date truncate show-from-lg"><?= $date ?></div>
                 <div class="pages-tree-item-cell page-status truncate show-from-xs">
-                    <?= $this->insert('_pages/status', ['page' => $page]) ?>
+                    <?= $this->insert('@panel._pages.status', ['page' => $page]) ?>
                     <span class="page-status-label"><?= $this->translate('page.status.' . $page->status()) ?></span>
                 </div>
                 <div class="pages-tree-item-cell page-actions">
@@ -93,7 +93,7 @@
                 </div>
             </div>
             <?php if ($includeChildren && $page->hasChildren() && !$subtree) : ?>
-                <?php $this->insert('pages.tree', [
+                <?php $this->insert('@panel.pages.tree', [
                     'pages'           => $page->scheme()->options()->get('children.reverse', false) ? $page->children()->reverse() : $page->children(),
                     'includeChildren' => true,
                     'class'           => 'pages-tree-children',

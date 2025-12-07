@@ -1,4 +1,4 @@
-<?php $this->layout('panel') ?>
+<?php $this->layout('@panel.panel') ?>
 
 <?php $this->modals()->addMultiple(['newUser', 'deleteUser']) ?>
 
@@ -22,7 +22,7 @@
         <?php foreach ($users as $user) : ?>
             <div class="users-item">
                 <div class="users-item-cell user-fullname">
-                    <?= $this->insert('_user-image', ['user' => $user, 'class' => 'user-image']) ?>
+                    <?= $this->insert('@panel._user-image', ['user' => $user, 'class' => 'user-image']) ?>
                     <a href="<?= $panel->uri('/users/' . $user->username() . '/profile/') ?>"><?= $this->escape($user->fullname()) ?></a>
                 </div>
                 <div class="users-item-cell user-username truncate"><?= $this->escape($user->username()) ?></div>

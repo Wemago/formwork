@@ -14,6 +14,14 @@ use Formwork\Languages\Languages;
 use Formwork\Metadata\MetadataCollection;
 use Formwork\Model\Attributes\ReadonlyModelProperty;
 use Formwork\Model\Model;
+use Formwork\Pages\Events\PageAfterDeleteEvent;
+use Formwork\Pages\Events\PageAfterDuplicateEvent;
+use Formwork\Pages\Events\PageAfterSaveEvent;
+use Formwork\Pages\Events\PageBeforeDeleteEvent;
+use Formwork\Pages\Events\PageBeforeDuplicateEvent;
+use Formwork\Pages\Events\PageBeforeSaveEvent;
+use Formwork\Pages\Events\PageLoadedEvent;
+use Formwork\Pages\Events\PageRenderEvent;
 use Formwork\Pages\Traits\PageStatus;
 use Formwork\Pages\Traits\PageTraversal;
 use Formwork\Pages\Traits\PageUid;
@@ -261,7 +269,11 @@ class Page extends Model implements Stringable
      */
     public function save(?string $language = null): void
     {
+        $this->app()->events()->dispatch(new PageBeforeSaveEvent($this));
+
         $this->write($language, copy: false);
+
+        $this->app()->events()->dispatch(new PageAfterSaveEvent($this));
     }
 
     /**
@@ -280,6 +292,8 @@ class Page extends Model implements Stringable
         if (!$this->isDuplicable()) {
             throw new RuntimeException('Cannot duplicate a non-duplicable page');
         }
+
+        $this->app()->events()->dispatch(new PageBeforeDuplicateEvent($this, $with));
 
         $duplicatePage = clone $this;
 
@@ -305,6 +319,8 @@ class Page extends Model implements Stringable
 
         $duplicatePage->write($language, copy: true);
 
+        $this->app()->events()->dispatch(new PageAfterDuplicateEvent($this, $duplicatePage));
+
         return $duplicatePage;
     }
 
@@ -323,6 +339,8 @@ class Page extends Model implements Stringable
             throw new RuntimeException('Cannot delete a non-deletable page');
         }
 
+        $this->app()->events()->dispatch(new PageBeforeDeleteEvent($this));
+
         if ($this->contentPath() !== null) {
             // Delete just the content file only if there are more than one language
             if ($this->contentFile() !== null && !$allLanguages && count($this->languages()->available()) > 1) {
@@ -331,6 +349,8 @@ class Page extends Model implements Stringable
                 FileSystem::delete($this->contentPath(), recursive: true);
             }
         }
+
+        $this->app()->events()->dispatch(new PageAfterDeleteEvent($this));
     }
 
     /**
@@ -338,7 +358,11 @@ class Page extends Model implements Stringable
      */
     public function render(): string
     {
-        return $this->template()->render(['page' => $this]);
+        $vars = [];
+
+        $this->app()->events()->dispatch(new PageRenderEvent($this, $vars));
+
+        return $this->template()->render(['page' => $this, ...$vars]);
     }
 
     /**
@@ -824,6 +848,8 @@ class Page extends Model implements Stringable
         $this->fields->setValues($this->data);
 
         $this->loaded = true;
+
+        $this->app()->events()->dispatch(new PageLoadedEvent($this));
     }
 
     /**

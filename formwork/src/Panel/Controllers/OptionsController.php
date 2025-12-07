@@ -83,9 +83,9 @@ final class OptionsController extends AbstractController
 
         $responseStatus = ($valid || $this->request->method() === RequestMethod::GET) ? ResponseStatus::OK : ResponseStatus::UnprocessableEntity;
 
-        return new Response($this->view('options.system', [
+        return new Response($this->view('@panel.options.system', [
             'title' => $this->translate('panel.options.options'),
-            'tabs'  => $this->view('options.tabs', [
+            'tabs'  => $this->view('@panel.options.tabs', [
                 'tabs'    => $this->tabs,
                 'current' => 'system',
             ]),
@@ -140,9 +140,9 @@ final class OptionsController extends AbstractController
 
         $responseStatus = ($valid || $this->request->method() === RequestMethod::GET) ? ResponseStatus::OK : ResponseStatus::UnprocessableEntity;
 
-        return new Response($this->view('options.site', [
+        return new Response($this->view('@panel.options.site', [
             'title' => $this->translate('panel.options.options'),
-            'tabs'  => $this->view('options.tabs', [
+            'tabs'  => $this->view('@panel.options.tabs', [
                 'tabs'    => $this->tabs,
                 'current' => 'site',
             ]),

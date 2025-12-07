@@ -1,4 +1,4 @@
-<?php $this->layout('panel') ?>
+<?php $this->layout('@panel.panel') ?>
 
 <?php $this->modals()->add('deleteFile') ?>
 

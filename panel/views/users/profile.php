@@ -1,4 +1,4 @@
-<?php $this->layout('panel') ?>
+<?php $this->layout('@panel.panel') ?>
 
 <?php $this->modals()->addMultiple(['changes', 'deleteUser', 'deleteUserImage']) ?>
 
@@ -17,7 +17,7 @@
     </div>
     <section class="section user-summary">
         <div class="user-summary-image">
-            <?= $this->insert('_user-image', ['user' => $user]) ?>
+            <?= $this->insert('@panel._user-image', ['user' => $user]) ?>
             <?php if ($panel->user()->canChangeOptionsOf($user) && $user->image()) : ?>
                 <div class="dropdown">
                     <button type="button" class="button button-link dropdown-button" title="<?= $this->translate('panel.user.image.actions') ?>" data-dropdown="dropdown-user-image"><?= $this->icon('ellipsis-v') ?></button>
@@ -36,7 +36,7 @@
         </div>
     </section>
     <?php if ($panel->user()->canChangeOptionsOf($user)) : ?>
-        <?php $this->insert('fields', ['fields' => $fields]) ?>
+        <?php $this->insert('@panel.fields', ['fields' => $fields]) ?>
         <input type="hidden" name="csrf-token" value="<?= $csrfToken ?>">
     <?php endif ?>
 </form>

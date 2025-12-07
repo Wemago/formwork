@@ -31,7 +31,7 @@ final class RegisterController extends AbstractController
 
         switch ($this->request->method()) {
             case RequestMethod::GET:
-                return new Response($this->view('register.register', [
+                return new Response($this->view('@panel.register.register', [
                     'title'  => $this->translate('panel.register.register'),
                     'fields' => $fields,
                 ]));

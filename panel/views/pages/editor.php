@@ -1,4 +1,4 @@
-<?php $this->layout('panel') ?>
+<?php $this->layout('@panel.panel') ?>
 
 <?php $this->modals()->addMultiple(['changes', 'deletePage', 'duplicatePage']) ?>
 
@@ -9,14 +9,14 @@
             <div class="flex">
                 <div class="header-icon">
                     <?= $this->icon($page->icon()) ?>
-                    <?= $this->insert('_pages.info', ['page' => $page]) ?>
+                    <?= $this->insert('@panel._pages.info', ['page' => $page]) ?>
                 </div>
                 <div class="header-title truncate">
                     <?= $this->escape($page->title()) ?>
                 </div>
             </div>
             <div class="flex">
-                <div class="mr-2"><?= $this->insert('_pages/status', ['page' => $page]) ?></div>
+                <div class="mr-2"><?= $this->insert('@panel._pages.status', ['page' => $page]) ?></div>
                 <div class="page-route truncate"><?= $this->escape($page->canonicalRoute() ?? $page->route()) ?></div>
             </div>
         </div>
@@ -67,7 +67,7 @@
             </div>
         </div>
     </div>
-    <?php $this->insert('fields', ['fields' => $fields]) ?>
+    <?php $this->insert('@panel.fields', ['fields' => $fields]) ?>
     <input type="hidden" name="csrf-token" value="<?= $csrfToken ?>">
     <?php if ($history !== null && !$history->items()->isEmpty()): ?>
         <div class="text-size-sm text-color-gray-medium"><?= $this->icon('clock-rotate-left') ?>

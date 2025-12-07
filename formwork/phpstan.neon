@@ -11,6 +11,7 @@ parameters:
 		- ../panel/node_modules(?)
 		- ../panel/views
 		- ../site/templates
+		- ../site/plugins
 		- ../vendor
 	scanFiles:
 		- ../index.php

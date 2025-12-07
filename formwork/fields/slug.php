@@ -3,6 +3,7 @@
 use Formwork\Cms\App;
 use Formwork\Fields\Exceptions\ValidationException;
 use Formwork\Fields\Field;
+use Formwork\Pages\Page;
 use Formwork\Utils\Constraint;
 
 return function (App $app) {
@@ -63,6 +64,12 @@ return function (App $app) {
                 $root = $field->get('root');
 
                 if ($root === null) {
+                    $model = $field->parent()?->model();
+
+                    if ($model instanceof Page) {
+                        return !$model->siblings()->everyItem()->slug()->contains($field->value());
+                    }
+
                     return true;
                 }
 

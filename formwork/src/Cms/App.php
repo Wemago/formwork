@@ -273,8 +273,9 @@ final class App
         $container->define(FileFactory::class)
             ->parameter('associations.image/jpeg', [ImageFactory::class, 'make'])
             ->parameter('associations.image/png', [ImageFactory::class, 'make'])
-            ->parameter('associations.image/webp', [ImageFactory::class, 'make'])
             ->parameter('associations.image/gif', [ImageFactory::class, 'make'])
+            ->parameter('associations.image/webp', [ImageFactory::class, 'make'])
+            ->parameter('associations.image/avif', [ImageFactory::class, 'make'])
             ->parameter('associations.image/svg+xml', [ImageFactory::class, 'make']);
 
         $container->define(ImageFactory::class);

@@ -175,6 +175,7 @@ panel.options.system.files: Bestanden
 panel.options.system.files.allowedExtensions: Toegestane extensies
 panel.options.system.files.allowedExtensions.noExtensions: Geen extensies (geen bestanden toegestaan)
 panel.options.system.images: Afbeeldingen
+panel.options.system.images.avifQuality: AVIF-kwaliteit
 panel.options.system.images.clearCacheByDefault: Afbeeldingscache standaard legen
 panel.options.system.images.clearCacheByDefault.disabled: Uitgeschakeld
 panel.options.system.images.clearCacheByDefault.enabled: Ingeschakeld

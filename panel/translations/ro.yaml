@@ -175,6 +175,7 @@ panel.options.system.files: Fișiere
 panel.options.system.files.allowedExtensions: Extensii permise
 panel.options.system.files.allowedExtensions.noExtensions: Nici o extensie (nu sunt permise fișiere)
 panel.options.system.images: Imagini
+panel.options.system.images.avifQuality: Calitate AVIF
 panel.options.system.images.clearCacheByDefault: Golește cache-ul de imagini implicit
 panel.options.system.images.clearCacheByDefault.disabled: Dezactivat
 panel.options.system.images.clearCacheByDefault.enabled: Activat

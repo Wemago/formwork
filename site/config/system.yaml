@@ -6,5 +6,6 @@ files:
         - .gif
         - .svg
         - .webp
+        - .avif
         - .mp4
         - .webm

@@ -212,6 +212,7 @@ final class ToolsController extends AbstractController
                 'GIF Read Support'   => $gdInfo['GIF Read Support'] ?? '' ? 'true' : 'false',
                 'GIF Create Support' => $gdInfo['GIF Create Support'] ?? '' ? 'true' : 'false',
                 'WebP Support'       => $gdInfo['WebP Support'] ?? '' ? 'true' : 'false',
+                'AVIF Support'       => $gdInfo['AVIF Support'] ?? '' ? 'true' : 'false',
             ],
         ];
 

@@ -341,7 +341,7 @@ final class Str
      */
     public static function toDashCase(string $string): string
     {
-        if (($parts = preg_split('/(?=[A-Z])/', $string)) === false) {
+        if (($parts = preg_split('/(?=[A-Z](?:[a-z]))/', $string)) === false) {
             throw new RuntimeException(sprintf('String split failed with error: %s', preg_last_error_msg()));
         }
         return strtolower(implode('-', array_filter($parts)));
@@ -352,7 +352,7 @@ final class Str
      */
     public static function toSnakeCase(string $string): string
     {
-        if (($parts = preg_split('/(?=[A-Z])/', $string)) === false) {
+        if (($parts = preg_split('/(?=[A-Z](?:[a-z]))/', $string)) === false) {
             throw new RuntimeException(sprintf('String split failed with error: %s', preg_last_error_msg()));
         }
         return strtolower(implode('_', array_filter($parts)));

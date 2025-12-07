@@ -10,6 +10,7 @@ use Formwork\Plugins\Plugin;
 use Formwork\Router\RouteParams;
 use Formwork\Services\Container;
 use Formwork\Utils\FileSystem;
+use Formwork\Utils\Path;
 
 final class AssetsController extends AbstractController
 {
@@ -25,7 +26,7 @@ final class AssetsController extends AbstractController
      */
     public function asset(RouteParams $routeParams): Response
     {
-        $path = FileSystem::joinPaths($this->config->get('system.plugins.path'), $this->plugin->name(), 'assets', $routeParams->get('type'), $routeParams->get('file'));
+        $path = FileSystem::joinPaths($this->config->get('system.plugins.path'), $this->plugin->name(), 'assets', $routeParams->get('type'), Path::resolve($routeParams->get('file'), '/', DIRECTORY_SEPARATOR));
 
         if (FileSystem::isFile($path, assertExists: false)) {
             $headers = ($this->request->query()->has('v'))

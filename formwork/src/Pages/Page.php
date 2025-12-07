@@ -808,7 +808,8 @@ class Page extends Model implements Stringable
 
         $this->files ??= (new FileCollection($files))->sort();
 
-        $this->data = array_replace_recursive(
+        // Use `array_replace()` instead of `array_replace_recursive()` to avoid overwriting array values
+        $this->data = array_replace(
             $this->defaults(),
             $this->data,
             $this->contentFile()?->frontmatter() ?? [],
@@ -921,7 +922,8 @@ class Page extends Model implements Stringable
      */
     protected function getFrontmatterData(): array
     {
-        $frontmatter = array_replace_recursive($this->contentFile()?->frontmatter() ?? [], Arr::undot($this->data));
+        // Use `array_replace()` instead of `array_replace_recursive()` to avoid overwriting array values
+        $frontmatter = array_replace($this->contentFile()?->frontmatter() ?? [], Arr::undot($this->data()));
 
         // Remove ignored fields
         foreach ($this->fields() as $fieldCollection) {

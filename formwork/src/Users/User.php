@@ -65,7 +65,8 @@ class User extends Model
         $this->fields = $this->scheme->fields();
         $this->fields->setModel($this);
 
-        $this->data = array_replace_recursive($this->defaults, Arr::undot($data));
+        // Use `array_replace()` instead of `array_replace_recursive()` to avoid overwriting array values
+        $this->data = array_replace($this->defaults, Arr::undot($data));
 
         $this->fields->setValues($this->data);
     }

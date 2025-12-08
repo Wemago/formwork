@@ -9,6 +9,7 @@ use Formwork\Data\Contracts\ArraySerializable;
 use Formwork\Parsers\Yaml;
 use Formwork\Utils\Arr;
 use Formwork\Utils\FileSystem;
+use Formwork\Utils\Str;
 
 class Config implements ArraySerializable
 {
@@ -102,10 +103,10 @@ class Config implements ArraySerializable
     /**
      * Load config from a path
      */
-    public function loadFromPath(string $path): void
+    public function loadFromPath(string $path, ?string $prefix = null): void
     {
         foreach (FileSystem::listFiles($path) as $file) {
-            $this->loadFile(FileSystem::joinPaths($path, $file));
+            $this->loadFile(FileSystem::joinPaths($path, $file), $prefix);
         }
     }
 
@@ -114,13 +115,13 @@ class Config implements ArraySerializable
      *
      * @throws ConfigLoadingException If the config file does not exist or has an unsupported type
      */
-    public function loadFile(string $path): void
+    public function loadFile(string $path, ?string $prefix = null): void
     {
         if (!FileSystem::isFile($path)) {
             throw new ConfigLoadingException(sprintf('Config file "%s" does not exist', $path));
         }
 
-        $name = FileSystem::name($path);
+        $name = Str::toCamelCase(FileSystem::name($path));
         $extension = FileSystem::extension($path);
 
         switch ($extension) {
@@ -136,7 +137,8 @@ class Config implements ArraySerializable
                 throw new ConfigLoadingException(sprintf('Unsupported config file type "%s"', $extension));
         }
 
-        $this->config = array_replace_recursive($this->config, Arr::undot([$name => $data]));
+        $key = $prefix !== null ? $prefix . '.' . $name : $name;
+        $this->config = array_replace_recursive($this->config, Arr::undot([$key => $data]));
     }
 
     /**

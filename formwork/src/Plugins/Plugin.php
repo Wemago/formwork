@@ -58,6 +58,9 @@ class Plugin
      */
     final public function manifest(): PluginManifest
     {
+        if (!isset($this->manifest)) {
+            $this->loadManifest();
+        }
         return $this->manifest;
     }
 
@@ -70,7 +73,7 @@ class Plugin
             return;
         }
 
-        $this->loadManifest();
+        $this->loadConfig();
         $this->loadSchemes();
         $this->loadTranslations();
         $this->loadViews();
@@ -127,7 +130,13 @@ class Plugin
             : [];
 
         $this->manifest = new PluginManifest($data);
+    }
 
+    /**
+     * Load plugin configuration into application config
+     */
+    protected function loadConfig(): void
+    {
         foreach ($this->manifest()->config() as $key => $value) {
             if (!$this->app->config()->has("plugins.{$this->name()}.{$key}")) {
                 $this->app->config()->set("plugins.{$this->name()}.{$key}", $value);

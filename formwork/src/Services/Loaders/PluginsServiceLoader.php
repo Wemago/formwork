@@ -9,6 +9,7 @@ use Formwork\Services\Container;
 use Formwork\Services\ResolutionAwareServiceLoaderInterface;
 use Formwork\Utils\FileSystem;
 use Formwork\Utils\Str;
+use RuntimeException;
 
 final class PluginsServiceLoader implements ResolutionAwareServiceLoaderInterface
 {
@@ -31,10 +32,15 @@ final class PluginsServiceLoader implements ResolutionAwareServiceLoaderInterfac
             return;
         }
 
-        $path = $this->config->get('system.plugins.path');
+        foreach (FileSystem::listDirectories($this->config->get('system.plugins.path')) as $directory) {
+            $id = Str::toCamelCase($directory);
+            $path = FileSystem::joinPaths($this->config->get('system.plugins.path'), $directory);
 
-        foreach ($this->config->get('plugins', []) as $name => $config) {
-            $service->load($name, FileSystem::joinPaths($path, Str::toDashCase($name)));
+            try {
+                $service->load($id, $path);
+            } catch (RuntimeException) {
+                // Ignore invalid plugins
+            }
         }
     }
 }

@@ -13,6 +13,10 @@ class PluginManifest implements Arrayable
 
     protected ?string $author = null;
 
+    protected ?string $homepage = null;
+
+    protected ?string $license = null;
+
     protected ?string $version = null;
 
     /**
@@ -59,6 +63,22 @@ class PluginManifest implements Arrayable
     }
 
     /**
+     * Get the plugin homepage
+     */
+    public function homepage(): ?string
+    {
+        return $this->homepage;
+    }
+
+    /**
+     * Get the plugin license
+     */
+    public function license(): ?string
+    {
+        return $this->license;
+    }
+
+    /**
      * Get the plugin version
      */
     public function version(): ?string
@@ -85,6 +105,8 @@ class PluginManifest implements Arrayable
             'title'       => $this->title,
             'description' => $this->description,
             'author'      => $this->author,
+            'homepage'    => $this->homepage,
+            'license'     => $this->license,
             'version'     => $this->version,
             'config'      => $this->config,
         ];

@@ -66,4 +66,12 @@ class NavigationItem implements Arrayable
     {
         return $this->data['icon'] ?? null;
     }
+
+    /**
+     * Get navigation item visibility
+     */
+    public function visible(): bool
+    {
+        return $this->data['visible'] ?? true;
+    }
 }

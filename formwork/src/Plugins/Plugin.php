@@ -4,6 +4,7 @@ namespace Formwork\Plugins;
 
 use Composer\Autoload\ClassLoader;
 use Formwork\Cms\App;
+use Formwork\Data\Contracts\Arrayable;
 use Formwork\Parsers\Yaml;
 use Formwork\Plugins\Controllers\AssetsController;
 use Formwork\Utils\FileSystem;
@@ -11,7 +12,7 @@ use Formwork\Utils\Str;
 use Formwork\View\ViewFactory;
 use ReflectionMethod;
 
-class Plugin
+class Plugin implements Arrayable
 {
     /**
      * Whether the plugin has been initialized
@@ -38,11 +39,19 @@ class Plugin
     }
 
     /**
+     * Get the plugin ID
+     */
+    final public function id(): string
+    {
+        return basename($this->path());
+    }
+
+    /**
      * Get the plugin name
      */
     final public function name(): string
     {
-        return basename($this->path());
+        return Str::toCamelCase($this->id());
     }
 
     /**
@@ -50,7 +59,7 @@ class Plugin
      */
     final public function namespace(): string
     {
-        return "plugin:{$this->name()}";
+        return "plugin:{$this->id()}";
     }
 
     /**
@@ -80,6 +89,14 @@ class Plugin
         $this->loadAssets();
 
         $this->initialized = true;
+    }
+
+    /**
+     * Return whether the plugin is enabled
+     */
+    final public function isEnabled(): bool
+    {
+        return $this->app->config()->get("plugins.{$this->name()}.enabled", false);
     }
 
     /**
@@ -119,6 +136,23 @@ class Plugin
     }
 
     /**
+     * Get the plugin data as an array
+     *
+     * @return array<string, mixed>
+     */
+    public function toArray(): array
+    {
+        return [
+            'id'          => $this->id(),
+            'name'        => $this->name(),
+            'path'        => $this->path(),
+            'manifest'    => $this->manifest()->toArray(),
+            'enabled'     => $this->isEnabled(),
+            'initialized' => $this->isInitialized(),
+        ];
+    }
+
+    /**
      * Load plugin manifest
      */
     protected function loadManifest(): void
@@ -138,8 +172,8 @@ class Plugin
     protected function loadConfig(): void
     {
         foreach ($this->manifest()->config() as $key => $value) {
-            if (!$this->app->config()->has("plugins.{$this->name()}.{$key}")) {
-                $this->app->config()->set("plugins.{$this->name()}.{$key}", $value);
+            if (!$this->app->config()->has("plugins.{$this->id()}.{$key}")) {
+                $this->app->config()->set("plugins.{$this->id()}.{$key}", $value);
             }
         }
     }
@@ -187,11 +221,11 @@ class Plugin
             $this->app->assets()->setResolutionPaths([
                 $this->namespace() => [
                     'path' => $assetsPath,
-                    'uri'  => $this->app->site()->uri("/plugins/{$this->name()}/assets", includeLanguage: false),
+                    'uri'  => $this->app->site()->uri("/plugins/{$this->id()}/assets", includeLanguage: false),
                 ],
             ]);
 
-            $this->app->router()->addRoute("{$this->namespace()}.assets", "/plugins/{$this->name()}/assets/{type:alpha}/{file:all}")
+            $this->app->router()->addRoute("{$this->namespace()}.assets", "/plugins/{$this->id()}/assets/{type:alpha}/{file:all}/")
                 ->methods('GET')
                 ->action(AssetsController::class . '@asset')
                 ->actionParameters(['plugin' => $this]);

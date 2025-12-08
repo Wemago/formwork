@@ -8,19 +8,10 @@ use Formwork\Plugins\Events\PluginsInitializedEvent;
 use Formwork\Utils\FileSystem;
 use Formwork\Utils\Str;
 use InvalidArgumentException;
+use UnexpectedValueException;
 
-class Plugins
+class Plugins extends PluginCollection
 {
-    /**
-     * @var array<string, Plugin>
-     */
-    protected array $storage = [];
-
-    /**
-     * @var array<string, string>
-     */
-    protected array $data = [];
-
     public function __construct(
         private Config $config,
         private PluginFactory $pluginFactory,
@@ -30,10 +21,10 @@ class Plugins
     /**
      * Load a plugin
      */
-    public function load(string $id, string $path): void
+    public function load(string $name, string $path): void
     {
-        $this->data[$id] = $path;
-        unset($this->storage[$id]);
+        $plugin = $this->pluginFactory->make($path);
+        $this->data[$name] = $plugin;
     }
 
     /**
@@ -42,17 +33,9 @@ class Plugins
     public function loadFromPath(string $path): void
     {
         foreach (FileSystem::listContents($path) as $item) {
-            $id = Str::toCamelCase($item);
-            $this->load($id, FileSystem::joinPaths($path, $item));
+            $name = Str::toCamelCase($item);
+            $this->load($name, FileSystem::joinPaths($path, $item));
         }
-    }
-
-    /**
-     * Return whether a plugin exists from id
-     */
-    public function has(string $id): bool
-    {
-        return isset($this->data[$id]);
     }
 
     /**
@@ -60,21 +43,19 @@ class Plugins
      *
      * @throws InvalidArgumentException If the plugin id is invalid
      */
-    public function initialize(string $id): void
+    public function initialize(string $name): void
     {
-        if (!$this->has($id)) {
-            throw new InvalidArgumentException(sprintf('Invalid plugin "%s"', $id));
+        if (!$this->has($name)) {
+            throw new InvalidArgumentException(sprintf('Invalid plugin "%s"', $name));
         }
 
-        $plugin = $this->pluginFactory->make($this->data[$id]);
+        $plugin = $this->get($name);
 
         $plugin->autoload()?->register();
 
-        foreach ($plugin->getEventListeners() as $eventName => $method) {
-            $this->eventDispatcher->on($eventName, $plugin->{$method}(...));
+        foreach ($plugin->getEventListeners() as $eventName => $eventListener) {
+            $this->eventDispatcher->on($eventName, $plugin->{$eventListener}(...));
         }
-
-        $this->storage[$id] = $plugin;
 
         $plugin->initialize();
     }
@@ -84,22 +65,18 @@ class Plugins
      */
     public function initializeEnabled(): void
     {
-        foreach (array_keys($this->data) as $id) {
-            if (!$this->config->get("plugins.{$id}.enabled")) {
+        foreach ($this->keys() as $name) {
+            if (!is_string($name)) {
+                throw new UnexpectedValueException('Unexpected non-string plugin name');
+            }
+
+            if (!$this->config->get("plugins.{$name}.enabled")) {
                 continue;
             }
 
-            $this->initialize($id);
+            $this->initialize($name);
         }
 
         $this->eventDispatcher->dispatch(new PluginsInitializedEvent($this));
-    }
-
-    /**
-     * Get a plugin from id, or null if it is not initialized
-     */
-    public function get(string $id): ?Plugin
-    {
-        return $this->storage[$id] ?? null;
     }
 }

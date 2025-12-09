@@ -12,6 +12,8 @@ use Formwork\Utils\Str;
 
 return function (App $app, FieldFactory $fieldFactory): array {
     return [
+        'default' => [],
+
         'methods' => [
             /**
              * Return whether the field is associative

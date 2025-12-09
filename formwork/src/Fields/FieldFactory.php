@@ -46,15 +46,20 @@ final class FieldFactory
             $config = Arr::extend($baseConfig, $config);
         }
 
+        // Set a default if defined in the config and not already set in the field data
+        if (!$field->has('default') && array_key_exists('default', $config)) {
+            $field->set('default', $config['default']);
+        }
+
         $field->setMethods($config['methods'] ?? []);
 
         return $field;
     }
 
     /**
-     * @param array{extend?: string, methods?: array<string, Closure>} $default
+     * @param array{extend?: string, default?: mixed, methods?: array<string, Closure>} $default
      *
-     * @return array{extend?: string, methods?: array<string, Closure>}
+     * @return array{extend?: string, default?: mixed, methods?: array<string, Closure>}
      */
     private function getFieldConfig(string $type, ?array $default = null): array
     {

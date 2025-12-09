@@ -122,7 +122,7 @@ class Scheme implements Arrayable
             throw new InvalidArgumentException(sprintf('Scheme "%s" cannot be extended by itself', $this->id));
         }
 
-        $this->data = array_replace_recursive($scheme->data, $this->data);
+        $this->data = Arr::extend($scheme->data, $this->data);
     }
 
     /**
@@ -132,7 +132,7 @@ class Scheme implements Arrayable
      */
     public function extendWith(array $data): void
     {
-        $this->data = array_replace_recursive($data, $this->data);
+        $this->data = Arr::extend($data, $this->data);
     }
 
     /**

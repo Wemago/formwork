@@ -596,7 +596,7 @@ final class PagesController extends AbstractController
         // Extract validated values from remaining fields (upload fields have been removed)
         // These are the user's submitted values that were validated earlier
         /** @var array<string, mixed> */
-        $data = [...$fieldCollection->everyItem()->value()->toArray(), 'slug' => $requestData->get('slug')];
+        $data = [...$fieldCollection->extract('value'), 'slug' => $requestData->get('slug')];
 
         $page->setMultiple($data);
         $page->save($requestData->get('language'));

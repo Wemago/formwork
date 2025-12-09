@@ -138,7 +138,7 @@ class Config implements ArraySerializable
         }
 
         $key = $prefix !== null ? $prefix . '.' . $name : $name;
-        $this->config = array_replace_recursive($this->config, Arr::undot([$key => $data]));
+        $this->config = Arr::extend($this->config, Arr::undot([$key => $data]));
     }
 
     /**

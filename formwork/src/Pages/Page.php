@@ -233,7 +233,7 @@ class Page extends Model implements Stringable
         ];
 
         // Merge with scheme default field values
-        $defaults = [...$defaults, ...$this->fields()->extract('default')];
+        $defaults = Arr::override($defaults, Arr::undot($this->fields()->extract('default')));
 
         // If the page doesn't have a route, by default it won't be routable nor cacheable
         if ($this->route() === null) {
@@ -256,7 +256,7 @@ class Page extends Model implements Stringable
             $defaults['allowChildren'] = false;
         }
 
-        return Arr::undot($defaults);
+        return $defaults;
     }
 
     /**
@@ -832,11 +832,10 @@ class Page extends Model implements Stringable
 
         $this->files ??= (new FileCollection($files))->sort();
 
-        // Use `array_replace()` instead of `array_replace_recursive()` to avoid overwriting array values
-        $this->data = array_replace(
+        $this->data = Arr::override(
             $this->defaults(),
-            $this->data,
-            $this->contentFile()?->frontmatter() ?? [],
+            Arr::undot($this->data),
+            Arr::undot($this->contentFile()?->frontmatter() ?? []),
             [
                 'content'  => $this->contentFile?->content() ?? '',
                 'slug'     => $this->slug ?? Str::slug($this->data['title'] ?? 'page'),
@@ -948,8 +947,12 @@ class Page extends Model implements Stringable
      */
     protected function getFrontmatterData(): array
     {
-        // Use `array_replace()` instead of `array_replace_recursive()` to avoid overwriting array values
-        $frontmatter = array_replace($this->contentFile()?->frontmatter() ?? [], Arr::undot($this->data()));
+        // Since `$this->data` already contains everything (including what was in the original frontmatter)
+        // we just use the previous frontmatter to retain the key order and minimize the diff when saving
+        $frontmatter = Arr::override(
+            Arr::undot(array_fill_keys(array_keys($this->contentFile()?->frontmatter() ?? []), null)),
+            Arr::undot($this->data)
+        );
 
         // Remove ignored fields
         foreach ($this->fields() as $fieldCollection) {
@@ -963,13 +966,7 @@ class Page extends Model implements Stringable
         }
 
         // Remove default values
-        foreach (Arr::dot($this->defaults()) as $key => $defaultValue) {
-            if (Arr::has($frontmatter, $key) && Arr::get($frontmatter, $key) === $defaultValue) {
-                Arr::remove($frontmatter, $key);
-            }
-        }
-
-        return $frontmatter;
+        return Arr::exclude($frontmatter, $this->defaults());
     }
 
     /**

@@ -6,6 +6,7 @@ use Closure;
 use Formwork\Config\Config;
 use Formwork\Services\Container;
 use Formwork\Translations\Translations;
+use Formwork\Utils\Arr;
 use Formwork\Utils\FileSystem;
 use InvalidArgumentException;
 
@@ -42,7 +43,7 @@ final class FieldFactory
 
             unset($baseConfig['extend']);
 
-            $config = array_replace_recursive($baseConfig, $config);
+            $config = Arr::extend($baseConfig, $config);
         }
 
         $field->setMethods($config['methods'] ?? []);

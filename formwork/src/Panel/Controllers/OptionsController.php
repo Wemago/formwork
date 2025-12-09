@@ -64,6 +64,8 @@ final class OptionsController extends AbstractController
                     break;
                 }
 
+                $this->handleUploads($fields);
+
                 $options = $this->getConfigOverrides()->get('system', []);
                 $defaults = $this->getConfigDefaults()->get('system');
 
@@ -122,6 +124,8 @@ final class OptionsController extends AbstractController
                     break;
                 }
 
+                $this->handleUploads($fields);
+
                 $options = $this->getConfigOverrides()->get('site', []);
                 $defaults = $this->getConfigDefaults()->get('site');
                 $differ = $this->updateOptions('site', $fields, $options, $defaults);
@@ -175,6 +179,25 @@ final class OptionsController extends AbstractController
     }
 
     /**
+     * Handle upload fields
+     */
+    private function handleUploads(FieldCollection $fieldCollection): void
+    {
+        foreach ($fieldCollection->filterBy('type', 'upload') as $field) {
+            $files = $field->isMultiple() ? $field->value() : [$field->value()];
+            foreach ($files as $file) {
+                $this->fileUploader->upload(
+                    $file,
+                    $field->destination(),
+                    $field->filename(),
+                    $field->acceptMimeTypes(),
+                    $field->overwrite(),
+                );
+            }
+        }
+    }
+
+    /**
      * Update options of a given type with given data
      *
      * @param 'site'|'system'      $type
@@ -186,35 +209,14 @@ final class OptionsController extends AbstractController
         $old = $options;
 
         // Update options with new values
-        foreach ($fieldCollection as $field) {
-            if ($field->type() === 'upload') {
-                $files = $field->isMultiple() ? $field->value() : [$field->value()];
-                foreach ($files as $file) {
-                    $this->fileUploader->upload(
-                        $file,
-                        $field->destination(),
-                        $field->filename(),
-                        $field->acceptMimeTypes(),
-                        $field->overwrite(),
-                    );
-                }
-                continue;
-            }
+        $data = $fieldCollection
+            ->filter(fn($field) => $field->type() !== 'upload')
+            ->extract('value');
 
-            if (Arr::has($defaults, $field->name()) && Arr::get($defaults, $field->name()) === $field->value()) {
-                Arr::remove($options, $field->name());
-                continue;
-            }
-
-            Arr::set($options, $field->name(), $field->value());
-        }
-
-        // Remove empty arrays from options unless they are present in the old options
-        foreach (Arr::dot($options) as $key => $value) {
-            if ($value === [] && Arr::has($old, $key) && Arr::get($old, $key) !== []) {
-                Arr::remove($options, $key);
-            }
-        }
+        $options = Arr::exclude(
+            Arr::override($options, Arr::undot($data)),
+            $defaults
+        );
 
         // Update config file if options differ
         if ($options !== $old) {

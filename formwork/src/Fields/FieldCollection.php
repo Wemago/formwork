@@ -122,7 +122,7 @@ class FieldCollection extends AbstractCollection
      */
     public function setValuesFromRequest(Request $request, mixed $default = null): static
     {
-        return $this->setValues(array_merge_recursive(
+        return $this->setValues(Arr::extend(
             $request->query()->toArray(),
             $request->input()->toArray(),
             $request->files()->toArray()

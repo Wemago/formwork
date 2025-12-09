@@ -356,20 +356,10 @@ final class FilesController extends AbstractController
      */
     private function updateFileMetadata(File $file, FieldCollection $fieldCollection): void
     {
-        $data = $file->data();
-
-        $scheme = $file->scheme();
-
-        $defaults = $scheme->fields()->extract('default');
-
-        foreach ($fieldCollection as $field) {
-            if ($field->isEmpty() || (Arr::has($defaults, $field->name()) && Arr::get($defaults, $field->name()) === $field->value())) {
-                unset($data[$field->name()]);
-                continue;
-            }
-
-            $data[$field->name()] = $field->value();
-        }
+        $data = Arr::exclude(
+            Arr::override($file->data(), Arr::undot($fieldCollection->extract('value'))),
+            Arr::undot($file->fields()->extract('default'))
+        );
 
         $metaFile = $file->path() . $this->config->get('system.files.metadataExtension');
 

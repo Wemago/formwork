@@ -9,6 +9,8 @@ use Formwork\Utils\Constraint;
 
 return function (App $app) {
     return [
+        'default' => [],
+
         'methods' => [
             'toString' => function ($field) {
                 return implode(', ', $field->value() ?? []);

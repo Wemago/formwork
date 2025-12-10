@@ -7,6 +7,8 @@ use Formwork\Utils\Constraint;
 
 return function (App $app) {
     return [
+        'default' => '',
+
         'methods' => [
             /**
              * Return the minimum allowed length for the field

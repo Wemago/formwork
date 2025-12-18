@@ -35,7 +35,10 @@ final class ConfigServiceLoader implements ServiceLoaderInterface
 
             $config->loadFromPath(SYSTEM_PATH . '/config/');
             $config->loadFromPath(ROOT_PATH . '/site/config/');
-            $config->loadFromPath(ROOT_PATH . '/site/config/plugins/', 'plugins');
+
+            if (FileSystem::isDirectory($pluginsConfigPath = ROOT_PATH . '/site/config/plugins/', assertExists: false)) {
+                $config->loadFromPath($pluginsConfigPath, 'plugins');
+            }
 
             $config->resolve([
                 '%ROOT_PATH%'   => ROOT_PATH,

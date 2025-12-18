@@ -4,10 +4,10 @@ namespace Formwork\Panel\Controllers;
 
 use Formwork\Cms\Site;
 use Formwork\Exceptions\TranslatedException;
-use Formwork\Fields\FieldCollection;
 use Formwork\Files\File;
 use Formwork\Files\FileCollection;
 use Formwork\Files\FileFactory;
+use Formwork\Forms\FormData;
 use Formwork\Http\JsonResponse;
 use Formwork\Http\RequestMethod;
 use Formwork\Http\Response;
@@ -50,35 +50,36 @@ final class FilesController extends AbstractController
             return $this->forward(ErrorsController::class, 'forbidden');
         }
 
-        $fields = $this->modal('uploadFile')->fields();
+        $form = $this->form('upload-file', $this->modal('uploadFile')->fields())
+            ->processRequest($this->request, uploadFiles: false);
 
-        $fields->setValuesFromRequest($this->request, null)->validate();
+        if ($form->isValid()) {
+            $filesField = $form->fields()->get('files');
 
-        $filesField = $fields->get('files');
+            if (!$filesField->isEmpty()) {
+                $files = $filesField->isMultiple() ? $filesField->value() : [$filesField->value()];
 
-        if (!$filesField->isEmpty()) {
-            $files = $filesField->isMultiple() ? $filesField->value() : [$filesField->value()];
+                /** @var Page|Site */
+                $parent = $form->fields()->get('parent')->return();
 
-            /** @var Page|Site */
-            $parent = $fields->get('parent')->return();
+                $destination = $parent instanceof Site
+                    ? $this->config->get('system.files.paths.site')
+                    : $parent->contentPath();
 
-            $destination = $parent instanceof Site
-                ? $this->config->get('system.files.paths.site')
-                : $parent->contentPath();
-
-            try {
-                foreach ($files as $file) {
-                    $this->fileUploader->upload(
-                        $file,
-                        $destination,
-                        $filesField->filename(),
-                        $filesField->acceptMimeTypes(),
-                        $filesField->overwrite(),
-                    );
+                try {
+                    foreach ($files as $file) {
+                        $this->fileUploader->upload(
+                            $file,
+                            $destination,
+                            $filesField->filename(),
+                            $filesField->acceptMimeTypes(),
+                            $filesField->overwrite(),
+                        );
+                    }
+                    $this->panel->notify($this->translate('panel.files.uploaded'), 'success');
+                } catch (TranslatedException $e) {
+                    $this->panel->notify($this->translate('upload.error', $this->translate($e->getLanguageString())), 'error');
                 }
-                $this->panel->notify($this->translate('panel.files.uploaded'), 'success');
-            } catch (TranslatedException $e) {
-                $this->panel->notify($this->translate('upload.error', $this->translate($e->getLanguageString())), 'error');
             }
         }
 
@@ -107,45 +108,32 @@ final class FilesController extends AbstractController
             return $this->redirectToReferer(base: $this->panel->panelRoot());
         }
 
-        $valid = false;
-
-        switch ($this->request->method()) {
-            case RequestMethod::GET:
-                $data = $file->data();
-
-                $file->fields()->setValues($data);
-
-                $valid = $file->fields()->isValid();
-
-                break;
-
-            case RequestMethod::POST:
-                $data = $this->request->input();
-
-                $file->fields()->setValues($data);
-
-                if (!($valid = $file->fields()->isValid())) {
-                    $this->panel->notify($this->translate('panel.files.metadata.cannotUpdate.invalidFields'), 'error');
-                    break;
-                }
-
-                $this->updateFileMetadata($file, $file->fields());
-
-                $this->updateLastModifiedTime($model);
-
-                $this->panel->notify($this->translate('panel.files.metadata.updated'), 'success');
-
-                return $this->redirect($this->generateRoute('panel.files.edit', $routeParams->toArray()));
+        // Set initial values on GET
+        if ($this->request->method() === RequestMethod::GET) {
+            $file->fields()->setValues($file->data())
+                ->isValid(); // Pre-validate to populate validation state
         }
 
-        $responseStatus = ($valid || $this->request->method() === RequestMethod::GET) ? ResponseStatus::OK : ResponseStatus::UnprocessableEntity;
+        $form = $this->form('file-metadata', $file->fields())
+            ->processRequest($this->request, uploadFiles: false);
+
+        if ($form->isSubmitted()) {
+            if (!$form->isValid()) {
+                $this->panel->notify($this->translate('panel.files.metadata.cannotUpdate.invalidFields'), 'error');
+            } else {
+                $this->updateFileMetadata($file, $form->data());
+                $this->updateLastModifiedTime($model);
+                $this->panel->notify($this->translate('panel.files.metadata.updated'), 'success');
+                return $this->redirect($this->generateRoute('panel.files.edit', $routeParams->toArray()));
+            }
+        }
 
         return new Response($this->view('@panel.files.edit', [
             'title' => $file->name(),
             'model' => $model,
             'file'  => $file,
             ...$this->getPreviousAndNextFile($files, $file),
-        ]), $responseStatus);
+        ]), $form->getResponseStatus());
     }
 
     /**
@@ -191,11 +179,19 @@ final class FilesController extends AbstractController
 
         $model = $this->getModel($routeParams);
 
-        $fields = $this->modal($this->request->isXmlHttpRequest() ? 'renameFileItem' : 'renameFile')->fields();
+        $modalName = $this->request->isXmlHttpRequest() ? 'renameFileItem' : 'renameFile';
+        $form = $this->form('rename-file', $this->modal($modalName)->fields())
+            ->processRequest($this->request);
 
-        $fields->setValues($this->request->input())->validate();
+        if (!$form->isValid()) {
+            if ($this->request->isXmlHttpRequest()) {
+                return JsonResponse::error($this->translate('panel.files.cannotRename.invalidFields'), ResponseStatus::BadRequest);
+            }
+            $this->panel->notify($this->translate('panel.files.cannotRename.invalidFields'), 'error');
+            return $this->redirect($this->generateRoute('panel.files.index'));
+        }
 
-        $data = $fields->everyItem()->value();
+        $data = $form->data();
 
         $filename = $routeParams->get('filename');
 
@@ -354,10 +350,10 @@ final class FilesController extends AbstractController
     /**
      * Update file metadata
      */
-    private function updateFileMetadata(File $file, FieldCollection $fieldCollection): void
+    private function updateFileMetadata(File $file, FormData $formData): void
     {
         $data = Arr::exclude(
-            Arr::override($file->data(), Arr::undot($fieldCollection->extract('value'))),
+            Arr::override($file->data(), Arr::undot($formData->toArray())),
             Arr::undot($file->fields()->extract('default'))
         );
 

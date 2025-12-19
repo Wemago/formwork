@@ -160,23 +160,23 @@ class Form
      */
     private function processUploads(): void
     {
-        foreach ($this->fields->filterBy('type', 'upload') as $fieldCollection) {
-            if ($fieldCollection->isEmpty()) {
+        foreach ($this->fields->filterBy('type', 'upload') as $field) {
+            if ($field->isEmpty()) {
                 continue;
             }
 
-            $files = $fieldCollection->isMultiple() ? $fieldCollection->value() : [$fieldCollection->value()];
+            $files = $field->isMultiple() ? $field->value() : [$field->value()];
 
             foreach ($files as $file) {
-                $destination = $fieldCollection->destination() ?? $this->defaultUploadsDestination
+                $destination = $field->destination() ?? $this->defaultUploadsDestination
                     ?? throw new LogicException('No destination specified for file upload.');
 
                 $this->uploadedFiles[] = $this->fileUploader->upload(
                     $file,
                     $destination,
-                    $fieldCollection->filename(),
-                    $fieldCollection->acceptMimeTypes(),
-                    $fieldCollection->overwrite(),
+                    $field->filename(),
+                    $field->acceptMimeTypes(),
+                    $field->overwrite(),
                 );
             }
         }

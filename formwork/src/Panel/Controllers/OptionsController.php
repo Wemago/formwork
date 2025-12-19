@@ -46,7 +46,8 @@ final class OptionsController extends AbstractController
 
         // Set initial values on GET
         if ($this->request->method() === RequestMethod::GET) {
-            $fields->setValues($this->config->get('system'));
+            $fields->setValues($this->config->get('system'))
+                ->isValid(); // Pre-validate to populate validation state
         }
 
         $form = $this->form('system-options', $fields)

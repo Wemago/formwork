@@ -38,7 +38,7 @@ final class RegisterController extends AbstractController
             ->processRequest($this->request, uploadFiles: false);
 
         if (!$form->isValid()) {
-            return new Response($this->view('register.register', [
+            return new Response($this->view('@panel.register.register', [
                 'title'  => $this->translate('panel.register.register'),
                 'fields' => $form->fields(),
             ]), $form->getResponseStatus());

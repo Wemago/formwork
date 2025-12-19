@@ -238,7 +238,7 @@ final class PagesController extends AbstractController
             } else {
                 try {
                     // Update the page
-                    $page = $this->updatePage($page, $form->data()->toArray(), $this->request->input(), force: Constraint::isTruthy($this->request->query()->has('publish')));
+                    $page = $this->updatePage($page, $form->data()->toArray(), $this->request->input(), force: Constraint::isTruthy($this->request->query()->get('publish')));
                     $this->panel->notify($this->translate('panel.pages.page.edited'), 'success');
                 } catch (TranslatedException $e) {
                     $this->panel->notify($this->translate($e->getLanguageString()), 'error');

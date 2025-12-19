@@ -124,6 +124,11 @@ class FileResponse extends Response
             if (preg_match('/^bytes=(\d+)?-(\d+)?$/', $request->headers()->get('Range', ''), $matches, PREG_UNMATCHED_AS_NULL)) {
                 [, $start, $end] = $matches;
 
+                // RFC 7233: ignore invalid "bytes=-"
+                if ($start === null && $end === null) {
+                    return $this;
+                }
+
                 if ($start === null) {
                     $start = max(0, $this->fileSize - (int) $end);
                     $end = $this->fileSize - 1;

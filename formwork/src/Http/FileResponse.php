@@ -111,6 +111,11 @@ class FileResponse extends Response
 
         parent::prepare($request);
 
+        if ($this->requiresEmptyContent()) {
+            $this->length = 0;
+            return $this;
+        }
+
         if (in_array($request->method(), [RequestMethod::HEAD, RequestMethod::GET], true)) {
             if (!$this->headers->has('Accept-Ranges')) {
                 $this->headers->set('Accept-Ranges', 'bytes');
@@ -142,7 +147,7 @@ class FileResponse extends Response
             }
         }
 
-        if ($request->method() === RequestMethod::HEAD || $this->requiresEmptyContent()) {
+        if ($request->method() === RequestMethod::HEAD) {
             $this->length = 0;
         }
 

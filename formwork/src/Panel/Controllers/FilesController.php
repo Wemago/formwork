@@ -53,33 +53,36 @@ final class FilesController extends AbstractController
         $form = $this->form('upload-file', $this->modal('uploadFile')->fields())
             ->processRequest($this->request, uploadFiles: false);
 
-        if ($form->isValid()) {
-            $filesField = $form->fields()->get('files');
+        if (!$form->isValid()) {
+            $this->panel->notify($this->translate('panel.files.cannotUpload.invalidFields'), 'error');
+            return $this->redirect($this->generateRoute('panel.files.index'));
+        }
 
-            if (!$filesField->isEmpty()) {
-                $files = $filesField->isMultiple() ? $filesField->value() : [$filesField->value()];
+        $filesField = $form->fields()->get('files');
 
-                /** @var Page|Site */
-                $parent = $form->fields()->get('parent')->return();
+        if (!$filesField->isEmpty()) {
+            $files = $filesField->isMultiple() ? $filesField->value() : [$filesField->value()];
 
-                $destination = $parent instanceof Site
-                    ? $this->config->get('system.files.paths.site')
-                    : $parent->contentPath();
+            /** @var Page|Site */
+            $parent = $form->fields()->get('parent')->return();
 
-                try {
-                    foreach ($files as $file) {
-                        $this->fileUploader->upload(
-                            $file,
-                            $destination,
-                            $filesField->filename(),
-                            $filesField->acceptMimeTypes(),
-                            $filesField->overwrite(),
-                        );
-                    }
-                    $this->panel->notify($this->translate('panel.files.uploaded'), 'success');
-                } catch (TranslatedException $e) {
-                    $this->panel->notify($this->translate('upload.error', $this->translate($e->getLanguageString())), 'error');
+            $destination = $parent instanceof Site
+                ? $this->config->get('system.files.paths.site')
+                : $parent->contentPath();
+
+            try {
+                foreach ($files as $file) {
+                    $this->fileUploader->upload(
+                        $file,
+                        $destination,
+                        $filesField->filename(),
+                        $filesField->acceptMimeTypes(),
+                        $filesField->overwrite(),
+                    );
                 }
+                $this->panel->notify($this->translate('panel.files.uploaded'), 'success');
+            } catch (TranslatedException $e) {
+                $this->panel->notify($this->translate('upload.error', $this->translate($e->getLanguageString())), 'error');
             }
         }
 

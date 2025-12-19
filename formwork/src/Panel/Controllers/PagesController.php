@@ -98,7 +98,7 @@ final class PagesController extends AbstractController
             ->processRequest($this->request);
 
         if (!$form->isValid()) {
-            $this->panel->notify($this->translate('panel.pages.page.cannotCreate.varMissing'), 'error');
+            $this->panel->notify($this->translate('panel.pages.page.cannotCreate.invalidFields'), 'error');
             return $this->redirectToReferer(default: $this->generateRoute('panel.pages'), base: $this->panel->panelRoot());
         }
 

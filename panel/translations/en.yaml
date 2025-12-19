@@ -340,6 +340,7 @@ panel.users.user.cannotChangePassword: Cannot change the password of another use
 panel.users.user.cannotChangeRole: Cannot change the role of %s. The action is not allowed.
 panel.users.user.cannotCreate.alreadyExists: Cannot create user, a user with the same name already exists
 panel.users.user.cannotCreate.emailAlreadyUsed: Cannot create user, the email address is already associated with an account
+panel.users.user.cannotCreate.invalidFields: Cannot create user, some fields are invalid
 panel.users.user.cannotCreate.varMissing: Cannot create user, missing a variable
 panel.users.user.cannotDelete: Cannot delete user. You must be an administrator and the user must not be logged in.
 panel.users.user.cannotEdit: Cannot edit user %s. The action is not allowed.

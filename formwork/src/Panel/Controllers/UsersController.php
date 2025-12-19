@@ -49,7 +49,7 @@ final class UsersController extends AbstractController
             ->processRequest($this->request);
 
         if (!$form->isValid()) {
-            $this->panel->notify($this->translate('panel.users.user.cannotCreate.varMissing'), 'error');
+            $this->panel->notify($this->translate('panel.users.user.cannotCreate.invalidFields'), 'error');
             return $this->redirect($this->generateRoute('panel.users'));
         }
 

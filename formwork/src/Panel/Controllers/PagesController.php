@@ -103,7 +103,6 @@ final class PagesController extends AbstractController
         }
 
         try {
-            // Let's create the page
             $page = $this->createPage($form->data(), $pageFactory);
             $this->panel->notify($this->translate('panel.pages.page.created'), 'success');
         } catch (TranslatedException $e) {
@@ -238,16 +237,8 @@ final class PagesController extends AbstractController
                 $this->panel->notify($this->translate('panel.pages.page.cannotEdit.invalidFields'), 'error');
             } else {
                 try {
-                    $forceUpdate = false;
-
-                    if ($this->request->query()->has('publish')) {
-                        $form->fields()->setValues(['published' => Constraint::isTruthy($this->request->query()->get('publish'))]);
-                        $forceUpdate = true;
-                    }
-
                     // Update the page
-                    $page = $this->updatePage($page, $form->data()->toArray(), $this->request->input(), force: $forceUpdate);
-
+                    $page = $this->updatePage($page, $form->data()->toArray(), $this->request->input(), force: Constraint::isTruthy($this->request->query()->has('publish')));
                     $this->panel->notify($this->translate('panel.pages.page.edited'), 'success');
                 } catch (TranslatedException $e) {
                     $this->panel->notify($this->translate($e->getLanguageString()), 'error');
@@ -548,6 +539,11 @@ final class PagesController extends AbstractController
         $previousData = $page->data();
 
         $page->setMultiple([...$formData, 'slug' => $requestData->get('slug')]);
+
+        if ($force) {
+            $page->set('published', true);
+        }
+
         $page->save($requestData->get('language'));
 
         if ($page->contentPath() === null) {

@@ -116,39 +116,37 @@ class FileResponse extends Response
             return $this;
         }
 
-        if (in_array($request->method(), [RequestMethod::HEAD, RequestMethod::GET], true)) {
-            if (!$this->headers->has('Accept-Ranges')) {
-                $this->headers->set('Accept-Ranges', 'bytes');
+        if (!$this->headers->has('Accept-Ranges') && in_array($request->method(), [RequestMethod::HEAD, RequestMethod::GET], true)) {
+            $this->headers->set('Accept-Ranges', 'bytes');
+        }
+
+        if ($request->method() === RequestMethod::GET && preg_match('/^bytes=(\d+)?-(\d+)?$/', $request->headers()->get('Range', ''), $matches, PREG_UNMATCHED_AS_NULL)) {
+            [, $start, $end] = $matches;
+
+            // RFC 7233: ignore invalid "bytes=-"
+            if ($start === null && $end === null) {
+                return $this;
             }
 
-            if (preg_match('/^bytes=(\d+)?-(\d+)?$/', $request->headers()->get('Range', ''), $matches, PREG_UNMATCHED_AS_NULL)) {
-                [, $start, $end] = $matches;
+            if ($start === null) {
+                $start = max(0, $this->fileSize - (int) $end);
+                $end = $this->fileSize - 1;
+            } elseif ($end === null || $end > $this->fileSize - 1) {
+                $end = $this->fileSize - 1;
+            }
 
-                // RFC 7233: ignore invalid "bytes=-"
-                if ($start === null && $end === null) {
-                    return $this;
-                }
+            $this->offset = (int) $start;
 
-                if ($start === null) {
-                    $start = max(0, $this->fileSize - (int) $end);
-                    $end = $this->fileSize - 1;
-                } elseif ($end === null || $end > $this->fileSize - 1) {
-                    $end = $this->fileSize - 1;
-                }
-
-                $this->offset = (int) $start;
-
-                if ($start > $end) {
-                    $this->length = 0;
-                    $this->responseStatus = ResponseStatus::RangeNotSatisfiable;
-                    $this->headers->set('Content-Range', sprintf('bytes */%s', $this->fileSize));
-                    $this->headers->set('Content-Length', '0');
-                } else {
-                    $this->length = (int) ($end - $start + 1);
-                    $this->responseStatus = ResponseStatus::PartialContent;
-                    $this->headers->set('Content-Range', sprintf('bytes %s-%s/%s', $start, $end, $this->fileSize));
-                    $this->headers->set('Content-Length', sprintf('%s', $this->length));
-                }
+            if ($start > $end) {
+                $this->length = 0;
+                $this->responseStatus = ResponseStatus::RangeNotSatisfiable;
+                $this->headers->set('Content-Range', sprintf('bytes */%s', $this->fileSize));
+                $this->headers->set('Content-Length', '0');
+            } else {
+                $this->length = (int) ($end - $start + 1);
+                $this->responseStatus = ResponseStatus::PartialContent;
+                $this->headers->set('Content-Range', sprintf('bytes %s-%s/%s', $start, $end, $this->fileSize));
+                $this->headers->set('Content-Length', sprintf('%s', $this->length));
             }
         }
 

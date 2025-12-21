@@ -276,7 +276,7 @@ class User extends Model
 
         // Delete user image if exists
         if ($this->image() !== null) {
-            $this->deleteImage();
+            $this->deleteImageFile();
         }
     }
 
@@ -287,15 +287,7 @@ class User extends Model
      */
     public function deleteImage(): void
     {
-        if ($this->image() === null) {
-            throw new TranslatedException('Cannot delete default user image', 'panel.user.image.cannotDelete.defaultImage');
-        }
-
-        $path = $this->image()->path();
-
-        if (FileSystem::isFile($path, assertExists: false)) {
-            FileSystem::delete($path);
-        }
+        $this->deleteImageFile();
 
         Arr::remove($this->data, 'image');
         $this->save();
@@ -331,10 +323,28 @@ class User extends Model
 
         // Delete old image if exists
         if ($this->image() !== null) {
-            $this->deleteImage();
+            $this->deleteImageFile();
         }
 
         Arr::set($this->data, 'image', $image);
+    }
+
+    /**
+     * Delete the user image file
+     *
+     * @throws TranslatedException If the user has no image
+     */
+    protected function deleteImageFile(): void
+    {
+        if ($this->image() === null) {
+            throw new TranslatedException('Cannot delete default user image', 'panel.user.image.cannotDelete.defaultImage');
+        }
+
+        $path = $this->image()->path();
+
+        if (FileSystem::isFile($path, assertExists: false)) {
+            FileSystem::delete($path);
+        }
     }
 
     /**

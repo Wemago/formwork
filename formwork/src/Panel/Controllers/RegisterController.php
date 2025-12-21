@@ -2,6 +2,8 @@
 
 namespace Formwork\Panel\Controllers;
 
+use Formwork\Data\Exceptions\InvalidValueException;
+use Formwork\Exceptions\TranslatedException;
 use Formwork\Http\RequestMethod;
 use Formwork\Http\Response;
 use Formwork\Log\Log;
@@ -45,8 +47,15 @@ final class RegisterController extends AbstractController
 
         $user = $userFactory->make([]);
 
-        $user->setMultiple([...$form->data()->toArray(), 'role' => 'admin']);
-        $user->save();
+        try {
+            $user->setMultiple([...$form->data()->toArray(), 'role' => 'admin']);
+            $user->save();
+        } catch (TranslatedException $e) {
+            return $this->error($this->translate($e->getLanguageString()), ['fields' => $form->fields()]);
+        } catch (InvalidValueException $e) {
+            $identifier = $e->getIdentifier() ?? 'invalidFields';
+            return $this->error($this->translate('panel.users.user.cannotCreate.' . $identifier), ['fields' => $form->fields()]);
+        }
 
         $this->request->session()->regenerate();
         $this->request->session()->set(User::SESSION_LOGGED_USER_KEY, $user->username());
@@ -58,5 +67,17 @@ final class RegisterController extends AbstractController
         $lastAccessRegistry->set($user->username(), $time);
 
         return $this->redirect($this->generateRoute('panel.index'));
+    }
+
+    /**
+     * Display registration form with an error notification
+     *
+     * @param array<string, mixed> $data
+     */
+    private function error(string $message, array $data = []): Response
+    {
+        $defaults = ['title' => $this->translate('panel.register.register'), 'error' => true];
+        $this->panel->notify($message, 'error');
+        return new Response($this->view('@panel.register.register', [...$defaults, ...$data]));
     }
 }

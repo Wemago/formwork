@@ -2,6 +2,7 @@
 
 namespace Formwork\Panel\Controllers;
 
+use Formwork\Data\Exceptions\InvalidValueException;
 use Formwork\Exceptions\TranslatedException;
 use Formwork\Fields\Field;
 use Formwork\Forms\FormData;
@@ -72,6 +73,10 @@ final class UsersController extends AbstractController
             $user->save();
         } catch (TranslatedException $e) {
             $this->panel->notify($this->translate($e->getLanguageString()), 'error');
+            return $this->redirectToReferer(default: $this->generateRoute('panel.users'), base: $this->panel->panelRoot());
+        } catch (InvalidValueException $e) {
+            $identifier = $e->getIdentifier() ?? 'invalidFields';
+            $this->panel->notify($this->translate('panel.users.user.cannotCreate.' . $identifier), 'error');
             return $this->redirectToReferer(default: $this->generateRoute('panel.users'), base: $this->panel->panelRoot());
         }
 
@@ -201,6 +206,9 @@ final class UsersController extends AbstractController
                     $this->panel->notify($this->translate('panel.users.user.edited'), 'success');
                 } catch (TranslatedException $e) {
                     $this->panel->notify($this->translate($e->getLanguageString(), $user->username()), 'error');
+                } catch (InvalidValueException $e) {
+                    $identifier = $e->getIdentifier() ?? 'invalidFields';
+                    $this->panel->notify($this->translate('panel.users.user.cannotEdit.' . $identifier), 'error');
                 }
             }
 

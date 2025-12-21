@@ -9,7 +9,8 @@ export class Plugins {
         $$(".plugin-status-toggle").forEach((toggle: HTMLInputElement) => {
             toggle.addEventListener(
                 "change",
-                throttle(() => {
+                throttle((event: Event) => {
+                    const toggle = event.target as HTMLInputElement;
                     const action = toggle.dataset.action;
 
                     if (action) {

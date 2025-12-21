@@ -236,8 +236,10 @@ class User extends Model
     /**
      * Set a data value by key
      *
-     * When setting the `email` key, the value is validated before being stored.
-     * When setting the `password` key, the password is hashed and the plain value
+     * * When setting the `username` key, an exception is thrown if the user
+     * already has a username assigned.
+     * * When setting the `email` key, the value is validated before being stored.
+     * * When setting the `password` key, the password is hashed and the plain value
      * is not stored in the internal data array.
      *
      * This method updates both the data array and the corresponding field
@@ -246,6 +248,10 @@ class User extends Model
      */
     public function set(string $key, mixed $value): void
     {
+        if ($key === 'username' && $this->get('username') !== null) {
+            throw new LogicException('Cannot change username of an existing user');
+        }
+
         if ($key === 'email') {
             $this->validateEmail((string) $value);
         } elseif ($key === 'password') {

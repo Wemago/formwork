@@ -241,9 +241,10 @@ class User extends Model
      *
      * * When setting the `username` key, an exception is thrown if the user
      * already has a username assigned.
-     * * When setting the `email` key, the value is validated before being stored.
      * * When setting the `password` key, the password is hashed and the plain value
      * is not stored in the internal data array.
+     * * When setting the `email` key, the value is validated before being stored.
+     * * When setting the `role` key, the value is validated before being stored.
      *
      * This method updates both the data array and the corresponding field
      * (if it exists). The field's validation may transform the value before
@@ -255,13 +256,19 @@ class User extends Model
             throw new LogicException('Cannot change username of an existing user');
         }
 
-        if ($key === 'email') {
-            $this->validateEmail((string) $value);
-        } elseif ($key === 'password') {
+        if ($key === 'password') {
             $this->setPasswordHash((string) $value);
 
             // Do not store plain password in data array
             return;
+        }
+
+        if ($key === 'email') {
+            $this->validateEmail((string) $value);
+        }
+
+        if ($key === 'role') {
+            $this->validateRole((string) $value);
         }
 
         parent::set($key, $value);
@@ -272,6 +279,10 @@ class User extends Model
      */
     public function save(): void
     {
+        if ($this->username() === null) {
+            throw new LogicException('Cannot save a user with no username assigned');
+        }
+
         Yaml::encodeToFile($this->data, FileSystem::joinPaths($this->config->get('system.users.paths.accounts'), $this->username() . '.yaml'));
     }
 
@@ -369,6 +380,18 @@ class User extends Model
         }
         if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
             throw new InvalidValueException(sprintf('Invalid e-mail address "%s"', $email));
+        }
+    }
+
+    /**
+     * Validate user role
+     *
+     * @throws InvalidValueException If the role does not exist
+     */
+    protected function validateRole(string $role): void
+    {
+        if (!$this->users->roles()->has($role)) {
+            throw new InvalidValueException(sprintf('Role "%s" does not exist', $role));
         }
     }
 

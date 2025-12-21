@@ -111,6 +111,9 @@ class User extends Model
      */
     public function role(): Role
     {
+        if (!isset($this->data['role'])) {
+            throw new LogicException(sprintf('User "%s" has no role assigned', $this->username()));
+        }
         return $this->users->roles()->get($this->data['role']);
     }
 

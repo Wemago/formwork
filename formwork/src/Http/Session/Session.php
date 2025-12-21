@@ -101,6 +101,12 @@ class Session implements Arrayable
 
         session_name($this->name);
 
+        if (PHP_VERSION_ID < 80400) {
+            // Set session ID length and bits per character as of PHP 8.4+
+            ini_set('session.sid_length', 32);
+            ini_set('session.sid_bits_per_character', 4);
+        }
+
         if (!session_id()) {
             $id = $this->request->cookies()->get($this->name, '');
 

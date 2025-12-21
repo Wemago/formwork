@@ -394,11 +394,10 @@ class Image extends File
         $image->data = $this->data;
         $image->uriGenerator = $this->uriGenerator;
 
-        if (isset($image->handler)) {
-            $image->handler = $this->handler;
+        if (!$this->transforms->isEmpty()) {
+            $this->transforms = new TransformCollection();
         }
 
-        $this->transforms = new TransformCollection();
         unset($this->handler);
 
         return $image;
@@ -470,6 +469,10 @@ class Image extends File
         }
 
         $this->handler()->process($this->transforms, $handler)->saveAs($path);
+
+        if (!$this->transforms->isEmpty()) {
+            $this->transforms = new TransformCollection();
+        }
     }
 
     /**

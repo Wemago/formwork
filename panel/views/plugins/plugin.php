@@ -22,7 +22,7 @@
             <div class="text-size-sm"><strong><?= $this->translate('plugin.author') ?>:</strong> <?= $this->escape($plugin->manifest()->author()) ?></div>
         <?php endif ?>
         <?php if ($plugin->manifest()->homepage()) : ?>
-            <div class="text-size-sm"><strong><?= $this->translate('plugin.homepage') ?>:</strong> <a target="_blank" rel="noreferer noopener" href="<?= $this->escapeAttr($plugin->manifest()->homepage()) ?>"><?= $this->escape($plugin->manifest()->homepage()) ?></a></div>
+            <div class="text-size-sm"><strong><?= $this->translate('plugin.homepage') ?>:</strong> <a target="_blank" rel="noreferrer noopener" href="<?= $this->escapeAttr($plugin->manifest()->homepage()) ?>"><?= $this->escape($plugin->manifest()->homepage()) ?></a></div>
         <?php endif ?>
         <?php if ($plugin->manifest()->license()) : ?>
             <div class="text-size-sm"><strong><?= $this->translate('plugin.license') ?>:</strong> <?= $this->escape($plugin->manifest()->license()) ?></div>

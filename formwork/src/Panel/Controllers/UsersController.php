@@ -67,8 +67,13 @@ final class UsersController extends AbstractController
 
         $user = $userFactory->make([]);
 
-        $user->setMultiple($form->data()->toArray());
-        $user->save();
+        try {
+            $user->setMultiple($form->data()->toArray());
+            $user->save();
+        } catch (TranslatedException $e) {
+            $this->panel->notify($this->translate($e->getLanguageString()), 'error');
+            return $this->redirectToReferer(default: $this->generateRoute('panel.users'), base: $this->panel->panelRoot());
+        }
 
         $this->panel->notify($this->translate('panel.users.user.created'), 'success');
         return $this->redirect($this->generateRoute('panel.users'));

@@ -14,6 +14,7 @@ use Formwork\Router\RouteParams;
 use Formwork\Schemes\Scheme;
 use Formwork\Utils\Arr;
 use Formwork\Utils\FileSystem;
+use Formwork\Utils\Path;
 use Formwork\Utils\Str;
 
 final class PluginsController extends AbstractController
@@ -59,7 +60,7 @@ final class PluginsController extends AbstractController
         // If no scheme, just show plugin info
         if ($scheme === null) {
             return new Response($this->view('@panel.plugins.plugin', [
-                'title'  => 'Plugin',
+                'title'  => $plugin->manifest()->title() ?? $plugin->name(),
                 'plugin' => $plugin,
                 'fields' => new FieldCollection(),
                 ...$this->getPreviousAndNextPlugin($plugin),
@@ -88,7 +89,7 @@ final class PluginsController extends AbstractController
         }
 
         return new Response($this->view('@panel.plugins.plugin', [
-            'title'  => 'Plugin',
+            'title'  => $plugin->manifest()->title() ?? $plugin->name(),
             'plugin' => $plugin,
             'fields' => $form->fields(),
             ...$this->getPreviousAndNextPlugin($plugin),

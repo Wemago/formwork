@@ -3,23 +3,30 @@
 namespace Formwork\Users;
 
 use Formwork\Config\Config;
+use Formwork\Data\Exceptions\InvalidValueException;
+use Formwork\Exceptions\TranslatedException;
 use Formwork\Files\FileFactory;
 use Formwork\Http\Request;
 use Formwork\Images\Image;
 use Formwork\Log\Registry;
 use Formwork\Model\Model;
-use Formwork\Panel\Security\Password;
+use Formwork\Parsers\Yaml;
 use Formwork\Schemes\Schemes;
 use Formwork\Users\Exceptions\AuthenticationFailedException;
 use Formwork\Users\Exceptions\UserImageNotFoundException;
 use Formwork\Users\Exceptions\UserNotLoggedException;
+use Formwork\Users\Utils\Password;
 use Formwork\Utils\Arr;
 use Formwork\Utils\FileSystem;
+use Formwork\Utils\Str;
+use LogicException;
 use SensitiveParameter;
 
 class User extends Model
 {
     public const string SESSION_LOGGED_USER_KEY = '_formwork_logged_user';
+
+    public const int MINIMUM_PASSWORD_LENGTH = 8;
 
     protected const string MODEL_IDENTIFIER = 'user';
 
@@ -54,20 +61,15 @@ class User extends Model
      */
     public function __construct(
         array $data,
-        protected Role $role,
         protected Schemes $schemes,
         protected Config $config,
         protected Request $request,
         protected FileFactory $fileFactory,
+        protected Users $users,
     ) {
-        $this->scheme = $this->schemes->get('users.user');
-
-        $this->fields = $this->scheme->fields();
-        $this->fields->setModel($this);
-
         $this->data = Arr::override($this->defaults, Arr::undot($data));
 
-        $this->fields->setValues($this->data);
+        $this->load();
     }
 
     public function __debugInfo(): array
@@ -89,7 +91,7 @@ class User extends Model
             return $this->image;
         }
 
-        $path = FileSystem::joinPaths($this->config->get('system.users.paths.images'), (string) $this->data['image']);
+        $path = FileSystem::joinPaths($this->config->get('system.users.paths.images'), (string) ($this->data['image'] ?? null));
 
         if (!FileSystem::isFile($path, assertExists: false)) {
             return $this->image = null;
@@ -109,7 +111,7 @@ class User extends Model
      */
     public function role(): Role
     {
-        return $this->role;
+        return $this->users->roles()->get($this->data['role']);
     }
 
     /**
@@ -125,7 +127,7 @@ class User extends Model
      */
     public function permissions(): Permissions
     {
-        return $this->role->permissions();
+        return $this->role()->permissions();
     }
 
     /**
@@ -229,5 +231,127 @@ class User extends Model
         }
         $registry = new Registry(FileSystem::joinPaths($this->config->get('system.panel.paths.logs'), 'lastAccess.json'));
         return $this->lastAccess = $registry->has($this->username()) ? (int) $registry->get($this->username()) : null;
+    }
+
+    public function set(string $key, mixed $value): void
+    {
+        if ($key === 'email') {
+            $this->validateEmail((string) $value);
+        } elseif ($key === 'password') {
+            $this->setPasswordHash((string) $value);
+
+            // Do not store plain password in data array
+            return;
+        }
+
+        parent::set($key, $value);
+    }
+
+    /**
+     * Save user data to file
+     */
+    public function save(): void
+    {
+        Yaml::encodeToFile($this->data, FileSystem::joinPaths($this->config->get('system.users.paths.accounts'), $this->username() . '.yaml'));
+    }
+
+    /**
+     * Delete the user account file and image
+     */
+    public function delete(): void
+    {
+        // Delete user file
+        FileSystem::delete(FileSystem::joinPaths($this->config->get('system.users.paths.accounts'), $this->username() . '.yaml'));
+
+        // Delete user image if exists
+        if ($this->image() !== null) {
+            $this->deleteImage();
+        }
+    }
+
+    /**
+     * Delete the user image
+     *
+     * @throws TranslatedException If the user has no image
+     */
+    public function deleteImage(): void
+    {
+        if ($this->image() === null) {
+            throw new TranslatedException('Cannot delete default user image', 'panel.user.image.cannotDelete.defaultImage');
+        }
+
+        $path = $this->image()->path();
+
+        if (FileSystem::isFile($path, assertExists: false)) {
+            FileSystem::delete($path);
+        }
+
+        Arr::remove($this->data, 'image');
+        $this->save();
+    }
+
+    /**
+     * Load user scheme and fields
+     */
+    protected function load(): void
+    {
+        $this->scheme = $this->schemes->get('users.user');
+
+        $this->fields = $this->scheme->fields();
+        $this->fields->setModel($this);
+
+        $this->fields->setValues($this->data);
+    }
+
+    /**
+     * Set user image
+     */
+    protected function setImage(string|Image|null $image): void
+    {
+        if ($image instanceof Image) {
+            $imagesPath = FileSystem::joinPaths($this->config->get('system.users.paths.images'));
+
+            if (!Str::startsWith($image->path(), $imagesPath)) {
+                throw new LogicException('User image must be located in the user images directory');
+            }
+
+            $image = $image->name();
+        }
+
+        // Delete old image if exists
+        if ($this->image() !== null) {
+            $this->deleteImage();
+        }
+
+        Arr::set($this->data, 'image', $image);
+    }
+
+    /**
+     * Validate user email
+     *
+     * @throws TranslatedException   If email is already used by another user
+     * @throws InvalidValueException If the e-mail address is not valid
+     */
+    protected function validateEmail(string $email): void
+    {
+        if ($email !== $this->email() && $this->users->some(fn(User $user) => $user->email() === $email)) {
+            throw new TranslatedException(sprintf('Cannot change the email of %s, the address is already used', $this->username()), 'panel.users.user.cannotChangeEmail.alreadyUsed');
+        }
+        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            throw new InvalidValueException(sprintf('Invalid e-mail address "%s"', $email));
+        }
+    }
+
+    /**
+     * Set user password hash
+     *
+     * @throws InvalidValueException If the password is too short
+     */
+    protected function setPasswordHash(string $password): void
+    {
+        if (strlen($password) < self::MINIMUM_PASSWORD_LENGTH) {
+            throw new InvalidValueException(sprintf('Password must be at least %d characters long', self::MINIMUM_PASSWORD_LENGTH));
+        }
+        Arr::set($this->data, 'hash', Password::hash($password));
     }
 }

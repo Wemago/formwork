@@ -269,7 +269,7 @@ final class UsersController extends AbstractController
         }
 
         // Ensure that user role can be changed
-        if ($formData->has('role') && $formData->get('role') !== $user->role() && !$this->panel->user()->canChangeRoleOf($user)) {
+        if ($formData->has('role') && $formData->get('role') !== $user->role()->id() && !$this->panel->user()->canChangeRoleOf($user)) {
             throw new TranslatedException(sprintf('Cannot change the role of %s', $user->username()), 'panel.users.user.cannotChangeRole');
         }
 

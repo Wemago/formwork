@@ -291,6 +291,10 @@ class User extends Model
      */
     public function delete(): void
     {
+        if ($this->username() === null) {
+            throw new LogicException('Cannot delete a user with no username assigned');
+        }
+
         // Delete user file
         FileSystem::delete(FileSystem::joinPaths($this->config->get('system.users.paths.accounts'), $this->username() . '.yaml'));
 

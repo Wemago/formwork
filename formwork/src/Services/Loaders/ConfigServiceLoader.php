@@ -18,7 +18,7 @@ final class ConfigServiceLoader implements ServiceLoaderInterface
     public function load(Container $container): Config
     {
         $cachePath = ROOT_PATH . '/cache/config/';
-        $cacheFile = FileSystem::joinPaths($cachePath, 'config.' . $this->request->host() . '.php');
+        $cacheFile = FileSystem::joinPaths($cachePath, "config.{$this->request->host()}.php");
 
         if (!FileSystem::isDirectory($cachePath, assertExists: false)) {
             FileSystem::createDirectory($cachePath);

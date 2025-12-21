@@ -143,14 +143,15 @@ final class PluginsController extends AbstractController
     }
 
     /**
-     * Update a plugin options in its config file
+     * Update plugin options in its config file
      *
      * @param array<string, mixed> $options
      */
     private function updatePluginsOptions(Plugin $plugin, array $options): void
     {
         $options = Arr::override($this->config->get("plugins.{$plugin->name()}", []), $options);
-        Yaml::encodeToFile($options, ROOT_PATH . "/site/config/plugins/{$plugin->id()}.yaml");
+        $path = FileSystem::joinPaths(ROOT_PATH . '/site/config/plugins', Path::resolve("{$plugin->id()}.yaml", '/', DIRECTORY_SEPARATOR));
+        Yaml::encodeToFile($options, $path);
     }
 
     /**

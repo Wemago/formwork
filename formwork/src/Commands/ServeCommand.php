@@ -106,7 +106,7 @@ final class ServeCommand implements CommandInterface
         $this->process = new Process([
             $php,
             '-S',
-            $this->host . ':' . $this->port,
+            "{$this->host}:{$this->port}",
             'formwork/server.php',
         ], dirname(__DIR__, 3), null, null, 0);
 
@@ -250,7 +250,7 @@ final class ServeCommand implements CommandInterface
         if ($dt > 60) {
             $m = floor($dt / 60); // minutes
             $s = round($dt % 60); // seconds
-            return $m . ' m ' . $s . ' s';
+            return "{$m} m {$s} s";
         }
 
         if ($dt > 1) {

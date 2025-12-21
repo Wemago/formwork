@@ -218,7 +218,7 @@ final class Panel
         foreach (FileSystem::listFiles($path) as $file) {
             if (FileSystem::extension($file) === 'yaml') {
                 $code = FileSystem::name($file);
-                $translations[$code] = LanguageCodes::codeToNativeName($code) . ' (' . $code . ')';
+                $translations[$code] = LanguageCodes::codeToNativeName($code) . " ({$code})";
             }
         }
 

@@ -353,7 +353,7 @@ class User extends Model
         }
 
         // Delete old image if exists
-        if ($this->image() !== null) {
+        if ($this->image() !== null && ($image === null || $image !== $this->image()->name())) {
             $this->deleteImageFile();
         }
 

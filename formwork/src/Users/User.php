@@ -233,6 +233,17 @@ class User extends Model
         return $this->lastAccess = $registry->has($this->username()) ? (int) $registry->get($this->username()) : null;
     }
 
+    /**
+     * Set a data value by key
+     *
+     * When setting the `email` key, the value is validated before being stored.
+     * When setting the `password` key, the password is hashed and the plain value
+     * is not stored in the internal data array.
+     *
+     * This method updates both the data array and the corresponding field
+     * (if it exists). The field's validation may transform the value before
+     * it's stored in the data array.
+     */
     public function set(string $key, mixed $value): void
     {
         if ($key === 'email') {

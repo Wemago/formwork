@@ -13,6 +13,7 @@
 
 /site/auth/*
 /site/config/plugins.yaml
+/site/config/plugins/*
 /site/plugins/*
 /site/statistics/*
 /site/users/accounts/*

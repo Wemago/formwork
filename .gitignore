@@ -11,6 +11,7 @@
 /panel/logs/*
 /panel/node_modules/*
 
+/site/auth/*
 /site/config/plugins.yaml
 /site/plugins/*
 /site/statistics/*

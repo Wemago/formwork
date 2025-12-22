@@ -12,7 +12,6 @@
 /panel/node_modules/*
 
 /site/auth/*
-/site/config/plugins.yaml
 /site/config/plugins/*
 /site/plugins/*
 /site/statistics/*

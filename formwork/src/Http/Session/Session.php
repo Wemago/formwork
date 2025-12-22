@@ -7,6 +7,7 @@ use Formwork\Data\Traits\DataArrayable;
 use Formwork\Data\Traits\DataMultipleGetter;
 use Formwork\Data\Traits\DataMultipleSetter;
 use Formwork\Http\Request;
+use Formwork\Http\Session\Handler\FileSessionHandler;
 use Formwork\Http\Utils\Cookie;
 use Formwork\Http\Utils\Header;
 use Formwork\Utils\Str;
@@ -59,6 +60,11 @@ class Session implements Arrayable
      * Session duration in seconds
      */
     protected int $duration = 0;
+
+    /**
+     * Session save path
+     */
+    protected string $path;
 
     public function __construct(
         protected Request $request,
@@ -116,6 +122,8 @@ class Session implements Arrayable
 
             session_id($id);
         }
+
+        session_set_save_handler(new FileSessionHandler($this->path ?? null));
 
         session_start([
             'cache_limiter'   => '',
@@ -233,6 +241,18 @@ class Session implements Arrayable
             }
             Cookie::send($this->name, $id, $this->getCookieOptions());
         }
+    }
+
+    /**
+     * Set the session files path
+     */
+    public function setPath(string $path): void
+    {
+        if ($this->started) {
+            throw new RuntimeException('Cannot set session save path: session already started');
+        }
+
+        $this->path = $path;
     }
 
     /**

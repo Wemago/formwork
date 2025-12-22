@@ -86,7 +86,6 @@ panel:
     loginAttempts: 10
     loginResetTime: 300
     logoutRedirect: login
-    sessionTimeout: 120
     userImageSize: 512
     colorScheme: light
     paths:

@@ -114,11 +114,13 @@ class FileSessionHandler implements SessionHandlerInterface, SessionUpdateTimest
 
         unset($this->handles[$sessionId]);
 
-        if ($this->writeToHandle($handle, $data)) {
-            return chmod($file, 0o600 & ~umask());
+        $result = $this->writeToHandle($handle, $data);
+
+        if ($result) {
+            @chmod($file, 0o600 & ~umask());
         }
 
-        return false;
+        return $result;
     }
 
     /**
